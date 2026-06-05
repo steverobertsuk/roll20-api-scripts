@@ -39,13 +39,17 @@
 
 ## scripts/
 
-| File               | Purpose                                                                |
-| ------------------ | ---------------------------------------------------------------------- |
-| `bump-version.mjs` | Bumps patch version in `script.json`; syncs `package.json` to match    |
-|                    | Run automatically as `prebuild`; also invoked by `npm run set-version` |
-| `sync-locales.mjs` | Translate missing locale keys via Google Translate free API            |
-|                    | `npm run sync-locales` — fill in new/missing keys only                 |
-|                    | `npm run regenerate-locales` — retranslate everything                  |
+| File               | Purpose                                                                     |
+| ------------------ | --------------------------------------------------------------------------- |
+| `build.mjs`        | Full build entry point — bumps version, runs Rollup, writes both outputs    |
+|                    | `npm run build` — auto-bump patch then build                                |
+|                    | `npm run build -- 1.1.0` — set explicit version then build                  |
+|                    | `npm run watch` — watch mode (no version bump)                              |
+| `bump-version.mjs` | Bumps or sets version in `script.json`; syncs `package.json` to match       |
+|                    | Invoked by `build.mjs`; also available standalone via `npm run set-version` |
+| `sync-locales.mjs` | Translate missing locale keys via Google Translate free API                 |
+|                    | `npm run sync-locales` — fill in new/missing keys only                      |
+|                    | `npm run regenerate-locales` — retranslate everything                       |
 
 ## Versioned Archives
 
