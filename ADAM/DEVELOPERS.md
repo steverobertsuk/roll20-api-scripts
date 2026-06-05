@@ -26,30 +26,35 @@ npm install
 
 ## Updating the Version
 
-1. Update `CHANGELOG.md` with the new version and release notes.
-2. Run `npm run build` — `prebuild` bumps the patch version in `script.json` automatically,
-   syncs `package.json` to match, then produces the build.
-
-To set a specific version instead of auto-bumping the patch:
+Update `CHANGELOG.md`, then run the build. Version bumping is part of the build command:
 
 ```bash
-npm run set-version -- 1.1.0
-npm run build
+npm run build              # auto-bump patch (1.0.0 → 1.0.1), then build
+npm run build -- 1.1.0    # set explicit version, then build
 ```
 
-Both `set-version` and the `prebuild` hook keep `script.json` and `package.json` in sync — you never need to edit either file's version field by hand.
+To update the version without building (e.g. to stage a release):
+
+```bash
+npm run set-version             # auto-bump patch only
+npm run set-version -- 1.1.0   # set explicit version only
+```
+
+Both commands keep `script.json` and `package.json` in sync automatically.
 
 ## Build Commands
 
 ```bash
-npm run build   # one-time build
-npm run watch   # rebuild on file save
+npm run build              # bump version + one-time build
+npm run build -- 1.1.0    # set explicit version + build
+npm run watch              # rebuild on file save (no version bump)
 ```
 
 ### Build Notes
 
+- Version is bumped before the Rollup config is loaded, so the banner always reflects the new version.
 - Outputs are written to `ADAM.js` and `<version>/ADAM.js`.
-- Watch mode does **not** auto-bump the version.
+- Watch mode does **not** auto-bump the version — run `npm run build` or `npm run set-version` first if needed.
 - The build does not regenerate locale files.
 
 ## Locale Translations

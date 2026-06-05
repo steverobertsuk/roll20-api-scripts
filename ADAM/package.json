@@ -4,10 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "node scripts/bump-version.mjs",
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
     "set-version": "node scripts/bump-version.mjs",
-    "build": "rollup -c",
-    "watch": "rollup -c -w",
     "format": "prettier --write \"ADAM.js\" \"rollup.config.mjs\" \"src/**/*.js\" \"*.md\" \"scripts/**/*.mjs\"",
     "format:check": "prettier --check \"ADAM.js\" \"rollup.config.mjs\" \"src/**/*.js\" \"*.md\" \"scripts/**/*.mjs\"",
     "sync-locales": "node scripts/sync-locales.mjs",
