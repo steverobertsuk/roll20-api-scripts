@@ -1,0 +1,217 @@
+const TRANSLATION = {
+  titles: {
+    error: 'Chyba',
+    noTokenSelected: 'Není vybrán žádný token',
+    tokenError: 'Chyba tokenu',
+    missingDirection: 'Chybějící směr',
+    invalidDirection: 'Neplatný směr',
+    missingState: 'Chybějící stát',
+    invalidState: 'Neplatný stát',
+    missingAction: 'Chybějící akce',
+    invalidAction: 'Neplatná akce',
+    accessDenied: 'Přístup odepřen',
+    invalidValue: 'Neplatná hodnota',
+    unknownCommand: 'Neznámý příkaz',
+    moveError: 'Chyba přesunu',
+    macroExists: 'Makro existuje',
+    macroInstalled: 'Makro nainstalováno',
+    invalidUsage: 'Neplatné použití',
+    profileAssigned: 'Profil přiřazen',
+    profileRemoved: 'Profil odstraněn',
+    unknownProfile: 'Neznámý profil',
+    configuration: 'Konfigurace',
+    settingsReset: 'Nastavení Resetovat',
+    scriptReady: 'Skript připraven',
+    versionInfo: 'Informace o verzi',
+    creditsTitle: 'Kredity',
+    adamsMenu: 'A.D.A.M. Řídicí paluba',
+    adamsHelp: 'A.D.A.M. Pomoc',
+    adamsSettings: 'A.D.A.M. Nastavení',
+    profiles: 'Nakonfigurované profily',
+    tokenProfile: 'Profil tokenu',
+    success: 'Úspěch',
+    langSet: 'Jazyková sada',
+    langInvalid: 'Neplatný jazyk',
+    profileCreated: 'Profil vytvořen',
+    profileUpdated: 'Profil aktualizován',
+    profileDeleted: 'Profil smazán',
+    profileRenamed: 'Profil přejmenován',
+    draftSubmitted: 'Návrh předložen',
+    draftApproved: 'Návrh schválen',
+    draftRejected: 'Koncept zamítnut',
+    pendingDrafts: 'Nevyřízené koncepty profilu',
+    profileCreationMode: 'Režim vytváření profilu',
+    draftNotification: 'Koncept profilu čeká na vyřízení',
+  },
+  errors: {
+    noTokenSelected:
+      'Není vybrán žádný token. Nejprve prosím vyberte token a poté klikněte na směrové tlačítko.',
+    noTokenSelectedStill: 'Stále není vybrán žádný token.',
+    noTokenSelectedPersistent: 'Obdivuji vaši vytrvalost. Nejprve vyberte token.',
+    tokenNotFound: 'Vybraný token nebyl nalezen.',
+    missingDirection:
+      'Uveďte prosím směr. Příklad: <code>!adam --move n</code><br><em>Směr: n, ne, e, se, s, sw, w, nw</em>',
+    invalidDirection:
+      'Neznámý směr: <strong>{value}</strong><br><br>Platné: n, ne, e, se, s, sw, w, nw (nebo celé názvy jako sever, severovýchod)',
+    missingState: 'Uveďte prosím stát.<br>Platné: {states}',
+    invalidState: 'Neznámý stav: <strong>{value}</strong><br><br>Platný: {states}',
+    missingAction:
+      'Uveďte prosím akci. Příklady: pomoc, kouzlo, vztek, úprk, plížení, nečinnost, boj',
+    invalidAction: 'Neznámá akce: <strong>{value}</strong><br><br>Známé akce: {actions}',
+    accessDeniedConfig: 'Změny konfigurace jsou omezeny na GM.',
+    accessDeniedProfileAssign: 'Přiřazení profilu je omezeno na GM.',
+    accessDeniedProfileRemove: 'Odstranění profilu je omezeno na GM.',
+    accessDeniedMacro: 'Instalace makra je omezena na GM.',
+    accessDeniedReset: 'Obnovení nastavení je omezeno na GM.',
+    unknownCommand:
+      'Neznámý příkaz. Vyzkoušejte <code>!adam --help</code> pro seznam dostupných příkazů.',
+    moveFailed: 'Pohyb se nezdařil.',
+    gridSizeInvalid: 'Velikost mřížky musí být celé číslo mezi 10 a 1000 (pixely).',
+    moveDistanceInvalid: 'Vzdálenost přesunu musí být celé číslo mezi 1 a 20 (čtverečky).',
+    autoFaceInvalid: 'Automatická nominální hodnota musí být: zapnuto nebo vypnuto.',
+    humourInvalid: 'Hodnota humoru musí být: zapnuto nebo vypnuto.',
+    langInvalid: 'Neplatné národní prostředí. Podporováno: {locales}',
+    profileUsage:
+      'Použití: <code>!adam --profile &lt;list|show|create|edit-side|rename|delete|assign|remove&gt;</code>',
+    profileAssignUsage: 'Použití: <code>!adam --profile přiřadit &lt;profileId&gt;</code>',
+    profileUnknown:
+      'Profil <strong>{id}</strong> neexistuje. Chcete-li zobrazit dostupné profily, použijte <code>!adam --profile seznam</code>.',
+    profileUnknownSub:
+      'Neznámý dílčí příkaz profilu: <strong>{sub}</strong><br><br>Platný: seznam, zobrazit, vytvořit, upravit-strana, přejmenovat, odstranit, přiřadit, odstranit, koncept, strana konceptu, zkontrolovat, schválit, zamítnout',
+    profileIdInvalid:
+      'Neplatné ID profilu: <strong>{id}</strong>. Používejte pouze písmena, čísla, spojovníky a podtržítka (max. 50 znaků).',
+    profileAlreadyExists:
+      'Profil <strong>{id}</strong> již existuje. Pomocí <code>!adam --profile edit-side</code> jej upravte nebo nejprve odstraňte.',
+    profileNotFound: 'Profil <strong>{id}</strong> nebyl nalezen.',
+    profileCreateUsage:
+      'Použití: <code>!adam --profile vytvořit &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileEditSideUsage:
+      'Použití: <code>!adam --profile strana úprav &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>',
+    profileRenameUsage:
+      'Použití: <code>!adam --profile přejmenovat &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileDeleteUsage: 'Použití: <code>!adam --profile smazat &lt;profileId&gt;</code>',
+    profileDraftUsage:
+      'Použití: <code>!adam --profile koncept &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileDraftSideUsage:
+      'Použití: <code>!adam --profile strana návrhu &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>',
+    profileDraftNotFound:
+      'Nebyl nalezen žádný nevyřízený koncept pro <strong>{id}</strong>. Odešlete jeden s <code>!adam --profile koncept</code>.',
+    profileGmOnly: 'Vytvoření profilu je omezeno na GM.',
+    profileEditGmOnly: 'Úprava tohoto profilu je omezena na GM.',
+    profileDeleteGmOnly: 'Smazání tohoto profilu je omezeno na GM.',
+    profileGlobalReadOnly:
+      'Profil <strong>{id}</strong> je globální profil a může být upraven pouze GM.',
+    profileNotOwned: 'Nejste vlastníkem profilu <strong>{id}</strong> a nemůžete jej upravovat.',
+    profileModeRequiresDraft:
+      'Vytvoření profilu vyžaduje v této hře schválení GM. K odeslání konceptu použijte <code>!adam --profile koncept &lt;id&gt; &lt;name&gt;</code>.',
+    profileAssignNoControl: 'Osobní profily můžete přiřadit pouze tokenům, které ovládáte.',
+    profileAssignNotOwned:
+      'Své vlastní profily můžete přiřadit pouze tokenům, které ovládáte. Profil <strong>{id}</strong> patří jinému hráči.',
+    profileCreationModeInvalid:
+      'Neplatný režim vytváření profilu. Platné: gm-only, gm-approved, all-users.',
+    profileReviewGmOnly: 'Pouze GM může přezkoumat nevyřízené koncepty.',
+    profileApproveGmOnly: 'Pouze GM může schvalovat koncepty profilu.',
+    profileRejectGmOnly: 'Pouze GM může odmítnout koncepty profilu.',
+    invalidAnimSet: 'Sada animací musí být: sever nebo jih.',
+    invalidSideNumber: 'Číslo strany musí být kladné celé číslo (1 nebo větší).',
+    noDrafts: 'Žádné nevyřízené koncepty profilu.',
+    profileDraftConflict:
+      'Nevyřízený koncept pro <strong>{id}</strong> již existuje a patří jinému hráči.',
+    profileDraftNotGmApproved:
+      'Odesílání konceptů je k dispozici pouze v případě, že je režim vytváření profilu <code>schválen gm</code>.',
+    profileApproveConflict:
+      'Aktivní profil s názvem <strong>{id}</strong> již existuje. Před schválením tohoto konceptu jej nejprve smažte.',
+    macroExists: 'Makro s názvem „<strong>{name}</strong>“ již existuje.',
+    simonUnknown:
+      'Simon neví, jak: <em>{command}</em><br><br>Zkuste: <code>!simon říká move n</code>',
+  },
+  confirm: {
+    facing: '<strong>{token}</strong> nyní čelí <strong>{direction}</strong>.',
+    stateSet: 'Stav <strong>{token}</strong> nastaven na <strong>{state}</strong>.',
+    actionSet:
+      '<strong>{token}</strong> akce: <strong>{action}</strong> → stav: <strong>{state}</strong>.',
+    profileAssigned: 'Profil <strong>{id}</strong> přiřazený uživateli <strong>{token}</strong>.',
+    profileRemoved: 'Profil byl odebrán z <strong>{token}</strong>.',
+    profileCreated: 'Profil <strong>{id}</strong> byl vytvořen.',
+    profileSideSet: 'Profil <strong>{id}</strong>: {state}/{animSet} → strana {number}.',
+    profileRenamed: 'Profil <strong>{id}</strong> byl přejmenován na <strong>{name}</strong>.',
+    profileDeleted: 'Profil <strong>{id}</strong> byl smazán.',
+    profileDraftSubmitted: 'Koncept profilu <strong>{id}</strong> odeslán ke schválení GM.',
+    profileDraftApproved:
+      'Koncept profilu <strong>{id}</strong> byl schválen a přidán do aktivních profilů.',
+    profileDraftRejected: 'Koncept profilu <strong>{id}</strong> byl zamítnut.',
+    macroInstalled:
+      "Globální makro '<strong>{name}</strong>' bylo vytvořeno a je viditelné pro všechny hráče.",
+    configUpdated: 'Nastavení aktualizováno.',
+    settingsReset: '<strong>Nastavení byla resetována na výchozí tovární nastavení.</strong>',
+    langSet: 'Jazyk nastaven na {locale}.',
+  },
+  settings: {
+    gridSize: 'Velikost mřížky',
+    gridSizeDesc: '{size}px na čtverec',
+    moveDistance: 'Vzdálenost pohybu',
+    moveDistanceDesc: '{squares} čtverců – {pixels}px na tah',
+    autoFace: 'Auto-Face on Move',
+    humour: 'Humor (velikonoční vajíčka)',
+    language: 'Jazyk',
+    profileCreationMode: 'Režim vytváření profilu',
+    on: 'Na',
+    off: 'Vypnuto',
+  },
+  profiles: {
+    none: 'Nejsou nakonfigurovány žádné profily animovaných tokenů.',
+    noProfile: 'Vybranému tokenu není přiřazen žádný profil.',
+    id: 'ID profilu',
+    displayName: 'Zobrazovaný název',
+    mappedStates: 'Mapované státy',
+    noneValue: '(žádný)',
+    personal: 'osobní',
+    owner: 'Majitel',
+    submittedBy: 'předkládá',
+    approveHint:
+      'Použijte !adam --profile schválit &lt;id&gt; ke schválení nebo odmítnout &lt;id&gt; k zamítnutí.',
+  },
+  menu: {
+    title: 'A.D.A.M. Řídicí paluba',
+    movement: 'Hnutí',
+    facing: 'Tváří v tvář',
+    state: 'Stát',
+    stateLabel: 'Stát',
+    facingLabel: 'Tváří v tvář',
+    profileLabel: 'Profil',
+    noProfile: 'Žádný profil',
+    help: 'Pomoc',
+    config: 'Konfigurace',
+    states: {
+      idle: 'Líný',
+      combat: 'Boj',
+      walk: 'Chůze',
+      dash: 'Pomlčka',
+      sneak: 'Žalobníček',
+      rage: 'Vztek',
+      spellcasting: 'Zaklínadlo',
+      help: 'Pomoc',
+    },
+  },
+  info: {
+    subtitle: 'Animovaný Směr A Pohyb',
+    versionLabel: 'Verze',
+    updatedLabel: 'Aktualizováno',
+    creditsBody:
+      'A.D.A.M.<br>Animovaný směr a pohyb<br><br>Pohání SIMON.<br>Rozhodně se nejmenuje Simon.',
+    ready: 'MOD PŘIPRAVEN',
+  },
+  easter: {
+    toTheLeft: 'Doleva, doleva...',
+    notGoingAnywhere: 'A.D.A.M. rozhodl, že ve skutečnosti nikam nejdete.',
+    areWeThereYet: 'Už jsme tam?',
+    sneakSpam: 'Nikdo tě neviděl.<br>Nikdo tě neviděl.<br>Nikdo tě neviděl.',
+    helpSpam: 'Kdo je dobrá sova?',
+    rageRage: 'Dorn by to schválil.',
+    simonResponse: '...a neříkej mi Simono!',
+    simonNoSays: 'Simon říká co?',
+    versionEgg: 'A.D.A.M. v{version}<br><br>ŠIMON rozhodně ne.',
+  },
+};
+
+export default TRANSLATION;

@@ -1,0 +1,217 @@
+const TRANSLATION = {
+  titles: {
+    error: 'Error',
+    noTokenSelected: 'No Token Selected',
+    tokenError: 'Token Error',
+    missingDirection: 'Missing Direction',
+    invalidDirection: 'Invalid Direction',
+    missingState: 'Missing State',
+    invalidState: 'Invalid State',
+    missingAction: 'Missing Action',
+    invalidAction: 'Invalid Action',
+    accessDenied: 'Access Denied',
+    invalidValue: 'Invalid Value',
+    unknownCommand: 'Unknown Command',
+    moveError: 'Move Error',
+    macroExists: 'Macro Exists',
+    macroInstalled: 'Macro Installed',
+    invalidUsage: 'Invalid Usage',
+    profileAssigned: 'Profile Assigned',
+    profileRemoved: 'Profile Removed',
+    unknownProfile: 'Unknown Profile',
+    configuration: 'Configuration',
+    settingsReset: 'Settings Reset',
+    scriptReady: 'Script Ready',
+    versionInfo: 'Version Info',
+    creditsTitle: 'Credits',
+    adamsMenu: 'A.D.A.M. Control Deck',
+    adamsHelp: 'A.D.A.M. Help',
+    adamsSettings: 'A.D.A.M. Settings',
+    profiles: 'Configured Profiles',
+    tokenProfile: 'Token Profile',
+    success: 'Success',
+    langSet: 'Language Set',
+    langInvalid: 'Invalid Language',
+    profileCreated: 'Profile Created',
+    profileUpdated: 'Profile Updated',
+    profileDeleted: 'Profile Deleted',
+    profileRenamed: 'Profile Renamed',
+    draftSubmitted: 'Draft Submitted',
+    draftApproved: 'Draft Approved',
+    draftRejected: 'Draft Rejected',
+    pendingDrafts: 'Pending Profile Drafts',
+    profileCreationMode: 'Profile Creation Mode',
+    draftNotification: 'Profile Draft Pending',
+  },
+  errors: {
+    noTokenSelected:
+      'No token selected. Please select a token first, then click a direction button.',
+    noTokenSelectedStill: 'Still no token selected.',
+    noTokenSelectedPersistent: 'I admire your persistence. Select a token first.',
+    tokenNotFound: 'Selected token could not be found.',
+    missingDirection:
+      'Please provide a direction. Example: <code>!adam --move n</code><br><em>Directions: n, ne, e, se, s, sw, w, nw</em>',
+    invalidDirection:
+      'Unknown direction: <strong>{value}</strong><br><br>Valid: n, ne, e, se, s, sw, w, nw (or full names such as north, northeast)',
+    missingState: 'Please provide a state.<br>Valid: {states}',
+    invalidState: 'Unknown state: <strong>{value}</strong><br><br>Valid: {states}',
+    missingAction:
+      'Please provide an action. Examples: help, spellcast, rage, dash, sneak, idle, combat',
+    invalidAction: 'Unknown action: <strong>{value}</strong><br><br>Known actions: {actions}',
+    accessDeniedConfig: 'Configuration changes are restricted to the GM.',
+    accessDeniedProfileAssign: 'Profile assignment is restricted to the GM.',
+    accessDeniedProfileRemove: 'Profile removal is restricted to the GM.',
+    accessDeniedMacro: 'Macro installation is restricted to the GM.',
+    accessDeniedReset: 'Settings reset is restricted to the GM.',
+    unknownCommand:
+      'Unknown command. Try <code>!adam --help</code> for a list of available commands.',
+    moveFailed: 'Movement failed.',
+    gridSizeInvalid: 'Grid size must be an integer between 10 and 1000 (pixels).',
+    moveDistanceInvalid: 'Move distance must be an integer between 1 and 20 (squares).',
+    autoFaceInvalid: 'Auto-face value must be: on or off.',
+    humourInvalid: 'Humour value must be: on or off.',
+    langInvalid: 'Invalid locale. Supported: {locales}',
+    profileUsage:
+      'Usage: <code>!adam --profile &lt;list|show|create|edit-side|rename|delete|assign|remove&gt;</code>',
+    profileAssignUsage: 'Usage: <code>!adam --profile assign &lt;profileId&gt;</code>',
+    profileUnknown:
+      'Profile <strong>{id}</strong> does not exist. Use <code>!adam --profile list</code> to see available profiles.',
+    profileUnknownSub:
+      'Unknown profile subcommand: <strong>{sub}</strong><br><br>Valid: list, show, create, edit-side, rename, delete, assign, remove, draft, draft-side, review, approve, reject',
+    profileIdInvalid:
+      'Invalid profile ID: <strong>{id}</strong>. Use only letters, numbers, hyphens, and underscores (max 50 characters).',
+    profileAlreadyExists:
+      'Profile <strong>{id}</strong> already exists. Use <code>!adam --profile edit-side</code> to modify it, or delete it first.',
+    profileNotFound: 'Profile <strong>{id}</strong> not found.',
+    profileCreateUsage:
+      'Usage: <code>!adam --profile create &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileEditSideUsage:
+      'Usage: <code>!adam --profile edit-side &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>',
+    profileRenameUsage:
+      'Usage: <code>!adam --profile rename &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileDeleteUsage: 'Usage: <code>!adam --profile delete &lt;profileId&gt;</code>',
+    profileDraftUsage:
+      'Usage: <code>!adam --profile draft &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileDraftSideUsage:
+      'Usage: <code>!adam --profile draft-side &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>',
+    profileDraftNotFound:
+      'No pending draft found for <strong>{id}</strong>. Submit one with <code>!adam --profile draft</code>.',
+    profileGmOnly: 'Profile creation is restricted to the GM.',
+    profileEditGmOnly: 'Modifying this profile is restricted to the GM.',
+    profileDeleteGmOnly: 'Deleting this profile is restricted to the GM.',
+    profileGlobalReadOnly:
+      'Profile <strong>{id}</strong> is a global profile and can only be modified by the GM.',
+    profileNotOwned: 'You do not own profile <strong>{id}</strong> and cannot modify it.',
+    profileModeRequiresDraft:
+      'Profile creation requires GM approval in this game. Use <code>!adam --profile draft &lt;id&gt; &lt;name&gt;</code> to submit a draft.',
+    profileAssignNoControl: 'You can only assign personal profiles to tokens you control.',
+    profileAssignNotOwned:
+      'You can only assign your own profiles to tokens you control. Profile <strong>{id}</strong> belongs to another player.',
+    profileCreationModeInvalid:
+      'Invalid profile creation mode. Valid: gm-only, gm-approved, all-users.',
+    profileReviewGmOnly: 'Only the GM can review pending drafts.',
+    profileApproveGmOnly: 'Only the GM can approve profile drafts.',
+    profileRejectGmOnly: 'Only the GM can reject profile drafts.',
+    invalidAnimSet: 'Animation set must be: north or south.',
+    invalidSideNumber: 'Side number must be a positive integer (1 or greater).',
+    noDrafts: 'No pending profile drafts.',
+    profileDraftConflict:
+      'A pending draft for <strong>{id}</strong> already exists and belongs to another player.',
+    profileDraftNotGmApproved:
+      'Draft submissions are only available when profile creation mode is <code>gm-approved</code>.',
+    profileApproveConflict:
+      'An active profile named <strong>{id}</strong> already exists. Delete it first before approving this draft.',
+    macroExists: "A macro named '<strong>{name}</strong>' already exists.",
+    simonUnknown:
+      "Simon doesn't know how to: <em>{command}</em><br><br>Try: <code>!simon says move n</code>",
+  },
+  confirm: {
+    facing: '<strong>{token}</strong> now faces <strong>{direction}</strong>.',
+    stateSet: '<strong>{token}</strong> state set to <strong>{state}</strong>.',
+    actionSet:
+      '<strong>{token}</strong> action: <strong>{action}</strong> → state: <strong>{state}</strong>.',
+    profileAssigned: 'Profile <strong>{id}</strong> assigned to <strong>{token}</strong>.',
+    profileRemoved: 'Profile removed from <strong>{token}</strong>.',
+    profileCreated: 'Profile <strong>{id}</strong> created.',
+    profileSideSet: 'Profile <strong>{id}</strong>: {state}/{animSet} → side {number}.',
+    profileRenamed: 'Profile <strong>{id}</strong> renamed to <strong>{name}</strong>.',
+    profileDeleted: 'Profile <strong>{id}</strong> deleted.',
+    profileDraftSubmitted: 'Draft for profile <strong>{id}</strong> submitted for GM approval.',
+    profileDraftApproved:
+      'Profile draft <strong>{id}</strong> approved and added to active profiles.',
+    profileDraftRejected: 'Profile draft <strong>{id}</strong> has been rejected.',
+    macroInstalled:
+      "Global macro '<strong>{name}</strong>' has been created and is visible to all players.",
+    configUpdated: 'Settings updated.',
+    settingsReset: '<strong>Settings reset to factory defaults.</strong>',
+    langSet: 'Language set to {locale}.',
+  },
+  settings: {
+    gridSize: 'Grid Size',
+    gridSizeDesc: '{size}px per square',
+    moveDistance: 'Move Distance',
+    moveDistanceDesc: '{squares} square(s) — {pixels}px per move',
+    autoFace: 'Auto-Face on Move',
+    humour: 'Humour (Easter Eggs)',
+    language: 'Language',
+    profileCreationMode: 'Profile Creation Mode',
+    on: 'On',
+    off: 'Off',
+  },
+  profiles: {
+    none: 'No animated token profiles are configured.',
+    noProfile: 'Selected token has no profile assigned.',
+    id: 'Profile ID',
+    displayName: 'Display Name',
+    mappedStates: 'Mapped States',
+    noneValue: '(none)',
+    personal: 'personal',
+    owner: 'Owner',
+    submittedBy: 'submitted by',
+    approveHint:
+      'Use !adam --profile approve &lt;id&gt; to approve or reject &lt;id&gt; to reject.',
+  },
+  menu: {
+    title: 'A.D.A.M. Control Deck',
+    movement: 'Movement',
+    facing: 'Facing',
+    state: 'State',
+    stateLabel: 'State',
+    facingLabel: 'Facing',
+    profileLabel: 'Profile',
+    noProfile: 'No profile',
+    help: 'Help',
+    config: 'Config',
+    states: {
+      idle: 'Idle',
+      combat: 'Combat',
+      walk: 'Walk',
+      dash: 'Dash',
+      sneak: 'Sneak',
+      rage: 'Rage',
+      spellcasting: 'Spellcast',
+      help: 'Help',
+    },
+  },
+  info: {
+    subtitle: 'Animated Direction And Movement',
+    versionLabel: 'Version',
+    updatedLabel: 'Updated',
+    creditsBody:
+      'A.D.A.M.<br>Animated Direction And Movement<br><br>Powered by SIMON.<br>Definitely not called Simon.',
+    ready: 'MOD READY',
+  },
+  easter: {
+    toTheLeft: 'To the left, to the left...',
+    notGoingAnywhere: 'A.D.A.M. has determined you are not actually going anywhere.',
+    areWeThereYet: 'Are we there yet?',
+    sneakSpam: 'Nobody has seen you.<br>Nobody has seen you.<br>Nobody has seen you.',
+    helpSpam: "Who's a good owl?",
+    rageRage: 'Dorn would approve.',
+    simonResponse: "...and don't call me Simon!",
+    simonNoSays: 'Simon says what?',
+    versionEgg: 'A.D.A.M. v{version}<br><br>Definitely not SIMON.',
+  },
+};
+
+export default TRANSLATION;

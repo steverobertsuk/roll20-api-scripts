@@ -1,0 +1,54 @@
+{
+  "name": "ADAM",
+  "script": "ADAM.js",
+  "version": "1.0.0",
+  "description": "A.D.A.M. (Animated Direction And Movement) — A Roll20 API mod for directional token movement, token facing, movement states, and optional animated token side switching via rollable table tokens.\n\nSelect a token and use !adam --move <direction> to move it, !adam --face <direction> to set facing, !adam --state <state> to set a movement or combat state, or !adam --menu to open the control deck.\n\nFor instructions run `!adam --help` in game.",
+  "authors": "MidNiteShadow7",
+  "roll20userid": "16506286",
+  "useroptions": [
+    {
+      "name": "grid-size",
+      "type": "number",
+      "default": "70",
+      "description": "Pixels per grid square on your map. The Roll20 default is 70."
+    },
+    {
+      "name": "move-distance",
+      "type": "number",
+      "default": "1",
+      "description": "Number of grid squares to move per move command (1–20)."
+    },
+    {
+      "name": "auto-face",
+      "type": "select",
+      "options": ["on", "off"],
+      "default": "on",
+      "description": "Automatically rotate the token to face the movement direction."
+    },
+    {
+      "name": "humour",
+      "type": "select",
+      "options": ["on", "off"],
+      "default": "on",
+      "description": "Enable easter egg humour responses."
+    },
+    {
+      "name": "language",
+      "type": "text",
+      "default": "en-US",
+      "description": "Output language for chat messages. Supported locales: af, ca, zh-TW, cs, da, nl, en-US, fi, fr, de, el, he, hu, it, ja, ko, pl, pt-PT, pt-BR, ru, es, sv, tr, uk. Short aliases en, zh, pt are also accepted."
+    }
+  ],
+  "dependencies": [],
+  "modifies": {
+    "state.ADAM": "read,write",
+    "graphic.left": "read,write",
+    "graphic.top": "read,write",
+    "graphic.rotation": "read,write",
+    "graphic.currentSide": "read,write",
+    "graphic.pageid": "read",
+    "graphic.name": "read"
+  },
+  "conflicts": [],
+  "previousversions": []
+}

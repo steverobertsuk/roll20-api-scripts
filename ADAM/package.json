@@ -1,0 +1,20 @@
+{
+  "name": "adam",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/bump-version.mjs",
+    "set-version": "node scripts/bump-version.mjs",
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "format": "prettier --write \"ADAM.js\" \"rollup.config.mjs\" \"src/**/*.js\" \"*.md\" \"scripts/**/*.mjs\"",
+    "format:check": "prettier --check \"ADAM.js\" \"rollup.config.mjs\" \"src/**/*.js\" \"*.md\" \"scripts/**/*.mjs\"",
+    "sync-locales": "node scripts/sync-locales.mjs",
+    "regenerate-locales": "node scripts/sync-locales.mjs --regenerate"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3",
+    "rollup": "^4.52.5"
+  }
+}

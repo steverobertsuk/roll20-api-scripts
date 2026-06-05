@@ -1,0 +1,222 @@
+const TRANSLATION = {
+  titles: {
+    error: "錯誤",
+    noTokenSelected: "未選擇代幣",
+    tokenError: "令牌錯誤",
+    missingDirection: "缺少方向",
+    invalidDirection: "方向無效",
+    missingState: "失蹤狀態",
+    invalidState: "無效狀態",
+    missingAction: "缺少行動",
+    invalidAction: "無效動作",
+    accessDenied: "拒絕訪問",
+    invalidValue: "無效值",
+    unknownCommand: "未知命令",
+    moveError: "移動錯誤",
+    macroExists: "宏存在",
+    macroInstalled: "已安裝巨集",
+    invalidUsage: "無效使用",
+    profileAssigned: "已指派設定檔",
+    profileRemoved: "個人資料已刪除",
+    unknownProfile: "未知的個人資料",
+    configuration: "配置",
+    settingsReset: "設定重置",
+    scriptReady: "腳本就緒",
+    versionInfo: "版本資訊",
+    creditsTitle: "製作人員",
+    adamsMenu: "亞當控制面板",
+    adamsHelp: "亞當幫助",
+    adamsSettings: "亞當設置",
+    profiles: "配置的設定檔",
+    tokenProfile: "代幣簡介",
+    success: "成功",
+    langSet: "語言設定",
+    langInvalid: "無效語言",
+    profileCreated: "個人資料已建立",
+    profileUpdated: "個人資料已更新",
+    profileDeleted: "個人資料已刪除",
+    profileRenamed: "個人資料已重新命名",
+    draftSubmitted: "草稿已提交",
+    draftApproved: "草案已獲批准",
+    draftRejected: "草案被拒絕",
+    pendingDrafts: "待定的個人資料草案",
+    profileCreationMode: "檔案建立模式",
+    draftNotification: "簡介草案待定",
+  },
+  errors: {
+    noTokenSelected: "未選擇令牌。請先選擇一個令牌，然後點選方向按鈕。",
+    noTokenSelectedStill: "仍然沒有選擇令牌。",
+    noTokenSelectedPersistent: "我很佩服你的堅持。首先選擇一個令牌。",
+    tokenNotFound: "找不到所選令牌。",
+    missingDirection:
+      "請提供方向。範例：<code>!adam --move n</code><br><em>方向：n、ne、e、se、s、sw、w、nw</em>",
+    invalidDirection:
+      "未知方向：<strong>{value}</strong><br><br>有效：n、ne、e、se、s、sw、w、nw（或全名，如北、東北）",
+    missingState: "請提供狀態。 <br>有效：{states}",
+    invalidState: "未知狀態：<strong>{value}</strong><br><br>有效：{states}",
+    missingAction: "請提供行動。例：幫助、施法、狂暴、衝刺、潛行、閒置、戰鬥",
+    invalidAction:
+      "未知操作：<strong>{value}</strong><br><br>已知操作：{actions}",
+    accessDeniedConfig: "配置更改僅限於 GM。",
+    accessDeniedProfileAssign: "設定檔分配僅限於 GM。",
+    accessDeniedProfileRemove: "設定檔刪除僅限於 GM。",
+    accessDeniedMacro: "宏安裝僅限於 GM。",
+    accessDeniedReset: "設定重置僅限於 GM。",
+    unknownCommand:
+      "未知命令。嘗試 <code>!adam --help</code> 取得可用指令的清單。",
+    moveFailed: "運動失敗。",
+    gridSizeInvalid: "網格大小必須是 10 到 1000（像素）之間的整數。",
+    moveDistanceInvalid: "移動距離必須是 1 到 20（平方）之間的整數。",
+    autoFaceInvalid: "自動面值必須為：開或關。",
+    humourInvalid: "幽默值必須是：開或關。",
+    langInvalid: "區域設定無效。支援：{locales}",
+    profileUsage:
+      "用法：<code>!adam --profile &lt;list|show|create|edit-side|rename|delete|assign|remove&gt;</code>",
+    profileAssignUsage:
+      "Usage: <code>!adam --profile assign &lt;profileId&gt;</code>",
+    profileUnknown:
+      "設定檔 <strong>{id}</strong> 不存在。使用 <code>!adam --profile list</code> 查看可用的設定檔。",
+    profileUnknownSub:
+      "未知設定檔子指令：<strong>{sub}</strong><br><br>有效：列出、顯示、建立、編輯端、重新命名、刪除、指派、刪除、草稿、草稿端、稽核、核准、拒絕",
+    profileIdInvalid:
+      "無效的設定檔 ID：<strong>{id}</strong>。僅使用字母、數字、連字號和底線（最多 50 個字元）。",
+    profileAlreadyExists:
+      "設定檔 <strong>{id}</strong> 已存在。使用 <code>!adam --profile edit-side</code> 修改它，或先刪除它。",
+    profileNotFound: "Profile <strong>{id}</strong> not found.",
+    profileCreateUsage:
+      "用法：<code>!adam --profile create &lt;profileId&gt; &lt;displayName&gt;</code>",
+    profileEditSideUsage:
+      "用法： <code>!adam --profile 編輯端 &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>",
+    profileRenameUsage:
+      "用法：<code>!adam --profile 重新命名 &lt;profileId&gt; &lt;displayName&gt;</code>",
+    profileDeleteUsage:
+      "用法：<code>!adam --profile 刪除 &lt;profileId&gt;</code>",
+    profileDraftUsage:
+      "用法：<code>!adam --profile 草稿 &lt;profileId&gt; &lt;displayName&gt;</code>",
+    profileDraftSideUsage:
+      "用法：<code>!adam --profile 拔模側 &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>",
+    profileDraftNotFound:
+      "No pending draft found for <strong>{id}</strong>. Submit one with <code>!adam --profile draft</code>.",
+    profileGmOnly: "設定檔的建立僅限於 GM。",
+    profileEditGmOnly: "修改此設定檔僅限於 GM。",
+    profileDeleteGmOnly: "刪除此設定檔僅限 GM。",
+    profileGlobalReadOnly:
+      "設定檔<strong>{id}</strong>是全域設定文件，只能由GM修改。",
+    profileNotOwned: "您不擁有個人資料 <strong>{id}</strong>，並且無法修改它。",
+    profileModeRequiresDraft:
+      "在此遊戲中，個人資料建立需要 GM 批准。使用 <code>!adam --profile Draft &lt;id&gt; &lt;name&gt;</code> 提交草稿。",
+    profileAssignNoControl: "您只能將個人資料指派給您控制的令牌。",
+    profileAssignNotOwned:
+      "您只能將自己的設定檔指派給您控制的令牌。個人檔案<strong>{id}</strong>屬於其他玩家。",
+    profileCreationModeInvalid:
+      "設定檔建立模式無效。有效：僅限 gm、gm 批准、所有使用者。",
+    profileReviewGmOnly: "只有總經理可以審查待決草案。",
+    profileApproveGmOnly: "只有總經理才能批准簡介草案。",
+    profileRejectGmOnly: "只有 GM 可以拒絕個人資料草稿。",
+    invalidAnimSet: "動畫集必須是：北或南。",
+    invalidSideNumber: "邊數必須是正整數（1 或更大）。",
+    noDrafts: "沒有待處理的個人資料草稿。",
+    profileDraftConflict:
+      "<strong>{id}</strong> 的待處理選秀已存在且屬於其他球員。",
+    profileDraftNotGmApproved:
+      "僅當設定檔建立模式為 <code>gm-approved</code> 時，草稿提交才可用。",
+    profileApproveConflict:
+      "名為 <strong>{id}</strong> 的活動設定檔已存在。請先將其刪除，然後再批准此草案。",
+    macroExists: "名為「<strong>{name}</strong>」的巨集已存在。",
+    simonUnknown:
+      "Simon 不知道如何：<em>{command}</em><br><br>嘗試：<code>!simon 說 move n</code>",
+  },
+  confirm: {
+    facing: "<strong>{token}</strong> 現在面向 <strong>{direction}</strong>。",
+    stateSet: "<strong>{token}</strong> 狀態設定為 <strong>{state}</strong>。",
+    actionSet:
+      "<strong>{token}</strong> 操作：<strong>{action}</strong> → 狀態：<strong>{state}</strong>。",
+    profileAssigned:
+      "設定檔<strong>{id}</strong>已指派給<strong>{token}</strong>。",
+    profileRemoved: "個人資料已從 <strong>{token}</strong> 中刪除。",
+    profileCreated: "已建立設定檔<strong>{id}</strong>。",
+    profileSideSet:
+      "輪廓<strong>{id}</strong>：{state}/{animSet} → 側面{number}。",
+    profileRenamed:
+      "設定檔<strong>{id}</strong>重新命名為<strong>{name}</strong>。",
+    profileDeleted: "個人資料<strong>{id}</strong>已刪除。",
+    profileDraftSubmitted:
+      "設定檔草稿<strong>{id}</strong>已提交供總經理批准。",
+    profileDraftApproved:
+      "設定檔草稿<strong>{id}</strong>已獲得批准並新增至活動設定檔。",
+    profileDraftRejected: "個人資料草稿 <strong>{id}</strong> 已被拒絕。",
+    macroInstalled:
+      "全域巨集「<strong>{name}</strong>」已創建，並且對所有玩家可見。",
+    configUpdated: "設定已更新。",
+    settingsReset: "<strong>設定重設為出廠預設值。 </strong>",
+    langSet: "語言設定為 {locale}。",
+  },
+  settings: {
+    gridSize: "網格尺寸",
+    gridSizeDesc: "每平方 {size}px",
+    moveDistance: "移動距離",
+    moveDistanceDesc: "每次移動 {squares} 平方 — {pixels}px",
+    autoFace: "移動時自動面對",
+    humour: "幽默（復活節彩蛋）",
+    language: "語言",
+    profileCreationMode: "檔案建立模式",
+    on: "在",
+    off: "離開",
+  },
+  profiles: {
+    none: "未配置動畫令牌設定檔。",
+    noProfile: "所選令牌未分配設定檔。",
+    id: "檔案編號",
+    displayName: "顯示名稱",
+    mappedStates: "映射狀態",
+    noneValue: "（沒有任何）",
+    personal: "個人的",
+    owner: "擁有者",
+    submittedBy: "提交者",
+    approveHint:
+      "使用 !adam --profileapprove &lt;id&gt; 來批准或拒絕 &lt;id&gt; 來拒絕。",
+  },
+  menu: {
+    title: "亞當控制面板",
+    movement: "移動",
+    facing: "面向",
+    state: "狀態",
+    stateLabel: "狀態",
+    facingLabel: "面向",
+    profileLabel: "輪廓",
+    noProfile: "沒有個人資料",
+    help: "幫助",
+    config: "配置",
+    states: {
+      idle: "閒置的",
+      combat: "戰鬥",
+      walk: "走",
+      dash: "短跑",
+      sneak: "潛行",
+      rage: "憤怒",
+      spellcasting: "施法",
+      help: "幫助",
+    },
+  },
+  info: {
+    subtitle: "動畫方向和運動",
+    versionLabel: "版本",
+    updatedLabel: "已更新",
+    creditsBody:
+      "A.D.A.M.<br>動畫方向和運動<br><br>由 SIMON 提供支援。 <br>絕對不叫西蒙。",
+    ready: "模組就緒",
+  },
+  easter: {
+    toTheLeft: "向左，向左…",
+    notGoingAnywhere: "亞當已經確定你實際上不會去任何地方。",
+    areWeThereYet: "我們到了嗎？",
+    sneakSpam: "沒有人見過你。 <br>沒有人見過你。 <br>沒有人見過你。",
+    helpSpam: "誰是一隻好貓頭鷹？",
+    rageRage: "多恩會同意的。",
+    simonResponse: "……別叫我西蒙！",
+    simonNoSays: "西蒙說什麼？",
+    versionEgg: "亞當v{version}<br><br>絕對不是西蒙。",
+  },
+};
+
+export default TRANSLATION;

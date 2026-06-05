@@ -1,0 +1,217 @@
+const TRANSLATION = {
+  titles: {
+    error: 'Fejl',
+    noTokenSelected: 'Intet token valgt',
+    tokenError: 'Token fejl',
+    missingDirection: 'Manglende retning',
+    invalidDirection: 'Ugyldig retning',
+    missingState: 'Manglende stat',
+    invalidState: 'Ugyldig stat',
+    missingAction: 'Manglende handling',
+    invalidAction: 'Ugyldig handling',
+    accessDenied: 'Adgang nægtet',
+    invalidValue: 'Ugyldig værdi',
+    unknownCommand: 'Ukendt kommando',
+    moveError: 'Flyt fejl',
+    macroExists: 'Makro findes',
+    macroInstalled: 'Makro installeret',
+    invalidUsage: 'Ugyldig brug',
+    profileAssigned: 'Profil tildelt',
+    profileRemoved: 'Profil fjernet',
+    unknownProfile: 'Ukendt profil',
+    configuration: 'Konfiguration',
+    settingsReset: 'Indstillinger Nulstil',
+    scriptReady: 'Script klar',
+    versionInfo: 'Version info',
+    creditsTitle: 'Credits',
+    adamsMenu: 'A.D.A.M. Kontrol Deck',
+    adamsHelp: 'A.D.A.M. Hjælp',
+    adamsSettings: 'A.D.A.M. Indstillinger',
+    profiles: 'Konfigurerede profiler',
+    tokenProfile: 'Token profil',
+    success: 'Succes',
+    langSet: 'Sprog sæt',
+    langInvalid: 'Ugyldigt sprog',
+    profileCreated: 'Profil oprettet',
+    profileUpdated: 'Profil opdateret',
+    profileDeleted: 'Profil slettet',
+    profileRenamed: 'Profil omdøbt',
+    draftSubmitted: 'Udkast indsendt',
+    draftApproved: 'Udkast godkendt',
+    draftRejected: 'Udkast afvist',
+    pendingDrafts: 'Afventende profiludkast',
+    profileCreationMode: 'Tilstand til oprettelse af profil',
+    draftNotification: 'Profiludkast afventer',
+  },
+  errors: {
+    noTokenSelected:
+      'Intet token er valgt. Vælg først et token, og klik derefter på en retningsknap.',
+    noTokenSelectedStill: 'Stadig intet token valgt.',
+    noTokenSelectedPersistent: 'Jeg beundrer din vedholdenhed. Vælg først et token.',
+    tokenNotFound: 'Det valgte token blev ikke fundet.',
+    missingDirection:
+      'Giv venligst en retning. Eksempel: <code>!adam --move n</code><br><em>Rutevejledning: n, ne, e, se, s, sw, w, nw</em>',
+    invalidDirection:
+      'Ukendt retning: <strong>{value}</strong><br><br>Gyldig: n, ne, e, se, s, sw, w, nw (eller fulde navne såsom nord, nordøst)',
+    missingState: 'Angiv en tilstand.<br>Gyldig: {states}',
+    invalidState: 'Ukendt tilstand: <strong>{value}</strong><br><br>Gyldig: {states}',
+    missingAction:
+      'Angiv en handling. Eksempler: hjælp, trylleformidling, raseri, bindestreg, snige, tomgang, kamp',
+    invalidAction: 'Ukendt handling: <strong>{value}</strong><br><br>Kendte handlinger: {actions}',
+    accessDeniedConfig: 'Konfigurationsændringer er begrænset til GM.',
+    accessDeniedProfileAssign: 'Profiltildeling er begrænset til GM.',
+    accessDeniedProfileRemove: 'Profilfjernelse er begrænset til GM.',
+    accessDeniedMacro: 'Makroinstallation er begrænset til GM.',
+    accessDeniedReset: 'Indstillingsnulstilling er begrænset til GM.',
+    unknownCommand:
+      'Ukendt kommando. Prøv <code>!adam --help</code> for at få en liste over tilgængelige kommandoer.',
+    moveFailed: 'Bevægelsen mislykkedes.',
+    gridSizeInvalid: 'Gitterstørrelsen skal være et heltal mellem 10 og 1000 (pixels).',
+    moveDistanceInvalid: 'Bevægelsesafstand skal være et heltal mellem 1 og 20 (kvadrater).',
+    autoFaceInvalid: 'Automatisk ansigtsværdi skal være: til eller fra.',
+    humourInvalid: 'Humorværdi skal være: til eller fra.',
+    langInvalid: 'Ugyldig lokalitet. Understøttet: {locales}',
+    profileUsage:
+      'Brug: <code>!adam --profile &lt;list|show|create|edit-side|rename|delete|assign|remove&gt;</code>',
+    profileAssignUsage: 'Brug: <code>!adam --profile tildel &lt;profileId&gt;</code>',
+    profileUnknown:
+      'Profilen <strong>{id}</strong> eksisterer ikke. Brug <code>!adam --profile liste</code> for at se tilgængelige profiler.',
+    profileUnknownSub:
+      'Ukendt profilunderkommando: <strong>{sub}</strong><br><br>Gyldig: liste, vis, opret, rediger-side, omdøb, slet, tildel, fjern, udkast, kladde-side, gennemgå, godkend, afvis',
+    profileIdInvalid:
+      'Ugyldigt profil-id: <strong>{id}</strong>. Brug kun bogstaver, tal, bindestreger og understregninger (maks. 50 tegn).',
+    profileAlreadyExists:
+      'Profilen <strong>{id}</strong> eksisterer allerede. Brug <code>!adam --profile edit-side</code> til at ændre den, eller slet den først.',
+    profileNotFound: 'Profilen <strong>{id}</strong> blev ikke fundet.',
+    profileCreateUsage:
+      'Brug: <code>!adam --profile opret &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileEditSideUsage:
+      'Brug: <code>!adam --profile redigeringsside &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>',
+    profileRenameUsage:
+      'Brug: <code>!adam --profile omdøb &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileDeleteUsage: 'Brug: <code>!adam --profile slet &lt;profileId&gt;</code>',
+    profileDraftUsage:
+      'Brug: <code>!adam --profile kladde &lt;profileId&gt; &lt;displayName&gt;</code>',
+    profileDraftSideUsage:
+      'Brug: <code>!adam --profile trækside &lt;profileId&gt; &lt;state&gt; &lt;north|south&gt; &lt;number&gt;</code>',
+    profileDraftNotFound:
+      'Der blev ikke fundet nogen afventende kladde for <strong>{id}</strong>. Indsend en med <code>!adam --profile kladde</code>.',
+    profileGmOnly: 'Profiloprettelse er begrænset til GM.',
+    profileEditGmOnly: 'Ændring af denne profil er begrænset til GM.',
+    profileDeleteGmOnly: 'Sletning af denne profil er begrænset til GM.',
+    profileGlobalReadOnly:
+      'Profil <strong>{id}</strong> er en global profil og kan kun ændres af GM.',
+    profileNotOwned: 'Du ejer ikke profilen <strong>{id}</strong> og kan ikke ændre den.',
+    profileModeRequiresDraft:
+      'Profiloprettelse kræver GM-godkendelse i dette spil. Brug <code>!adam --profile kladde &lt;id&gt; &lt;name&gt;</code> til at indsende en kladde.',
+    profileAssignNoControl: 'Du kan kun tildele personlige profiler til tokens, du kontrollerer.',
+    profileAssignNotOwned:
+      'Du kan kun tildele dine egne profiler til tokens, du kontrollerer. Profilen <strong>{id}</strong> tilhører en anden spiller.',
+    profileCreationModeInvalid:
+      'Ugyldig tilstand for oprettelse af profil. Gyldig: kun gm, gm-godkendt, alle-brugere.',
+    profileReviewGmOnly: 'Kun GM kan gennemgå afventende udkast.',
+    profileApproveGmOnly: 'Kun GM kan godkende profiludkast.',
+    profileRejectGmOnly: 'Kun GM kan afvise profiludkast.',
+    invalidAnimSet: 'Animationssættet skal være: nord eller syd.',
+    invalidSideNumber: 'Sidetal skal være et positivt heltal (1 eller højere).',
+    noDrafts: 'Ingen afventende profiludkast.',
+    profileDraftConflict:
+      'Et afventende udkast til <strong>{id}</strong> eksisterer allerede og tilhører en anden spiller.',
+    profileDraftNotGmApproved:
+      'Kladdeindsendelser er kun tilgængelige, når profiloprettelsestilstand er <code>gm-godkendt</code>.',
+    profileApproveConflict:
+      'En aktiv profil ved navn <strong>{id}</strong> eksisterer allerede. Slet det først, før du godkender dette udkast.',
+    macroExists: "En makro med navnet '<strong>{name}</strong>' findes allerede.",
+    simonUnknown:
+      'Simon ved ikke, hvordan man: <em>{command}</em><br><br>Prøv: <code>!simon siger move n</code>',
+  },
+  confirm: {
+    facing: '<strong>{token}</strong> står nu over for <strong>{direction}</strong>.',
+    stateSet: '<strong>{token}</strong> tilstand indstillet til <strong>{state}</strong>.',
+    actionSet:
+      '<strong>{token}</strong> handling: <strong>{action}</strong> → angiv: <strong>{state}</strong>.',
+    profileAssigned: 'Profilen <strong>{id}</strong> er tildelt <strong>{token}</strong>.',
+    profileRemoved: 'Profil fjernet fra <strong>{token}</strong>.',
+    profileCreated: 'Profilen <strong>{id}</strong> er oprettet.',
+    profileSideSet: 'Profil <strong>{id}</strong>: {state}/{animSet} → side {number}.',
+    profileRenamed: 'Profil <strong>{id}</strong> omdøbt til <strong>{name}</strong>.',
+    profileDeleted: 'Profilen <strong>{id}</strong> er slettet.',
+    profileDraftSubmitted: 'Udkast til profilen <strong>{id}</strong> indsendt til GM-godkendelse.',
+    profileDraftApproved:
+      'Profiludkast <strong>{id}</strong> godkendt og føjet til aktive profiler.',
+    profileDraftRejected: 'Profiludkast <strong>{id}</strong> er blevet afvist.',
+    macroInstalled:
+      "Den globale makro '<strong>{name}</strong>' er blevet oprettet og er synlig for alle spillere.",
+    configUpdated: 'Indstillinger opdateret.',
+    settingsReset: '<strong>Indstillinger nulstillet til fabriksindstillinger.</strong>',
+    langSet: 'Sproget er indstillet til {locale}.',
+  },
+  settings: {
+    gridSize: 'Gitterstørrelse',
+    gridSizeDesc: '{size}px pr. kvadrat',
+    moveDistance: 'Flyt afstand',
+    moveDistanceDesc: '{squares} kvadrat(er) — {pixels}px pr. træk',
+    autoFace: 'Auto-ansigt i bevægelse',
+    humour: 'Humor (påskeæg)',
+    language: 'Sprog',
+    profileCreationMode: 'Tilstand til oprettelse af profil',
+    on: 'På',
+    off: 'Slukket',
+  },
+  profiles: {
+    none: 'Ingen animerede token-profiler er konfigureret.',
+    noProfile: 'Det valgte token har ingen profil tildelt.',
+    id: 'Profil-id',
+    displayName: 'Vist navn',
+    mappedStates: 'Kortlagte stater',
+    noneValue: '(ingen)',
+    personal: 'personlig',
+    owner: 'Ejer',
+    submittedBy: 'indsendt af',
+    approveHint:
+      'Brug !adam --profile godkend &lt;id&gt; for at godkende eller afvise &lt;id&gt; for at afvise.',
+  },
+  menu: {
+    title: 'A.D.A.M. Kontrol Deck',
+    movement: 'Bevægelse',
+    facing: 'Over',
+    state: 'Tilstand',
+    stateLabel: 'Tilstand',
+    facingLabel: 'Over',
+    profileLabel: 'Profil',
+    noProfile: 'Ingen profil',
+    help: 'Hjælp',
+    config: 'Konfig',
+    states: {
+      idle: 'Ledig',
+      combat: 'Bekæmpe',
+      walk: 'Gå',
+      dash: 'Dash',
+      sneak: 'Snige sig',
+      rage: 'Raseri',
+      spellcasting: 'Spellcast',
+      help: 'Hjælp',
+    },
+  },
+  info: {
+    subtitle: 'Animeret retning og bevægelse',
+    versionLabel: 'Version',
+    updatedLabel: 'Opdateret',
+    creditsBody:
+      'A.D.A.M.<br>Animeret regi og bevægelse<br><br>Drevet af SIMON.<br>Det hedder bestemt ikke Simon.',
+    ready: 'MOD KLAR',
+  },
+  easter: {
+    toTheLeft: 'Til venstre, til venstre...',
+    notGoingAnywhere: 'A.D.A.M. har bestemt, at du faktisk ikke skal nogen steder.',
+    areWeThereYet: 'Er vi der endnu?',
+    sneakSpam: 'Ingen har set dig.<br>Ingen har set dig.<br>Ingen har set dig.',
+    helpSpam: 'Hvem er en god ugle?',
+    rageRage: 'Dorn ville godkende.',
+    simonResponse: '...og kald mig ikke Simon!',
+    simonNoSays: 'Simon siger hvad?',
+    versionEgg: 'A.D.A.M. v{version}<br><br>Absolut ikke SIMON.',
+  },
+};
+
+export default TRANSLATION;
