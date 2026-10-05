@@ -195,13 +195,18 @@ function handleTurnOrderChange() {
       clearCombatSnoozes();
     }
 
-    if (!previousFirstTurnId || previousFirstTurnId === currentFirstTurnId) {
+    // Roll20 advances one row at a time, so a condition row can sit at the top
+    // between two token turns. Detect the turn ending and the turn starting
+    // separately so a start is not missed when the previous top row was custom.
+    const turnEnded = Boolean(previousFirstTurnId) && previousFirstTurnId !== currentFirstTurnId;
+    const turnStarted = Boolean(currentFirstTurnId) && currentFirstTurnId !== previousFirstTurnId;
+    if (!turnEnded && !turnStarted) {
       return;
     }
 
     const { expired, decremented } = collectExpiredConditions(
-      previousFirstTurnId,
-      currentFirstTurnId
+      turnEnded ? previousFirstTurnId : '',
+      turnStarted ? currentFirstTurnId : ''
     );
     for (const condition of decremented) {
       updateConditionRow(condition);
@@ -336,7 +341,7 @@ function collectExpiredConditions(endedTurnTokenId, startedTurnTokenId) {
   const decremented = [];
 
   for (const condition of getActiveConditions()) {
-    const anchored = isAnchoredTo(condition, endedTurnTokenId);
+    const anchored = Boolean(endedTurnTokenId) && isAnchoredTo(condition, endedTurnTokenId);
     if (
       decrementDuration(condition, endedTurnTokenId) ||
       expiresAtTurnStart(condition, startedTurnTokenId)
