@@ -83,6 +83,34 @@ function unmaskPlaceholders(text, placeholders) {
 }
 
 /**
+ * Returns true when a masked string still contains words to translate.
+ *
+ * Strings made only of placeholders and punctuation (e.g. `{source} {verb} {target}.`)
+ * must not be sent for translation: the service translates the mask tokens themselves.
+ *
+ * @param {string} masked Source string after placeholder masking.
+ * @returns {boolean} True when at least one letter remains outside mask tokens.
+ */
+function hasTranslatableText(masked) {
+  return /\p{L}/u.test(masked.replaceAll(/__CT_PLACEHOLDER_\d+__/g, ''));
+}
+
+/**
+ * Returns true when every source placeholder survived translation.
+ *
+ * @param {string} translated Translated string after placeholder restoration.
+ * @param {string[]} placeholders Original placeholders captured before translation.
+ * @returns {boolean} True when each placeholder appears at least as often as in the source.
+ */
+function placeholdersIntact(translated, placeholders) {
+  return placeholders.every(
+    (placeholder) =>
+      translated.split(placeholder).length - 1 >=
+      placeholders.filter((item) => item === placeholder).length
+  );
+}
+
+/**
  * Fetches translated payload JSON from Google Translate.
  *
  * @param {string} pathnameWithQuery Request path and query string for the fixed translate host.
@@ -147,6 +175,11 @@ async function translateSingle(text, targetLocale, cache, config, attempt = 0) {
   }
 
   const { masked, placeholders } = maskPlaceholders(text);
+  if (!hasTranslatableText(masked)) {
+    cache.set(cacheKey, text);
+    return text;
+  }
+
   const query = `&sl=en&tl=${encodeURIComponent(targetLocale)}&dt=t&q=${encodeURIComponent(masked)}`;
   const requestPath = `${GOOGLE_TRANSLATE_PATH}${query}`;
 
@@ -160,6 +193,13 @@ async function translateSingle(text, targetLocale, cache, config, attempt = 0) {
       : text;
 
     const translated = unmaskPlaceholders(translatedMasked, placeholders);
+    if (!placeholdersIntact(translated, placeholders)) {
+      console.warn(
+        `[sync-locales] ${targetLocale}: placeholders were altered in translation; keeping English for "${text}"`
+      );
+      cache.set(cacheKey, text);
+      return text;
+    }
     cache.set(cacheKey, translated);
     return translated;
   } catch (error) {
