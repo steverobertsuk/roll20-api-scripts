@@ -32,6 +32,7 @@ export const BOOLEAN_TEXT = new Set(['true', 'false']);
 export const DURATION_UNTIL_REMOVED = 'untilRemoved';
 export const DURATION_TURN_END = 'turnEnd';
 export const DURATION_ROUNDS = 'rounds';
+export const DURATION_TURN_START = 'turnStart';
 export const MENU_REMOVE = 'remove';
 export const COMMAND_SAVED = `${COMMAND} --saved`;
 export const MACRO_NAME_SAVED = `${STATE_KEY}Saved`;
@@ -88,6 +89,7 @@ export const DURATION_OPTIONS = Object.freeze([
   '1 round',
   '2 rounds',
   '3 rounds',
+  'Start of source next turn',
   '10 rounds',
 ]);
 
