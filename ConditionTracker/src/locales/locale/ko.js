@@ -196,7 +196,7 @@ const TRANSLATION = {
       advantage: '{emoji} {source} 이(가) {target}{subject} 에 대해 이점을 가짐',
       disadvantage: '{emoji} {source} 이(가) {target}{subject} 에 대해 불이익을 가짐',
       noBy: '{emoji} {target} 이(가) {past} ({source})',
-      self: '{target} 이(가) {past}',
+      self: '{emoji} {target} 이(가) {past}',
       standard: '{emoji} {target} 이(가) {source} 에 의해 {past}',
     },
     apply: {

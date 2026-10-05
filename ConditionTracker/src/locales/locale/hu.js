@@ -196,7 +196,7 @@ const TRANSLATION = {
       advantage: '{emoji} {source} előnnyel támad {target}{subject} ellen',
       disadvantage: '{emoji} {source} hátránnyal támad {target}{subject} ellen',
       noBy: '{emoji} {target} {past} ({source})',
-      self: '{target} {past}',
+      self: '{emoji} {target} {past}',
       standard: '{emoji} {target} {past} — {source}',
     },
     apply: {

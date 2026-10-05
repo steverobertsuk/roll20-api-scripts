@@ -222,7 +222,7 @@ const TRANSLATION = {
       advantage: '{emoji} {source} has advantage against {target}{subject}',
       disadvantage: '{emoji} {source} has disadvantage against {target}{subject}',
       noBy: '{emoji} {target} {past} ({source})',
-      self: '{target} is {past}',
+      self: '{emoji} {target} is {past}',
       standard: '{emoji} {target} {past} by {source}',
     },
     apply: {

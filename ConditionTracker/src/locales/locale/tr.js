@@ -196,7 +196,7 @@ const TRANSLATION = {
       advantage: '{emoji} {source}, {target}{subject} karşısında avantajlı',
       disadvantage: '{emoji} {source}, {target}{subject} karşısında dezavantajlı',
       noBy: '{emoji} {target} {past} ({source})',
-      self: '{target} {past}',
+      self: '{emoji} {target} {past}',
       standard: '{emoji} {target} {source} tarafından {past}',
     },
     apply: {

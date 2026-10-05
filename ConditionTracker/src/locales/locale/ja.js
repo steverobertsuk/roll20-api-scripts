@@ -196,7 +196,7 @@ const TRANSLATION = {
       advantage: '{emoji} {source}は{target}{subject}に対して有利を持つ',
       disadvantage: '{emoji} {source}は{target}{subject}に対して不利を持つ',
       noBy: '{emoji} {target}は{past}（{source}）',
-      self: '{target}は{past}',
+      self: '{emoji} {target}は{past}',
       standard: '{emoji} {target}は{source}によって{past}',
     },
     apply: {
