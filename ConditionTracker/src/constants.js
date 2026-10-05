@@ -66,6 +66,9 @@ export const CONDITION_ABILITY = 'Ability';
 export const CONDITION_ADVANTAGE = 'Advantage';
 export const CONDITION_DISADVANTAGE = 'Disadvantage';
 
+// --attacker value for Advantage/Disadvantage that applies to whoever attacks the target.
+export const ATTACKER_ANY = 'any';
+
 // Full set of all canonical custom-effect-type keys (used for validation).
 export const CANONICAL_CUSTOM_TYPES = Object.freeze(
   new Set([
@@ -86,10 +89,10 @@ export const DURATION_OPTIONS = Object.freeze([
   'Until removed',
   'End of target next turn',
   'End of source next turn',
+  'Start of source next turn',
   '1 round',
   '2 rounds',
   '3 rounds',
-  'Start of source next turn',
   '10 rounds',
 ]);
 

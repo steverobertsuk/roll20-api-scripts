@@ -156,16 +156,18 @@ export function insertConditionRows(conditions) {
 /**
  * Returns the token id used to anchor a condition row in Turn Tracker.
  *
- * Advantage and Disadvantage are grouped under the source token so they read
- * with the creature granting or imposing the effect.
+ * Advantage and Disadvantage held by one creature are grouped under that
+ * creature (the source). When they apply to any attacker they are grouped
+ * under the target, where the GM looks when someone attacks it.
  *
  * @param {object} condition Active condition record.
  * @returns {string} Anchor token id.
  */
 export function getConditionAnchorTokenId(condition) {
   if (
-    condition?.condition === CONDITION_ADVANTAGE ||
-    condition?.condition === CONDITION_DISADVANTAGE
+    !condition?.anyAttacker &&
+    (condition?.condition === CONDITION_ADVANTAGE ||
+      condition?.condition === CONDITION_DISADVANTAGE)
   ) {
     return toText(condition.sourceTokenId);
   }
