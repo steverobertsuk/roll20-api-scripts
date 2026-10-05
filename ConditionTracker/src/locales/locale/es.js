@@ -356,7 +356,7 @@ const TRANSLATION = {
       unknownConfig:
         'Opción de configuración desconocida. Usa --config para ver los ajustes disponibles.',
       macroReinstalled:
-        'Las macros {wizard} y {multiTarget} se han reinstalado para todos los GM actuales.',
+        'Las macros {wizard}, {multiTarget}, {reportToken}, {saved} y {classify} se han reinstalado para todos los GM actuales.',
       handoutReinstalled: 'El folleto de ayuda {handout} se reinstaló.',
       duplicate:
         'Esa combinación exacta de fuente, sujeto, objetivo, condición y texto personalizado ya está activa.',
