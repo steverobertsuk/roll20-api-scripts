@@ -436,7 +436,9 @@ async function writeLocale(localeCode, localeData) {
   const filePath = resolve(LOCALE_DIR, `${localeCode}.js`);
   const content = `const TRANSLATION = ${JSON.stringify(localeData, null, 2)};\n\nexport default TRANSLATION;\n`;
   writeFileSync(filePath, content, 'utf8');
-  const formatted = await prettier.format(content, { filepath: filePath });
+  // prettier.format() does not read .prettierrc on its own; resolve it explicitly.
+  const options = (await prettier.resolveConfig(filePath)) ?? {};
+  const formatted = await prettier.format(content, { ...options, filepath: filePath });
   writeFileSync(filePath, formatted, 'utf8');
 }
 
