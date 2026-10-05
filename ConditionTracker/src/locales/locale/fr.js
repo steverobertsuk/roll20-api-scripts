@@ -688,7 +688,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Conditions standard (D&D 5e)',
+      heading: 'Conditions standard ({system})',
       colCondition: 'Condition',
       none: "Aucune condition standard définie pour ce système de jeu. Utilisez le type d'effet personnalisé Autre pour les effets de texte libre.",
     },

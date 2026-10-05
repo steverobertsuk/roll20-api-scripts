@@ -685,7 +685,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standaard Condities (D&amp;D 5e)',
+      heading: 'Standaard Condities ({system})',
       colCondition: 'Conditie',
       none: 'Er zijn geen standaardvoorwaarden gedefinieerd voor dit spelsysteem. Gebruik het type Ander aangepast effect voor vrije-teksteffecten.',
     },

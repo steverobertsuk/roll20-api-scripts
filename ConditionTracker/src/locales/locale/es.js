@@ -679,7 +679,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Condiciones estándar (D&D 5e)',
+      heading: 'Condiciones estándar ({system})',
       colCondition: 'Condición',
       none: 'No hay condiciones estándar definidas para este sistema de juego. Utilice el tipo Otro efecto personalizado para efectos de texto libre.',
     },

@@ -677,7 +677,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standaard Toestande (D&amp;D 5e)',
+      heading: 'Standaard Toestande ({system})',
       colCondition: 'Toestand',
       none: 'Geen standaardvoorwaardes gedefinieer vir hierdie speletjiestelsel nie. Gebruik die Ander pasgemaakte effektipe vir vrytekseffekte.',
     },

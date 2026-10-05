@@ -619,7 +619,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: '標準狀態（D&amp;D 5e）',
+      heading: '標準狀態（{system}）',
       colCondition: '狀態',
       none: '沒有為此遊戲系統定義標準條件。使用其他自訂效果類型來實現自由文字效果。',
     },

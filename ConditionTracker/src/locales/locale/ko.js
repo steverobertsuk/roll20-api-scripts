@@ -654,7 +654,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: '표준 상태 (D&D 5e)',
+      heading: '표준 상태 ({system})',
       colCondition: '상태',
       none: '이 게임 시스템에 대해 정의된 표준 조건이 없습니다. 자유 텍스트 효과에는 기타 사용자 정의 효과 유형을 사용하십시오.',
     },

@@ -670,7 +670,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standardní stavy (D&amp;D 5e)',
+      heading: 'Standardní stavy ({system})',
       colCondition: 'Stav',
       none: 'Pro tento herní systém nejsou definovány žádné standardní podmínky. Pro efekty s volným textem použijte jiný typ vlastního efektu.',
     },

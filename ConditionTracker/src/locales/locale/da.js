@@ -677,7 +677,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standardtilstande (D&amp;D 5e)',
+      heading: 'Standardtilstande ({system})',
       colCondition: 'Tilstand',
       none: 'Ingen standardbetingelser defineret for dette spilsystem. Brug den anden tilpassede effekttype til friteksteffekter.',
     },

@@ -684,7 +684,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standart Durumlar (D&amp;D 5e)',
+      heading: 'Standart Durumlar ({system})',
       colCondition: 'Durum',
       none: 'Bu oyun sistemi için tanımlanmış standart koşullar yoktur. Serbest metin efektleri için Diğer özel efekt türünü kullanın.',
     },

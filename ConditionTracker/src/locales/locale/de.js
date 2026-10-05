@@ -681,7 +681,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standardzustände (D&D 5e)',
+      heading: 'Standardzustände ({system})',
       colCondition: 'Zustand',
       none: 'Für dieses Spielsystem sind keine Standardbedingungen definiert. Verwenden Sie den benutzerdefinierten Effekttyp „Andere“ für Freitexteffekte.',
     },

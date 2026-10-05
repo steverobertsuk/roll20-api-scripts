@@ -683,7 +683,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Szabványos állapotok (D&amp;D 5e)',
+      heading: 'Szabványos állapotok ({system})',
       colCondition: 'Állapot',
       none: 'Ehhez a játékrendszerhez nincsenek szabványos feltételek meghatározva. Szabadszöveges effektusokhoz használja az Egyéb egyéni effektustípust.',
     },

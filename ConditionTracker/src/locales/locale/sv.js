@@ -676,7 +676,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standardtillstånd (D&amp;D 5e)',
+      heading: 'Standardtillstånd ({system})',
       colCondition: 'Tillstånd',
       none: 'Inga standardvillkor definierade för detta spelsystem. Använd den anpassade effekten Annan för fritexteffekter.',
     },

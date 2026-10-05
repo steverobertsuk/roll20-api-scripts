@@ -669,7 +669,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Vakiotilat (D&amp;D 5e)',
+      heading: 'Vakiotilat ({system})',
       colCondition: 'Tila',
       none: 'Tälle pelijärjestelmälle ei ole määritelty vakioehtoja. Käytä Muu mukautettua tehostetyyppiä vapaan tekstin tehosteille.',
     },

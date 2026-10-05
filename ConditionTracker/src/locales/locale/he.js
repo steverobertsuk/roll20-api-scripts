@@ -626,7 +626,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'מצבים רגילים (D&D 5e)',
+      heading: 'מצבים רגילים ({system})',
       colCondition: 'מצב',
       none: 'לא הוגדרו תנאים סטנדרטיים עבור מערכת משחק זו. השתמש בסוג אפקט מותאם אישית אחר עבור אפקטים של טקסט חופשי.',
     },

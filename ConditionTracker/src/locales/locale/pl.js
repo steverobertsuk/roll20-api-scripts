@@ -681,7 +681,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Standardowe stany (D&amp;D 5e)',
+      heading: 'Standardowe stany ({system})',
       colCondition: 'Stan',
       none: 'Nie zdefiniowano standardowych warunków dla tego systemu gry. W przypadku efektów tekstowych użyj typu efektu niestandardowego Inny.',
     },

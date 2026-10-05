@@ -676,7 +676,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: '標準状態（D&amp;D 5e）',
+      heading: '標準状態（{system}）',
       colCondition: '状態',
       none: 'このゲーム システムには標準条件が定義されていません。フリーテキスト効果には、その他のカスタム効果タイプを使用します。',
     },

@@ -694,7 +694,7 @@ const TRANSLATION = {
       ],
     },
     standardConditions: {
-      heading: 'Condicions estàndard (D&amp;D 5e)',
+      heading: 'Condicions estàndard ({system})',
       colCondition: 'Condició',
       none: "No s'han definit condicions estàndard per a aquest sistema de joc. Utilitzeu l'altre tipus d'efecte personalitzat per a efectes de text lliure.",
     },
