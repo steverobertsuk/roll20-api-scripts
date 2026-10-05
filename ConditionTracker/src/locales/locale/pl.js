@@ -195,7 +195,7 @@ const TRANSLATION = {
       custom: '{emoji} {target} pod wpływem {effect} ({source})',
       advantage: '{emoji} {source} ma ułatwienie przeciwko {target}{subject}',
       disadvantage: '{emoji} {source} ma utrudnienie przeciwko {target}{subject}',
-      noBy: 'MIEJSCE0TOKEN MIEJSCE1TOKEN MIEJSCE2TOKEN ({source})',
+      noBy: '{emoji} {target} {past} ({source})',
       self: '{target} jest {past}',
       standard: '{emoji} {target} {past} przez {source}',
     },
@@ -204,9 +204,8 @@ const TRANSLATION = {
       advantage: '{source} ma ułatwienie przeciwko {target}{subject}.',
       disadvantage: '{source} ma utrudnienie przeciwko {target}{subject}.',
       self: '{target} jest {past}.',
-      withSuffix:
-        'MIEJSCE0TOKEN POSIADACZ MIEJSCA1TOKEN POSIADACZ MIEJSCA2TOKEN POSIADACZ MIEJSCA3TOKEN.',
-      standard: 'MIEJSCE0TOKEN MIEJSCE1TOKEN MIEJSCE2TOKEN.',
+      withSuffix: '{source} {verb} {target} {suffix}.',
+      standard: '{source} {verb} {target}.',
     },
     remove: {
       custom: '{target} nie jest już pod wpływem {effect}.',

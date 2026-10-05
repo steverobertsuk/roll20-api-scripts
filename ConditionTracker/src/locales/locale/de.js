@@ -204,8 +204,8 @@ const TRANSLATION = {
       advantage: '{source} hat Vorteil gegen {target}{subject}.',
       disadvantage: '{source} hat Nachteil gegen {target}{subject}.',
       self: '{target} ist {past}.',
-      withSuffix: 'PLATZHALTER0TOKEN PLATZHALTER1TOKEN PLATZHALTER2TOKEN PLATZHALTER3TOKEN.',
-      standard: 'PLATZHALTER0TOKEN PLATZHALTER1TOKEN PLATZHALTER2TOKEN.',
+      withSuffix: '{source} {verb} {target} {suffix}.',
+      standard: '{source} {verb} {target}.',
     },
     remove: {
       custom: '{target} ist nicht mehr von {effect} betroffen.',
