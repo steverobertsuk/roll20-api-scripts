@@ -203,17 +203,20 @@ async function translateSingle(text, targetLocale, cache, config, attempt = 0) {
     cache.set(cacheKey, translated);
     return translated;
   } catch (error) {
-    if (attempt < config.maxRetries && error.message.includes('timed out')) {
+    // Retry every failure (timeouts, rate limiting, network errors), not only timeouts,
+    // and never fall back to English silently.
+    if (attempt < config.maxRetries) {
       const delayMs = config.retryDelayMs * Math.pow(2, attempt);
+      console.warn(
+        `[sync-locales] ${targetLocale}: request failed (${error.message}); retrying in ${delayMs / 1000}s`
+      );
       await new Promise((resolve) => setTimeout(resolve, delayMs));
       return translateSingle(text, targetLocale, cache, config, attempt + 1);
     }
 
-    if (attempt === config.maxRetries) {
-      console.error(
-        `[sync-locales] Translation failed for ${targetLocale} after ${config.maxRetries} retries: ${error.message}`
-      );
-    }
+    console.error(
+      `[sync-locales] ${targetLocale}: translation failed after ${config.maxRetries} retries (${error.message}); keeping English for "${text}"`
+    );
     cache.set(cacheKey, text);
     return text;
   }
