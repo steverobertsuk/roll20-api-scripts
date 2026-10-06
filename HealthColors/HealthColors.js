@@ -18,7 +18,7 @@ var HealthColors =
     const VERSION = '2.3.0';
     const SCRIPT_NAME = 'HealthColors';
     const SCHEMA_VERSION = '1.1.0';
-    const UPDATED = '2026-10-06 12:00 UTC';
+    const UPDATED = '2026-10-06 16:00 UTC';
 
     // ————— DEFAULTS —————
     /**
@@ -1383,6 +1383,24 @@ var HealthColors =
       return undefined;
     }
 
+    /**
+     * Reports whether the health bar's max, its attribute link, or the token's character
+     * changed in this event. Any of these can turn a token that was previously skipped
+     * (empty max, no character) into one that should be coloured, without the bar's
+     * current value moving at all — e.g. the 5e Shaped sheet computes HP max from the
+     * sheet after the token is placed, or the GM links the bar in token settings.
+     *
+     * @param {object} obj     - Roll20 token graphic object.
+     * @param {object} prev    - Previous token snapshot.
+     * @param {string} barUsed - Configured health bar property name (e.g. 'bar1').
+     * @returns {boolean} True when max, link, or represents differs from the snapshot.
+     */
+    function barLinkageChanged(obj, prev, barUsed) {
+      return [`${barUsed}_max`, `${barUsed}_link`, 'represents'].some(
+        (key) => String(getPrevBarValue(prev, key) ?? '') !== String(obj.get(key) ?? ''),
+      );
+    }
+
     // ————— TOKEN LOGIC —————
     /**
      * Reads the configured health bar from a token and its previous snapshot,
@@ -1715,12 +1733,22 @@ var HealthColors =
 
       const { maxValue, curValue, prevValue, hasPrevValue } = health;
       const sizeChanged = prev.width !== obj.get('width') || prev.height !== obj.get('height');
+      const linkageChanged = barLinkageChanged(obj, prev, barUsed);
 
       // Only skip when nothing relevant changed. The `curValue > 0` clause means we never
       // skip while a token is at/below 0 HP: on linked-attribute sheets (D&D 2024) a drop
       // can arrive with prev === cur (unreliable prev), and we still need the death-save /
       // dead marker logic to run. Re-processing at 0 HP is idempotent and cheap.
-      if (hasPrevValue && curValue === prevValue && curValue > 0 && update !== 'YES' && !sizeChanged) return;
+      if (
+        hasPrevValue &&
+        curValue === prevValue &&
+        curValue > 0 &&
+        update !== 'YES' &&
+        !sizeChanged &&
+        !linkageChanged
+      ) {
+        return;
+      }
 
       const oCharacter = getObj('character', obj.get('represents'));
       const typeConfig = resolveTypeConfig(oCharacter);
@@ -3701,6 +3729,25 @@ var HealthColors =
     }
 
     /**
+     * Forces a silent (no FX) re-evaluation of a token once Roll20 has propagated a
+     * linked attribute's new max to the token bar. Used when only the max changed, which
+     * is how sheets that calculate HP max (e.g. 5e Shaped) first make a new token
+     * colourable; change:graphic's prev is not reliable for attribute-driven updates, so
+     * the attribute event is the trustworthy trigger.
+     *
+     * @param {object} token - Roll20 token graphic object (snapshot at event time).
+     */
+    function refreshAfterAttrMaxChange(token) {
+      recentAttrFires.add(token.id);
+      setTimeout(() => {
+        const liveToken = getObj('graphic', token.id);
+        if (!liveToken) return;
+        handleToken(liveToken, deepClone(liveToken), 'YES');
+      }, 50);
+      setTimeout(() => recentAttrFires.delete(token.id), 250);
+    }
+
+    /**
      * Registers a change:attribute listener that catches HP changes made by scripts
      * such as AlterBars that modify character attributes directly rather than the
      * token bar. Those scripts fire change:attribute but may not fire change:graphic
@@ -3708,6 +3755,8 @@ var HealthColors =
      * and call handleToken ourselves with a real HP delta (enabling FX).
      * The token ID is added to recentAttrFires so that if change:graphic fires
      * afterwards it receives update='YES', skipping duplicate particle spawning.
+     * A change to the attribute's max alone (sheet workers computing HP max) triggers a
+     * silent refresh so newly placed tokens are coloured without a value change.
      */
     function registerAttributeListener() {
       on('change:attribute', (attr, prev) => {
@@ -3721,10 +3770,15 @@ var HealthColors =
         if (!charId) return;
         const oldVal = prev.current;
         const newVal = attr.get('current');
-        if (oldVal === newVal) return;
+        const valueChanged = oldVal !== newVal;
+        const maxChanged = String(prev.max ?? '') !== String(attr.get('max') ?? '');
+        if (!valueChanged && !maxChanged) return;
         findObjs({ type: 'graphic', represents: charId })
           .filter((t) => t.get('layer') === 'objects' && t.get(`${barUsed}_link`) === attr.id)
-          .forEach((token) => applyAttrHpChange(barUsed, oldVal, newVal, token));
+          .forEach((token) => {
+            if (valueChanged) applyAttrHpChange(barUsed, oldVal, newVal, token);
+            else refreshAfterAttrMaxChange(token);
+          });
       });
     }
 
@@ -3838,9 +3892,11 @@ var HealthColors =
     /**
      * Registers all Roll20 event listeners for the script.
      * - chat:message     → handleInput       (command processing)
-     * - change:graphic   → handleTokenChange (live HP changes and token resizes; suppresses
-     *                                         FX when the attribute listener already fired)
-     * - change:attribute → registerAttributeListener (AlterBars / indirect HP changes)
+     * - change:graphic   → handleTokenChange (live HP changes, token resizes, and bar max /
+     *                                         link / represents changes; suppresses FX when
+     *                                         the attribute listener already fired)
+     * - change:attribute → registerAttributeListener (AlterBars / indirect HP changes and
+     *                                                 max-only changes from sheet workers)
      * - add:graphic      → handleToken       (with 400ms delay to allow token data to settle)
      */
     function registerEventHandlers() {

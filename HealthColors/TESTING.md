@@ -204,6 +204,12 @@ Use the PC token. Defaults target the D&D sheets (`deathsave_succ1..3` / `deaths
    - Expected: The token colour updates even though the token bar was not edited directly.
 3. Drag a new token from the journal onto the page.
    - Expected: It is coloured shortly after it appears (about half a second), without FX.
+4. Place a token whose health bar has a value but no max, then set the max (type it into the bar, or link the bar to the HP attribute in token settings).
+   - Expected: The aura or tint appears as soon as the max is set, without toggling any setting and without FX.
+5. On a sheet that calculates HP max from the sheet (e.g. 5e Shaped), create a new character, place its token with the bar linked to HP while the max is still blank, then fill in the sheet so HP max is computed.
+   - Expected: The token is coloured when the max arrives, without `!aura tint` or `!aura forceall`.
+6. Place a token that represents no character, then set **Represents Character** in token settings to a character whose HP bar is populated.
+   - Expected: The token is coloured once the character is assigned.
 
 ## Reset and Recovery
 

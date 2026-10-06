@@ -21,6 +21,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - A configured custom FX that no longer exists (global setting or character attribute) now whispers the GM once per setting change rather than on every HP change; the API log still records every fallback. The warning names the setting or attribute to fix.
 - Built-in effects are spawned by name with Roll20's own renderer, so they play at Roll20's fixed size and are not scaled by token size or damage amount. Custom FX and colour bursts keep the existing scaling.
 
+### Fixed
+
+- Fixed newly placed tokens staying uncoloured until a setting was toggled (reported on the Roll20 forum with the 5e Shaped sheet, where HP max is calculated by the sheet after the token exists). A token change that only altered the health bar's max, its attribute link, or the token's character was treated as "nothing relevant changed" and skipped, and the `change:attribute` listener ignored changes to an attribute's max. Both paths now re-evaluate the token (silently, with no FX) so the aura or tint appears as soon as the bar becomes usable.
+
 ## [2.2.1] – 2026-07-03
 
 ### Added
