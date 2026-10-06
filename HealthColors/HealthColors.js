@@ -7,7 +7,7 @@
 //  - Surok: https://app.roll20.net/users/335573/surok
 //  - MidNiteShadow7: https://app.roll20.net/users/16506286/midniteshadow7
 
-/* global createObj TokenMod spawnFxWithDefinition spawnFx spawnFxBetweenPoints getObj state playerIsGM sendChat findObjs Campaign log on getSheetItem */
+/* global createObj TokenMod spawnFxWithDefinition spawnFx spawnFxBetweenPoints getObj state globalconfig playerIsGM sendChat findObjs Campaign log on getSheetItem */
 
 var HealthColors =
   HealthColors ||
@@ -763,6 +763,141 @@ var HealthColors =
       return values.reduce((acc, v) => acc + (isTruthyAttr(v) ? 1 : 0), 0);
     }
 
+    // ————— ONE-CLICK OPTIONS (globalconfig) —————
+    /**
+     * Parses a One-Click checkbox/boolean option. Roll20 delivers a ticked checkbox as the
+     * option's `value` string ('true' here) and an unticked one as false/'false'.
+     *
+     * @param {*}       value    - Raw option value.
+     * @param {boolean} fallback - Current setting, kept when the value is unrecognised.
+     * @returns {boolean} Parsed boolean.
+     */
+    function parseBooleanOption(value, fallback) {
+      if (typeof value === 'boolean') return value;
+      if (value === undefined || value === null) return fallback;
+      const normalized = String(value).trim().toLowerCase();
+      if (['true', '1', 'checked', 'on', 'yes'].includes(normalized)) return true;
+      if (['false', '0', '', 'off', 'no'].includes(normalized)) return false;
+      return fallback;
+    }
+
+    /**
+     * Normalizes a One-Click health-bar option ('bar1' | 'bar2' | 'bar3', any case).
+     *
+     * @param {string} value    - Raw option value.
+     * @param {string} fallback - Current setting.
+     * @returns {string} A valid bar key.
+     */
+    function normalizeBarKey(value, fallback) {
+      const bar = String(value ?? '')
+        .trim()
+        .toLowerCase();
+      return /^bar[123]$/.test(bar) ? bar : fallback;
+    }
+
+    /**
+     * One-Click `useroptions` → state normalizers, keyed by DEFAULTS key (the option `name`
+     * in script.json is the same key). Each takes (rawValue, currentSetting) and returns
+     * the value to store, so invalid input keeps the current setting.
+     */
+    const ONE_CLICK_NORMALIZERS = {
+      auraColorOn: parseBooleanOption,
+      auraBar: normalizeBarKey,
+      auraTint: parseBooleanOption,
+      auraPercPC: normalizePercent,
+      auraPerc: normalizePercent,
+      PCAura: parseBooleanOption,
+      NPCAura: parseBooleanOption,
+      auraDeadPC: parseBooleanOption,
+      auraDead: parseBooleanOption,
+      GM_PCNames: normalizeYesNoOff,
+      PCNames: normalizeYesNoOff,
+      GM_NPCNames: normalizeYesNoOff,
+      NPCNames: normalizeYesNoOff,
+      AuraSize: normalizePositiveNumber,
+      Aura1Shape: normalizeShape,
+      Aura1Color: normalizeHex6,
+      Aura2Size: normalizePositiveNumber,
+      Aura2Shape: normalizeShape,
+      Aura2Color: normalizeHex6,
+      OneOff: parseBooleanOption,
+      FX: parseBooleanOption,
+      HealFX: (value, current) => normalizeFxSetting(value, current, 'heal', DEFAULTS.HealFX),
+      HurtFX: (value, current) => normalizeFxSetting(value, current, 'hurt', DEFAULTS.HurtFX),
+      auraDeadFX: normalizeTrackName,
+      colorPalette: normalizePalette,
+      deathSavesOn: parseBooleanOption,
+      dsSuccessAttr: normalizeAttrName,
+      dsFailureAttr: normalizeAttrName,
+      dsDyingMarker: normalizeMarkerName,
+      dsStableMarker: normalizeMarkerName,
+    };
+
+    /**
+     * Returns this script's One-Click options branch from Roll20's `globalconfig`, or null.
+     * Roll20 keys the branch by the script.json name (lower-cased, punctuation varies), so the
+     * lookup accepts any key that normalizes to a name ending in "healthcolors".
+     *
+     * @returns {object|null} The options object (includes `lastsaved`), or null when absent.
+     */
+    function getOneClickOptions() {
+      if (typeof globalconfig !== 'object' || globalconfig === null) return null;
+      const normalizeKey = (key) =>
+        String(key)
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, '');
+      const key = Object.keys(globalconfig).find((k) => normalizeKey(k).endsWith('healthcolors'));
+      const branch = key ? globalconfig[key] : null;
+      return branch && typeof branch === 'object' ? branch : null;
+    }
+
+    /**
+     * Applies One-Click install options to state when they are newer than the last applied
+     * set (`globalconfig.<script>.lastsaved` vs `state.HealthColors.globalconfigCache.lastsaved`),
+     * so in-game `!aura` changes survive restarts until the GM saves the One-Click dialog again.
+     * Blank option values are ignored. Whispers the GM a summary of what changed and refreshes
+     * tokens so the new settings take effect immediately.
+     *
+     * @returns {boolean} True when options were applied.
+     */
+    function applyOneClickOptions() {
+      const s = state.HealthColors;
+      if (!s.globalconfigCache || typeof s.globalconfigCache !== 'object') s.globalconfigCache = { lastsaved: 0 };
+      const options = getOneClickOptions();
+      if (!options) return false;
+      const lastsaved = Number(options.lastsaved) || 0;
+      if (lastsaved <= (Number(s.globalconfigCache.lastsaved) || 0)) return false;
+
+      log(`${SCRIPT_NAME}: applying One-Click options saved ${new Date(lastsaved * 1000).toISOString()}`);
+      const changed = [];
+      Object.keys(ONE_CLICK_NORMALIZERS).forEach((key) => {
+        const raw = options[key];
+        if (raw === undefined || raw === null || (typeof raw === 'string' && raw.trim() === '')) return;
+        const next = ONE_CLICK_NORMALIZERS[key](typeof raw === 'boolean' ? raw : String(raw), s[key]);
+        if (next !== s[key]) {
+          changed.push({ key, from: s[key], to: next });
+          s[key] = next;
+        }
+      });
+      s.globalconfigCache = { lastsaved };
+
+      if (changed.length === 0) {
+        gmWhisper('One-Click options loaded: no settings changed.');
+        return true;
+      }
+      const lines = changed.map(
+        ({ key, from, to }) => `${key}: ${escapeForChat(String(from))} → <strong>${escapeForChat(String(to))}</strong>`,
+      );
+      gmWhisper(`Applied One-Click options:<br><div style="text-align:left">${lines.join('<br>')}</div>`);
+      if (changed.some(({ key, to }) => key === 'deathSavesOn' && to === false)) clearAllDeathSaveMarkers();
+      if (changed.some(({ key }) => key === 'auraTint')) {
+        modeSwitch(s.auraTint);
+      } else {
+        menuForceUpdate();
+      }
+      return true;
+    }
+
     // ————— WHISPER GM (declared early; used by checkInstall) —————
     /**
      * Sends a styled whisper message to the GM.
@@ -1071,9 +1206,9 @@ var HealthColors =
     }
 
     /**
-     * Initializes or migrates persisted state, applies all default values, registers
-     * the TokenMod observer if available, and creates the default Hurt/Heal FX objects
-     * if they do not already exist in the campaign.
+     * Initializes or migrates persisted state, applies all default values, applies any
+     * newer One-Click install options, registers the TokenMod observer if available, and
+     * creates the default Hurt/Heal FX objects if they do not already exist in the campaign.
      * Safe to call multiple times (e.g. after a state reset).
      */
     function checkInstall() {
@@ -1087,6 +1222,7 @@ var HealthColors =
         if (state.HealthColors[key] === undefined) state.HealthColors[key] = DEFAULTS[key];
       });
       state.HealthColors.colorPalette = normalizePalette(state.HealthColors.colorPalette, DEFAULTS.colorPalette);
+      applyOneClickOptions();
       if (typeof TokenMod !== 'undefined' && TokenMod.ObserveTokenChange) {
         TokenMod.ObserveTokenChange(handleTokenChange);
       }
@@ -1211,7 +1347,8 @@ var HealthColors =
 
     /**
      * Resets all persisted HealthColors settings back to DEFAULTS.
-     * Keeps schema/version metadata aligned to current script constants.
+     * Keeps schema/version metadata aligned to current script constants. Also drops the
+     * One-Click cache, so the following checkInstall re-applies the install-time options.
      */
     function resetAllSettingsToDefaults() {
       state.HealthColors = {
