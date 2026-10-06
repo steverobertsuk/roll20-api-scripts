@@ -7,7 +7,7 @@
 //  - Surok: https://app.roll20.net/users/335573/surok
 //  - MidNiteShadow7: https://app.roll20.net/users/16506286/midniteshadow7
 
-/* global createObj TokenMod spawnFxWithDefinition spawnFx getObj state playerIsGM sendChat findObjs Campaign log on getSheetItem */
+/* global createObj TokenMod spawnFxWithDefinition spawnFx spawnFxBetweenPoints getObj state playerIsGM sendChat findObjs Campaign log on getSheetItem */
 
 var HealthColors =
   HealthColors ||
@@ -47,8 +47,9 @@ var HealthColors =
      * @property {string}  Aura2Color   - Display/default Aura 2 tint value shown in output.
      * @property {boolean} OneOff       - When true, tokens without a linked character also get auras.
      * @property {boolean} FX           - Whether to spawn particle FX on HP changes.
-     * @property {string}  HealFX       - Hex color (no '#') used for the healing particle effect.
-     * @property {string}  HurtFX       - Hex color (no '#') used for the hurt/damage particle effect.
+     * @property {string}  HealFX       - Healing effect: a hex color (no '#') that recolours the default particle
+     *                                      burst, a Roll20 built-in effect name (`glow-holy`), or a custom FX name.
+     * @property {string}  HurtFX       - Hurt/damage effect; same formats as HealFX (default a red particle burst).
      * @property {string}  auraDeadFX   - Jukebox track name to play on death, or 'None' to disable.
      * @property {string}  colorPalette - Health aura colour palette ('default'|'colorblind').
      * @property {boolean} deathSavesOn   - Master toggle for the optional Death Save Integration (off by default).
@@ -107,6 +108,42 @@ var HealthColors =
         dead: [0, 0, 0], // black
       },
     };
+
+    // ————— BUILT-IN FX —————
+    /**
+     * Roll20's built-in particle-effect vocabulary. A built-in effect name is `<type>-<colour>`
+     * (e.g. `glow-holy`, `explode-blood`), exactly as shown in the in-game Effects menu.
+     * Directional types (beam, breath, splatter) need a start and end point, so they are
+     * spawned with `spawnFxBetweenPoints` from the token's own position.
+     */
+    const BUILTIN_FX_TYPES = [
+      'beam',
+      'bomb',
+      'breath',
+      'bubbling',
+      'burn',
+      'burst',
+      'explode',
+      'glow',
+      'missile',
+      'nova',
+      'splatter',
+    ];
+    const BUILTIN_FX_COLORS = [
+      'acid',
+      'blood',
+      'charm',
+      'death',
+      'fire',
+      'frost',
+      'holy',
+      'magic',
+      'slime',
+      'smoke',
+      'water',
+    ];
+    const DIRECTIONAL_FX_TYPES = new Set(['beam', 'breath', 'splatter']);
+    const BUILTIN_FX_PATTERN = new RegExp(`^(${BUILTIN_FX_TYPES.join('|')})-(${BUILTIN_FX_COLORS.join('|')})$`);
 
     /**
      * Seed definition for the '-DefaultHurt' Roll20 custom FX object created at install.
@@ -321,6 +358,111 @@ var HealthColors =
     function normalizeHex6(value, fallback) {
       const cleaned = (value || '').replace('#', '').trim().toUpperCase();
       return /^[0-9A-F]{6}$/.test(cleaned) ? cleaned : fallback;
+    }
+
+    /**
+     * Returns true when the value is a 6-digit hex colour, with or without a leading '#'.
+     *
+     * @param {string} value - Candidate value.
+     * @returns {boolean} True for a 6-digit hex colour.
+     */
+    function isHex6(value) {
+      return /^#?[0-9A-Fa-f]{6}$/.test(
+        String(value ?? '')
+          .trim()
+          .replace('#', ''),
+      );
+    }
+
+    /**
+     * Returns true when the value is a Roll20 built-in effect name (`<type>-<colour>`).
+     *
+     * @param {string} value - Candidate value (case-insensitive).
+     * @returns {boolean} True for a known built-in effect name.
+     */
+    function isBuiltinFxName(value) {
+      return BUILTIN_FX_PATTERN.test(
+        String(value ?? '')
+          .trim()
+          .toLowerCase(),
+      );
+    }
+
+    /**
+     * Returns true when a per-character FX override disables FX (`OFF` or `NO`, any case).
+     *
+     * @param {string|undefined} value - Attribute value.
+     * @returns {boolean} True when FX are switched off for the character.
+     */
+    function isFxOff(value) {
+      return /^(OFF|NO)$/i.test(String(value ?? '').trim());
+    }
+
+    /**
+     * Finds a campaign custom FX object by name (case-insensitive) or by object id.
+     *
+     * @param {string} nameOrId - Custom FX name or Roll20 object id.
+     * @returns {object|undefined} The custfx object, or undefined when none matches.
+     */
+    function findCustomFx(nameOrId) {
+      const key = String(nameOrId ?? '').trim();
+      if (!key) return undefined;
+      const byName = findObjs({ _type: 'custfx', name: key }, { caseInsensitive: true })[0];
+      if (byName) return byName;
+      return getObj('custfx', key) || undefined;
+    }
+
+    /**
+     * Classifies a heal/hurt FX value (global setting or per-character override entry).
+     *
+     * @param {string} value - Hex colour, built-in effect name, or custom FX name/id.
+     * @returns {{kind:'colour',hex:string}|{kind:'builtin',name:string}|{kind:'custom',name:string,fxObj:object}|null}
+     *          The classified choice, or null when the value is blank or names nothing known.
+     */
+    function classifyFxValue(value) {
+      const raw = String(value ?? '').trim();
+      if (!raw) return null;
+      if (isHex6(raw)) return { kind: 'colour', hex: raw.replace('#', '').toUpperCase() };
+      if (isBuiltinFxName(raw)) return { kind: 'builtin', name: raw.toLowerCase() };
+      const fxObj = findCustomFx(raw);
+      if (fxObj) return { kind: 'custom', name: String(fxObj.get('name') || raw).trim(), fxObj };
+      return null;
+    }
+
+    /**
+     * Normalizes a `!aura heal` / `!aura hurt` argument. Accepts a hex colour, a Roll20
+     * built-in effect name, or a custom FX name/id (stored by its canonical name).
+     * `default` restores the shipped colour. Anything else keeps the fallback and warns the GM.
+     *
+     * @param {string} value        - Raw command argument.
+     * @param {string} fallback     - Current setting, kept when the input is invalid.
+     * @param {string} label        - 'heal' or 'hurt' (for messages).
+     * @param {string} defaultValue - Shipped default for this setting.
+     * @returns {string} The normalized setting value.
+     */
+    function normalizeFxSetting(value, fallback, label, defaultValue) {
+      const raw = String(value ?? '').trim();
+      if (!raw) return fallback;
+      if (raw.toUpperCase() === 'DEFAULT') return defaultValue;
+      const choice = classifyFxValue(raw);
+      if (!choice) {
+        gmWhisper(
+          `⚠ Unknown ${label} FX "${escapeForChat(raw)}". Use a hex colour (e.g. FDDC5C), a built-in effect such as glow-holy, or a custom FX name/id from <strong>!aura listfx</strong>. Keeping "${escapeForChat(fallback)}".`,
+        );
+        return fallback;
+      }
+      return choice.kind === 'colour' ? choice.hex : choice.name;
+    }
+
+    /**
+     * Inline style for a heal/hurt FX menu button or pill: a colour swatch for hex values,
+     * an auto-width label for effect names.
+     *
+     * @param {string} value - Current HealFX/HurtFX setting.
+     * @returns {string} Extra inline CSS.
+     */
+    function fxSettingStyle(value) {
+      return isHex6(value) ? `background-color:#${value}` : 'width:auto;padding-left:6px;padding-right:6px';
     }
 
     /**
@@ -711,6 +853,10 @@ var HealthColors =
       default: 'DEFAULT',
       validation: (o) => String(o || '').trim() !== '',
     });
+    const lookupUseHeal = makeSmartAttrCache('USEHEAL', {
+      default: 'DEFAULT',
+      validation: (o) => String(o || '').trim() !== '',
+    });
     const lookupUseColor = makeSmartAttrCache('USECOLOR', {
       default: 'YES',
       validation: (o) => /^(YES|NO)$/i.test(String(o || '').trim()),
@@ -964,6 +1110,40 @@ var HealthColors =
     }
 
     /**
+     * Returns the hex colour the default heal/hurt particle burst should use: the global
+     * HealFX/HurtFX setting when it is a colour, otherwise the shipped default colour
+     * (the setting then names an effect, and the default burst only plays as a fallback).
+     *
+     * @param {boolean} isHeal - True for the heal burst, false for hurt.
+     * @returns {string} 6-digit hex colour.
+     */
+    function getDefaultFxColour(isHeal) {
+      const key = isHeal ? 'HealFX' : 'HurtFX';
+      const setting = state.HealthColors[key];
+      return isHex6(setting) ? setting : DEFAULTS[key];
+    }
+
+    /**
+     * Writes a solid RGBA colour into every start/end colour key of an FX definition
+     * (both British and American spellings) and neutralizes the random colour channels.
+     *
+     * @param {object}   def - FX definition to mutate.
+     * @param {number[]} rgb - RGBA array from hexToRgb.
+     * @returns {object} The same definition, for chaining.
+     */
+    function applyFxColour(def, rgb) {
+      def.startColour = rgb;
+      def.startColor = rgb;
+      def.endColour = rgb;
+      def.endColor = rgb;
+      def.startColourRandom = [0, 0, 0, 0];
+      def.startColorRandom = [0, 0, 0, 0];
+      def.endColourRandom = [0, 0, 0, 0];
+      def.endColorRandom = [0, 0, 0, 0];
+      return def;
+    }
+
+    /**
      * Builds the normalized default Hurt/Heal definition payload used for
      * campaign custom FX objects.
      *
@@ -973,15 +1153,7 @@ var HealthColors =
      */
     function buildDefaultFxDefinition(isHeal, baseDef) {
       const def = { ...baseDef };
-      const rgb = hexToRgb(isHeal ? state.HealthColors.HealFX : state.HealthColors.HurtFX);
-      def.startColour = rgb;
-      def.startColor = rgb;
-      def.endColour = rgb;
-      def.endColor = rgb;
-      def.startColourRandom = [0, 0, 0, 0];
-      def.startColorRandom = [0, 0, 0, 0];
-      def.endColourRandom = [0, 0, 0, 0];
-      def.endColorRandom = [0, 0, 0, 0];
+      applyFxColour(def, hexToRgb(getDefaultFxColour(isHeal)));
 
       // Keep the vivid profile that reads clearly in live play.
       if (isHeal) {
@@ -1218,133 +1390,141 @@ var HealthColors =
       }
     }
 
+    // Missing-FX warnings already whispered (keyed by source, character and name) so a bad
+    // name is reported once per setting change rather than on every HP tick.
+    const warnedMissingFx = new Set();
+
     /**
-     * Builds the list of FX definition objects to spawn for a heal or hurt event.
+     * Logs, and whispers once, that a configured FX name could not be found, naming the
+     * setting or character attribute to fix. The caller falls back to the default burst.
      *
-     * @param {boolean}          isHeal    - True when HP went up.
-     * @param {string|undefined} useBlood  - Per-character blood FX override value.
-     * @param {string}           [label]   - Character/token name for error context.
-     * @returns {object[]} Array of Roll20 custfx definition objects.
+     * @param {string}  fxName - The unresolved effect name.
+     * @param {string}  source - 'heal' | 'hurt' (global setting) or 'USEHEAL' | 'USEBLOOD' (attribute).
+     * @param {string}  label  - Character/token name for context ('' for the global setting).
+     * @param {boolean} isHeal - True for a heal event.
      */
-    function buildFXList(isHeal, useBlood, label) {
-      const fxArray = [];
-
-      if (isHeal) {
-        const aFX = findObjs({ _type: 'custfx', name: '-DefaultHeal' }, { caseInsensitive: true })[0];
-        const def = getFxDefinition(aFX);
-
-        if (def) {
-          const healRgb = hexToRgb(state.HealthColors.HealFX);
-          def.startColour = healRgb;
-          def.startColor = healRgb;
-          def.endColour = healRgb;
-          def.endColor = healRgb;
-          def.startColourRandom = [0, 0, 0, 0];
-          def.startColorRandom = [0, 0, 0, 0];
-          def.endColourRandom = [0, 0, 0, 0];
-          def.endColorRandom = [0, 0, 0, 0];
-          fxArray.push(def);
-        }
-
-        return fxArray;
-      }
-
-      const aFX = findObjs({ _type: 'custfx', name: '-DefaultHurt' }, { caseInsensitive: true })[0];
-      const def = getFxDefinition(aFX);
-
-      if (!def) return fxArray;
-
-      if (useBlood === 'DEFAULT' || useBlood === undefined) {
-        const hurtRgb = hexToRgb(state.HealthColors.HurtFX);
-        def.startColour = hurtRgb;
-        def.startColor = hurtRgb;
-        def.endColour = hurtRgb;
-        def.endColor = hurtRgb;
-        def.startColourRandom = [0, 0, 0, 0];
-        def.startColorRandom = [0, 0, 0, 0];
-        def.endColourRandom = [0, 0, 0, 0];
-        def.endColorRandom = [0, 0, 0, 0];
-        fxArray.push(def);
-      } else {
-        const normalizedUseBlood = String(useBlood || '').trim();
-        const hurtRgb = hexToRgb(normalizedUseBlood);
-
-        if (hurtRgb.some((v) => v !== 0)) {
-          def.startColour = hurtRgb;
-          def.startColor = hurtRgb;
-          def.endColour = hurtRgb;
-          def.endColor = hurtRgb;
-          def.startColourRandom = [0, 0, 0, 0];
-          def.startColorRandom = [0, 0, 0, 0];
-          def.endColourRandom = [0, 0, 0, 0];
-          def.endColorRandom = [0, 0, 0, 0];
-          fxArray.push(def);
-        } else {
-          const fxNames = normalizedUseBlood
-            .split(',')
-            .map((fxName) => fxName.trim())
-            .filter((fxName) => fxName !== '');
-
-          if (fxNames.length === 0) {
-            const hurtRgb = hexToRgb(state.HealthColors.HurtFX);
-            def.startColour = hurtRgb;
-            def.startColor = hurtRgb;
-            def.endColour = hurtRgb;
-            def.endColor = hurtRgb;
-            def.startColourRandom = [0, 0, 0, 0];
-            def.startColorRandom = [0, 0, 0, 0];
-            def.endColourRandom = [0, 0, 0, 0];
-            def.endColorRandom = [0, 0, 0, 0];
-            fxArray.push(def);
-            return fxArray;
-          }
-
-          fxNames.forEach((fxName) => {
-            const custom = findObjs({ _type: 'custfx', name: fxName.trim() }, { caseInsensitive: true })[0];
-            const customDef = getFxDefinition(custom);
-
-            if (customDef) {
-              fxArray.push(customDef);
-            } else {
-              const who = label ? ` (character: "${label}")` : '';
-              log(`${SCRIPT_NAME}: Custom FX "${fxName.trim()}"${who} not found — check the USEBLOOD attribute.`);
-              gmWhisper(
-                `Custom FX "${fxName.trim()}"${who} not found. Fix the USEBLOOD attribute on that character. Falling back to default hurt FX.`,
-              );
-              const fallbackFx = findObjs({ _type: 'custfx', name: '-DefaultHurt' }, { caseInsensitive: true })[0];
-              const fallbackDef = getFxDefinition(fallbackFx);
-              if (fallbackDef) fxArray.push(fallbackDef);
-            }
-          });
-        }
-      }
-
-      return fxArray;
+    function warnMissingFx(fxName, source, label, isHeal) {
+      const key = `${source}|${label}|${fxName}`;
+      const who = label ? ` (character: "${escapeForChat(label)}")` : '';
+      const isAttr = source === 'USEHEAL' || source === 'USEBLOOD';
+      log(
+        `${SCRIPT_NAME}: FX "${fxName}"${who} not found — check ${isAttr ? `the ${source} attribute` : `!aura ${source}`}.`,
+      );
+      if (warnedMissingFx.has(key)) return;
+      warnedMissingFx.add(key);
+      const fix = isAttr
+        ? `Fix the ${source} attribute on that character`
+        : `Fix it with <strong>!aura ${source} &lt;effect&gt;</strong> (see <strong>!aura listfx</strong>)`;
+      gmWhisper(
+        `FX "${escapeForChat(fxName)}"${who} not found. ${fix}. Falling back to the default ${isHeal ? 'heal' : 'hurt'} FX.`,
+      );
     }
 
     /**
-     * Spawns the default heal or hurt FX by their saved custfx ID using spawnFx.
-     * This avoids client-side color inconsistencies seen in some sandboxes when using
-     * spawnFxWithDefinition directly. Only handles DEFAULT heal/hurt colors; custom
-     * named FX (USEBLOOD set to a custfx name) still use the definition-spawn path.
+     * Builds the colour-burst choice for the shipped default heal/hurt particle FX.
+     * Without `hex` the burst uses the global colour (the pre-synced `-DefaultHeal`/`-DefaultHurt`
+     * object is spawned by id); with `hex` a per-character colour is injected into a copy of
+     * the definition and spawned scaled.
      *
-     * @param {object}           obj      - Roll20 token graphic object.
-     * @param {boolean}          isHeal   - True when HP increased.
-     * @param {string|undefined} useBlood - Per-character blood override value.
-     * @returns {boolean} True when spawning was handled; false if the caller should fall back.
+     * @param {boolean} isHeal - True for a heal event.
+     * @param {string}  [hex]  - Per-character override colour.
+     * @returns {{kind:'colour',hex:string,global:boolean}} The colour choice.
      */
-    function spawnDefaultFxById(obj, isHeal, useBlood) {
-      if (!(useBlood === 'DEFAULT' || useBlood === undefined)) return false;
-      const fxName = isHeal ? '-DefaultHeal' : '-DefaultHurt';
-      const aFX = findObjs({ _type: 'custfx', name: fxName }, { caseInsensitive: true })[0];
-      if (!aFX) return false;
+    function defaultColourChoice(isHeal, hex) {
+      if (hex) return { kind: 'colour', hex, global: false };
+      return { kind: 'colour', hex: getDefaultFxColour(isHeal), global: true };
+    }
 
-      spawnFx(obj.get('left'), obj.get('top'), aFX.id, obj.get('pageid'));
-      return true;
+    /**
+     * Resolves which FX to spawn for a heal or hurt event.
+     * Precedence: per-character override (`USEHEAL` / `USEBLOOD`) → global `HealFX` / `HurtFX`.
+     * An override may be `DEFAULT` (use the global setting), a hex colour, or a comma-separated
+     * list of built-in effect names and/or custom FX names. Unknown names warn and fall back.
+     *
+     * @param {boolean}          isHeal   - True when HP went up.
+     * @param {string|undefined} override - Per-character attribute value.
+     * @param {string}           [label]  - Character/token name for error context.
+     * @returns {object[]} FX choices for spawnFxChoice.
+     */
+    function resolveFxChoices(isHeal, override, label) {
+      const raw = String(override ?? '').trim();
+
+      if (!raw || raw.toUpperCase() === 'DEFAULT') {
+        const setting = state.HealthColors[isHeal ? 'HealFX' : 'HurtFX'];
+        const choice = classifyFxValue(setting);
+        if (!choice) {
+          warnMissingFx(setting, isHeal ? 'heal' : 'hurt', '', isHeal);
+          return [defaultColourChoice(isHeal)];
+        }
+        return [choice.kind === 'colour' ? defaultColourChoice(isHeal) : choice];
+      }
+
+      if (isHex6(raw)) return [defaultColourChoice(isHeal, raw.replace('#', '').toUpperCase())];
+
+      const choices = raw
+        .split(',')
+        .map((fxName) => fxName.trim())
+        .filter((fxName) => fxName !== '')
+        .map((fxName) => {
+          const choice = classifyFxValue(fxName);
+          if (choice) return choice.kind === 'colour' ? defaultColourChoice(isHeal, choice.hex) : choice;
+          warnMissingFx(fxName, isHeal ? 'USEHEAL' : 'USEBLOOD', label, isHeal);
+          return defaultColourChoice(isHeal);
+        });
+
+      return choices.length ? choices : [defaultColourChoice(isHeal)];
+    }
+
+    /**
+     * Spawns one resolved FX choice at a token.
+     *  - builtin: Roll20 effect by name (`spawnFx`, or `spawnFxBetweenPoints` for directional
+     *    types). Built-in effects are fixed-size and are not scaled by token size or damage.
+     *  - custom:  the campaign custom FX definition, scaled by token size and hit size.
+     *  - colour:  the default heal/hurt burst — spawned by id when it uses the global colour
+     *    (avoids client colour drift), otherwise recoloured and spawned by definition.
+     *
+     * @param {object}  choice  - Entry from resolveFxChoices.
+     * @param {object}  obj     - Roll20 token graphic object.
+     * @param {boolean} isHeal  - True for a heal event.
+     * @param {number}  scale   - Token-size scale factor (height / 70).
+     * @param {number}  hitSize - Damage-proportion factor (0.2–1.0).
+     */
+    function spawnFxChoice(choice, obj, isHeal, scale, hitSize) {
+      const left = obj.get('left');
+      const top = obj.get('top');
+      const pageId = obj.get('pageid');
+
+      if (choice.kind === 'builtin') {
+        const type = choice.name.split('-')[0];
+        if (DIRECTIONAL_FX_TYPES.has(type)) {
+          spawnFxBetweenPoints({ x: left, y: top }, { x: left, y: top }, choice.name, pageId);
+        } else {
+          spawnFx(left, top, choice.name, pageId);
+        }
+        return;
+      }
+
+      if (choice.kind === 'custom') {
+        const def = getFxDefinition(choice.fxObj);
+        if (def) spawnFX(scale, hitSize, left, top, def, pageId);
+        return;
+      }
+
+      const defaultName = isHeal ? '-DefaultHeal' : '-DefaultHurt';
+      const defaultFx = findObjs({ _type: 'custfx', name: defaultName }, { caseInsensitive: true })[0];
+      if (choice.global && defaultFx) {
+        spawnFx(left, top, defaultFx.id, pageId);
+        return;
+      }
+      const def = getFxDefinition(defaultFx) || { ...(isHeal ? DEFAULT_HEAL_FX : DEFAULT_HURT_FX) };
+      applyFxColour(def, hexToRgb(choice.hex));
+      spawnFX(scale, hitSize, left, top, def, pageId);
     }
 
     /**
      * Gates and triggers particle FX when HP changes on a non-forced update.
+     * `USEBLOOD` set to OFF/NO keeps its long-standing meaning of no HealthColors FX at all
+     * for that character; `USEHEAL` OFF/NO suppresses only the heal FX.
      *
      * @param {object}           obj        - Roll20 token graphic object.
      * @param {object|undefined} oCharacter - Roll20 character object.
@@ -1355,16 +1535,18 @@ var HealthColors =
      */
     function maybeSpawnFX(obj, oCharacter, curValue, prevValue, maxValue, update) {
       if (update === 'YES' || Number.isNaN(prevValue) || curValue === prevValue) return;
+      if (!state.HealthColors.FX) return;
       const useBlood = oCharacter ? lookupUseBlood(oCharacter) : undefined;
-      if (!state.HealthColors.FX || useBlood === 'OFF' || useBlood === 'NO') return;
+      if (isFxOff(useBlood)) return;
       const isHeal = curValue > prevValue;
+      const useHeal = isHeal && oCharacter ? lookupUseHeal(oCharacter) : undefined;
+      if (isHeal && isFxOff(useHeal)) return;
       const amount = Math.abs(curValue - prevValue);
       const scale = obj.get('height') / 70;
       const hitSize = Math.max(Math.min((amount / maxValue) * 4, 1), 0.2) * (randomInt(60, 100) / 100);
       const fxLabel = (oCharacter && oCharacter.get('name')) || obj.get('name') || '';
-      if (spawnDefaultFxById(obj, isHeal, useBlood)) return;
-      buildFXList(isHeal, useBlood, fxLabel).forEach((fx) =>
-        spawnFX(scale, hitSize, obj.get('left'), obj.get('top'), fx, obj.get('pageid')),
+      resolveFxChoices(isHeal, isHeal ? useHeal : useBlood, fxLabel).forEach((choice) =>
+        spawnFxChoice(choice, obj, isHeal, scale, hitSize),
       );
     }
 
@@ -2081,7 +2263,7 @@ var HealthColors =
      *
      * @param {string} characterId - Roll20 character id.
      * @param {object} s           - HealthColors state object.
-      * @param {object} [snapshotOverride] - Optional pre-resolved watch snapshot map.
+     * @param {object} [snapshotOverride] - Optional pre-resolved watch snapshot map.
      * @returns {{succ:number, fail:number}} Parsed death-save counters.
      */
     function getDeathSaveCountsFromSnapshot(characterId, s, snapshotOverride) {
@@ -2917,6 +3099,38 @@ var HealthColors =
     }
 
     /**
+     * Whispers the GM a list of the campaign's custom FX (name + id, with one-click Heal/Hurt
+     * set buttons) and a reference of Roll20's built-in `<type>-<colour>` effect names.
+     * Triggered by `!aura listfx` and the "List FX" menu button.
+     */
+    function whisperFxList() {
+      const custom = (findObjs({ _type: 'custfx' }) || [])
+        .slice()
+        .sort((a, b) => String(a.get('name') || '').localeCompare(String(b.get('name') || '')));
+      const setBtnStyle =
+        'width:auto;min-width:48px;padding-left:6px;padding-right:6px;color:#fff;text-decoration:none;font-weight:bold';
+      const rows = custom.map((fx) => {
+        const name = escapeForChat(String(fx.get('name') || '').trim() || '(unnamed)');
+        const setHeal = makeBtn('<span style="color:#fff">Heal</span>', `!aura heal ${fx.id}`, setBtnStyle);
+        const setHurt = makeBtn('<span style="color:#fff">Hurt</span>', `!aura hurt ${fx.id}`, setBtnStyle);
+        return `<tr><td style="padding:2px 4px;text-align:center;white-space:nowrap">${setHeal}${setHurt}</td><td style="padding:2px 4px;text-align:left"><strong>${name}</strong></td><td style="padding:2px 4px;text-align:left;font-size:8pt">${fx.id}</td></tr>`;
+      });
+      const th = 'padding:3px 4px;border-bottom:1px solid #2e5d78';
+      const table = rows.length
+        ? `<table style="width:100%;border-collapse:collapse;border:1px solid #2e5d78;background:#d8eaf5;color:#111"><thead><tr><th style="${th};text-align:center">Set</th><th style="${th};text-align:left">Custom FX</th><th style="${th};text-align:left">Id</th></tr></thead><tbody>${rows.join('')}</tbody></table>`
+        : '<i>No custom FX found in this campaign (create them in the Effects menu).</i>';
+      const builtin = [
+        `<div style="text-align:left;margin-top:6px;font-size:9pt"><strong>Built-in effects</strong> are named <code>&lt;type&gt;-&lt;colour&gt;</code>, e.g. <code>glow-holy</code>, <code>explode-blood</code>.`,
+        `<br><strong>Types:</strong> ${BUILTIN_FX_TYPES.join(', ')}`,
+        `<br><strong>Colours:</strong> ${BUILTIN_FX_COLORS.join(', ')}`,
+        `<br>Set one with <code>!aura heal &lt;effect&gt;</code> or <code>!aura hurt &lt;effect&gt;</code>; a 6-digit hex colour recolours the default burst instead.</div>`,
+      ].join('');
+      gmWhisper(
+        `<strong>Heal / Hurt FX</strong><br><span style="font-weight:normal">Current: heal = <strong>${escapeForChat(state.HealthColors.HealFX)}</strong>, hurt = <strong>${escapeForChat(state.HealthColors.HurtFX)}</strong></span><br>${table}${builtin}`,
+      );
+    }
+
+    /**
      * Renders and whispers the HealthColors configuration menu to the GM.
      * Builds the full HTML panel using makeBtn/toggleBtn/nameBtn helpers and
      * reflects all current state values as interactive button labels.
@@ -2950,8 +3164,10 @@ var HealthColors =
       ].join(';');
 
       const percLabel = `${s.auraPercPC}/${s.auraPerc}`;
-      const healBtnStyle = `background-color:#${s.HealFX}`;
-      const hurtBtnStyle = `background-color:#${s.HurtFX}`;
+      const healBtnStyle = fxSettingStyle(s.HealFX);
+      const hurtBtnStyle = fxSettingStyle(s.HurtFX);
+      const healFxCmd = `!aura heal ?{Heal FX (hex colour or effect name)|${s.HealFX}}`;
+      const hurtFxCmd = `!aura hurt ?{Hurt FX (hex colour or effect name)|${s.HurtFX}}`;
       const aura1Style = `background-color:#${s.Aura1Color}`;
       const aura2Style = `background-color:#${s.Aura2Color}`;
       const deadFxCmd = `!aura deadfx ?{Sound Name?|${s.auraDeadFX}}`;
@@ -2989,8 +3205,9 @@ var HealthColors =
         `Aura 2 Color: ${makeBtn(s.Aura2Color, '!aura a2tint ?{Color?|806600}', aura2Style)}<br>`,
         `One Offs: ${toggleBtn(s.OneOff, '!aura ONEOFF')}<br>`,
         `FX: ${toggleBtn(s.FX, '!aura FX')}<br>`,
-        `HealFX Color: ${makeBtn(s.HealFX, '!aura HEAL ?{Color?|FDDC5C}', healBtnStyle)}<br>`,
-        `HurtFX Color: ${makeBtn(s.HurtFX, '!aura HURT ?{Color?|FF0000}', hurtBtnStyle)}<br>`,
+        `Heal FX: ${makeBtn(escapeForChat(s.HealFX), healFxCmd, healBtnStyle)}<br>`,
+        `Hurt FX: ${makeBtn(escapeForChat(s.HurtFX), hurtFxCmd, hurtBtnStyle)}<br>`,
+        `FX List: ${makeBtn('List FX', '!aura listfx', wide)}<br>`,
         `DeathSFX: ${makeBtn(s.auraDeadFX.substring(0, 4), deadFxCmd)}<br>`,
         hr,
         `<u>Death Save Integration</u><br>`,
@@ -3046,8 +3263,8 @@ var HealthColors =
       const percLabel = `${s.auraPercPC}/${s.auraPerc}`;
       const aura1Style = `background-color:#${s.Aura1Color}`;
       const aura2Style = `background-color:#${s.Aura2Color}`;
-      const healStyle = `background-color:#${s.HealFX}`;
-      const hurtStyle = `background-color:#${s.HurtFX}`;
+      const healStyle = fxSettingStyle(s.HealFX);
+      const hurtStyle = fxSettingStyle(s.HurtFX);
       const html = [
         `<div style="${outerStyle}">`,
         `<div style="${menuHeaderStyle}">HealthColors Settings v${VERSION}</div>`,
@@ -3078,8 +3295,8 @@ var HealthColors =
         `Aura 2 Color: ${makePill(s.Aura2Color, aura2Style)}<br>`,
         `One Offs: ${boolPill(s.OneOff)}<br>`,
         `FX: ${boolPill(s.FX)}<br>`,
-        `HealFX Color: ${makePill(s.HealFX, healStyle)}<br>`,
-        `HurtFX Color: ${makePill(s.HurtFX, hurtStyle)}<br>`,
+        `Heal FX: ${makePill(escapeForChat(s.HealFX), healStyle)}<br>`,
+        `Hurt FX: ${makePill(escapeForChat(s.HurtFX), hurtStyle)}<br>`,
         `DeathSFX: ${makePill(s.auraDeadFX)}<br>`,
         hr,
         `<u>Death Save Integration</u><br>`,
@@ -3205,14 +3422,20 @@ var HealthColors =
           return { handled: true, earlyReturn: false };
         },
         HEAL: () => {
-          s.HealFX = normalizeHex6(parts[2], s.HealFX);
+          s.HealFX = normalizeFxSetting(parts.slice(2).join(' '), s.HealFX, 'heal', DEFAULTS.HealFX);
+          warnedMissingFx.clear();
           syncDefaultFxObjects();
           return { handled: true, earlyReturn: false };
         },
         HURT: () => {
-          s.HurtFX = normalizeHex6(parts[2], s.HurtFX);
+          s.HurtFX = normalizeFxSetting(parts.slice(2).join(' '), s.HurtFX, 'hurt', DEFAULTS.HurtFX);
+          warnedMissingFx.clear();
           syncDefaultFxObjects();
           return { handled: true, earlyReturn: false };
+        },
+        LISTFX: () => {
+          whisperFxList();
+          return { handled: true, earlyReturn: true };
         },
         RESET: () => {
           delete state.HealthColors;
@@ -3221,6 +3444,7 @@ var HealthColors =
           return { handled: true, earlyReturn: false };
         },
         'RESET-FX': () => {
+          warnedMissingFx.clear();
           resetDefaultFxObjects();
           return { handled: true, earlyReturn: false };
         },
@@ -3245,8 +3469,8 @@ var HealthColors =
     /**
      * Processes incoming Roll20 chat messages to handle !aura commands.
      * GM-only: non-GMs receive an access-denied whisper.
-     * Routes each subcommand (ON/OFF, BAR, TINT, PERC, PC, NPC, etc.) to the
-     * appropriate state mutation then refreshes the menu. BAR validates 1/2/3,
+     * Routes each subcommand (ON/OFF, BAR, TINT, PERC, PC, NPC, HEAL, HURT, LISTFX, etc.)
+     * to the appropriate state mutation then refreshes the menu. BAR validates 1/2/3,
      * whispers confirmation, and triggers immediate full sync. PALETTE also
      * triggers immediate full sync so existing tokens update right away.
      * When a setting changes, re-whispers the interactive menu to the GM.
@@ -3271,7 +3495,7 @@ var HealthColors =
         return;
       }
 
-      if (option !== 'MENU') gmWhisper('UPDATING TOKENS...');
+      if (option !== 'MENU' && option !== 'LISTFX') gmWhisper('UPDATING TOKENS...');
 
       const s = state.HealthColors;
       if (!applyMappedAuraOption(option, parts, s)) {
