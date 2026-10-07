@@ -153,7 +153,7 @@ HealthColors watches the configured success/failure fields and updates markers a
 On Beacon-model sheets (e.g. D&D 2024), the death-save checkboxes are **not** legacy attributes; HealthColors reads them with Roll20's sheet-item API (`getSheetItem`). That API only returns **live** values on **Mod Script Sandbox v1.5** (formerly "Experimental"); on **v1.0** (formerly "Default") it returns sheet defaults, often all `0`, so markers cannot track the sheet.
 
 - Roll20 renamed the sandboxes in September 2026 and made v1.5 the default for games that never chose one. Check yours under **Game Settings → Mod (API) Scripts → Mod Script Sandbox**; pick **v1.5 (Latest)** and **Restart Server** if needed.
-- The API console startup banner shows the running version, e.g. `##########> Sandbox [v1.5 2026-08-19] : Ready fired …`. HealthColors also logs it on startup and shows it in the GM menu footer.
+- The API console startup banner shows the running version, e.g. `##########> Sandbox [v1.5 2026-08-19] : Ready fired …`. HealthColors also logs it on startup and, on v1.0 or when the version is not reported, notes it under Death Save Integration in the GM menu.
 - HealthColors reads the version from `Campaign().sandboxVersion`. When it finds a watched PC whose death saves are not legacy attributes on a v1.0 sandbox, it whispers a one-time GM notice; on v1.5 no notice is needed. `!aura deathsaves debug` reports the sandbox version and the storage/API facts per token.
 
 ### Behaviour

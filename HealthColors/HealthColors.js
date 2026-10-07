@@ -2928,6 +2928,20 @@ var HealthColors =
     }
 
     /**
+     * Sandbox note shown under the Death Save Integration heading in the GM menu.
+     * Empty on a sandbox that reads Beacon values live (v1.5 or later), since the
+     * note would be redundant there; on v1.0, or when the version is not reported,
+     * it states the requirement and what this game runs.
+     *
+     * @returns {string} HTML span, or '' when no note is needed.
+     */
+    function sandboxDeathSaveIntegrationNote() {
+      if (isBeaconCapableSandbox() === true) return '';
+      const style = 'display:block;text-align:right;font-size:8pt;line-height:1.2em;margin:2px 0 4px 0;color:#FFE9A8';
+      return `<span style="${style}">Beacon sheets need Mod Script Sandbox v${BEACON_SANDBOX_MIN_VERSION} for live death-save syncing (this game: ${escapeForChat(describeSandbox())}).</span>`;
+    }
+
+    /**
      * One-time GM heads-up when a watched PC stores death saves outside legacy
      * attribute objects (Beacon-model sheets like D&D 2024) and the sandbox cannot
      * read them live. The sheet-item API only returns current Beacon values on Mod
@@ -3455,7 +3469,7 @@ var HealthColors =
         `DeathSFX: ${makeBtn(s.auraDeadFX.substring(0, 4), deadFxCmd)}<br>`,
         hr,
         `<u>Death Save Integration</u><br>`,
-        `<span style="display:block;text-align:right;font-size:8pt;line-height:1.2em;margin:2px 0 4px 0;color:#FFE9A8">Beacon sheets need Mod Script Sandbox v${BEACON_SANDBOX_MIN_VERSION} for live death-save syncing (this game: ${escapeForChat(describeSandbox())}).</span>`,
+        sandboxDeathSaveIntegrationNote(),
         `Enabled: ${toggleBtn(s.deathSavesOn, '!aura deathsaves toggle')}<br>`,
         `Success Field(s): ${makeBtn(s.dsSuccessAttr, successCmd, wide)}<br>`,
         `Failure Field(s): ${makeBtn(s.dsFailureAttr, failureCmd, wide)}<br>`,

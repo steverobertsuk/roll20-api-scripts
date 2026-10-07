@@ -179,9 +179,9 @@ Use the PC token. Defaults target the D&D sheets (`deathsave_succ1..3` / `deaths
 ### D&D 2024 (Beacon) sheet
 
 1. Set **Game Settings → Mod (API) Scripts → Mod Script Sandbox** to **v1.0 (Legacy)**, restart, enable the integration and down a PC.
-   - Expected: The startup log line ends `Mod Script Sandbox v1.0`, the GM menu footer says `this game: v1.0`, and a one-time GM notice says the game runs v1.0 and live death-save reads need v1.5.
+   - Expected: The startup log line ends `Mod Script Sandbox v1.0`, the GM menu's Death Save Integration block carries a note ending `this game: v1.0`, and a one-time GM notice says the game runs v1.0 and live death-save reads need v1.5.
 2. Switch to **v1.5 (Latest)** and restart (verify the banner says `Sandbox [v1.5 …]`), then repeat steps 2–5 above.
-   - Expected: The log and menu footer say `v1.5`, no sandbox notice is whispered, and markers follow the sheet within about 3 seconds of ticking a box.
+   - Expected: The log says `v1.5`, the GM menu shows no sandbox note, no sandbox notice is whispered, and markers follow the sheet within about 3 seconds of ticking a box.
 
 ## One-Click Install Options
 
