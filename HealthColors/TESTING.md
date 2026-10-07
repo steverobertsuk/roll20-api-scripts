@@ -168,7 +168,7 @@ Use the PC token. Defaults target the D&D sheets (`deathsave_succ1..3` / `deaths
 8. Run `!aura deathsaves dyingmarker not-a-marker`.
    - Expected: ⚠ warning that the tag will not render.
 9. Select the PC token and run `!aura deathsaves debug`.
-   - Expected: Per-token diagnostic with HP, marker state, resolved watched values, and sheet-item API availability.
+   - Expected: Per-token diagnostic with HP, marker state, resolved watched values, the Mod Script Sandbox version (`v1.0` or `v1.5`, matching the startup banner), and sheet-item API availability.
 10. Select the PC and run `!aura deathsaves sync`.
     - Expected: Markers are reconciled immediately from the current death-save values.
 11. With the PC selected, run `!aura deathsaves watch`, then `!aura deathsaves watchstatus`, then `!aura deathsaves attrs death`.
@@ -178,10 +178,10 @@ Use the PC token. Defaults target the D&D sheets (`deathsave_succ1..3` / `deaths
 
 ### D&D 2024 (Beacon) sheet
 
-1. On the **Default** sandbox, enable the integration and down a PC.
-   - Expected: A one-time GM notice explains that live death-save reads need the Experimental sandbox.
-2. Switch to **Experimental** (verify the restart banner says `EXPERIMENTAL`) and repeat steps 2–5 above.
-   - Expected: Markers follow the sheet within about 3 seconds of ticking a box.
+1. Set **Game Settings → Mod (API) Scripts → Mod Script Sandbox** to **v1.0 (Legacy)**, restart, enable the integration and down a PC.
+   - Expected: The startup log line ends `Mod Script Sandbox v1.0`, the GM menu footer says `this game: v1.0`, and a one-time GM notice says the game runs v1.0 and live death-save reads need v1.5.
+2. Switch to **v1.5 (Latest)** and restart (verify the banner says `Sandbox [v1.5 …]`), then repeat steps 2–5 above.
+   - Expected: The log and menu footer say `v1.5`, no sandbox notice is whispered, and markers follow the sheet within about 3 seconds of ticking a box.
 
 ## One-Click Install Options
 

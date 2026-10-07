@@ -18,7 +18,7 @@ var HealthColors =
     const VERSION = '2.3.0';
     const SCRIPT_NAME = 'HealthColors';
     const SCHEMA_VERSION = '1.1.0';
-    const UPDATED = '2026-10-06 16:00 UTC';
+    const UPDATED = '2026-10-07 21:00 UTC';
 
     // ————— DEFAULTS —————
     /**
@@ -1212,7 +1212,7 @@ var HealthColors =
      * Safe to call multiple times (e.g. after a state reset).
      */
     function checkInstall() {
-      log(`-=> ${SCRIPT_NAME} v${VERSION} [Updated: ${UPDATED}] <=-`);
+      log(`-=> ${SCRIPT_NAME} v${VERSION} [Updated: ${UPDATED}] <=- Mod Script Sandbox ${describeSandbox()}`);
       if (state?.HealthColors?.schemaVersion !== SCHEMA_VERSION) {
         log(`<${SCRIPT_NAME} Updating Schema to v${SCHEMA_VERSION}>`);
         state.HealthColors = { schemaVersion: SCHEMA_VERSION, version: VERSION };
@@ -1936,6 +1936,9 @@ var HealthColors =
      * @param {number} ctx.legacyHits - Count of legacy attributes found.
      * @param {number} ctx.legacyAttrCount - Total legacy attribute count.
      * @param {boolean} ctx.sheetItemAvailable - Whether sheet-item API is available.
+     * @param {string} ctx.sandbox - Mod Script Sandbox label, e.g. 'v1.5' or 'unknown'.
+     * @param {boolean|null} ctx.beaconCapable - Whether the sandbox reads Beacon values live
+     *                                            (null when the version is unknown).
      */
     function processDeathSaveDebugToken(ctx) {
       const {
@@ -1951,6 +1954,8 @@ var HealthColors =
         legacyHits,
         legacyAttrCount,
         sheetItemAvailable,
+        sandbox,
+        beaconCapable,
       } = ctx;
       const emitDebug = (attrValues) => {
         const controlledby = character ? character.get('controlledby') : '';
@@ -1963,14 +1968,25 @@ var HealthColors =
           `<strong>success attrs:</strong> ${escapeForChat(settings.dsSuccessAttr)}`,
           `<strong>failure attrs:</strong> ${escapeForChat(settings.dsFailureAttr)}`,
           `<strong>resolved attr values:</strong> ${attrValues}`,
+          `<strong>Mod Script Sandbox:</strong> ${escapeForChat(sandbox)}`,
           `<strong>sheet-item API (getSheetItem):</strong> ${sheetItemAvailable ? 'available' : 'not available'}`,
           `<strong>legacy attributes:</strong> ${legacyAttrCount} total; watched fields stored as legacy: ${legacyHits}/${watched.length}`,
           `<strong>markers now:</strong> ${escapeForChat(dyingMarker)}=${token.get(dyingMarker) === true} ${escapeForChat(stableMarker)}=${token.get(stableMarker) === true} status_dead=${token.get('status_dead') === true}`,
         ];
         if (character && watched.length && legacyHits === 0) {
-          lines.push(
-            '⚠ Death saves are not legacy attributes on this sheet (Beacon model). Live reading requires the EXPERIMENTAL (Jumpgate) Mod sandbox — if the API console startup banner says [DEFAULT], values read as sheet defaults and markers will not track the sheet.',
-          );
+          if (beaconCapable === false) {
+            lines.push(
+              `⚠ Death saves are not legacy attributes on this sheet (Beacon model) and this game runs Mod Script Sandbox ${escapeForChat(sandbox)}. Live reading needs v${BEACON_SANDBOX_MIN_VERSION}: on v1.0 values read as sheet defaults and markers will not track the sheet.`,
+            );
+          } else if (beaconCapable === null) {
+            lines.push(
+              `⚠ Death saves are not legacy attributes on this sheet (Beacon model). Live reading needs Mod Script Sandbox v${BEACON_SANDBOX_MIN_VERSION}; this sandbox did not report its version, so check the API console startup banner (\`Sandbox [v1.5 …]\`).`,
+            );
+          } else {
+            lines.push(
+              'Death saves are not legacy attributes on this sheet (Beacon model); they are read live through the sheet-item API.',
+            );
+          }
         }
         gmWhisper(lines.join('<br>'));
       };
@@ -2033,15 +2049,17 @@ var HealthColors =
         const barValue = escapeForChat(token.get(`${barUsed}_value`));
         const barMax = escapeForChat(token.get(`${barUsed}_max`));
 
-        // Sandbox/source diagnostics: which fields live in legacy attribute objects, and
-        // whether the sheet-item API exists. The Mod server cannot report Default vs
-        // Experimental directly, so surface the facts the GM needs to judge it.
+        // Sandbox/source diagnostics: which fields live in legacy attribute objects,
+        // whether the sheet-item API exists, and which Mod Script Sandbox the game runs
+        // (Campaign().sandboxVersion), so the GM can see why Beacon reads may be stale.
         const legacySnapshot = character
           ? collectDeathSaveWatchValues(character.id, getDeathSaveProbeFieldSet(watched))
           : {};
         const legacyHits = countLegacyWatchedHits(watched, legacySnapshot);
         const legacyAttrCount = character ? findObjs({ type: 'attribute', characterid: character.id }).length : 0;
         const sheetItemAvailable = typeof getSheetItem === 'function';
+        const sandbox = describeSandbox();
+        const beaconCapable = isBeaconCapableSandbox();
 
         processDeathSaveDebugToken({
           token,
@@ -2056,6 +2074,8 @@ var HealthColors =
           legacyHits,
           legacyAttrCount,
           sheetItemAvailable,
+          sandbox,
+          beaconCapable,
         });
       });
     }
@@ -2830,7 +2850,7 @@ var HealthColors =
     }
 
     /**
-     * Resolves missing watched fields through the Jumpgate sheet-item API and records
+     * Resolves missing watched fields through the sheet-item API and records
      * each name's outcome in the game-wide field-name status cache. A rejection means
      * the game's sheet does not define that name (Roll20 logs the sandbox error itself,
      * uncatchably), so the name is marked 'bad' and never asked for again.
@@ -2862,14 +2882,59 @@ var HealthColors =
       Promise.all(reads).then(onDone, onDone);
     }
 
+    // ————— MOD SCRIPT SANDBOX VERSION —————
+    /** Lowest Mod Script Sandbox version whose sheet-item API reads Beacon sheet values live. */
+    const BEACON_SANDBOX_MIN_VERSION = 1.5;
+
+    /**
+     * Returns the Mod Script Sandbox version this game runs on, as Roll20 reports it.
+     * Since the September 2026 rename the sandboxes are v1.0 (formerly "Default") and
+     * v1.5 (formerly "Experimental"), and `Campaign().sandboxVersion` exposes the version
+     * as a plain property (not via `get`) on both. Returns '' when the property is absent,
+     * i.e. a sandbox build that predates it.
+     *
+     * @returns {string} '1.0', '1.5', or '' when unknown.
+     */
+    function getSandboxVersion() {
+      try {
+        const campaign = typeof Campaign === 'function' ? Campaign() : null;
+        return String(campaign?.sandboxVersion ?? '').trim();
+      } catch (err) {
+        return '';
+      }
+    }
+
+    /**
+     * Whether this sandbox reads Beacon sheet values live through the sheet-item API.
+     * On v1.0 `getSheetItem` only wraps `getAttrByName`, so Beacon fields come back as
+     * sheet defaults.
+     *
+     * @returns {boolean|null} True on v1.5 or later, false on v1.0, null when unknown.
+     */
+    function isBeaconCapableSandbox() {
+      const version = Number.parseFloat(getSandboxVersion());
+      if (Number.isNaN(version)) return null;
+      return version >= BEACON_SANDBOX_MIN_VERSION;
+    }
+
+    /**
+     * Sandbox label for logs, whispers, and the menu footer.
+     *
+     * @returns {string} e.g. 'v1.5', or 'unknown' when the sandbox does not report one.
+     */
+    function describeSandbox() {
+      const version = getSandboxVersion();
+      return version ? `v${version}` : 'unknown';
+    }
+
     /**
      * One-time GM heads-up when a watched PC stores death saves outside legacy
-     * attribute objects (Beacon-model sheets like D&D 2024). Reading those live
-     * depends on the sheet-item API, which only returns current values on the
-     * Experimental (Jumpgate) Mod sandbox. The Mod server cannot detect which
-     * sandbox it is running on (confirmed by Roll20 staff), so the best we can do
-     * is detect the situation that makes the sandbox version matter and tell the
-     * GM what to check. Whispered at most once per sandbox session.
+     * attribute objects (Beacon-model sheets like D&D 2024) and the sandbox cannot
+     * read them live. The sheet-item API only returns current Beacon values on Mod
+     * Script Sandbox v1.5 or later; on v1.0 it returns sheet defaults. The sandbox
+     * version comes from `Campaign().sandboxVersion`, so the notice is skipped on a
+     * capable sandbox and only tells the GM to check the startup banner when the
+     * version is not reported. Whispered at most once per sandbox session.
      *
      * @param {object} character - Roll20 character object.
      * @param {object} snapshot  - Legacy-attribute snapshot for the watched fields.
@@ -2884,16 +2949,30 @@ var HealthColors =
       );
       if (anyLegacyHit) return;
 
+      const beaconCapable = isBeaconCapableSandbox();
+      if (beaconCapable === true) return;
+
       beaconReadRiskWarned = true;
-      gmWhisper(
-        [
-          `⚠ <strong>${escapeForChat(character.get('name'))}</strong>'s death saves are not stored as legacy attributes (Beacon-model sheet, e.g. D&amp;D 2024).`,
-          'HealthColors reads them via the sheet-item API, which only returns <strong>live</strong> values on the <strong>Experimental (Jumpgate)</strong> Mod sandbox. The Mod server cannot detect which sandbox it is running on, so check the API console startup banner:',
-          '• Banner says <strong>[DEFAULT …]</strong> → reads return sheet defaults (often all 0) and markers will NOT track the sheet. Switch via Game Settings → Mod (API) Scripts → API Sandbox Version → <strong>Experimental</strong>, then Restart — and re-check the banner, the setting can silently revert.',
-          '• Banner says <strong>EXPERIMENTAL</strong> → you are set; ignore this notice.',
-          '<i>(Shown once per sandbox session. !aura deathsaves debug includes these details per token.)</i>',
-        ].join('<br>'),
-      );
+      const sandbox = escapeForChat(describeSandbox());
+      const needed = `Mod Script Sandbox v${BEACON_SANDBOX_MIN_VERSION}`;
+      const lines = [
+        `⚠ <strong>${escapeForChat(character.get('name'))}</strong>'s death saves are not stored as legacy attributes (Beacon-model sheet, e.g. D&amp;D 2024).`,
+        `HealthColors reads them via the sheet-item API, which only returns <strong>live</strong> values on <strong>${needed}</strong> or later.`,
+      ];
+      if (beaconCapable === false) {
+        lines.push(
+          `This game runs <strong>Mod Script Sandbox ${sandbox}</strong>, so reads return sheet defaults (often all 0) and markers will NOT track the sheet.`,
+          `Switch via Game Settings → Mod (API) Scripts → Mod Script Sandbox → <strong>v1.5 (Latest)</strong>, then Restart. The API console startup banner should then read <strong>Sandbox [v1.5 …]</strong>.`,
+        );
+      } else {
+        lines.push(
+          'This sandbox did not report its version, so check the API console startup banner:',
+          '• <strong>Sandbox [v1.0 …]</strong> → reads return sheet defaults (often all 0) and markers will NOT track the sheet. Switch via Game Settings → Mod (API) Scripts → Mod Script Sandbox → <strong>v1.5 (Latest)</strong>, then Restart.',
+          '• <strong>Sandbox [v1.5 …]</strong> → you are set; ignore this notice.',
+        );
+      }
+      lines.push('<i>(Shown once per sandbox session. !aura deathsaves debug includes these details per token.)</i>');
+      gmWhisper(lines.join('<br>'));
     }
 
     /**
@@ -2902,7 +2981,7 @@ var HealthColors =
      * sheet values that are not exposed as legacy attribute objects).
      *
      * Fallback resolution only runs for configured fields with no resolved alias, and
-     * prefers `getSheetItem` (Jumpgate) over the chat-parser `@{}` probe: chat probes
+     * prefers `getSheetItem` (live on Mod Script Sandbox v1.5) over the chat-parser `@{}` probe: chat probes
      * log a hard sandbox error for every name the character's sheet does not know.
      *
      * @param {object} character  - Roll20 character object.
@@ -3376,7 +3455,7 @@ var HealthColors =
         `DeathSFX: ${makeBtn(s.auraDeadFX.substring(0, 4), deadFxCmd)}<br>`,
         hr,
         `<u>Death Save Integration</u><br>`,
-        `<span style="display:block;text-align:right;font-size:8pt;line-height:1.2em;margin:2px 0 4px 0;color:#FFE9A8">Beacon sheets require API Sandbox Version: Experimental for live death-save syncing.</span>`,
+        `<span style="display:block;text-align:right;font-size:8pt;line-height:1.2em;margin:2px 0 4px 0;color:#FFE9A8">Beacon sheets need Mod Script Sandbox v${BEACON_SANDBOX_MIN_VERSION} for live death-save syncing (this game: ${escapeForChat(describeSandbox())}).</span>`,
         `Enabled: ${toggleBtn(s.deathSavesOn, '!aura deathsaves toggle')}<br>`,
         `Success Field(s): ${makeBtn(s.dsSuccessAttr, successCmd, wide)}<br>`,
         `Failure Field(s): ${makeBtn(s.dsFailureAttr, failureCmd, wide)}<br>`,

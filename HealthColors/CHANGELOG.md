@@ -20,6 +20,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Unknown effect names given to `!aura heal` / `!aura hurt` are rejected with a GM warning instead of being silently ignored, and the previous setting is kept.
 - A configured custom FX that no longer exists (global setting or character attribute) now whispers the GM once per setting change rather than on every HP change; the API log still records every fallback. The warning names the setting or attribute to fix.
 - Built-in effects are spawned by name with Roll20's own renderer, so they play at Roll20's fixed size and are not scaled by token size or damage amount. Custom FX and colour bursts keep the existing scaling.
+- Updated the Death Save Integration sandbox guidance for Roll20's September 2026 rename: "Experimental" is now **Mod Script Sandbox v1.5** and "Default" is **v1.0**. The script now reads the running version from `Campaign().sandboxVersion`, logs it at startup, shows it in the GM menu footer and in `!aura deathsaves debug`, and only whispers the Beacon sheet notice when the game is on v1.0 (or the version cannot be determined).
 
 ### Fixed
 

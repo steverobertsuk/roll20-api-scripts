@@ -223,7 +223,7 @@
       "name": "deathSavesOn",
       "type": "checkbox",
       "value": "true",
-      "description": "Enable Death Save Integration: distinguish dying / stable / dead player characters at 0 HP from watched death-save fields. Beacon (D&D 2024) sheets need the Experimental sandbox. Default: disabled."
+      "description": "Enable Death Save Integration: distinguish dying / stable / dead player characters at 0 HP from watched death-save fields. Beacon (D&D 2024) sheets need Mod Script Sandbox v1.5. Default: disabled."
     },
     {
       "name": "dsSuccessAttr",
@@ -290,7 +290,8 @@
     "jukeboxtrack.playing": "write",
     "jukeboxtrack.softstop": "write",
     "jukeboxtrack.volume": "write",
-    "Campaign.token_markers": "read"
+    "Campaign.token_markers": "read",
+    "Campaign.sandboxVersion": "read"
   },
   "conflicts": []
 }

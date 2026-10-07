@@ -15,7 +15,7 @@
 - **Heal & Hurt FX**: Spawns particle effects when tokens are hurt or healed — a recoloured default burst, any Roll20 built-in effect (`glow-holy`, `explode-blood`, …), or a custom FX from the Effects menu, set globally or per character. See [Heal & Hurt FX](#heal--hurt-fx).
 - **Automated Dead Status**: Automatically applies a configurable status marker (default: Red X) when a token reaching 0 HP.
 - **NPC vs PC Config**: Separate settings for players and NPCs, including nameplate visibility and health tracking toggles.
-- **Optional Death Save Integration**: An off-by-default feature that distinguishes **dying** (configurable marker), **stable** (green), and **dead** (Red X) player characters at 0 HP, with marker sync driven automatically from watched death-save attributes (works on both the D&D 2024 and 2014 sheets; 2024/Beacon sheets require the Experimental (Jumpgate) Mod sandbox). See [Death Save Integration](#death-save-integration-optional).
+- **Optional Death Save Integration**: An off-by-default feature that distinguishes **dying** (configurable marker), **stable** (green), and **dead** (Red X) player characters at 0 HP, with marker sync driven automatically from watched death-save attributes (works on both the D&D 2024 and 2014 sheets; 2024/Beacon sheets need Mod Script Sandbox v1.5). See [Death Save Integration](#death-save-integration-optional).
 
 ---
 
@@ -150,11 +150,11 @@ HealthColors watches the configured success/failure fields and updates markers a
 
 ### D&D 2024 / Beacon sheets — sandbox requirement
 
-On Beacon-model sheets (e.g. D&D 2024), the death-save checkboxes are **not** legacy attributes; HealthColors reads them with Roll20's sheet-item API (`getSheetItem`). That API only returns **live** values on the **Experimental (Jumpgate)** Mod sandbox:
+On Beacon-model sheets (e.g. D&D 2024), the death-save checkboxes are **not** legacy attributes; HealthColors reads them with Roll20's sheet-item API (`getSheetItem`). That API only returns **live** values on **Mod Script Sandbox v1.5** (formerly "Experimental"); on **v1.0** (formerly "Default") it returns sheet defaults, often all `0`, so markers cannot track the sheet.
 
-- Switch via **Game Settings → Mod (API) Scripts → API Sandbox Version → Experimental**, then **Restart Server**.
-- Verify the API console startup banner says `EXPERIMENTAL`, not `[DEFAULT …]`. A known Roll20 issue can silently revert the selection — if the banner still says DEFAULT, toggle Default → restart → Experimental → restart.
-- On the Default sandbox, reads return sheet defaults (often all `0`), so markers cannot track the sheet. The Mod server cannot detect its own sandbox version, so HealthColors whispers a one-time GM notice when it finds a watched PC whose death saves are not legacy attributes, and `!aura deathsaves debug` reports the storage/API facts per token.
+- Roll20 renamed the sandboxes in September 2026 and made v1.5 the default for games that never chose one. Check yours under **Game Settings → Mod (API) Scripts → Mod Script Sandbox**; pick **v1.5 (Latest)** and **Restart Server** if needed.
+- The API console startup banner shows the running version, e.g. `##########> Sandbox [v1.5 2026-08-19] : Ready fired …`. HealthColors also logs it on startup and shows it in the GM menu footer.
+- HealthColors reads the version from `Campaign().sandboxVersion`. When it finds a watched PC whose death saves are not legacy attributes on a v1.0 sandbox, it whispers a one-time GM notice; on v1.5 no notice is needed. `!aura deathsaves debug` reports the sandbox version and the storage/API facts per token.
 
 ### Behaviour
 
