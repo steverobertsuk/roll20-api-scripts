@@ -105,9 +105,7 @@ state.CombatEncounterDirector = {
       name: 'goblin-ambush',
       pageId: '<pageId>',
       savedAt: 1700000000000,
-      tokens: [
-        /* snapshots */
-      ],
+      tokens: [/* snapshots */],
     },
   },
 };
@@ -181,23 +179,26 @@ All user-facing strings are translated via `t(key, locale, vars?)` in `src/i18n.
 ### Adding a new translation key
 
 1. Add the key and English value to **`src/locales/locale/en-US.js`**.
-2. Add the same key (with the English value as placeholder) to any other locale files you want to keep in sync, **or** run `npm run sync-locales` to auto-translate (requires `GOOGLE_API_KEY` in `.env`).
+2. Add the same key (with the English value as placeholder) to any other locale files you want to keep in sync, **or** run `npm run sync-locales` to auto-translate.
 3. Call `t('section.newKey', lang)` in your source file.
 
 ### Translating / syncing locales
 
 ```bash
-# Translate all locales that have keys matching en-US
-npm run sync-locales
-
-# Re-translate ALL keys in all locales (overwrites existing translations)
-npm run regenerate-locales
-
-# Translate a single locale
-npm run sync-locales -- --locale fr
+npm run sync-locales                                   # translate strings missing from any locale
+npm run sync-locales -- --keys handout.commands.intro  # translate reworded keys again (comma-separated)
+npm run sync-locales -- --dry-run                      # list what would be translated, without changes
+npm run sync-locales -- --locale=fr                    # one locale
+npm run sync-locales -- --untranslated                 # also re-send strings still identical to English
+npm run regenerate-locales                             # re-translate everything (slow)
 ```
 
-The sync script uses Google Translate. Provide a service-account key in `GOOGLE_API_KEY` (env var or `.env` file at the project root).
+- Strings a locale already has are left alone, even when they match English, because many are meant to (grid names, command words, product names). `--untranslated` re-sends those, so check its result line by line.
+- After rewording an English string, run `--keys` with its key path (array items by index, e.g. `handout.quickStart.steps.2`); otherwise the old translations stay.
+- Four locales are translated at once (`--concurrency=N`, `1` for one at a time). The script slows down and retries when Google asks it to, and asks before starting unless given `--yes`.
+- It uses Google Translate's free endpoint (no key needed), masks `{placeholders}`, `--options` and `&lt;…&gt;`, keeps English when a placeholder does not survive, and formats files with the Mod's Prettier settings.
+- Review the machine translations before a release.
+- `scripts/sync-locales.mjs` is the same file in every Mod in this repository; copy changes to the others.
 
 ### Updating the project layout table
 
