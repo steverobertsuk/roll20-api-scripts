@@ -68,14 +68,25 @@ Watch mode does **not** auto-bump the version.
 
 The build bundles `src/index.js` and writes both root and versioned output files.
 
-The build does not regenerate locale files. Run `npm run sync-locales` for incremental locale updates or `npm run regenerate-locales` to retranslate everything. Both commands support targeting a single locale with `-- --locale=<code>` or a positional locale argument (for example `npm run sync-locales -- --locale=es` or `npm run regenerate-locales uk`).
+The build does not regenerate locale files. Translate them with:
 
-Both commands prompt for confirmation before making translation requests. Use `-- --yes` (or `-y`) to skip the prompt in automated/non-interactive runs.
+```bash
+npm run sync-locales                                   # translate strings missing from any locale
+npm run sync-locales -- --keys handout.commands.intro  # translate reworded keys again (comma-separated)
+npm run sync-locales -- --dry-run                      # list what would be translated, without changes
+npm run sync-locales -- --locale=fr                    # one locale
+npm run sync-locales -- --untranslated                 # also re-send strings still identical to English
+npm run regenerate-locales                             # re-translate everything (slow)
+```
 
-Estimated timing shown before confirmation:
+Both commands also accept a positional locale (`npm run regenerate-locales uk`). Before translating they show how many strings will be sent and roughly how long it will take.
 
-- Sync mode: usually several minutes. Estimated minimum is `4 x number of targeted locales`; estimated maximum is `7 x targeted locales that still need translation`.
-- Regenerate mode: `30-60` minutes per targeted locale.
+- Strings a locale already has are left alone, even when they match English, because many are meant to (grid names, command words, product names). `--untranslated` re-sends those, so check its result line by line.
+- After rewording an English string, run `--keys` with its key path (array items by index, e.g. `handout.quickStart.steps.2`); otherwise the old translations stay.
+- Four locales are translated at once (`--concurrency=N`, `1` for one at a time). The script slows down and retries when Google asks it to, and asks before starting unless given `--yes`.
+- It uses Google Translate's free endpoint (no key needed), masks `{placeholders}`, `--options` and `&lt;…&gt;`, keeps English when a placeholder does not survive, and formats files with the Mod's Prettier settings.
+- Review the machine translations before a release.
+- `scripts/sync-locales.mjs` is the same file in every Mod in this repository; copy changes to the others.
 
 Format source and docs:
 
