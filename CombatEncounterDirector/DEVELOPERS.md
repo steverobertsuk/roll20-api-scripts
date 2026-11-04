@@ -93,7 +93,6 @@ state.CombatEncounterDirector = {
       },
       hpModifier: 150, // percentage of original max HP
       acModifier: 1, // flat AC modifier
-      damageModifier: 125, // percentage (metadata only, not written to token)
       preset: 'elite', // boss preset key or null
       savedPosition: { left, top, layer }, // optional
       lastModified: 1700000000000,
@@ -105,7 +104,9 @@ state.CombatEncounterDirector = {
       name: 'goblin-ambush',
       pageId: '<pageId>',
       savedAt: 1700000000000,
-      tokens: [/* snapshots */],
+      tokens: [
+        /* snapshots */
+      ],
     },
   },
 };
