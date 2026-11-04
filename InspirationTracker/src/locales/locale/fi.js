@@ -1,3 +1,306 @@
-const TRANSLATION = {};
+const TRANSLATION = {
+  terms: {
+    heroic: 'Sankarillinen inspiraatio',
+    classic: 'Inspiraatio',
+  },
+  titles: {
+    ready: 'InspirationTracker on valmis.',
+    settings: 'InspirationTrackerin asetukset',
+    help: 'InspirationTrackerin komennot',
+    party: 'Seurueen inspiraatio',
+    yours: 'Omat hahmosi',
+    status: 'InspirationTrackerin tila',
+  },
+  messages: {
+    gained: '{name} sai: {term}!',
+    spent: '{name} käyttää: {term}.',
+    spentBy: '{player} käytti hahmolle {name}: {term}.',
+    spentSheet: 'Hahmolla {name} ei enää ole: {term} (muutettu lomakkeella tai pelimerkissä).',
+    restored: '{name} sai takaisin: {term}.',
+    removed: '{name} menetti: {term}.',
+    already: 'Hahmolla {name} on jo: {term}.',
+    none: 'Hahmolla {name} ei ole: {term}.',
+    busy: 'Hahmoa {name} päivitetään vielä. Yritä hetken päästä uudelleen.',
+    passOffer:
+      'Hahmolla {name} on jo: {term}, eikä sitä voi olla kahdesti. Anna se seurueen jäsenelle, jolla sitä ei ole, tai luovu siitä.',
+    passNobody: 'Kaikilla muilla seurueen jäsenillä se on jo.',
+    passAsked: 'Hahmon {name} pelaajilta kysyttiin, kuka saa: {term}.',
+    passed: '{from} antaa hahmolle {to}: {term}!',
+    passAlready: 'Hahmolla {to} se on jo. Valitse joku muu.',
+    declined: '{name} luopuu ylimääräisestä: {term}.',
+    undoAlready: 'Hahmolla {name} se on jo taas.',
+    synced: 'Luettuja lomakkeita: {checked}. Inspiraatio: {inspired}.',
+    migrated:
+      'Version 0.1 asetukset säilytettiin: tunnus, erikoistehoste ja sen tyyppi. Uudet asetukset alkavat oletusarvoista.',
+    legacyCommand: 'Vanha komentosi {command} toimii yhä, kuten myös {main}.',
+    macroHint:
+      'Anna pelaajille Käytä-painike suorittamalla {command}. Se lisää pelimerkkitoiminnon kaikille.',
+    macro:
+      'Makro "{name}" on valmis: pelaajat näkevät sen pelimerkkitoimintona, kun he valitsevat hallitsemansa pelimerkin.',
+    journal: 'Ohje- ja Command Deck -monisteet luotiin uudelleen.',
+    readyHint: 'Kirjoita {command} avataksesi valikon, tai avaa Command Deck -moniste.',
+  },
+  errors: {
+    denied: 'Et voi tehdä sitä hahmolle {name}.',
+    gmOnly: 'Vain GM voi käyttää tätä komentoa.',
+    gmOnlyHint: 'Pelaajat voivat käyttää komentoja spend, party ja help.',
+    spendOff: 'GM on estänyt pelaajia käyttämästä inspiraatiota.',
+    noCharacter: 'Nämä pelimerkit eivät edusta hahmoa: {names}.',
+    nothingSelected: 'Valitse ensin pelimerkki.',
+    nothingSelectedHint:
+      'Valitse hahmoja edustavia pelimerkkejä, tai lisää --ids pelimerkkien tai hahmojen ID:illä.',
+    writeFailed: 'Hahmon {name} lomaketta ei voitu muuttaa.',
+    offerGone: 'Valinta on jo tehty, tai se on vanhentunut.',
+    passInvalid: 'Valitse joku muu seurueen jäsen kuin se, jolla se on.',
+    undoGone: 'Käyttö on jo peruttu, tai se on liian vanha.',
+    unknownMarker: 'Pelimerkin tunnusta nimeltä "{value}" ei ole.',
+    unknownMarkerHint: 'Valitse tunnus tunnussarjoistasi asetusten Tunnus-painikkeella.',
+    badSetting: 'Asetusta {key} ei voi asettaa arvoon "{value}".',
+    badSettingHint: 'Kirjoita !inspiration set nähdäksesi kaikki asetukset ja niiden vaihtoehdot.',
+    unknownCommand: 'Tuntematon komento: {command}.',
+    unknownCommandHint: 'Kirjoita !inspiration help nähdäksesi komentoluettelon.',
+  },
+  menu: {
+    selected: 'Valitut pelimerkit',
+    party: 'Seurue',
+    tools: 'Työkalut',
+    hint: 'Täydet ohjeet ovat monisteessa "{help}".',
+    noSheet: 'ei lomaketta',
+    noneYours: 'Et hallitse yhtään hahmoa, jolla on lomake.',
+    partyEmpty: 'Et hallitse yhtään seurueen jäsentä.',
+    partyEmptyGm:
+      'Seurueessa ei ole vielä ketään. Määritä hahmoja pelaajille, tai valitse pelimerkkejä ja napsauta Lisää seurueeseen.',
+    partyCount: '{term}: {count}/{total}.',
+  },
+  buttons: {
+    menu: 'Valikko',
+    give: 'Anna',
+    remove: 'Poista',
+    toggle: 'Vaihda',
+    spend: 'Käytä',
+    party: 'Seurue',
+    partyAdd: 'Lisää seurueeseen',
+    partyRemove: 'Poista seurueesta',
+    settings: 'Asetukset',
+    macro: 'Pelaajan makro',
+    sync: 'Synkronoi',
+    status: 'Tila',
+    help: 'Ohje',
+    reset: 'Palauta asetukset',
+    refresh: 'Päivitä',
+    undo: 'Kumoa',
+    decline: 'Luovu',
+  },
+  values: {
+    on: 'Päällä',
+    off: 'Pois',
+    wording: {
+      auto: 'Lomakkeen mukaan',
+      2014: 'Inspiraatio (2014)',
+      2024: 'Sankarillinen inspiraatio (2024)',
+    },
+    announce: {
+      public: 'Kaikki',
+      gm: 'GM ja omistajat',
+      off: 'Ei kukaan',
+    },
+  },
+  settings: {
+    language: {
+      label: 'Kieli',
+      desc: 'Valikkojen, viestien ja monisteiden kieli.',
+    },
+    marker: {
+      label: 'Tunnus',
+      desc: 'Pelimerkin tunnus, joka näkyy, kun hahmolla on inspiraatio. Myös omat tunnussarjat näytetään.',
+    },
+    wording: {
+      label: 'Nimitys',
+      desc: 'Kutsu sitä nimellä Inspiraatio tai Sankarillinen inspiraatio. "Lomakkeen mukaan" käyttää kunkin D&D 2024 -lomakkeen valittuja sääntöjä, ja 2014-lomakkeella nimitystä Inspiraatio.',
+    },
+    announce: {
+      label: 'Ilmoitus',
+      desc: 'Kuka näkee chat-viestin, kun inspiraatio saadaan tai käytetään.',
+    },
+    fx: {
+      label: 'Erikoistehoste',
+      desc: 'Toista pelimerkissä erikoistehoste, kun se saa inspiraation.',
+    },
+    fxType: {
+      label: 'Tehosteen tyyppi',
+      desc: 'Toistettava tehoste, esimerkiksi nova-holy, tai oman tehosteen ID.',
+    },
+    playerSpend: {
+      label: 'Pelaajat voivat käyttää',
+      desc: 'Anna pelaajien käyttää inspiraatiota hallitsemilleen hahmoille. GM saa tiedon ja Kumoa-painikkeen.',
+    },
+    playerOverview: {
+      label: 'Pelaajat näkevät seurueen',
+      desc: 'Anna pelaajien nähdä, kenellä seurueessa on inspiraatio.',
+    },
+    passOn: {
+      label: 'Luovuta eteenpäin (2024)',
+      desc: 'Vuoden 2024 säännöissä hahmo, joka saisi Sankarillisen inspiraation, vaikka sillä on se jo, voi antaa sen toiselle seurueen jäsenelle.',
+    },
+  },
+  status: {
+    version: 'Versio',
+    beacon: 'D&D 2024 -lomakkeet',
+    legacy: '2014-lomakkeet',
+    none: 'Hahmot ilman inspiraatioruutua',
+    rules2024: 'Käyttää 2024-sääntöjä',
+    party: 'Seurueen jäsenet',
+    marker: 'Tunnus',
+    fx: 'Erikoistehoste',
+    legacyCommand: 'Vanha komento',
+  },
+  help: {
+    menu: 'Näyttää valikon. Kun pelimerkkejä on valittu, antaa tai poistaa inspiraation, kuten versio 0.1 teki.',
+    give: 'Antaa inspiraation valituille hahmoille.',
+    remove: 'Poistaa inspiraation valituilta hahmoilta laskematta sitä käytetyksi.',
+    toggle:
+      'Antaa inspiraation valituille hahmoille, joilla sitä ei ole, ja poistaa sen niiltä, joilla se on.',
+    spend: 'Käyttää valittujen hahmojen inspiraation ja ilmoittaa GM:lle.',
+    party:
+      'Näyttää, kenellä seurueessa on inspiraatio, ja painikkeet sen antamiseen, poistamiseen tai käyttämiseen.',
+    partyEdit: 'Lisää valitut hahmot seurueeseen tai poistaa ne siitä.',
+    ids: 'Toimii annetuilla pelimerkkien tai hahmojen ID:illä valittujen pelimerkkien sijaan.',
+    undo: 'Palauttaa käytetyn inspiraation. ID löytyy GM:n saamasta käyttöviestistä.',
+    macro:
+      'Lisää pelimerkkitoiminnon "Inspiration", jota pelaajat napsauttavat käyttääkseen inspiraation.',
+    sync: 'Lukee kaikki lomakkeet uudelleen ja korjaa tunnukset.',
+    set: 'Näyttää asetukset tai muuttaa yhtä.',
+    reset: 'Palauttaa kaikki asetukset oletuksiin kieltä lukuun ottamatta.',
+    status: 'Näyttää version, löydetyt lomakkeet ja tärkeimmät asetukset.',
+    journal: 'Luo Ohje- ja Command Deck -monisteet uudelleen.',
+    help: 'Näyttää tämän luettelon.',
+  },
+  helpPlayer: {
+    menu: 'Näyttää hahmosi ja sen, onko niillä inspiraatio.',
+    spend: 'Käyttää valitun hahmon inspiraation.',
+    party: 'Näyttää seurueen, jos GM sallii sen.',
+    help: 'Näyttää tämän luettelon.',
+  },
+  handout: {
+    versionLabel: 'Versio',
+    subtitle: 'Inspiraatio ja Sankarillinen inspiraatio D&D 5e:n 2014- ja 2024-lomakkeille',
+    overview: {
+      heading: 'Yleiskatsaus',
+      body: 'InspirationTracker pitää D&D:n inspiraation ajan tasalla hahmolomakkeella, pelimerkissä ja chatissa. Anna se valikosta, lomakkeelta tai pelimerkin tunnuksella, niin jokainen hahmon pelimerkki näyttää tunnuksen. Pelaajat voivat käyttää sen yhdellä napsautuksella, ja GM saa tiedon ja Kumoa-painikkeen. Se toimii D&D 2024 -lomakkeen kanssa, jossa sitä kutsutaan Sankarilliseksi inspiraatioksi, sekä 2014 OGL -lomakkeen kanssa.',
+    },
+    quickStart: {
+      heading: 'Pikaopas',
+      steps: [
+        'Avaa Command Deck -moniste, tai kirjoita !inspiration avataksesi valikon.',
+        'Valitse pelimerkki ja napsauta Anna. Hahmo saa inspiraation, ja sen pelimerkit näyttävät tunnuksen.',
+        'Napsauta kerran Pelaajan makro, jotta pelaajat saavat Inspiration-pelimerkkitoiminnon sen käyttämiseen.',
+        'Napsauta Seurue nähdäksesi, kenellä on inspiraatio.',
+      ],
+    },
+    sheets: {
+      heading: 'Hahmolomakkeet',
+      colSheet: 'Lomake',
+      colWhere: 'Missä inspiraatio säilytetään',
+      colSheet2014: 'D&D 5E by Roll20 (2014 OGL)',
+      where2014: 'Inspiration-ruutu, attribuutti "inspiration".',
+      colSheet2024: 'D&D Fifth Edition (5E & 5.5E, 2024)',
+      where2024:
+        'Heroic Inspiration -ruutu, jota luetaan ja kirjoitetaan getSheetItem- ja setSheetItem-funktioilla.',
+      points: [
+        'Lomakkeen ruudun valitseminen tai tyhjentäminen huomataan heti: tunnus seuraa perässä, ja tyhjentäminen lasketaan käytöksi.',
+        'Kun Nimitys on "Lomakkeen mukaan", kukin D&D 2024 -hahmo käyttää lomakkeensa asetuksissa valittuja sääntöjä: 2024-säännöt sanovat Sankarillinen inspiraatio, 2014-säännöt Inspiraatio.',
+        'Hahmoihin, joilla ei ole kumpaakaan lomaketta, ei kosketa, joten NPC-pelimerkit eivät muutu.',
+      ],
+    },
+    players: {
+      heading: 'Pelaajat',
+      points: [
+        'Pelaajat voivat käyttää inspiraation hallitsemilleen hahmoille: napsauta Käytä chatissa tai Inspiration-pelimerkkitoimintoa.',
+        'GM saa viestin siitä, kuka sen käytti, ja Kumoa-painikkeen.',
+        'Kun pelaaja kirjoittaa !inspiration, hän näkee hahmonsa ja sen, onko niillä inspiraatio.',
+        'Kytke Pelaajat voivat käyttää pois, jos haluat käytön pysyvän GM:n käsissä.',
+      ],
+    },
+    passOn: {
+      heading: 'Luovuttaminen eteenpäin (2024-säännöt)',
+      points: [
+        'Hahmolla ei voi olla Sankarillista inspiraatiota kahdesti. Kun hahmo, jolla se on, saisi sen uudelleen, sen pelaajia pyydetään antamaan se toiselle seurueen jäsenelle, jolla sitä ei ole.',
+        'Valinnassa tarjotaan jokainen seurueen jäsen, jolla ei ole Sankarillista inspiraatiota, sekä Luovu. Se vanhenee tunnin kuluttua.',
+        'Vuoden 2014 säännöissä GM:lle vain ilmoitetaan, että hahmolla on jo Inspiraatio.',
+        'Kytke Luovuta eteenpäin pois, jos haluat aina saada vain sen viestin.',
+      ],
+    },
+    party: {
+      heading: 'Seurue',
+      points: [
+        'Seurueeseen kuuluu jokainen hahmo, jota pelaaja hallitsee. Valitse pelimerkkejä ja napsauta Lisää seurueeseen tai Poista seurueesta muuttaaksesi sitä.',
+        'GM:n yleiskatsauksessa on Anna-, Poista- ja Käytä-painikkeet jokaiselle jäsenelle.',
+        'Kytke Pelaajat näkevät seurueen päälle, jotta myös pelaajat näkevät yleiskatsauksen. He saavat Käytä-painikkeet vain omille hahmoilleen.',
+      ],
+    },
+    markers: {
+      heading: 'Pelimerkkien tunnukset',
+      points: [
+        'Valitse tunnus Tunnus-asetuksella. Roll20:n värilliset pisteet, oletustunnukset ja omat tunnussarjasi näytetään.',
+        'Tunnuksen lisääminen pelimerkkiin käsin tai TokenModilla antaa hahmolle inspiraation. Sen poistaminen käyttää sen.',
+        'Tunnuksen vaihtaminen siirtää sen heti jokaiseen pelimerkkiin.',
+        'D&D 2024 -lomakkeen omia tilatunnuksia ei tarjota, koska lomake asettaa ne itse.',
+      ],
+    },
+    commands: {
+      heading: 'Komennot',
+      intro:
+        'Jokainen komento alkaa sanalla !inspiration. Komennot kohdistuvat valittuihin pelimerkkeihin, ellei --ids ole annettu.',
+      mods: 'Myös muut Mods voivat lähettää näitä komentoja, esimerkiksi ScriptCardsista. Muut Mods voivat myös kutsua funktioita InspirationTracker.give, spend, remove ja isInspired.',
+      colCommand: 'Komento',
+      colDesc: 'Mitä se tekee',
+    },
+    settings: {
+      heading: 'Asetukset',
+      intro: 'Muuta näitä Asetukset-painikkeella, tai kirjoita !inspiration set <setting> <value>.',
+      colKey: 'Asetus',
+      colName: 'Nimi',
+      colDesc: 'Mitä se tekee',
+    },
+    upgrading: {
+      heading: 'Päivitys versiosta 0.1',
+      points: [
+        'Version 0.1 tunnus, erikoistehoste ja tehosteen tyyppi säilytetään.',
+        'Jos valitsit versiossa 0.1 oman komennon, se toimii yhä !inspiration-komennon rinnalla.',
+        '!inspiration valittujen pelimerkkien kanssa antaa tai poistaa yhä inspiraation.',
+      ],
+    },
+    troubleshooting: {
+      heading: 'Vianmääritys',
+      points: [
+        'Eikö tunnus näy pelimerkissä? Napsauta Synkronoi lukeaksesi kaikki lomakkeet uudelleen.',
+        'Pelimerkillä, joka ei edusta hahmoa, ei voi olla inspiraatiota. Yhdistä se ensin hahmoon.',
+        'Eikö mitään tapahdu, kun pelaaja napsauttaa Käytä? Tarkista, että hahmo on määritetty sille pelaajalle.',
+        'Virheet kirjoitetaan API-konsoliin Mod Scripts -sivulla.',
+      ],
+    },
+    languages: {
+      heading: 'Kielet',
+      body: 'InspirationTracker on käännetty alla oleville kielille. Valitse yksi Kieli-asetuksella.',
+      colCode: 'Koodi',
+      colName: 'Kieli',
+      colNative: 'Alkuperäinen nimi',
+    },
+    credits: {
+      heading: 'Tekijät',
+      original: 'Alkuperäinen Mod:',
+      maintainer: 'Version 1 ylläpitäjä:',
+      support: 'Ilmoita virheistä ja ideoista Roll20:n Mod-foorumilla tai GitHubissa.',
+    },
+    footer: 'Painikkeet kaikkiin toimintoihin ovat monisteessa "{deck}".',
+  },
+  deck: {
+    subtitle: 'Command Deck',
+    selectedDesc: 'Valitse yksi tai useampi pelimerkki ja napsauta sitten.',
+    partyDesc: 'Katso, kenellä on inspiraatio, ja valitse, ketkä kuuluvat seurueeseen.',
+    toolsDesc: 'Valikko, asetukset, pelaajan makro ja ohje.',
+    footer: 'Täydet ohjeet ovat monisteessa "{help}".',
+  },
+};
 
 export default TRANSLATION;

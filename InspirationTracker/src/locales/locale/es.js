@@ -1,3 +1,306 @@
-const TRANSLATION = {};
+const TRANSLATION = {
+  terms: {
+    heroic: 'Inspiración heroica',
+    classic: 'Inspiración',
+  },
+  titles: {
+    ready: 'InspirationTracker está listo.',
+    settings: 'Ajustes de InspirationTracker',
+    help: 'Comandos de InspirationTracker',
+    party: 'Inspiración del grupo',
+    yours: 'Tus personajes',
+    status: 'Estado de InspirationTracker',
+  },
+  messages: {
+    gained: '¡{name} tiene {term}!',
+    spent: '{name} usa {term}.',
+    spentBy: '{player} ha gastado {term} por {name}.',
+    spentSheet: '{name} ya no tiene {term} (cambiado en la hoja o en la ficha).',
+    restored: '{name} recupera {term}.',
+    removed: 'Se ha quitado {term} a {name}.',
+    already: '{name} ya tiene {term}.',
+    none: '{name} no tiene {term}.',
+    busy: '{name} todavía se está actualizando. Inténtalo de nuevo en un momento.',
+    passOffer:
+      '{name} ya tiene {term} y no puede tenerla dos veces. Dásela a un miembro del grupo que no la tenga, o déjala pasar.',
+    passNobody: 'Todos los demás miembros del grupo ya la tienen.',
+    passAsked: 'Se ha preguntado a los jugadores de {name} quién debe recibir {term}.',
+    passed: '¡{from} da {term} a {to}!',
+    passAlready: '{to} ya la tiene. Elige a otra persona.',
+    declined: '{name} deja pasar la {term} extra.',
+    undoAlready: '{name} ya la vuelve a tener.',
+    synced: 'Hojas leídas: {checked}. Con inspiración: {inspired}.',
+    migrated:
+      'Se han conservado los ajustes de la versión 0.1: marcador, efecto especial y su tipo. Los ajustes nuevos empiezan con sus valores por defecto.',
+    legacyCommand: 'Tu antiguo comando {command} sigue funcionando, igual que {main}.',
+    macroHint:
+      'Para dar a los jugadores un botón Gastar, ejecuta {command}. Añade una acción de ficha para todos.',
+    macro:
+      'La macro "{name}" está lista: los jugadores la ven como acción de ficha al seleccionar una ficha que controlan.',
+    journal: 'Se han reconstruido los folletos de Ayuda y Panel de comandos.',
+    readyHint: 'Escribe {command} para ver el menú, o abre el folleto del Panel de comandos.',
+  },
+  errors: {
+    denied: 'No puedes hacer eso con {name}.',
+    gmOnly: 'Solo el GM puede usar ese comando.',
+    gmOnlyHint: 'Los jugadores pueden usar spend, party y help.',
+    spendOff: 'El GM ha desactivado que los jugadores gasten inspiración.',
+    noCharacter: 'Estas fichas no representan a ningún personaje: {names}.',
+    nothingSelected: 'Selecciona primero una ficha.',
+    nothingSelectedHint:
+      'Selecciona fichas que representen personajes, o añade --ids con ID de fichas o de personajes.',
+    writeFailed: 'No se ha podido cambiar la hoja de {name}.',
+    offerGone: 'Esa elección ya se ha hecho o ha caducado.',
+    passInvalid: 'Elige un miembro del grupo distinto del que la tiene.',
+    undoGone: 'Ese gasto ya se ha deshecho o es demasiado antiguo.',
+    unknownMarker: 'No hay ningún marcador de ficha llamado "{value}".',
+    unknownMarkerHint:
+      'Usa el botón Marcador de los ajustes para elegir uno de tus conjuntos de marcadores.',
+    badSetting: 'No se puede poner {key} a "{value}".',
+    badSettingHint: 'Escribe !inspiration set para ver todos los ajustes y sus opciones.',
+    unknownCommand: 'Comando desconocido: {command}.',
+    unknownCommandHint: 'Escribe !inspiration help para ver la lista de comandos.',
+  },
+  menu: {
+    selected: 'Fichas seleccionadas',
+    party: 'Grupo',
+    tools: 'Herramientas',
+    hint: 'Las instrucciones completas están en el folleto "{help}".',
+    noSheet: 'sin hoja',
+    noneYours: 'No controlas ningún personaje con hoja.',
+    partyEmpty: 'No controlas ningún miembro del grupo.',
+    partyEmptyGm:
+      'Todavía no hay nadie en el grupo. Asigna personajes a los jugadores, o selecciona fichas y pulsa Añadir al grupo.',
+    partyCount: '{count} de {total} tienen {term}.',
+  },
+  buttons: {
+    menu: 'Menú',
+    give: 'Dar',
+    remove: 'Quitar',
+    toggle: 'Alternar',
+    spend: 'Gastar',
+    party: 'Grupo',
+    partyAdd: 'Añadir al grupo',
+    partyRemove: 'Quitar del grupo',
+    settings: 'Ajustes',
+    macro: 'Macro de jugador',
+    sync: 'Sincronizar',
+    status: 'Estado',
+    help: 'Ayuda',
+    reset: 'Restablecer ajustes',
+    refresh: 'Actualizar',
+    undo: 'Deshacer',
+    decline: 'Dejar pasar',
+  },
+  values: {
+    on: 'Activado',
+    off: 'Desactivado',
+    wording: {
+      auto: 'Según la hoja',
+      2014: 'Inspiración (2014)',
+      2024: 'Inspiración heroica (2024)',
+    },
+    announce: {
+      public: 'Todos',
+      gm: 'GM y propietarios',
+      off: 'Nadie',
+    },
+  },
+  settings: {
+    language: {
+      label: 'Idioma',
+      desc: 'Idioma de los menús, mensajes y folletos.',
+    },
+    marker: {
+      label: 'Marcador',
+      desc: 'Marcador de ficha que se muestra mientras un personaje tiene inspiración. También aparecen los conjuntos de marcadores personalizados.',
+    },
+    wording: {
+      label: 'Denominación',
+      desc: 'Llamarla Inspiración o Inspiración heroica. "Según la hoja" usa las reglas elegidas en cada hoja de D&D 2024, e Inspiración en la hoja de 2014.',
+    },
+    announce: {
+      label: 'Anunciar',
+      desc: 'Quién ve el mensaje del chat cuando se gana o se gasta inspiración.',
+    },
+    fx: {
+      label: 'Efecto especial',
+      desc: 'Reproduce un efecto especial en la ficha cuando gana inspiración.',
+    },
+    fxType: {
+      label: 'Tipo de efecto',
+      desc: 'Qué efecto reproducir, como nova-holy, o el ID de un efecto personalizado.',
+    },
+    playerSpend: {
+      label: 'Los jugadores pueden gastar',
+      desc: 'Permite a los jugadores gastar inspiración de los personajes que controlan. Se avisa al GM, con un botón Deshacer.',
+    },
+    playerOverview: {
+      label: 'Los jugadores ven el grupo',
+      desc: 'Permite a los jugadores ver quién del grupo tiene inspiración.',
+    },
+    passOn: {
+      label: 'Pasarla (2024)',
+      desc: 'Con las reglas de 2024, un personaje que ganaría Inspiración heroica teniéndola ya puede dársela a otro miembro del grupo.',
+    },
+  },
+  status: {
+    version: 'Versión',
+    beacon: 'Hojas de D&D 2024',
+    legacy: 'Hojas de 2014',
+    none: 'Personajes sin casilla de inspiración',
+    rules2024: 'Con reglas de 2024',
+    party: 'Miembros del grupo',
+    marker: 'Marcador',
+    fx: 'Efecto especial',
+    legacyCommand: 'Comando antiguo',
+  },
+  help: {
+    menu: 'Muestra el menú. Con fichas seleccionadas, da o quita inspiración, como hacía la versión 0.1.',
+    give: 'Da inspiración a los personajes seleccionados.',
+    remove: 'Quita inspiración a los personajes seleccionados, sin contarla como gastada.',
+    toggle:
+      'Da inspiración a los personajes seleccionados que no la tienen y se la quita a los que la tienen.',
+    spend: 'Gasta la inspiración de los personajes seleccionados y avisa al GM.',
+    party:
+      'Muestra quién del grupo tiene inspiración, con botones para darla, quitarla o gastarla.',
+    partyEdit: 'Añade los personajes seleccionados al grupo, o los saca de él.',
+    ids: 'Actúa sobre los ID de fichas o personajes indicados en lugar de las fichas seleccionadas.',
+    undo: 'Devuelve la inspiración que se gastó. El ID viene del mensaje al GM sobre el gasto.',
+    macro:
+      'Añade la acción de ficha "Inspiration", que los jugadores pulsan para gastar inspiración.',
+    sync: 'Vuelve a leer todas las hojas y corrige los marcadores.',
+    set: 'Muestra los ajustes, o cambia uno.',
+    reset: 'Devuelve todos los ajustes a su valor por defecto, salvo el idioma.',
+    status: 'Muestra la versión, las hojas encontradas y los ajustes principales.',
+    journal: 'Reconstruye los folletos de Ayuda y Panel de comandos.',
+    help: 'Muestra esta lista.',
+  },
+  helpPlayer: {
+    menu: 'Muestra tus personajes y si tienen inspiración.',
+    spend: 'Gasta la inspiración del personaje seleccionado.',
+    party: 'Muestra el grupo, si el GM lo permite.',
+    help: 'Muestra esta lista.',
+  },
+  handout: {
+    versionLabel: 'Versión',
+    subtitle: 'Inspiración e Inspiración heroica para las hojas de D&D 5e de 2014 y 2024',
+    overview: {
+      heading: 'Descripción general',
+      body: 'InspirationTracker mantiene sincronizada la inspiración de D&D en la hoja de personaje, la ficha y el chat. Dala desde el menú, la hoja o el marcador de la ficha, y todas las fichas de ese personaje muestran el marcador. Los jugadores pueden gastarla con un clic, y se avisa al GM, con un botón Deshacer. Funciona con la hoja de D&D 2024, donde se llama Inspiración heroica, y con la hoja OGL de 2014.',
+    },
+    quickStart: {
+      heading: 'Inicio rápido',
+      steps: [
+        'Abre el folleto del Panel de comandos, o escribe !inspiration para ver el menú.',
+        'Selecciona una ficha y pulsa Dar. El personaje gana inspiración y sus fichas muestran el marcador.',
+        'Pulsa Macro de jugador una vez, para que los jugadores tengan una acción de ficha "Inspiration" con la que gastarla.',
+        'Pulsa Grupo para ver quién tiene inspiración.',
+      ],
+    },
+    sheets: {
+      heading: 'Hojas de personaje',
+      colSheet: 'Hoja',
+      colWhere: 'Dónde se guarda la inspiración',
+      colSheet2014: 'D&D 5E by Roll20 (2014 OGL)',
+      where2014: 'La casilla Inspiración, atributo "inspiration".',
+      colSheet2024: 'D&D Fifth Edition (5E & 5.5E, 2024)',
+      where2024: 'La casilla Inspiración heroica, leída y escrita con getSheetItem y setSheetItem.',
+      points: [
+        'Marcar o desmarcar la casilla en una hoja se detecta al instante: el marcador la sigue, y desmarcarla cuenta como gastarla.',
+        'Con Denominación en "Según la hoja", cada personaje de D&D 2024 usa las reglas elegidas en los ajustes de su hoja: las reglas de 2024 dicen Inspiración heroica, las de 2014 dicen Inspiración.',
+        'Los personajes sin ninguna de las dos hojas no se tocan, así que las fichas de PNJ no cambian.',
+      ],
+    },
+    players: {
+      heading: 'Jugadores',
+      points: [
+        'Los jugadores pueden gastar inspiración de los personajes que controlan: pulsando Gastar en el chat, o la acción de ficha "Inspiration".',
+        'El GM recibe un mensaje que dice quién la gastó, con un botón Deshacer.',
+        'Al escribir !inspiration, un jugador ve sus personajes y si tienen inspiración.',
+        'Desactiva Los jugadores pueden gastar para que solo el GM gaste inspiración.',
+      ],
+    },
+    passOn: {
+      heading: 'Pasarla a otro (reglas de 2024)',
+      points: [
+        'Un personaje no puede tener Inspiración heroica dos veces. Cuando uno que la tiene fuera a ganarla de nuevo, se pregunta a sus jugadores si quieren dársela a otro miembro del grupo que no la tenga.',
+        'La elección ofrece a todos los miembros del grupo sin Inspiración heroica, y Dejar pasar. Caduca al cabo de una hora.',
+        'Con las reglas de 2014, simplemente se avisa al GM de que el personaje ya tiene Inspiración.',
+        'Desactiva Pasarla para recibir siempre ese mensaje.',
+      ],
+    },
+    party: {
+      heading: 'El grupo',
+      points: [
+        'El grupo son todos los personajes que controla algún jugador. Selecciona fichas y pulsa Añadir al grupo o Quitar del grupo para cambiarlo.',
+        'La vista general del GM tiene botones Dar, Quitar y Gastar para cada miembro.',
+        'Activa Los jugadores ven el grupo para que los jugadores también vean la vista general. Solo tienen botones Gastar para sus propios personajes.',
+      ],
+    },
+    markers: {
+      heading: 'Marcadores de ficha',
+      points: [
+        'Elige el marcador con el ajuste Marcador. Aparecen los puntos de colores de Roll20, los marcadores por defecto y tus conjuntos de marcadores personalizados.',
+        'Añadir el marcador a una ficha a mano, o con TokenMod, da inspiración al personaje. Quitarlo la gasta.',
+        'Cambiar el marcador lo mueve en todas las fichas al instante.',
+        'No se ofrecen los marcadores de estado propios de la hoja de D&D 2024, porque la hoja los pone ella misma.',
+      ],
+    },
+    commands: {
+      heading: 'Comandos',
+      intro:
+        'Todos los comandos empiezan por !inspiration. Los comandos actúan sobre las fichas seleccionadas salvo que se indique --ids.',
+      mods: 'Otros Mods también pueden enviar estos comandos, por ejemplo desde ScriptCards. Otros Mods también pueden llamar a InspirationTracker.give, spend, remove e isInspired.',
+      colCommand: 'Comando',
+      colDesc: 'Qué hace',
+    },
+    settings: {
+      heading: 'Ajustes',
+      intro: 'Cámbialos con el botón Ajustes, o escribe !inspiration set <setting> <value>.',
+      colKey: 'Ajuste',
+      colName: 'Nombre',
+      colDesc: 'Qué hace',
+    },
+    upgrading: {
+      heading: 'Actualizar desde la 0.1',
+      points: [
+        'Se conservan el marcador, el efecto especial y el tipo de efecto de la versión 0.1.',
+        'Si elegiste tu propio comando en la 0.1, sigue funcionando junto a !inspiration.',
+        '!inspiration con fichas seleccionadas sigue dando o quitando inspiración.',
+      ],
+    },
+    troubleshooting: {
+      heading: 'Solución de problemas',
+      points: [
+        '¿El marcador no aparece en una ficha? Pulsa Sincronizar para volver a leer todas las hojas.',
+        'Una ficha que no representa a un personaje no puede tener inspiración. Vincúlala primero a un personaje.',
+        '¿No pasa nada cuando un jugador pulsa Gastar? Comprueba que el personaje está asignado a ese jugador.',
+        'Los errores se escriben en la consola de la API de la página Mod Scripts.',
+      ],
+    },
+    languages: {
+      heading: 'Idiomas',
+      body: 'InspirationTracker está traducido a los idiomas siguientes. Elige uno con el ajuste Idioma.',
+      colCode: 'Código',
+      colName: 'Idioma',
+      colNative: 'Nombre nativo',
+    },
+    credits: {
+      heading: 'Créditos',
+      original: 'Mod original de',
+      maintainer: 'Versión 1 mantenida por',
+      support: 'Informa de errores e ideas en el foro de Mods de Roll20 o en GitHub.',
+    },
+    footer: 'Los botones para cada acción están en el folleto "{deck}".',
+  },
+  deck: {
+    subtitle: 'Panel de comandos',
+    selectedDesc: 'Selecciona una o más fichas y luego pulsa.',
+    partyDesc: 'Mira quién tiene inspiración y elige quién está en el grupo.',
+    toolsDesc: 'Menú, ajustes, la macro de jugador y la ayuda.',
+    footer: 'Las instrucciones completas están en el folleto "{help}".',
+  },
+};
 
 export default TRANSLATION;

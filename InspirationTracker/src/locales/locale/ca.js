@@ -1,3 +1,306 @@
-const TRANSLATION = {};
+const TRANSLATION = {
+  terms: {
+    heroic: 'Inspiració heroica',
+    classic: 'Inspiració',
+  },
+  titles: {
+    ready: 'InspirationTracker està a punt.',
+    settings: 'Configuració d’InspirationTracker',
+    help: 'Ordres d’InspirationTracker',
+    party: 'Inspiració del grup',
+    yours: 'Els teus personatges',
+    status: 'Estat d’InspirationTracker',
+  },
+  messages: {
+    gained: '{name} té {term}!',
+    spent: '{name} fa servir {term}.',
+    spentBy: '{player} ha gastat {term} per a {name}.',
+    spentSheet: '{name} ja no té {term} (canviat a la fitxa o al testimoni).',
+    restored: '{name} torna a tenir {term}.',
+    removed: 'S’ha tret {term} a {name}.',
+    already: '{name} ja té {term}.',
+    none: '{name} no té {term}.',
+    busy: '{name} encara s’està actualitzant. Torna-ho a provar d’aquí a un moment.',
+    passOffer:
+      '{name} ja té {term} i no la pot tenir dues vegades. Dona-la a un membre del grup que no la tingui, o deixa-la anar.',
+    passNobody: 'Tots els altres membres del grup ja la tenen.',
+    passAsked: 'S’ha preguntat als jugadors de {name} qui ha de rebre la {term}.',
+    passed: '{from} dona {term} a {to}!',
+    passAlready: '{to} ja la té. Tria algú altre.',
+    declined: '{name} deixa anar la {term} sobrant.',
+    undoAlready: '{name} ja la torna a tenir.',
+    synced: 'Fitxes llegides: {checked}. Amb inspiració: {inspired}.',
+    migrated:
+      'S’ha conservat la configuració de la versió 0.1: marcador, efecte especial i el seu tipus. Les opcions noves comencen amb els valors per defecte.',
+    legacyCommand: 'La teva ordre antiga {command} encara funciona, igual que {main}.',
+    macroHint:
+      'Per donar als jugadors un botó Gasta, executa {command}. Afegeix una acció de testimoni per a tothom.',
+    macro:
+      'La macro "{name}" està a punt: els jugadors la veuen com a acció de testimoni quan seleccionen un testimoni que controlen.',
+    journal: 'S’han refet els documents d’Ajuda i de Command Deck.',
+    readyHint: 'Escriu {command} per al menú, o obre el document Command Deck.',
+  },
+  errors: {
+    denied: 'No pots fer això per a {name}.',
+    gmOnly: 'Només el GM pot fer servir aquesta ordre.',
+    gmOnlyHint: 'Els jugadors poden fer servir spend, party i help.',
+    spendOff: 'El GM ha desactivat que els jugadors gastin.',
+    noCharacter: 'Aquests testimonis no representen cap personatge: {names}.',
+    nothingSelected: 'Primer selecciona un testimoni.',
+    nothingSelectedHint:
+      'Selecciona testimonis que representin personatges, o afegeix --ids amb identificadors de testimoni o de personatge.',
+    writeFailed: 'No s’ha pogut canviar la fitxa de {name}.',
+    offerGone: 'Aquesta elecció ja s’ha fet, o ha caducat.',
+    passInvalid: 'Tria un membre del grup diferent del que la té.',
+    undoGone: 'Aquesta despesa ja s’ha desfet, o és massa antiga.',
+    unknownMarker: 'No hi ha cap marcador de testimoni anomenat "{value}".',
+    unknownMarkerHint:
+      'Fes servir el botó Marcador de la configuració per triar-ne un dels teus jocs de marcadors.',
+    badSetting: 'No es pot posar {key} a "{value}".',
+    badSettingHint: 'Escriu !inspiration set per veure totes les opcions i els seus valors.',
+    unknownCommand: 'Ordre desconeguda: {command}.',
+    unknownCommandHint: 'Escriu !inspiration help per a la llista d’ordres.',
+  },
+  menu: {
+    selected: 'Testimonis seleccionats',
+    party: 'Grup',
+    tools: 'Eines',
+    hint: 'Les instruccions completes són al document "{help}".',
+    noSheet: 'sense fitxa',
+    noneYours: 'No controles cap personatge amb fitxa.',
+    partyEmpty: 'No controles cap membre del grup.',
+    partyEmptyGm:
+      'Encara no hi ha ningú al grup. Assigna personatges als jugadors, o selecciona testimonis i fes clic a Afegeix al grup.',
+    partyCount: '{count} de {total} tenen {term}.',
+  },
+  buttons: {
+    menu: 'Menú',
+    give: 'Dona',
+    remove: 'Treu',
+    toggle: 'Alterna',
+    spend: 'Gasta',
+    party: 'Grup',
+    partyAdd: 'Afegeix al grup',
+    partyRemove: 'Treu del grup',
+    settings: 'Configuració',
+    macro: 'Macro de jugador',
+    sync: 'Sincronitza',
+    status: 'Estat',
+    help: 'Ajuda',
+    reset: 'Restableix',
+    refresh: 'Actualitza',
+    undo: 'Desfés',
+    decline: 'Deixa-la anar',
+  },
+  values: {
+    on: 'Activat',
+    off: 'Desactivat',
+    wording: {
+      auto: 'Segons la fitxa',
+      2014: 'Inspiració (2014)',
+      2024: 'Inspiració heroica (2024)',
+    },
+    announce: {
+      public: 'Tothom',
+      gm: 'GM i propietaris',
+      off: 'Ningú',
+    },
+  },
+  settings: {
+    language: {
+      label: 'Idioma',
+      desc: 'Idioma dels menús, missatges i documents.',
+    },
+    marker: {
+      label: 'Marcador',
+      desc: 'Marcador de testimoni que es mostra mentre un personatge té inspiració. També s’hi inclouen els jocs de marcadors personalitzats.',
+    },
+    wording: {
+      label: 'Terminologia',
+      desc: 'Anomena-la Inspiració o Inspiració heroica. "Segons la fitxa" fa servir les regles triades a cada fitxa de D&D 2024, i Inspiració a la fitxa de 2014.',
+    },
+    announce: {
+      label: 'Anunci',
+      desc: 'Qui veu el missatge al xat quan s’obté o es gasta inspiració.',
+    },
+    fx: {
+      label: 'Efecte especial',
+      desc: 'Reprodueix un efecte especial al testimoni quan obté inspiració.',
+    },
+    fxType: {
+      label: 'Tipus d’efecte',
+      desc: 'Quin efecte reproduir, com ara nova-holy, o l’ID d’un efecte personalitzat.',
+    },
+    playerSpend: {
+      label: 'Els jugadors poden gastar',
+      desc: 'Permet que els jugadors gastin inspiració per als personatges que controlen. S’avisa el GM, amb un botó Desfés.',
+    },
+    playerOverview: {
+      label: 'Els jugadors veuen el grup',
+      desc: 'Permet que els jugadors vegin qui del grup té inspiració.',
+    },
+    passOn: {
+      label: 'Passar-la (2024)',
+      desc: 'Amb les regles de 2024, un personatge que obtindria Inspiració heroica mentre ja la té la pot donar a un altre membre del grup.',
+    },
+  },
+  status: {
+    version: 'Versió',
+    beacon: 'Fitxes de D&D 2024',
+    legacy: 'Fitxes de 2014',
+    none: 'Personatges sense casella d’inspiració',
+    rules2024: 'Amb regles de 2024',
+    party: 'Membres del grup',
+    marker: 'Marcador',
+    fx: 'Efecte especial',
+    legacyCommand: 'Ordre antiga',
+  },
+  help: {
+    menu: 'Mostra el menú. Amb testimonis seleccionats, dona o treu inspiració, com feia la versió 0.1.',
+    give: 'Dona inspiració als personatges seleccionats.',
+    remove: 'Treu inspiració als personatges seleccionats, sense comptar-la com a gastada.',
+    toggle:
+      'Dona inspiració als personatges seleccionats que no en tenen, i la treu als que en tenen.',
+    spend: 'Gasta inspiració per als personatges seleccionats i avisa el GM.',
+    party: 'Mostra qui del grup té inspiració, amb botons per donar-la, treure-la o gastar-la.',
+    partyEdit: 'Afegeix els personatges seleccionats al grup, o els en treu.',
+    ids: 'Actua sobre els identificadors de testimoni o de personatge indicats en lloc dels testimonis seleccionats.',
+    undo: 'Retorna la inspiració gastada. L’ID ve del missatge al GM sobre la despesa.',
+    macro:
+      'Afegeix l’acció de testimoni "Inspiration", que els jugadors fan clic per gastar inspiració.',
+    sync: 'Torna a llegir totes les fitxes i posa bé els marcadors.',
+    set: 'Mostra la configuració, o en canvia una opció.',
+    reset: 'Torna totes les opcions al valor per defecte, excepte l’idioma.',
+    status: 'Mostra la versió, les fitxes trobades i les opcions principals.',
+    journal: 'Refà els documents d’Ajuda i de Command Deck.',
+    help: 'Mostra aquesta llista.',
+  },
+  helpPlayer: {
+    menu: 'Mostra els teus personatges i si tenen inspiració.',
+    spend: 'Gasta inspiració per al personatge seleccionat.',
+    party: 'Mostra el grup, si el GM ho permet.',
+    help: 'Mostra aquesta llista.',
+  },
+  handout: {
+    versionLabel: 'Versió',
+    subtitle: 'Inspiració i Inspiració heroica per a les fitxes de D&D 5e de 2014 i 2024',
+    overview: {
+      heading: 'Visió general',
+      body: 'InspirationTracker manté sincronitzada la inspiració de D&D entre la fitxa de personatge, el testimoni i el xat. Dona-la des del menú, la fitxa o el marcador del testimoni, i tots els testimonis d’aquell personatge mostren el marcador. Els jugadors la poden gastar amb un clic, i s’avisa el GM, amb un botó Desfés. Funciona amb la fitxa de D&D 2024, on s’anomena Inspiració heroica, i amb la fitxa OGL de 2014.',
+    },
+    quickStart: {
+      heading: 'Inici ràpid',
+      steps: [
+        'Obre el document Command Deck, o escriu !inspiration per al menú.',
+        'Selecciona un testimoni i fes clic a Dona. El personatge obté inspiració i els seus testimonis mostren el marcador.',
+        'Fes clic una vegada a Macro de jugador, perquè els jugadors tinguin una acció de testimoni Inspiration per gastar-la.',
+        'Fes clic a Grup per veure qui té inspiració.',
+      ],
+    },
+    sheets: {
+      heading: 'Fitxes de personatge',
+      colSheet: 'Fitxa',
+      colWhere: 'On es guarda la inspiració',
+      colSheet2014: 'D&D 5E by Roll20 (2014 OGL)',
+      where2014: 'La casella Inspiration, atribut "inspiration".',
+      colSheet2024: 'D&D Fifth Edition (5E & 5.5E, 2024)',
+      where2024:
+        'La casella Heroic Inspiration, llegida i escrita amb getSheetItem i setSheetItem.',
+      points: [
+        'Marcar o desmarcar la casella d’una fitxa es detecta immediatament: el marcador la segueix, i desmarcar-la compta com a gastar-la.',
+        'Amb Terminologia a "Segons la fitxa", cada personatge de D&D 2024 fa servir les regles triades a la configuració de la seva fitxa: les regles de 2024 diuen Inspiració heroica, les de 2014 diuen Inspiració.',
+        'Els personatges sense cap d’aquestes fitxes no es toquen, de manera que els testimonis de PNJ no canvien.',
+      ],
+    },
+    players: {
+      heading: 'Jugadors',
+      points: [
+        'Els jugadors poden gastar inspiració per als personatges que controlen: fes clic a Gasta al xat, o a l’acció de testimoni Inspiration.',
+        'El GM rep un missatge que diu qui l’ha gastada, amb un botó Desfés.',
+        'Escriure !inspiration mostra a un jugador els seus personatges i si tenen inspiració.',
+        'Desactiva Els jugadors poden gastar per deixar la despesa en mans del GM.',
+      ],
+    },
+    passOn: {
+      heading: 'Passar-la (regles de 2024)',
+      points: [
+        'Un personatge no pot tenir Inspiració heroica dues vegades. Quan un que ja la té l’obtindria de nou, es demana als seus jugadors que la donin a un altre membre del grup que no la tingui.',
+        'L’elecció ofereix tots els membres del grup sense Inspiració heroica, i Deixa-la anar. Caduca al cap d’una hora.',
+        'Amb les regles de 2014, només s’avisa el GM que el personatge ja té Inspiració.',
+        'Desactiva Passar-la per rebre sempre aquest missatge.',
+      ],
+    },
+    party: {
+      heading: 'El grup',
+      points: [
+        'El grup és cada personatge que controla un jugador. Selecciona testimonis i fes clic a Afegeix al grup o Treu del grup per canviar-lo.',
+        'La visió general del GM té botons Dona, Treu i Gasta per a cada membre.',
+        'Activa Els jugadors veuen el grup perquè els jugadors també vegin la visió general. Només tenen botons Gasta per als seus propis personatges.',
+      ],
+    },
+    markers: {
+      heading: 'Marcadors de testimoni',
+      points: [
+        'Tria el marcador amb l’opció Marcador. S’hi mostren els punts de colors de Roll20, els marcadors per defecte i els teus jocs de marcadors personalitzats.',
+        'Afegir el marcador a un testimoni a mà, o amb TokenMod, dona inspiració al personatge. Treure’l la gasta.',
+        'Canviar el marcador el mou a tots els testimonis immediatament.',
+        'Els marcadors d’estat propis de la fitxa de D&D 2024 no s’ofereixen, perquè la fitxa ja els posa ella mateixa.',
+      ],
+    },
+    commands: {
+      heading: 'Ordres',
+      intro:
+        'Totes les ordres comencen amb !inspiration. Les ordres actuen sobre els testimonis seleccionats tret que s’indiqui --ids.',
+      mods: 'Altres Mods també poden enviar aquestes ordres, per exemple des de ScriptCards. Altres Mods també poden cridar InspirationTracker.give, spend, remove i isInspired.',
+      colCommand: 'Ordre',
+      colDesc: 'Què fa',
+    },
+    settings: {
+      heading: 'Configuració',
+      intro: 'Canvia-les amb el botó Configuració, o escriu !inspiration set <setting> <value>.',
+      colKey: 'Opció',
+      colName: 'Nom',
+      colDesc: 'Què fa',
+    },
+    upgrading: {
+      heading: 'Actualitzar des de la 0.1',
+      points: [
+        'Es conserven el marcador, l’efecte especial i el tipus d’efecte de la versió 0.1.',
+        'Si a la 0.1 havies triat una ordre pròpia, encara funciona al costat de !inspiration.',
+        '!inspiration amb testimonis seleccionats encara dona o treu inspiració.',
+      ],
+    },
+    troubleshooting: {
+      heading: 'Resolució de problemes',
+      points: [
+        'El marcador no apareix en un testimoni? Fes clic a Sincronitza per tornar a llegir totes les fitxes.',
+        'Un testimoni que no representa cap personatge no pot tenir inspiració. Primer vincula’l a un personatge.',
+        'No passa res quan un jugador fa clic a Gasta? Comprova que el personatge estigui assignat a aquell jugador.',
+        'Els errors s’escriuen a la consola de l’API, a la pàgina Mod Scripts.',
+      ],
+    },
+    languages: {
+      heading: 'Idiomes',
+      body: 'InspirationTracker està traduït als idiomes següents. Tria’n un amb l’opció Idioma.',
+      colCode: 'Codi',
+      colName: 'Idioma',
+      colNative: 'Nom original',
+    },
+    credits: {
+      heading: 'Crèdits',
+      original: 'Mod original de',
+      maintainer: 'Versió 1 mantinguda per',
+      support: 'Informa d’errors i idees al fòrum de Mods de Roll20 o a GitHub.',
+    },
+    footer: 'Els botons per a cada acció són al document "{deck}".',
+  },
+  deck: {
+    subtitle: 'Command Deck',
+    selectedDesc: 'Selecciona un o més testimonis i després fes clic.',
+    partyDesc: 'Mira qui té inspiració, i tria qui és al grup.',
+    toolsDesc: 'Menú, configuració, la macro de jugador i ajuda.',
+    footer: 'Les instruccions completes són al document "{help}".',
+  },
+};
 
 export default TRANSLATION;

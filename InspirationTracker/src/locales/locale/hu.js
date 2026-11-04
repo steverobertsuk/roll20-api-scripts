@@ -1,3 +1,306 @@
-const TRANSLATION = {};
+const TRANSLATION = {
+  terms: {
+    heroic: 'Hősi ihlet',
+    classic: 'Ihlet',
+  },
+  titles: {
+    ready: 'Az InspirationTracker készen áll.',
+    settings: 'InspirationTracker beállítások',
+    help: 'InspirationTracker parancsok',
+    party: 'A csapat ihlete',
+    yours: 'Karaktereid',
+    status: 'InspirationTracker állapot',
+  },
+  messages: {
+    gained: '{name} megkapta: {term}!',
+    spent: '{name} felhasználja: {term}.',
+    spentBy: '{player} felhasználta {name} ihletét ({term}).',
+    spentSheet: '{name} már nem rendelkezik ezzel: {term} (a lapon vagy a tokenen módosult).',
+    restored: '{name} visszakapta: {term}.',
+    removed: '{name} elvesztette: {term}.',
+    already: '{name} már rendelkezik ezzel: {term}.',
+    none: '{name} nem rendelkezik ezzel: {term}.',
+    busy: '{name} frissítése még folyamatban van. Próbáld újra egy pillanat múlva.',
+    passOffer:
+      '{name} már rendelkezik ezzel: {term}, és nem lehet kétszer. Add oda egy csapattagnak, akinek nincs, vagy mondj le róla.',
+    passNobody: 'A csapat minden más tagjának már van.',
+    passAsked: '{name} játékosait megkérdeztük, ki kapja ezt: {term}.',
+    passed: '{from} átadja {to} részére: {term}!',
+    passAlready: '{to} már rendelkezik vele. Válassz valaki mást.',
+    declined: '{name} lemond a fölösleges ihletről ({term}).',
+    undoAlready: '{name} már ismét rendelkezik vele.',
+    synced: 'Beolvasott lapok: {checked}. Ihlettel: {inspired}.',
+    migrated:
+      'A 0.1-es verzió beállításai megmaradtak: jelölő, különleges effekt és annak típusa. Az új beállítások az alapértékekkel indulnak.',
+    legacyCommand: 'A régi {command} parancsod továbbra is működik, ahogy a {main} is.',
+    macroHint:
+      'Ha Felhasználás gombot szeretnél adni a játékosoknak, futtasd ezt: {command}. Ez mindenkinek hozzáad egy tokenműveletet.',
+    macro:
+      'A(z) „{name}” makró elkészült: a játékosok tokenműveletként látják, amikor kijelölnek egy általuk irányított tokent.',
+    journal: 'A Súgó és a Command Deck segédletek újra elkészültek.',
+    readyHint: 'Írd be: {command} a menühöz, vagy nyisd meg a Command Deck segédletet.',
+  },
+  errors: {
+    denied: 'Ezt nem teheted meg {name} esetében.',
+    gmOnly: 'Ezt a parancsot csak a KM használhatja.',
+    gmOnlyHint: 'A játékosok a spend, party és help parancsokat használhatják.',
+    spendOff: 'A KM kikapcsolta, hogy a játékosok ihletet használjanak fel.',
+    noCharacter: 'Ezek a tokenek nem képviselnek karaktert: {names}.',
+    nothingSelected: 'Előbb jelölj ki egy tokent.',
+    nothingSelectedHint:
+      'Jelölj ki karaktereket képviselő tokeneket, vagy add meg a --ids kapcsolót token- vagy karakterazonosítókkal.',
+    writeFailed: '{name} lapját nem sikerült módosítani.',
+    offerGone: 'Ez a választás már megtörtént, vagy lejárt.',
+    passInvalid: 'Válassz egy másik csapattagot, ne azt, akinél már megvan.',
+    undoGone: 'Ezt a felhasználást már visszavonták, vagy túl régi.',
+    unknownMarker: 'Nincs „{value}” nevű tokenjelölő.',
+    unknownMarkerHint: 'A beállítások Jelölő gombjával válassz egyet a jelölőkészleteidből.',
+    badSetting: 'A(z) {key} nem állítható erre: „{value}”.',
+    badSettingHint: 'Írd be: !inspiration set, hogy lásd az összes beállítást és lehetőségeit.',
+    unknownCommand: 'Ismeretlen parancs: {command}.',
+    unknownCommandHint: 'Írd be: !inspiration help a parancsok listájához.',
+  },
+  menu: {
+    selected: 'Kijelölt tokenek',
+    party: 'Csapat',
+    tools: 'Eszközök',
+    hint: 'A teljes útmutató a(z) „{help}” segédletben található.',
+    noSheet: 'nincs lap',
+    noneYours: 'Nem irányítasz lappal rendelkező karaktert.',
+    partyEmpty: 'Nem irányítasz egyetlen csapattagot sem.',
+    partyEmptyGm:
+      'Még senki sincs a csapatban. Rendelj karaktereket a játékosokhoz, vagy jelölj ki tokeneket, és kattints a Csapathoz ad gombra.',
+    partyCount: '{total} főből {count} rendelkezik ezzel: {term}.',
+  },
+  buttons: {
+    menu: 'Menü',
+    give: 'Ad',
+    remove: 'Elvesz',
+    toggle: 'Átvált',
+    spend: 'Felhasznál',
+    party: 'Csapat',
+    partyAdd: 'Csapathoz ad',
+    partyRemove: 'Csapatból kivesz',
+    settings: 'Beállítások',
+    macro: 'Játékosmakró',
+    sync: 'Szinkronizálás',
+    status: 'Állapot',
+    help: 'Súgó',
+    reset: 'Beállítások visszaállítása',
+    refresh: 'Frissítés',
+    undo: 'Visszavonás',
+    decline: 'Lemondok róla',
+  },
+  values: {
+    on: 'Be',
+    off: 'Ki',
+    wording: {
+      auto: 'A lap szerint',
+      2014: 'Ihlet (2014)',
+      2024: 'Hősi ihlet (2024)',
+    },
+    announce: {
+      public: 'Mindenki',
+      gm: 'KM és tulajdonosok',
+      off: 'Senki',
+    },
+  },
+  settings: {
+    language: {
+      label: 'Nyelv',
+      desc: 'A menük, üzenetek és segédletek nyelve.',
+    },
+    marker: {
+      label: 'Jelölő',
+      desc: 'Tokenjelölő, amely addig látszik, amíg a karakternek ihlete van. Az egyéni jelölőkészletek is szerepelnek a listában.',
+    },
+    wording: {
+      label: 'Megnevezés',
+      desc: 'Ihlet vagy Hősi ihlet legyen a neve. „A lap szerint” minden D&D 2024 lapon az ott választott szabályokat használja, a 2014-es lapon pedig az Ihletet.',
+    },
+    announce: {
+      label: 'Bejelentés',
+      desc: 'Ki látja a csevegőüzenetet, amikor ihletet szereznek vagy felhasználnak.',
+    },
+    fx: {
+      label: 'Különleges effekt',
+      desc: 'Különleges effektet játszik le a tokenen, amikor ihletet kap.',
+    },
+    fxType: {
+      label: 'Effekt típusa',
+      desc: 'Melyik effekt fusson le, például nova-holy, vagy egy egyéni effekt azonosítója.',
+    },
+    playerSpend: {
+      label: 'Játékosok felhasználhatják',
+      desc: 'A játékosok felhasználhatják az általuk irányított karakterek ihletét. A KM értesítést kap, Visszavonás gombbal.',
+    },
+    playerOverview: {
+      label: 'Játékosok látják a csapatot',
+      desc: 'A játékosok láthatják, kinek van ihlete a csapatban.',
+    },
+    passOn: {
+      label: 'Továbbadás (2024)',
+      desc: 'A 2024-es szabályok szerint az a karakter, aki Hősi ihletet kapna, miközben már van neki, odaadhatja egy másik csapattagnak.',
+    },
+  },
+  status: {
+    version: 'Verzió',
+    beacon: 'D&D 2024 lapok',
+    legacy: '2014-es lapok',
+    none: 'Ihletmező nélküli karakterek',
+    rules2024: '2024-es szabályokat használ',
+    party: 'Csapattagok',
+    marker: 'Jelölő',
+    fx: 'Különleges effekt',
+    legacyCommand: 'Régi parancs',
+  },
+  help: {
+    menu: 'Megjeleníti a menüt. Kijelölt tokenekkel ihletet ad vagy vesz el, ahogy a 0.1-es verzió.',
+    give: 'Ihletet ad a kijelölt karaktereknek.',
+    remove: 'Elveszi az ihletet a kijelölt karakterektől, anélkül hogy felhasználásnak számítana.',
+    toggle:
+      'Ihletet ad azoknak a kijelölt karaktereknek, akiknek nincs, és elveszi azoktól, akiknek van.',
+    spend: 'Felhasználja a kijelölt karakterek ihletét, és értesíti a KM-et.',
+    party:
+      'Megmutatja, kinek van ihlete a csapatban, gombokkal az adáshoz, elvételhez vagy felhasználáshoz.',
+    partyEdit: 'Hozzáadja a kijelölt karaktereket a csapathoz, vagy kiveszi őket.',
+    ids: 'A megadott token- vagy karakterazonosítókon működik a kijelölt tokenek helyett.',
+    undo: 'Visszaadja a felhasznált ihletet. Az azonosító a KM-nek küldött, felhasználásról szóló üzenetben található.',
+    macro:
+      'Hozzáadja az „Inspiration” tokenműveletet, amelyre kattintva a játékosok felhasználhatják az ihletet.',
+    sync: 'Újra beolvas minden lapot, és helyreigazítja a jelölőket.',
+    set: 'Megjeleníti a beállításokat, vagy módosít egyet.',
+    reset: 'Minden beállítást visszaállít az alapértékre, a nyelv kivételével.',
+    status: 'Megjeleníti a verziót, a talált lapokat és a fő beállításokat.',
+    journal: 'Újra elkészíti a Súgó és a Command Deck segédleteket.',
+    help: 'Megjeleníti ezt a listát.',
+  },
+  helpPlayer: {
+    menu: 'Megjeleníti a karaktereidet, és hogy van-e ihletük.',
+    spend: 'Felhasználja a kijelölt karakter ihletét.',
+    party: 'Megjeleníti a csapatot, ha a KM engedi.',
+    help: 'Megjeleníti ezt a listát.',
+  },
+  handout: {
+    versionLabel: 'Verzió',
+    subtitle: 'Ihlet és Hősi ihlet a D&D 5e 2014-es és 2024-es lapjaihoz',
+    overview: {
+      heading: 'Áttekintés',
+      body: 'Az InspirationTracker összhangban tartja a D&D ihletet a karakterlapon, a tokenen és a csevegőben. Add meg a menüből, a lapról vagy a tokenjelölővel, és a karakter minden tokenje mutatja a jelölőt. A játékosok egy kattintással felhasználhatják, a KM pedig értesítést kap, Visszavonás gombbal. Működik a D&D 2024 lappal, ahol Hősi ihletnek hívják, és a 2014-es OGL lappal.',
+    },
+    quickStart: {
+      heading: 'Gyors kezdés',
+      steps: [
+        'Nyisd meg a Command Deck segédletet, vagy írd be: !inspiration a menühöz.',
+        'Jelölj ki egy tokent, és kattints az Ad gombra. A karakter ihletet kap, és a tokenjein megjelenik a jelölő.',
+        'Kattints egyszer a Játékosmakró gombra, hogy a játékosok Inspiration tokenműveletet kapjanak a felhasználáshoz.',
+        'Kattints a Csapat gombra, hogy lásd, kinek van ihlete.',
+      ],
+    },
+    sheets: {
+      heading: 'Karakterlapok',
+      colSheet: 'Lap',
+      colWhere: 'Hol tárolódik az ihlet',
+      colSheet2014: 'D&D 5E by Roll20 (2014 OGL)',
+      where2014: 'Az Ihlet mező, "inspiration" attribútum.',
+      colSheet2024: 'D&D Fifth Edition (5E & 5.5E, 2024)',
+      where2024: 'A Hősi ihlet mező, amelyet a getSheetItem és a setSheetItem olvas és ír.',
+      points: [
+        'A mező bejelölése vagy törlése a lapon azonnal észlelhető: a jelölő követi, és a törlés felhasználásnak számít.',
+        'Ha a Megnevezés értéke „A lap szerint”, minden D&D 2024 karakter a lapbeállításaiban választott szabályokat használja: a 2024-es szabályok Hősi ihletet, a 2014-esek Ihletet mondanak.',
+        'Az egyik lappal sem rendelkező karakterek érintetlenek maradnak, így az NJK-tokenek nem változnak.',
+      ],
+    },
+    players: {
+      heading: 'Játékosok',
+      points: [
+        'A játékosok felhasználhatják az általuk irányított karakterek ihletét: a csevegőben a Felhasznál gombbal, vagy az Inspiration tokenművelettel.',
+        'A KM üzenetet kap arról, ki használta fel, Visszavonás gombbal.',
+        'A !inspiration beírásával a játékos látja a karaktereit, és hogy van-e ihletük.',
+        'Kapcsold ki a Játékosok felhasználhatják beállítást, ha a felhasználást a KM kezében szeretnéd tartani.',
+      ],
+    },
+    passOn: {
+      heading: 'Továbbadás (2024-es szabályok)',
+      points: [
+        'Egy karakternek nem lehet kétszer Hősi ihlete. Ha egy karakter, akinek már van, újra megkapná, a játékosait megkérdezzük, hogy odaadják-e egy másik csapattagnak, akinek nincs.',
+        'A választás minden Hősi ihlet nélküli csapattagot felkínál, valamint a Lemondok róla lehetőséget. Egy óra múlva lejár.',
+        'A 2014-es szabályok szerint a KM csak értesítést kap, hogy a karakternek már van Ihlete.',
+        'Kapcsold ki a Továbbadást, ha mindig inkább ezt az üzenetet szeretnéd kapni.',
+      ],
+    },
+    party: {
+      heading: 'A csapat',
+      points: [
+        'A csapat minden olyan karakter, amelyet egy játékos irányít. Jelölj ki tokeneket, és kattints a Csapathoz ad vagy a Csapatból kivesz gombra a módosításhoz.',
+        'A KM áttekintőjében minden tagnál van Ad, Elvesz és Felhasznál gomb.',
+        'Kapcsold be a Játékosok látják a csapatot beállítást, hogy a játékosok is lássák az áttekintőt. Felhasznál gombot csak a saját karaktereikhez kapnak.',
+      ],
+    },
+    markers: {
+      heading: 'Tokenjelölők',
+      points: [
+        'A jelölőt a Jelölő beállítással választhatod ki. A Roll20 színes pöttyei, az alapértelmezett jelölők és az egyéni jelölőkészleteid szerepelnek a listában.',
+        'Ha kézzel vagy TokenModdal teszed fel a jelölőt egy tokenre, a karakter ihletet kap. Ha leveszed, felhasználja.',
+        'A jelölő módosítása azonnal áthelyezi minden tokenen.',
+        'A D&D 2024 lap saját állapotjelölői nem szerepelnek, mert azokat a lap maga állítja be.',
+      ],
+    },
+    commands: {
+      heading: 'Parancsok',
+      intro:
+        'Minden parancs a !inspiration szóval kezdődik. A parancsok a kijelölt tokenekre hatnak, kivéve, ha meg van adva a --ids.',
+      mods: 'Más Modok is küldhetik ezeket a parancsokat, például a ScriptCardsból. Más Modok meghívhatják az InspirationTracker.give, spend, remove és isInspired függvényeket is.',
+      colCommand: 'Parancs',
+      colDesc: 'Mit csinál',
+    },
+    settings: {
+      heading: 'Beállítások',
+      intro:
+        'Módosítsd őket a Beállítások gombbal, vagy írd be: !inspiration set <setting> <value>.',
+      colKey: 'Beállítás',
+      colName: 'Név',
+      colDesc: 'Mit csinál',
+    },
+    upgrading: {
+      heading: 'Frissítés a 0.1-es verzióról',
+      points: [
+        'A 0.1-es verzió jelölője, különleges effektje és effekttípusa megmarad.',
+        'Ha a 0.1-ben saját parancsot választottál, az továbbra is működik a !inspiration mellett.',
+        'A !inspiration kijelölt tokenekkel továbbra is ihletet ad vagy vesz el.',
+      ],
+    },
+    troubleshooting: {
+      heading: 'Hibaelhárítás',
+      points: [
+        'Nem látszik a jelölő egy tokenen? Kattints a Szinkronizálás gombra, hogy minden lap újra beolvasásra kerüljön.',
+        'Egy token, amely nem képvisel karaktert, nem kaphat ihletet. Előbb kapcsold össze egy karakterrel.',
+        'Nem történik semmi, amikor egy játékos a Felhasznál gombra kattint? Ellenőrizd, hogy a karakter az adott játékoshoz van-e rendelve.',
+        'A hibák a Mod Scripts oldal API-konzoljába kerülnek.',
+      ],
+    },
+    languages: {
+      heading: 'Nyelvek',
+      body: 'Az InspirationTracker az alábbi nyelvekre van lefordítva. A Nyelv beállítással választhatsz közülük.',
+      colCode: 'Kód',
+      colName: 'Nyelv',
+      colNative: 'Eredeti név',
+    },
+    credits: {
+      heading: 'Készítők',
+      original: 'Az eredeti Mod szerzője:',
+      maintainer: 'Az 1-es verzió karbantartója:',
+      support: 'Hibákat és ötleteket a Roll20 Mod fórumán vagy a GitHubon jelezhetsz.',
+    },
+    footer: 'Minden művelet gombja a(z) „{deck}” segédletben található.',
+  },
+  deck: {
+    subtitle: 'Command Deck',
+    selectedDesc: 'Jelölj ki egy vagy több tokent, majd kattints.',
+    partyDesc: 'Nézd meg, kinek van ihlete, és válaszd ki, ki tartozik a csapathoz.',
+    toolsDesc: 'Menü, beállítások, a játékosmakró és a súgó.',
+    footer: 'A teljes útmutató a(z) „{help}” segédletben található.',
+  },
+};
 
 export default TRANSLATION;

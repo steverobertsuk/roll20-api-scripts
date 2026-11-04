@@ -1,3 +1,305 @@
-const TRANSLATION = {};
+const TRANSLATION = {
+  terms: {
+    heroic: 'Heldhaftige Inspirasie',
+    classic: 'Inspirasie',
+  },
+  titles: {
+    ready: 'InspirationTracker is gereed.',
+    settings: 'InspirationTracker-instellings',
+    help: 'InspirationTracker-opdragte',
+    party: 'Groep se inspirasie',
+    yours: 'Jou karakters',
+    status: 'InspirationTracker-status',
+  },
+  messages: {
+    gained: '{name} het {term}!',
+    spent: '{name} gebruik {term}.',
+    spentBy: '{player} het {term} vir {name} gebruik.',
+    spentSheet: '{name} het nie meer {term} nie (op die blad of teken verander).',
+    restored: '{name} het {term} terug.',
+    removed: '{term} van {name} weggeneem.',
+    already: '{name} het reeds {term}.',
+    none: '{name} het nie {term} nie.',
+    busy: '{name} word nog bygewerk. Probeer oor ’n oomblik weer.',
+    passOffer:
+      '{name} het reeds {term} en kan dit nie twee keer hê nie. Gee dit aan ’n groeplid wat dit nie het nie, of laat dit gaan.',
+    passNobody: 'Elke ander groeplid het dit reeds.',
+    passAsked: 'Die spelers van {name} is gevra wie die {term} moet kry.',
+    passed: '{from} gee {term} aan {to}!',
+    passAlready: '{to} het dit reeds. Kies iemand anders.',
+    declined: '{name} laat die ekstra {term} gaan.',
+    undoAlready: '{name} het dit reeds weer.',
+    synced: 'Blaaie gelees: {checked}. Met inspirasie: {inspired}.',
+    migrated:
+      'Instellings van weergawe 0.1 is behou: merker, spesiale effek en die tipe daarvan. Die nuwe instellings begin by hul verstekwaardes.',
+    legacyCommand: 'Jou ou opdrag {command} werk steeds, net soos {main}.',
+    macroHint:
+      'Voer {command} uit om spelers ’n Gebruik-knoppie te gee. Dit voeg ’n tekenaksie vir almal by.',
+    macro:
+      'Die "{name}"-makro is gereed: spelers sien dit as ’n tekenaksie wanneer hulle ’n teken kies wat hulle beheer.',
+    journal: 'Hulp- en Command Deck-uitdeelstukke is herbou.',
+    readyHint: 'Tik {command} vir die kieslys, of maak die Command Deck-uitdeelstuk oop.',
+  },
+  errors: {
+    denied: 'Jy kan dit nie vir {name} doen nie.',
+    gmOnly: 'Slegs die GM kan daardie opdrag gebruik.',
+    gmOnlyHint: 'Spelers kan spend, party en help gebruik.',
+    spendOff: 'Die GM het gebruik deur spelers afgeskakel.',
+    noCharacter: 'Hierdie tekens verteenwoordig nie ’n karakter nie: {names}.',
+    nothingSelected: 'Kies eers ’n teken.',
+    nothingSelectedHint:
+      'Kies tekens wat karakters verteenwoordig, of voeg --ids met teken- of karakter-ID’s by.',
+    writeFailed: 'Kon nie die blad van {name} verander nie.',
+    offerGone: 'Daardie keuse is reeds gemaak, of het verval.',
+    passInvalid: 'Kies ’n ander groeplid as die een wat dit het.',
+    undoGone: 'Daardie gebruik is reeds ontdoen, of is te oud.',
+    unknownMarker: 'Daar is geen tekenmerker genaamd "{value}" nie.',
+    unknownMarkerHint:
+      'Gebruik die Merker-knoppie in die instellings om een uit jou merkerstelle te kies.',
+    badSetting: 'Kan {key} nie op "{value}" stel nie.',
+    badSettingHint: 'Tik !inspiration set om elke instelling en sy keuses te sien.',
+    unknownCommand: 'Onbekende opdrag: {command}.',
+    unknownCommandHint: 'Tik !inspiration help vir die lys opdragte.',
+  },
+  menu: {
+    selected: 'Gekose tekens',
+    party: 'Groep',
+    tools: 'Gereedskap',
+    hint: 'Volledige instruksies is in die "{help}"-uitdeelstuk.',
+    noSheet: 'geen blad',
+    noneYours: 'Jy beheer geen karakters met ’n blad nie.',
+    partyEmpty: 'Jy beheer geen groeplede nie.',
+    partyEmptyGm:
+      'Niemand is nog in die groep nie. Ken karakters aan spelers toe, of kies tekens en klik Voeg by groep.',
+    partyCount: '{count} van {total} het {term}.',
+  },
+  buttons: {
+    menu: 'Kieslys',
+    give: 'Gee',
+    remove: 'Verwyder',
+    toggle: 'Wissel',
+    spend: 'Gebruik',
+    party: 'Groep',
+    partyAdd: 'Voeg by groep',
+    partyRemove: 'Verwyder uit groep',
+    settings: 'Instellings',
+    macro: 'Spelermakro',
+    sync: 'Sinchroniseer',
+    status: 'Status',
+    help: 'Hulp',
+    reset: 'Herstel instellings',
+    refresh: 'Verfris',
+    undo: 'Ontdoen',
+    decline: 'Laat gaan',
+  },
+  values: {
+    on: 'Aan',
+    off: 'Af',
+    wording: {
+      auto: 'Van die blad',
+      2014: 'Inspirasie (2014)',
+      2024: 'Heldhaftige Inspirasie (2024)',
+    },
+    announce: {
+      public: 'Almal',
+      gm: 'GM en eienaars',
+      off: 'Niemand',
+    },
+  },
+  settings: {
+    language: {
+      label: 'Taal',
+      desc: 'Taal vir kieslyste, boodskappe en uitdeelstukke.',
+    },
+    marker: {
+      label: 'Merker',
+      desc: 'Tekenmerker wat gewys word terwyl ’n karakter inspirasie het. Pasgemaakte merkerstelle word ook gelys.',
+    },
+    wording: {
+      label: 'Bewoording',
+      desc: 'Noem dit Inspirasie of Heldhaftige Inspirasie. "Van die blad" gebruik die reëls wat op elke D&D 2024-blad gekies is, en Inspirasie op die 2014-blad.',
+    },
+    announce: {
+      label: 'Aankondig',
+      desc: 'Wie die kletsboodskap sien wanneer inspirasie verkry of gebruik word.',
+    },
+    fx: {
+      label: 'Spesiale effek',
+      desc: 'Speel ’n spesiale effek op die teken wanneer dit inspirasie kry.',
+    },
+    fxType: {
+      label: 'Effektipe',
+      desc: 'Watter effek om te speel, soos nova-holy, of die ID van ’n pasgemaakte effek.',
+    },
+    playerSpend: {
+      label: 'Spelers kan gebruik',
+      desc: 'Laat spelers inspirasie gebruik vir die karakters wat hulle beheer. Die GM word ingelig, met ’n Ontdoen-knoppie.',
+    },
+    playerOverview: {
+      label: 'Spelers sien groep',
+      desc: 'Laat spelers sien wie in die groep inspirasie het.',
+    },
+    passOn: {
+      label: 'Gee aan (2024)',
+      desc: 'Volgens die 2024-reëls mag ’n karakter wat Heldhaftige Inspirasie sou kry terwyl hy dit reeds het, dit aan ’n ander groeplid gee.',
+    },
+  },
+  status: {
+    version: 'Weergawe',
+    beacon: 'D&D 2024-blaaie',
+    legacy: '2014-blaaie',
+    none: 'Karakters sonder inspirasieblokkie',
+    rules2024: 'Gebruik 2024-reëls',
+    party: 'Groeplede',
+    marker: 'Merker',
+    fx: 'Spesiale effek',
+    legacyCommand: 'Ou opdrag',
+  },
+  help: {
+    menu: 'Wys die kieslys. Met tekens gekies, gee of neem dit inspirasie weg, soos weergawe 0.1 gedoen het.',
+    give: 'Gee inspirasie aan die gekose karakters.',
+    remove: 'Neem inspirasie van die gekose karakters weg, sonder om dit as gebruik te tel.',
+    toggle: 'Gee inspirasie aan gekose karakters sonder dit, en neem dit weg van dié wat dit het.',
+    spend: 'Gebruik inspirasie vir die gekose karakters en lig die GM in.',
+    party:
+      'Wys wie in die groep inspirasie het, met knoppies om dit te gee, te verwyder of te gebruik.',
+    partyEdit: 'Voeg die gekose karakters by die groep, of haal hulle uit.',
+    ids: 'Werk op die gegewe teken- of karakter-ID’s in plaas van die gekose tekens.',
+    undo: 'Gee inspirasie terug wat gebruik is. Die ID kom uit die GM-boodskap oor die gebruik.',
+    macro: 'Voeg die "Inspiration"-tekenaksie by, wat spelers klik om inspirasie te gebruik.',
+    sync: 'Lees elke blad weer en stel die merkers reg.',
+    set: 'Wys die instellings, of verander een.',
+    reset: 'Stel elke instelling terug na sy verstek, behalwe die taal.',
+    status: 'Wys die weergawe, die blaaie wat gevind is en die hoofinstellings.',
+    journal: 'Herbou die Hulp- en Command Deck-uitdeelstukke.',
+    help: 'Wys hierdie lys.',
+  },
+  helpPlayer: {
+    menu: 'Wys jou karakters en of hulle inspirasie het.',
+    spend: 'Gebruik inspirasie vir die gekose karakter.',
+    party: 'Wys die groep, as die GM dit toelaat.',
+    help: 'Wys hierdie lys.',
+  },
+  handout: {
+    versionLabel: 'Weergawe',
+    subtitle: 'Inspirasie en Heldhaftige Inspirasie vir die D&D 5e 2014- en 2024-blaaie',
+    overview: {
+      heading: 'Oorsig',
+      body: 'InspirationTracker hou D&D-inspirasie op die karakterblad, die teken en die klets gelyk. Gee dit vanaf die kieslys, die blad of die tekenmerker, en elke teken vir daardie karakter wys die merker. Spelers kan dit met een klik gebruik, en die GM word ingelig, met ’n Ontdoen-knoppie. Dit werk met die D&D 2024-blad, waar dit Heldhaftige Inspirasie genoem word, en met die 2014 OGL-blad.',
+    },
+    quickStart: {
+      heading: 'Vinnige begin',
+      steps: [
+        'Maak die Command Deck-uitdeelstuk oop, of tik !inspiration vir die kieslys.',
+        'Kies ’n teken en klik Gee. Die karakter kry inspirasie en sy tekens wys die merker.',
+        'Klik een keer op Spelermakro, sodat spelers ’n Inspiration-tekenaksie kry om dit te gebruik.',
+        'Klik Groep om te sien wie inspirasie het.',
+      ],
+    },
+    sheets: {
+      heading: 'Karakterblaaie',
+      colSheet: 'Blad',
+      colWhere: 'Waar inspirasie gehou word',
+      colSheet2014: 'D&D 5E by Roll20 (2014 OGL)',
+      where2014: 'Die Inspiration-blokkie, eienskap "inspiration".',
+      colSheet2024: 'D&D Fifth Edition (5E & 5.5E, 2024)',
+      where2024:
+        'Die Heroic Inspiration-blokkie, gelees en geskryf met getSheetItem en setSheetItem.',
+      points: [
+        'As die blokkie op ’n blad gemerk of skoongemaak word, word dit dadelik opgemerk: die merker volg, en skoonmaak tel as gebruik.',
+        'Met Bewoording op "Van die blad" gebruik elke D&D 2024-karakter die reëls wat in sy bladinstellings gekies is: 2024-reëls sê Heldhaftige Inspirasie, 2014-reëls sê Inspirasie.',
+        'Karakters met geen van die twee blaaie word met rus gelaat, dus word NPC-tekens nie verander nie.',
+      ],
+    },
+    players: {
+      heading: 'Spelers',
+      points: [
+        'Spelers kan inspirasie gebruik vir karakters wat hulle beheer: klik Gebruik in die klets, of die Inspiration-tekenaksie.',
+        'Die GM kry ’n boodskap wat sê wie dit gebruik het, met ’n Ontdoen-knoppie.',
+        'Om !inspiration te tik wys ’n speler sy karakters en of hulle inspirasie het.',
+        'Skakel Spelers kan gebruik af om gebruik in die GM se hande te hou.',
+      ],
+    },
+    passOn: {
+      heading: 'Gee dit aan (2024-reëls)',
+      points: [
+        '’n Karakter kan nie twee keer Heldhaftige Inspirasie hê nie. Wanneer een wat dit het dit weer sou kry, word sy spelers gevra om dit aan ’n ander groeplid te gee wat dit nie het nie.',
+        'Die keuse bied elke groeplid sonder Heldhaftige Inspirasie, en Laat gaan. Dit verval na ’n uur.',
+        'Volgens die 2014-reëls word die GM net ingelig dat die karakter reeds Inspirasie het.',
+        'Skakel Gee aan af om altyd eerder daardie boodskap te kry.',
+      ],
+    },
+    party: {
+      heading: 'Die groep',
+      points: [
+        'Die groep is elke karakter wat ’n speler beheer. Kies tekens en klik Voeg by groep of Verwyder uit groep om dit te verander.',
+        'Die GM se oorsig het Gee-, Verwyder- en Gebruik-knoppies vir elke lid.',
+        'Skakel Spelers sien groep aan om spelers ook die oorsig te laat sien. Hulle kry Gebruik-knoppies slegs vir hul eie karakters.',
+      ],
+    },
+    markers: {
+      heading: 'Tekenmerkers',
+      points: [
+        'Kies die merker met die Merker-instelling. Roll20 se gekleurde kolletjies, die verstekmerkers en jou pasgemaakte merkerstelle word gelys.',
+        'Om die merker met die hand, of met TokenMod, by ’n teken te voeg, gee die karakter inspirasie. Om dit af te haal, gebruik dit.',
+        'Om die merker te verander, skuif dit dadelik op elke teken.',
+        'Die D&D 2024-blad se eie toestandmerkers word nie aangebied nie, omdat die blad dit self stel.',
+      ],
+    },
+    commands: {
+      heading: 'Opdragte',
+      intro:
+        'Elke opdrag begin met !inspiration. Opdragte werk op die gekose tekens tensy --ids gegee word.',
+      mods: 'Ander Mods kan ook hierdie opdragte stuur, byvoorbeeld vanaf ScriptCards. Ander Mods kan ook InspirationTracker.give, spend, remove en isInspired roep.',
+      colCommand: 'Opdrag',
+      colDesc: 'Wat dit doen',
+    },
+    settings: {
+      heading: 'Instellings',
+      intro: 'Verander dit met die Instellings-knoppie, of tik !inspiration set <setting> <value>.',
+      colKey: 'Instelling',
+      colName: 'Naam',
+      colDesc: 'Wat dit doen',
+    },
+    upgrading: {
+      heading: 'Opgradering van 0.1',
+      points: [
+        'Die merker, spesiale effek en effektipe van weergawe 0.1 word behou.',
+        'As jy in 0.1 jou eie opdrag gekies het, werk dit steeds saam met !inspiration.',
+        '!inspiration met tekens gekies gee of neem steeds inspirasie weg.',
+      ],
+    },
+    troubleshooting: {
+      heading: 'Probleemoplossing',
+      points: [
+        'Wys die merker nie op ’n teken nie? Klik Sinchroniseer om elke blad weer te lees.',
+        '’n Teken wat nie ’n karakter verteenwoordig nie, kan nie inspirasie hê nie. Koppel dit eers aan ’n karakter.',
+        'Gebeur niks wanneer ’n speler Gebruik klik nie? Kyk of die karakter aan daardie speler toegeken is.',
+        'Foute word na die API-konsole op die Mod Scripts-bladsy geskryf.',
+      ],
+    },
+    languages: {
+      heading: 'Tale',
+      body: 'InspirationTracker is in die tale hieronder vertaal. Kies een met die Taal-instelling.',
+      colCode: 'Kode',
+      colName: 'Taal',
+      colNative: 'Eie naam',
+    },
+    credits: {
+      heading: 'Erkennings',
+      original: 'Oorspronklike Mod deur',
+      maintainer: 'Weergawe 1 onderhou deur',
+      support: 'Rapporteer foute en idees op die Roll20 Mod-forum of op GitHub.',
+    },
+    footer: 'Knoppies vir elke aksie is in die "{deck}"-uitdeelstuk.',
+  },
+  deck: {
+    subtitle: 'Command Deck',
+    selectedDesc: 'Kies een of meer tekens, en klik dan.',
+    partyDesc: 'Sien wie inspirasie het, en kies wie in die groep is.',
+    toolsDesc: 'Kieslys, instellings, die spelermakro en hulp.',
+    footer: 'Volledige instruksies is in die "{help}"-uitdeelstuk.',
+  },
+};
 
 export default TRANSLATION;

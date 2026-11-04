@@ -1,3 +1,306 @@
-const TRANSLATION = {};
+const TRANSLATION = {
+  terms: {
+    heroic: 'Bohaterska Inspiracja',
+    classic: 'Inspiracja',
+  },
+  titles: {
+    ready: 'InspirationTracker jest gotowy.',
+    settings: 'Ustawienia InspirationTracker',
+    help: 'Polecenia InspirationTracker',
+    party: 'Inspiracja drużyny',
+    yours: 'Twoje postacie',
+    status: 'Stan InspirationTracker',
+  },
+  messages: {
+    gained: '{name} zyskuje: {term}!',
+    spent: '{name} wykorzystuje: {term}.',
+    spentBy: '{player} wykorzystuje za postać {name}: {term}.',
+    spentSheet: '{name} nie ma już: {term} (zmieniono na karcie lub żetonie).',
+    restored: '{name} odzyskuje: {term}.',
+    removed: 'Odebrano postaci {name}: {term}.',
+    already: '{name} już ma: {term}.',
+    none: '{name} nie ma: {term}.',
+    busy: '{name} jest jeszcze aktualizowany. Spróbuj ponownie za chwilę.',
+    passOffer:
+      '{name} już ma: {term} i nie może mieć jej podwójnie. Przekaż ją członkowi drużyny, który jej nie ma, albo z niej zrezygnuj.',
+    passNobody: 'Wszyscy pozostali członkowie drużyny już ją mają.',
+    passAsked: 'Zapytano graczy postaci {name}, kto ma dostać: {term}.',
+    passed: '{from} przekazuje postaci {to}: {term}!',
+    passAlready: '{to} już ją ma. Wybierz kogoś innego.',
+    declined: '{name} rezygnuje z nadmiarowej inspiracji ({term}).',
+    undoAlready: '{name} znowu ją ma.',
+    synced: 'Odczytane karty: {checked}. Z inspiracją: {inspired}.',
+    migrated:
+      'Zachowano ustawienia z wersji 0.1: znacznik, efekt specjalny i jego typ. Nowe ustawienia mają wartości domyślne.',
+    legacyCommand: 'Twoje stare polecenie {command} nadal działa, podobnie jak {main}.',
+    macroHint:
+      'Aby dać graczom przycisk Wykorzystaj, uruchom {command}. Doda to akcję żetonu dla wszystkich.',
+    macro:
+      'Makro „{name}” jest gotowe: gracze widzą je jako akcję żetonu po zaznaczeniu żetonu, którym sterują.',
+    journal: 'Odtworzono notatki Pomocy i Panelu poleceń.',
+    readyHint: 'Wpisz {command}, aby otworzyć menu, albo otwórz notatkę Panelu poleceń.',
+  },
+  errors: {
+    denied: 'Nie możesz tego zrobić dla postaci {name}.',
+    gmOnly: 'Tylko GM może użyć tego polecenia.',
+    gmOnlyHint: 'Gracze mogą używać spend, party i help.',
+    spendOff: 'GM wyłączył wykorzystywanie inspiracji przez graczy.',
+    noCharacter: 'Te żetony nie reprezentują postaci: {names}.',
+    nothingSelected: 'Najpierw zaznacz żeton.',
+    nothingSelectedHint:
+      'Zaznacz żetony reprezentujące postacie albo dodaj --ids z identyfikatorami żetonów lub postaci.',
+    writeFailed: 'Nie udało się zmienić karty postaci {name}.',
+    offerGone: 'Ten wybór został już dokonany albo wygasł.',
+    passInvalid: 'Wybierz członka drużyny innego niż ten, który ją ma.',
+    undoGone: 'To wykorzystanie zostało już cofnięte albo jest zbyt stare.',
+    unknownMarker: 'Nie ma znacznika żetonu o nazwie „{value}”.',
+    unknownMarkerHint:
+      'Użyj przycisku Znacznik w ustawieniach, aby wybrać go z zestawów znaczników.',
+    badSetting: 'Nie można ustawić {key} na „{value}”.',
+    badSettingHint: 'Wpisz !inspiration set, aby zobaczyć wszystkie ustawienia i ich opcje.',
+    unknownCommand: 'Nieznane polecenie: {command}.',
+    unknownCommandHint: 'Wpisz !inspiration help, aby zobaczyć listę poleceń.',
+  },
+  menu: {
+    selected: 'Zaznaczone żetony',
+    party: 'Drużyna',
+    tools: 'Narzędzia',
+    hint: 'Pełne instrukcje są w notatce „{help}”.',
+    noSheet: 'brak karty',
+    noneYours: 'Nie sterujesz żadną postacią z kartą.',
+    partyEmpty: 'Nie sterujesz żadnym członkiem drużyny.',
+    partyEmptyGm:
+      'W drużynie nie ma jeszcze nikogo. Przypisz postacie graczom albo zaznacz żetony i kliknij Dodaj do drużyny.',
+    partyCount: '{term}: {count} z {total}.',
+  },
+  buttons: {
+    menu: 'Menu',
+    give: 'Daj',
+    remove: 'Odbierz',
+    toggle: 'Przełącz',
+    spend: 'Wykorzystaj',
+    party: 'Drużyna',
+    partyAdd: 'Dodaj do drużyny',
+    partyRemove: 'Usuń z drużyny',
+    settings: 'Ustawienia',
+    macro: 'Makro gracza',
+    sync: 'Synchronizuj',
+    status: 'Stan',
+    help: 'Pomoc',
+    reset: 'Resetuj ustawienia',
+    refresh: 'Odśwież',
+    undo: 'Cofnij',
+    decline: 'Zrezygnuj',
+  },
+  values: {
+    on: 'Wł.',
+    off: 'Wył.',
+    wording: {
+      auto: 'Z karty',
+      2014: 'Inspiracja (2014)',
+      2024: 'Bohaterska Inspiracja (2024)',
+    },
+    announce: {
+      public: 'Wszyscy',
+      gm: 'GM i właściciele',
+      off: 'Nikt',
+    },
+  },
+  settings: {
+    language: {
+      label: 'Język',
+      desc: 'Język menu, komunikatów i notatek.',
+    },
+    marker: {
+      label: 'Znacznik',
+      desc: 'Znacznik żetonu widoczny, gdy postać ma inspirację. Własne zestawy znaczników też są na liście.',
+    },
+    wording: {
+      label: 'Nazewnictwo',
+      desc: 'Nazywaj ją Inspiracją lub Bohaterską Inspiracją. „Z karty” używa zasad wybranych na każdej karcie D&D 2024, a na karcie 2014 – Inspiracji.',
+    },
+    announce: {
+      label: 'Ogłaszanie',
+      desc: 'Kto widzi wiadomość na czacie, gdy inspiracja zostaje zdobyta lub wykorzystana.',
+    },
+    fx: {
+      label: 'Efekt specjalny',
+      desc: 'Odtwarza efekt specjalny na żetonie, gdy zyskuje on inspirację.',
+    },
+    fxType: {
+      label: 'Typ efektu',
+      desc: 'Który efekt odtworzyć, np. nova-holy, albo identyfikator własnego efektu.',
+    },
+    playerSpend: {
+      label: 'Gracze mogą wykorzystywać',
+      desc: 'Pozwala graczom wykorzystywać inspirację postaci, którymi sterują. GM dostaje powiadomienie z przyciskiem Cofnij.',
+    },
+    playerOverview: {
+      label: 'Gracze widzą drużynę',
+      desc: 'Pozwala graczom zobaczyć, kto w drużynie ma inspirację.',
+    },
+    passOn: {
+      label: 'Przekazywanie (2024)',
+      desc: 'Według zasad 2024 postać, która ma Bohaterską Inspirację i miałaby ją zyskać ponownie, może przekazać ją innemu członkowi drużyny.',
+    },
+  },
+  status: {
+    version: 'Wersja',
+    beacon: 'Karty D&D 2024',
+    legacy: 'Karty 2014',
+    none: 'Postacie bez pola inspiracji',
+    rules2024: 'Używają zasad 2024',
+    party: 'Członkowie drużyny',
+    marker: 'Znacznik',
+    fx: 'Efekt specjalny',
+    legacyCommand: 'Stare polecenie',
+  },
+  help: {
+    menu: 'Pokazuje menu. Przy zaznaczonych żetonach daje lub odbiera inspirację, tak jak w wersji 0.1.',
+    give: 'Daje inspirację zaznaczonym postaciom.',
+    remove: 'Odbiera inspirację zaznaczonym postaciom, nie licząc tego jako wykorzystania.',
+    toggle:
+      'Daje inspirację zaznaczonym postaciom, które jej nie mają, i odbiera ją tym, które ją mają.',
+    spend: 'Wykorzystuje inspirację zaznaczonych postaci i powiadamia GM.',
+    party:
+      'Pokazuje, kto w drużynie ma inspirację, z przyciskami do dawania, odbierania i wykorzystania.',
+    partyEdit: 'Dodaje zaznaczone postacie do drużyny lub je z niej usuwa.',
+    ids: 'Działa na podanych identyfikatorach żetonów lub postaci zamiast na zaznaczonych żetonach.',
+    undo: 'Przywraca wykorzystaną inspirację. Identyfikator jest w wiadomości do GM o wykorzystaniu.',
+    macro: 'Dodaje akcję żetonu „Inspiration”, którą gracze klikają, aby wykorzystać inspirację.',
+    sync: 'Odczytuje ponownie wszystkie karty i poprawia znaczniki.',
+    set: 'Pokazuje ustawienia lub zmienia jedno z nich.',
+    reset: 'Przywraca wszystkie ustawienia do domyślnych, z wyjątkiem języka.',
+    status: 'Pokazuje wersję, znalezione karty i główne ustawienia.',
+    journal: 'Odtwarza notatki Pomocy i Panelu poleceń.',
+    help: 'Pokazuje tę listę.',
+  },
+  helpPlayer: {
+    menu: 'Pokazuje twoje postacie i to, czy mają inspirację.',
+    spend: 'Wykorzystuje inspirację zaznaczonej postaci.',
+    party: 'Pokazuje drużynę, jeśli GM na to pozwala.',
+    help: 'Pokazuje tę listę.',
+  },
+  handout: {
+    versionLabel: 'Wersja',
+    subtitle: 'Inspiracja i Bohaterska Inspiracja dla kart D&D 5e 2014 i 2024',
+    overview: {
+      heading: 'Przegląd',
+      body: 'InspirationTracker utrzymuje zgodność inspiracji D&D na karcie postaci, żetonie i czacie. Daj ją z menu, karty lub znacznika żetonu, a każdy żeton tej postaci pokaże znacznik. Gracze mogą ją wykorzystać jednym kliknięciem, a GM dostaje powiadomienie z przyciskiem Cofnij. Działa z kartą D&D 2024, gdzie nazywa się Bohaterską Inspiracją, oraz z kartą 2014 OGL.',
+    },
+    quickStart: {
+      heading: 'Szybki start',
+      steps: [
+        'Otwórz notatkę Panelu poleceń albo wpisz !inspiration, aby otworzyć menu.',
+        'Zaznacz żeton i kliknij Daj. Postać zyskuje inspirację, a jej żetony pokazują znacznik.',
+        'Kliknij raz Makro gracza, aby gracze dostali akcję żetonu Inspiration do jej wykorzystania.',
+        'Kliknij Drużyna, aby zobaczyć, kto ma inspirację.',
+      ],
+    },
+    sheets: {
+      heading: 'Karty postaci',
+      colSheet: 'Karta',
+      colWhere: 'Gdzie jest zapisana inspiracja',
+      colSheet2014: 'D&D 5E by Roll20 (2014 OGL)',
+      where2014: 'Pole Inspiracja, atrybut "inspiration".',
+      colSheet2024: 'D&D Fifth Edition (5E & 5.5E, 2024)',
+      where2024:
+        'Pole Bohaterska Inspiracja, odczytywane i zapisywane przez getSheetItem i setSheetItem.',
+      points: [
+        'Zaznaczenie lub odznaczenie pola na karcie jest wykrywane od razu: znacznik podąża za nim, a odznaczenie liczy się jako wykorzystanie.',
+        'Gdy Nazewnictwo ma wartość „Z karty”, każda postać D&D 2024 używa zasad wybranych w ustawieniach swojej karty: zasady 2024 mówią Bohaterska Inspiracja, zasady 2014 – Inspiracja.',
+        'Postacie bez żadnej z tych kart są pomijane, więc żetony NPC nie są zmieniane.',
+      ],
+    },
+    players: {
+      heading: 'Gracze',
+      points: [
+        'Gracze mogą wykorzystywać inspirację postaci, którymi sterują: kliknij Wykorzystaj na czacie lub akcję żetonu Inspiration.',
+        'GM dostaje wiadomość, kto ją wykorzystał, z przyciskiem Cofnij.',
+        'Wpisanie !inspiration pokazuje graczowi jego postacie i to, czy mają inspirację.',
+        'Wyłącz Gracze mogą wykorzystywać, aby wykorzystywanie zostało w rękach GM.',
+      ],
+    },
+    passOn: {
+      heading: 'Przekazywanie (zasady 2024)',
+      points: [
+        'Postać nie może mieć Bohaterskiej Inspiracji podwójnie. Gdy postać, która ją ma, miałaby ją zyskać ponownie, jej gracze są pytani, czy przekazać ją innemu członkowi drużyny, który jej nie ma.',
+        'Wybór obejmuje każdego członka drużyny bez Bohaterskiej Inspiracji oraz Zrezygnuj. Wygasa po godzinie.',
+        'Według zasad 2014 GM dostaje tylko informację, że postać już ma Inspirację.',
+        'Wyłącz Przekazywanie, aby zawsze dostawać tylko tę wiadomość.',
+      ],
+    },
+    party: {
+      heading: 'Drużyna',
+      points: [
+        'Drużyna to wszystkie postacie, którymi sterują gracze. Zaznacz żetony i kliknij Dodaj do drużyny lub Usuń z drużyny, aby ją zmienić.',
+        'Przegląd GM ma przyciski Daj, Odbierz i Wykorzystaj dla każdego członka.',
+        'Włącz Gracze widzą drużynę, aby gracze też widzieli przegląd. Przyciski Wykorzystaj dostają tylko przy własnych postaciach.',
+      ],
+    },
+    markers: {
+      heading: 'Znaczniki żetonów',
+      points: [
+        'Wybierz znacznik w ustawieniu Znacznik. Na liście są kolorowe kropki Roll20, domyślne znaczniki i twoje własne zestawy znaczników.',
+        'Dodanie znacznika do żetonu ręcznie lub przez TokenMod daje postaci inspirację. Zdjęcie go oznacza wykorzystanie.',
+        'Zmiana znacznika od razu przenosi go na każdym żetonie.',
+        'Własne znaczniki stanów karty D&D 2024 nie są oferowane, bo karta ustawia je sama.',
+      ],
+    },
+    commands: {
+      heading: 'Polecenia',
+      intro:
+        'Każde polecenie zaczyna się od !inspiration. Polecenia działają na zaznaczonych żetonach, chyba że podano --ids.',
+      mods: 'Inne Mody też mogą wysyłać te polecenia, na przykład ze ScriptCards. Inne Mody mogą także wywoływać InspirationTracker.give, spend, remove i isInspired.',
+      colCommand: 'Polecenie',
+      colDesc: 'Co robi',
+    },
+    settings: {
+      heading: 'Ustawienia',
+      intro: 'Zmieniaj je przyciskiem Ustawienia albo wpisz !inspiration set <setting> <value>.',
+      colKey: 'Ustawienie',
+      colName: 'Nazwa',
+      colDesc: 'Co robi',
+    },
+    upgrading: {
+      heading: 'Aktualizacja z 0.1',
+      points: [
+        'Znacznik, efekt specjalny i typ efektu z wersji 0.1 zostają zachowane.',
+        'Jeśli w 0.1 wybrano własne polecenie, nadal działa obok !inspiration.',
+        '!inspiration przy zaznaczonych żetonach nadal daje lub odbiera inspirację.',
+      ],
+    },
+    troubleshooting: {
+      heading: 'Rozwiązywanie problemów',
+      points: [
+        'Znacznik nie pojawia się na żetonie? Kliknij Synchronizuj, aby ponownie odczytać wszystkie karty.',
+        'Żeton, który nie reprezentuje postaci, nie może mieć inspiracji. Najpierw połącz go z postacią.',
+        'Nic się nie dzieje, gdy gracz klika Wykorzystaj? Sprawdź, czy postać jest przypisana do tego gracza.',
+        'Błędy są zapisywane w konsoli API na stronie Mod Scripts.',
+      ],
+    },
+    languages: {
+      heading: 'Języki',
+      body: 'InspirationTracker jest przetłumaczony na poniższe języki. Wybierz jeden w ustawieniu Język.',
+      colCode: 'Kod',
+      colName: 'Język',
+      colNative: 'Nazwa rodzima',
+    },
+    credits: {
+      heading: 'Autorzy',
+      original: 'Autor oryginalnego Moda:',
+      maintainer: 'Wersję 1 utrzymuje:',
+      support: 'Zgłaszaj błędy i pomysły na forum Mod w Roll20 lub na GitHubie.',
+    },
+    footer: 'Przyciski do wszystkich działań są w notatce „{deck}”.',
+  },
+  deck: {
+    subtitle: 'Panel poleceń',
+    selectedDesc: 'Zaznacz jeden lub więcej żetonów, a potem kliknij.',
+    partyDesc: 'Zobacz, kto ma inspirację, i wybierz, kto jest w drużynie.',
+    toolsDesc: 'Menu, ustawienia, makro gracza i pomoc.',
+    footer: 'Pełne instrukcje są w notatce „{help}”.',
+  },
+};
 
 export default TRANSLATION;

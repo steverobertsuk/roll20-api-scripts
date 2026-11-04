@@ -1,3 +1,306 @@
-const TRANSLATION = {};
+const TRANSLATION = {
+  terms: {
+    heroic: 'Inspiration héroïque',
+    classic: 'Inspiration',
+  },
+  titles: {
+    ready: 'InspirationTracker est prêt.',
+    settings: "Paramètres d'InspirationTracker",
+    help: "Commandes d'InspirationTracker",
+    party: 'Inspiration du groupe',
+    yours: 'Vos personnages',
+    status: "État d'InspirationTracker",
+  },
+  messages: {
+    gained: "{name} reçoit l'{term} !",
+    spent: "{name} utilise l'{term}.",
+    spentBy: "{player} a dépensé l'{term} de {name}.",
+    spentSheet: "{name} n'a plus l'{term} (modifié sur la fiche ou le jeton).",
+    restored: "{name} récupère l'{term}.",
+    removed: '{term} retirée à {name}.',
+    already: "{name} a déjà l'{term}.",
+    none: "{name} n'a pas l'{term}.",
+    busy: '{name} est encore en cours de mise à jour. Réessayez dans un instant.',
+    passOffer:
+      "{name} a déjà l'{term} et ne peut pas l'avoir deux fois. Donnez-la à un membre du groupe qui ne l'a pas, ou renoncez-y.",
+    passNobody: "Tous les autres membres du groupe l'ont déjà.",
+    passAsked: "Les joueurs de {name} ont été invités à choisir qui reçoit l'{term}.",
+    passed: "{from} donne l'{term} à {to} !",
+    passAlready: "{to} l'a déjà. Choisissez quelqu'un d'autre.",
+    declined: "{name} renonce à l'{term} en trop.",
+    undoAlready: "{name} l'a déjà de nouveau.",
+    synced: 'Fiches lues : {checked}. Avec inspiration : {inspired}.',
+    migrated:
+      'Les paramètres de la version 0.1 ont été conservés : marqueur, effet spécial et son type. Les nouveaux paramètres prennent leur valeur par défaut.',
+    legacyCommand: 'Votre ancienne commande {command} fonctionne toujours, tout comme {main}.',
+    macroHint:
+      'Pour donner aux joueurs un bouton Dépenser, lancez {command}. Cela ajoute une action de jeton pour tout le monde.',
+    macro:
+      "La macro « {name} » est prête : les joueurs la voient comme action de jeton quand ils sélectionnent un jeton qu'ils contrôlent.",
+    journal: "Documents d'aide et Command Deck reconstruits.",
+    readyHint: 'Tapez {command} pour le menu, ou ouvrez le document Command Deck.',
+  },
+  errors: {
+    denied: 'Vous ne pouvez pas faire cela pour {name}.',
+    gmOnly: 'Seul le MJ peut utiliser cette commande.',
+    gmOnlyHint: 'Les joueurs peuvent utiliser spend, party et help.',
+    spendOff: 'Le MJ a désactivé la dépense par les joueurs.',
+    noCharacter: 'Ces jetons ne représentent pas de personnage : {names}.',
+    nothingSelected: "Sélectionnez d'abord un jeton.",
+    nothingSelectedHint:
+      'Sélectionnez des jetons qui représentent des personnages, ou ajoutez --ids avec des ID de jetons ou de personnages.',
+    writeFailed: 'Impossible de modifier la fiche de {name}.',
+    offerGone: 'Ce choix a déjà été fait, ou il a expiré.',
+    passInvalid: "Choisissez un membre du groupe autre que celui qui l'a.",
+    undoGone: 'Cette dépense a déjà été annulée, ou elle est trop ancienne.',
+    unknownMarker: "Il n'existe aucun marqueur de jeton nommé « {value} ».",
+    unknownMarkerHint:
+      'Utilisez le bouton Marqueur dans les paramètres pour en choisir un dans vos jeux de marqueurs.',
+    badSetting: 'Impossible de régler {key} sur « {value} ».',
+    badSettingHint: 'Tapez !inspiration set pour voir chaque paramètre et ses choix.',
+    unknownCommand: 'Commande inconnue : {command}.',
+    unknownCommandHint: 'Tapez !inspiration help pour la liste des commandes.',
+  },
+  menu: {
+    selected: 'Jetons sélectionnés',
+    party: 'Groupe',
+    tools: 'Outils',
+    hint: 'Les instructions complètes sont dans le document « {help} ».',
+    noSheet: 'pas de fiche',
+    noneYours: 'Vous ne contrôlez aucun personnage avec une fiche.',
+    partyEmpty: 'Vous ne contrôlez aucun membre du groupe.',
+    partyEmptyGm:
+      'Le groupe est encore vide. Attribuez des personnages aux joueurs, ou sélectionnez des jetons et cliquez sur Ajouter au groupe.',
+    partyCount: "{count} sur {total} ont l'{term}.",
+  },
+  buttons: {
+    menu: 'Menu',
+    give: 'Donner',
+    remove: 'Retirer',
+    toggle: 'Basculer',
+    spend: 'Dépenser',
+    party: 'Groupe',
+    partyAdd: 'Ajouter au groupe',
+    partyRemove: 'Retirer du groupe',
+    settings: 'Paramètres',
+    macro: 'Macro joueurs',
+    sync: 'Synchroniser',
+    status: 'État',
+    help: 'Aide',
+    reset: 'Réinitialiser',
+    refresh: 'Actualiser',
+    undo: 'Annuler',
+    decline: 'Y renoncer',
+  },
+  values: {
+    on: 'Activé',
+    off: 'Désactivé',
+    wording: {
+      auto: 'Selon la fiche',
+      2014: 'Inspiration (2014)',
+      2024: 'Inspiration héroïque (2024)',
+    },
+    announce: {
+      public: 'Tout le monde',
+      gm: 'MJ et propriétaires',
+      off: 'Personne',
+    },
+  },
+  settings: {
+    language: {
+      label: 'Langue',
+      desc: 'Langue des menus, des messages et des documents.',
+    },
+    marker: {
+      label: 'Marqueur',
+      desc: "Marqueur de jeton affiché tant qu'un personnage a l'inspiration. Les jeux de marqueurs personnalisés sont aussi proposés.",
+    },
+    wording: {
+      label: 'Formulation',
+      desc: 'Appeler cela Inspiration ou Inspiration héroïque. « Selon la fiche » utilise les règles choisies sur chaque fiche D&D 2024, et Inspiration sur la fiche 2014.',
+    },
+    announce: {
+      label: 'Annonce',
+      desc: "Qui voit le message dans le chat quand l'inspiration est gagnée ou dépensée.",
+    },
+    fx: {
+      label: 'Effet spécial',
+      desc: "Joue un effet spécial sur le jeton quand il gagne l'inspiration.",
+    },
+    fxType: {
+      label: "Type d'effet",
+      desc: "Quel effet jouer, par exemple nova-holy, ou l'ID d'un effet personnalisé.",
+    },
+    playerSpend: {
+      label: 'Dépense par les joueurs',
+      desc: "Permet aux joueurs de dépenser l'inspiration des personnages qu'ils contrôlent. Le MJ est prévenu, avec un bouton Annuler.",
+    },
+    playerOverview: {
+      label: 'Groupe visible des joueurs',
+      desc: "Permet aux joueurs de voir qui, dans le groupe, a l'inspiration.",
+    },
+    passOn: {
+      label: 'Transmettre (2024)',
+      desc: "Selon les règles 2024, un personnage qui gagnerait l'Inspiration héroïque alors qu'il l'a déjà peut la donner à un autre membre du groupe.",
+    },
+  },
+  status: {
+    version: 'Version',
+    beacon: 'Fiches D&D 2024',
+    legacy: 'Fiches 2014',
+    none: "Personnages sans case d'inspiration",
+    rules2024: 'Règles 2024 utilisées',
+    party: 'Membres du groupe',
+    marker: 'Marqueur',
+    fx: 'Effet spécial',
+    legacyCommand: 'Ancienne commande',
+  },
+  help: {
+    menu: "Affiche le menu. Avec des jetons sélectionnés, donne ou retire l'inspiration, comme dans la version 0.1.",
+    give: "Donne l'inspiration aux personnages sélectionnés.",
+    remove: "Retire l'inspiration aux personnages sélectionnés, sans la compter comme dépensée.",
+    toggle:
+      "Donne l'inspiration aux personnages sélectionnés qui ne l'ont pas, et la retire à ceux qui l'ont.",
+    spend: "Dépense l'inspiration des personnages sélectionnés et prévient le MJ.",
+    party:
+      "Affiche qui, dans le groupe, a l'inspiration, avec des boutons pour la donner, la retirer ou la dépenser.",
+    partyEdit: 'Ajoute les personnages sélectionnés au groupe, ou les en retire.',
+    ids: 'Agit sur les ID de jetons ou de personnages indiqués au lieu des jetons sélectionnés.',
+    undo: "Rend une inspiration dépensée. L'ID figure dans le message envoyé au MJ lors de la dépense.",
+    macro:
+      "Ajoute l'action de jeton « Inspiration », sur laquelle les joueurs cliquent pour dépenser l'inspiration.",
+    sync: 'Relit toutes les fiches et remet les marqueurs en ordre.',
+    set: 'Affiche les paramètres, ou en modifie un.',
+    reset: 'Remet tous les paramètres à leur valeur par défaut, sauf la langue.',
+    status: 'Affiche la version, les fiches trouvées et les principaux paramètres.',
+    journal: "Reconstruit les documents d'aide et Command Deck.",
+    help: 'Affiche cette liste.',
+  },
+  helpPlayer: {
+    menu: "Affiche vos personnages et indique s'ils ont l'inspiration.",
+    spend: "Dépense l'inspiration du personnage sélectionné.",
+    party: "Affiche le groupe, si le MJ l'autorise.",
+    help: 'Affiche cette liste.',
+  },
+  handout: {
+    versionLabel: 'Version',
+    subtitle: 'Inspiration et Inspiration héroïque pour les fiches D&D 5e 2014 et 2024',
+    overview: {
+      heading: 'Présentation',
+      body: "InspirationTracker synchronise l'inspiration D&D entre la fiche de personnage, le jeton et le chat. Donnez-la depuis le menu, la fiche ou le marqueur de jeton, et tous les jetons de ce personnage affichent le marqueur. Les joueurs peuvent la dépenser en un clic, et le MJ est prévenu, avec un bouton Annuler. Il fonctionne avec la fiche D&D 2024, où elle s'appelle Inspiration héroïque, et avec la fiche OGL 2014.",
+    },
+    quickStart: {
+      heading: 'Démarrage rapide',
+      steps: [
+        'Ouvrez le document Command Deck, ou tapez !inspiration pour le menu.',
+        "Sélectionnez un jeton et cliquez sur Donner. Le personnage gagne l'inspiration et ses jetons affichent le marqueur.",
+        'Cliquez une fois sur Macro joueurs, pour que les joueurs aient une action de jeton Inspiration pour la dépenser.',
+        "Cliquez sur Groupe pour voir qui a l'inspiration.",
+      ],
+    },
+    sheets: {
+      heading: 'Fiches de personnage',
+      colSheet: 'Fiche',
+      colWhere: "Où l'inspiration est stockée",
+      colSheet2014: 'D&D 5E by Roll20 (2014 OGL)',
+      where2014: 'La case Inspiration, attribut "inspiration".',
+      colSheet2024: 'D&D Fifth Edition (5E & 5.5E, 2024)',
+      where2024: 'La case Inspiration héroïque, lue et écrite avec getSheetItem et setSheetItem.',
+      points: [
+        'Cocher ou décocher la case sur une fiche est détecté immédiatement : le marqueur suit, et décocher compte comme une dépense.',
+        'Avec Formulation réglé sur « Selon la fiche », chaque personnage D&D 2024 utilise les règles choisies dans les paramètres de sa fiche : les règles 2024 disent Inspiration héroïque, les règles 2014 disent Inspiration.',
+        "Les personnages qui n'ont aucune de ces fiches ne sont pas touchés, donc les jetons de PNJ ne changent pas.",
+      ],
+    },
+    players: {
+      heading: 'Joueurs',
+      points: [
+        "Les joueurs peuvent dépenser l'inspiration des personnages qu'ils contrôlent : cliquez sur Dépenser dans le chat, ou sur l'action de jeton Inspiration.",
+        "Le MJ reçoit un message indiquant qui l'a dépensée, avec un bouton Annuler.",
+        "Taper !inspiration montre à un joueur ses personnages et s'ils ont l'inspiration.",
+        'Désactivez Dépense par les joueurs pour réserver la dépense au MJ.',
+      ],
+    },
+    passOn: {
+      heading: 'Transmettre (règles 2024)',
+      points: [
+        "Un personnage ne peut pas avoir l'Inspiration héroïque deux fois. Quand un personnage qui l'a devrait la gagner à nouveau, ses joueurs sont invités à la donner à un autre membre du groupe qui ne l'a pas.",
+        "Le choix propose chaque membre du groupe sans Inspiration héroïque, ainsi que Y renoncer. Il expire au bout d'une heure.",
+        "Selon les règles 2014, le MJ est simplement informé que le personnage a déjà l'Inspiration.",
+        'Désactivez Transmettre pour toujours recevoir ce message à la place.',
+      ],
+    },
+    party: {
+      heading: 'Le groupe',
+      points: [
+        'Le groupe comprend tous les personnages contrôlés par un joueur. Sélectionnez des jetons et cliquez sur Ajouter au groupe ou Retirer du groupe pour le modifier.',
+        "La vue d'ensemble du MJ propose des boutons Donner, Retirer et Dépenser pour chaque membre.",
+        "Activez Groupe visible des joueurs pour que les joueurs voient aussi la vue d'ensemble. Ils n'ont des boutons Dépenser que pour leurs propres personnages.",
+      ],
+    },
+    markers: {
+      heading: 'Marqueurs de jeton',
+      points: [
+        'Choisissez le marqueur avec le paramètre Marqueur. Les points de couleur de Roll20, les marqueurs par défaut et vos jeux de marqueurs personnalisés sont proposés.',
+        "Ajouter le marqueur à un jeton à la main, ou avec TokenMod, donne l'inspiration au personnage. Le retirer la dépense.",
+        'Changer de marqueur le remplace immédiatement sur tous les jetons.',
+        "Les marqueurs d'état propres à la fiche D&D 2024 ne sont pas proposés, car la fiche les gère elle-même.",
+      ],
+    },
+    commands: {
+      heading: 'Commandes',
+      intro:
+        'Chaque commande commence par !inspiration. Les commandes agissent sur les jetons sélectionnés, sauf si --ids est indiqué.',
+      mods: "D'autres Mods peuvent aussi envoyer ces commandes, par exemple depuis ScriptCards. D'autres Mods peuvent aussi appeler InspirationTracker.give, spend, remove et isInspired.",
+      colCommand: 'Commande',
+      colDesc: "Ce qu'elle fait",
+    },
+    settings: {
+      heading: 'Paramètres',
+      intro: 'Modifiez-les avec le bouton Paramètres, ou tapez !inspiration set <setting> <value>.',
+      colKey: 'Paramètre',
+      colName: 'Nom',
+      colDesc: "Ce qu'il fait",
+    },
+    upgrading: {
+      heading: 'Mise à niveau depuis 0.1',
+      points: [
+        "Le marqueur, l'effet spécial et le type d'effet de la version 0.1 sont conservés.",
+        'Si vous aviez choisi votre propre commande en 0.1, elle fonctionne toujours en plus de !inspiration.',
+        "!inspiration avec des jetons sélectionnés donne ou retire toujours l'inspiration.",
+      ],
+    },
+    troubleshooting: {
+      heading: 'Dépannage',
+      points: [
+        "Le marqueur ne s'affiche pas sur un jeton ? Cliquez sur Synchroniser pour relire toutes les fiches.",
+        "Un jeton qui ne représente pas de personnage ne peut pas avoir l'inspiration. Liez-le d'abord à un personnage.",
+        'Rien ne se passe quand un joueur clique sur Dépenser ? Vérifiez que le personnage est attribué à ce joueur.',
+        'Les erreurs sont écrites dans la console API de la page Mod Scripts.',
+      ],
+    },
+    languages: {
+      heading: 'Langues',
+      body: 'InspirationTracker est traduit dans les langues ci-dessous. Choisissez-en une avec le paramètre Langue.',
+      colCode: 'Code',
+      colName: 'Langue',
+      colNative: 'Nom natif',
+    },
+    credits: {
+      heading: 'Crédits',
+      original: 'Mod original par',
+      maintainer: 'Version 1 maintenue par',
+      support: 'Signalez bugs et idées sur le forum Mod de Roll20 ou sur GitHub.',
+    },
+    footer: 'Des boutons pour chaque action se trouvent dans le document « {deck} ».',
+  },
+  deck: {
+    subtitle: 'Command Deck',
+    selectedDesc: 'Sélectionnez un ou plusieurs jetons, puis cliquez.',
+    partyDesc: "Voyez qui a l'inspiration, et choisissez qui fait partie du groupe.",
+    toolsDesc: 'Menu, paramètres, macro joueurs et aide.',
+    footer: 'Les instructions complètes sont dans le document « {help} ».',
+  },
+};
 
 export default TRANSLATION;
