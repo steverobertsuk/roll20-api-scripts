@@ -82,10 +82,13 @@ export function checkLevelUp(character, result) {
   }
   const profile = result.profile || {};
   const first = profile.firstLevel ?? 1;
-  let reached = levelForXp(profile.levels, result.after, first);
-  // Sheets that hold "XP for next level" (or systems with a rule for it) instead of a table.
-  if (reached === null && Number.isFinite(result.next) && Number.isFinite(result.level)) {
+  // A sheet's own "XP for next level" field (or the system's rule for it) comes first,
+  // because the GM may have chosen another track; the profile's table is the fallback.
+  let reached = null;
+  if (Number.isFinite(result.next) && Number.isFinite(result.level)) {
     reached = result.after >= result.next ? result.level + 1 : result.level;
+  } else {
+    reached = levelForXp(profile.levels, result.after, first);
   }
   if (reached === null) {
     return null;

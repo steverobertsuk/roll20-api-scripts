@@ -291,7 +291,7 @@ test('2014 sheet: legacy attributes are written with the sheet workers', async (
   await g.command('!lazyxp add 100');
   await g.command('!lazyxp end');
   const xp = g.attr(hero.id, 'experience');
-  assert.equal(xp.get('current'), 350);
+  assert.equal(xp.get('current'), '350');
   assert.equal(xp.workerWrites, 1);
   assert.match(g.chatText(), /enough XP for level 2/);
 });
@@ -303,14 +303,14 @@ test('unknown sheets use common names, and custom fields can be set', async () =
   await g.ready();
   await g.command('!lazyxp add 20');
   await g.command('!lazyxp end');
-  assert.equal(g.attr(hero.id, 'xp').get('current'), 20);
+  assert.equal(g.attr(hero.id, 'xp').get('current'), '20');
   // No known field: the first common name is created.
-  assert.equal(g.attr(other.id, 'experience').get('current'), 10);
+  assert.equal(g.attr(other.id, 'experience').get('current'), '10');
   await g.command('!lazyxp set system custom');
   await g.command('!lazyxp set customXp karma');
   await g.command('!lazyxp add 4');
   await g.command('!lazyxp end');
-  assert.equal(g.attr(other.id, 'karma').get('current'), 3);
+  assert.equal(g.attr(other.id, 'karma').get('current'), '3');
 });
 
 test('Beacon sheets on sandbox 1.0 warn instead of failing', async () => {

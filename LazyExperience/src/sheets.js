@@ -139,17 +139,7 @@ async function writeXp(character, profile, field, value, amount) {
     await setSheetItem(character.id, name, value);
     return { ok: true };
   }
-  const attr = findAttribute(character.id, name);
-  if (attr) {
-    // setWithWorker lets the sheet's own workers update level and totals.
-    if (typeof attr.setWithWorker === 'function') {
-      attr.setWithWorker({ current: value });
-    } else {
-      attr.set('current', value);
-    }
-  } else {
-    createObj('attribute', { characterid: character.id, name, current: value });
-  }
+  setLegacy(character, findAttribute(character.id, name), name, value);
   // Karma-style sheets keep a running total next to the spendable amount.
   for (const total of profile.alsoAdd || []) {
     const totalAttr = findAttribute(character.id, total);
@@ -173,10 +163,14 @@ function setLegacy(character, attr, name, value) {
     const created = createObj('attribute', { characterid: character.id, name, current: '' });
     attr = created;
   }
+  // Sheets hold what players type, which is text; some sheet workers fail on numbers
+  // (the D&D 5E 2014 sheet's sanitizeXP calls trim()). setWithWorker lets the sheet's
+  // own workers update level and totals.
+  const text = String(value);
   if (typeof attr.setWithWorker === 'function') {
-    attr.setWithWorker({ current: value });
+    attr.setWithWorker({ current: text });
   } else {
-    attr.set('current', value);
+    attr.set('current', text);
   }
 }
 

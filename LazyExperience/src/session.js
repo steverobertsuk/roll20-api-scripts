@@ -117,6 +117,11 @@ export async function pay(rows) {
       const result = await addXp(character, row.xp);
       if (result.ok) {
         checkLevelUp(character, result);
+      } else if (result.reason === 'xpless') {
+        // A system without XP (Savage Worlds, 13th Age…): nothing was given, so the
+        // summary must not say otherwise.
+        session.paid[row.id] -= row.xp;
+        if (session.paid[row.id] === 0) delete session.paid[row.id];
       }
       results.push({ id: row.id, name: character.get('name'), xp: row.xp, ...result, sheet: true });
     } catch (err) {
