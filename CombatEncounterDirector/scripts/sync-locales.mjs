@@ -215,12 +215,9 @@ function maskPlaceholders(text) {
  * @returns {string} Restored string with original placeholders reinserted.
  */
 function unmaskPlaceholders(text, placeholders) {
-  return placeholders.reduce(
-    (restored, placeholder, index) =>
-      restored
-        .replaceAll(`__L10N_PLACEHOLDER_${index}__`, placeholder)
-        .replaceAll(`__L10N_PLACEHOLDER_${index}__`, placeholder),
-    text
+  return text.replaceAll(
+    MASK_TOKEN_PATTERN,
+    (token, index) => placeholders[Number(index)] ?? token
   );
 }
 
@@ -682,10 +679,12 @@ function collectStrings(node, path, out) {
   if (typeof node === 'string') {
     out.set(path, node);
   } else if (Array.isArray(node)) {
-    node.forEach((item, index) => collectStrings(item, (path ? `${path}.${index}` : String(index)), out));
+    node.forEach((item, index) =>
+      collectStrings(item, path ? `${path}.${index}` : String(index), out)
+    );
   } else if (node && typeof node === 'object') {
     for (const [key, value] of Object.entries(node)) {
-      collectStrings(value, (path ? `${path}.${key}` : key), out);
+      collectStrings(value, path ? `${path}.${key}` : key, out);
     }
   }
   return out;
@@ -707,9 +706,6 @@ export async function checkLocales(localeFilter) {
       process.exitCode = 1;
       return 0;
     }
-  }
-  if (!codes) {
-    return 0;
   }
   glossary = loadGlossary();
   reviewNotes.length = 0;
