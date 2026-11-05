@@ -1,5 +1,5 @@
 import console from 'node:console';
-import { readdirSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import https from 'node:https';
 import { dirname, resolve } from 'node:path';
 import process from 'node:process';
@@ -34,7 +34,147 @@ const REGENERATE_CONFIG = {
   interRequestDelayMs: 3000,
 };
 
-const PLACEHOLDER_PATTERN = /(\{[^{}]+\}|&lt;[^&]+&gt;|--[a-zA-Z0-9_-]+)/g;
+// Masked and put back unchanged: {placeholders}, &lt;tags&gt;, --options, !commands and
+// code such as rgba(0,0,0,0.8) (the translator turned its decimal point into a comma).
+const PLACEHOLDER_SOURCE = String.raw`\{[^{}]+\}|&lt;[^&]+&gt;|--[a-zA-Z0-9_-]+|![a-zA-Z][\w-]*|\b[a-z]+\((?:[^()\s]*\d[^()\s]*)?\)`;
+const PLACEHOLDER_PATTERN = new RegExp(`(${PLACEHOLDER_SOURCE})`, 'g');
+// The translator sometimes changes the case of mask tokens, so they are matched case-insensitively.
+const MASK_TOKEN_PATTERN = /__L10N_PLACEHOLDER_(\d+)__/giu;
+// Zero-width characters the translator leaves inside words.
+const ZERO_WIDTH_PATTERN = /[​‌‍⁠﻿]/gu;
+
+const GLOSSARY_FILE = resolve(__dirname, 'locale-glossary.json');
+/** Names kept in English in every Mod: Roll20 and its editor and sheet names. A Mod adds its own in the glossary. */
+const DEFAULT_KEEP = ['Roll20', 'Jumpgate', 'Legacy', 'Beacon'];
+
+/**
+ * A word the translator gets wrong without context.
+ * - `en`: the English word; its plural (`s`/`es`) is matched too, case-insensitively.
+ * - `sendAs`: optional clearer English sent in its place, e.g. "hex tile" for "hex".
+ * - `locales`: per locale, `use` lists stems one of which a translation must contain,
+ *   and `avoid` lists stems it must not contain (both case-insensitive).
+ *
+ * @typedef {{ en: string, sendAs?: string, locales?: Record<string, { use?: string[], avoid?: string[] }> }} GlossaryTerm
+ * @typedef {{ keep: string[], terms: GlossaryTerm[], keepPattern: RegExp | null }} Glossary
+ */
+
+/**
+ * Escapes a string for use inside a regular expression.
+ *
+ * @param {string} text Literal text.
+ * @returns {string} Escaped pattern.
+ */
+function escapeRegExp(text) {
+  return text.replaceAll(/[.*+?^${}()|[\]\\]/gu, String.raw`\$&`);
+}
+
+/**
+ * Builds a whole-word pattern for an English glossary word and its plural.
+ *
+ * @param {string} word English word.
+ * @param {string} [flags='giu'] Pattern flags.
+ * @returns {RegExp} Pattern capturing the word (1) and its plural ending (2).
+ */
+function termPattern(word, flags = 'giu') {
+  return new RegExp(`(?<![\\p{L}\\p{N}])(${escapeRegExp(word)})(e?s)?(?![\\p{L}\\p{N}])`, flags);
+}
+
+/**
+ * Loads the Mod's glossary (`scripts/locale-glossary.json`, optional) and adds the
+ * names every Mod keeps in English.
+ *
+ * @returns {Glossary} Glossary with a combined pattern for the kept names.
+ */
+function loadGlossary() {
+  let custom = {};
+  try {
+    custom = JSON.parse(readFileSync(GLOSSARY_FILE, 'utf8'));
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw new Error(`[sync-locales] Cannot read ${GLOSSARY_FILE}: ${error.message}`);
+    }
+  }
+  const keep = [...new Set([...DEFAULT_KEEP, ...(custom.keep ?? [])])].filter(Boolean);
+  // Longest first, so "!hexploration set language" wins over "!hexploration".
+  const sorted = [...keep].sort((a, b) => b.length - a.length);
+  const keepPattern = sorted.length
+    ? new RegExp(
+        `(?<![\\p{L}\\p{N}])(?:${sorted.map(escapeRegExp).join('|')})(?![\\p{L}\\p{N}])`,
+        'gu'
+      )
+    : null;
+  return { keep, terms: custom.terms ?? [], keepPattern };
+}
+
+/** @type {Glossary} */
+let glossary = { keep: [], terms: [], keepPattern: null };
+
+/**
+ * Review notes collected during a run: translations that broke a glossary rule.
+ *
+ * @type {string[]}
+ */
+const reviewNotes = [];
+
+/**
+ * Replaces glossary words with their clearer `sendAs` English, keeping the plural
+ * and a leading capital.
+ *
+ * @param {string} text Masked source string.
+ * @returns {string} Text to send to the translator.
+ */
+function applySendAs(text) {
+  return glossary.terms.reduce((result, term) => {
+    if (!term.sendAs) {
+      return result;
+    }
+    return result.replaceAll(termPattern(term.en), (match, word, plural) => {
+      const replacement = `${term.sendAs}${plural ? 's' : ''}`;
+      return /^\p{Lu}/u.test(word)
+        ? replacement.charAt(0).toUpperCase() + replacement.slice(1)
+        : replacement;
+    });
+  }, text);
+}
+
+/**
+ * Lists the glossary rules a translation breaks.
+ *
+ * @param {string} source English source string.
+ * @param {string} translated Translated string.
+ * @param {string} localeCode Target locale code.
+ * @returns {string[]} Problems found; empty when the translation follows the glossary.
+ */
+function glossaryProblems(source, translated, localeCode) {
+  const problems = [];
+  for (const name of glossary.keep) {
+    if (termPattern(name, 'u').test(source) && !translated.includes(name)) {
+      problems.push(`"${name}" should stay in English`);
+    }
+  }
+  // Kept names such as "Hex (V)" or "Hexploration" contain glossary words; leave them out
+  // of the term checks on both sides.
+  const withoutKept = (text) =>
+    glossary.keepPattern ? text.replaceAll(glossary.keepPattern, ' ') : text;
+  const prose = withoutKept(source);
+  const lower = withoutKept(translated).toLocaleLowerCase(localeCode);
+  for (const term of glossary.terms) {
+    const rule = term.locales?.[localeCode];
+    if (!rule || !termPattern(term.en).test(prose)) {
+      continue;
+    }
+    const use = rule.use ?? [];
+    if (use.length && !use.some((stem) => lower.includes(stem.toLocaleLowerCase(localeCode)))) {
+      problems.push(`"${term.en}" should be ${use.map((stem) => `"${stem}…"`).join(' or ')}`);
+    }
+    for (const stem of rule.avoid ?? []) {
+      if (lower.includes(stem.toLocaleLowerCase(localeCode))) {
+        problems.push(`"${term.en}" must not be "${stem}…"`);
+      }
+    }
+  }
+  return problems;
+}
 
 /**
  * Loads a locale module from disk and returns its translation object.
@@ -57,12 +197,14 @@ async function loadLocale(localeCode) {
  */
 function maskPlaceholders(text) {
   const placeholders = [];
-  const masked = text.replaceAll(PLACEHOLDER_PATTERN, (match) => {
-    const token = `__CED_PLACEHOLDER_${placeholders.length}__`;
+  const mask = (match) => {
+    const token = `__L10N_PLACEHOLDER_${placeholders.length}__`;
     placeholders.push(match);
     return token;
-  });
-  return { masked, placeholders };
+  };
+  // Kept names first, so a kept command such as "!mod set language" is masked whole.
+  const kept = glossary.keepPattern ? text.replaceAll(glossary.keepPattern, mask) : text;
+  return { masked: kept.replaceAll(PLACEHOLDER_PATTERN, mask), placeholders };
 }
 
 /**
@@ -76,8 +218,8 @@ function unmaskPlaceholders(text, placeholders) {
   return placeholders.reduce(
     (restored, placeholder, index) =>
       restored
-        .replaceAll(`__CED_PLACEHOLDER_${index}__`, placeholder)
-        .replaceAll(`__CED_PLACEHOLDER_${index}__`, placeholder),
+        .replaceAll(`__L10N_PLACEHOLDER_${index}__`, placeholder)
+        .replaceAll(`__L10N_PLACEHOLDER_${index}__`, placeholder),
     text
   );
 }
@@ -147,7 +289,7 @@ async function translateSingle(text, targetLocale, cache, config, attempt = 0) {
   }
 
   const { masked, placeholders } = maskPlaceholders(text);
-  const query = `&sl=en&tl=${encodeURIComponent(targetLocale)}&dt=t&q=${encodeURIComponent(masked)}`;
+  const query = `&sl=en&tl=${encodeURIComponent(targetLocale)}&dt=t&q=${encodeURIComponent(applySendAs(masked))}`;
   const requestPath = `${GOOGLE_TRANSLATE_PATH}${query}`;
 
   // Add inter-request delay to avoid rate limiting.
@@ -159,7 +301,10 @@ async function translateSingle(text, targetLocale, cache, config, attempt = 0) {
       ? payload[0].map((part) => part?.[0] || '').join('')
       : text;
 
-    const translated = unmaskPlaceholders(translatedMasked, placeholders);
+    const translated = unmaskPlaceholders(translatedMasked, placeholders).replaceAll(
+      ZERO_WIDTH_PATTERN,
+      ''
+    );
     cache.set(cacheKey, translated);
     return translated;
   } catch (error) {
@@ -430,7 +575,13 @@ async function processLocale(localeCode, source, localeData, cache, config, forc
   }
 
   for (const task of translationTasks) {
-    task.set(translatedByText.get(task.text) ?? task.text);
+    const translated = translatedByText.get(task.text) ?? task.text;
+    task.set(translated);
+    if (translated !== task.text) {
+      for (const problem of glossaryProblems(task.text, translated, localeCode)) {
+        reviewNotes.push(`${localeCode} ${task.text}: ${problem}`);
+      }
+    }
   }
 
   const synced = finalizeValue(syncedDraft);
@@ -461,6 +612,8 @@ export async function syncLocales(localeFilter) {
     return;
   }
 
+  glossary = loadGlossary();
+  reviewNotes.length = 0;
   const source = await loadLocale(SOURCE_LOCALE);
   let targetLocaleCodes = files.filter((code) => code !== SOURCE_LOCALE);
 
@@ -496,6 +649,91 @@ export async function syncLocales(localeFilter) {
   for (const { localeCode, localeData } of localeMetadata) {
     await processLocale(localeCode, source, localeData, cache, SYNC_CONFIG, false);
   }
+  reportReviewNotes();
+}
+
+/**
+ * Prints the translations that broke a glossary rule, so they can be fixed by hand.
+ *
+ * @returns {void}
+ */
+function reportReviewNotes() {
+  if (reviewNotes.length === 0) {
+    return;
+  }
+  reviewNotes.sort();
+  console.warn(
+    `[sync-locales] ${reviewNotes.length} translation(s) to review against scripts/locale-glossary.json:`
+  );
+  for (const note of reviewNotes) {
+    console.warn(`  ${note}`);
+  }
+}
+
+/**
+ * Collects every string in a locale tree with its key path.
+ *
+ * @param {unknown} node Locale node.
+ * @param {string} path Key path of the node.
+ * @param {Map<string, string>} out Strings by key path.
+ * @returns {Map<string, string>} The same map.
+ */
+function collectStrings(node, path, out) {
+  if (typeof node === 'string') {
+    out.set(path, node);
+  } else if (Array.isArray(node)) {
+    node.forEach((item, index) => collectStrings(item, (path ? `${path}.${index}` : String(index)), out));
+  } else if (node && typeof node === 'object') {
+    for (const [key, value] of Object.entries(node)) {
+      collectStrings(value, (path ? `${path}.${key}` : key), out);
+    }
+  }
+  return out;
+}
+
+/**
+ * Checks the existing translations against the glossary, without translating anything.
+ * Strings still identical to English are skipped.
+ *
+ * @param {string} [localeFilter] Optional locale code.
+ * @returns {Promise<number>} Number of problems found.
+ */
+export async function checkLocales(localeFilter) {
+  let codes = getLocaleCodes().filter((code) => code !== SOURCE_LOCALE);
+  if (localeFilter) {
+    codes = codes.filter((code) => code === localeFilter);
+    if (codes.length === 0) {
+      console.error(`[sync-locales] No target locale found matching: ${localeFilter}`);
+      process.exitCode = 1;
+      return 0;
+    }
+  }
+  if (!codes) {
+    return 0;
+  }
+  glossary = loadGlossary();
+  reviewNotes.length = 0;
+  const source = collectStrings(await loadLocale(SOURCE_LOCALE), '', new Map());
+  for (const localeCode of codes) {
+    const target = collectStrings(await loadLocale(localeCode), '', new Map());
+    for (const [path, english] of source) {
+      const translated = target.get(path);
+      if (typeof translated !== 'string' || translated === english) {
+        continue;
+      }
+      if (new RegExp(ZERO_WIDTH_PATTERN.source, 'u').test(translated)) {
+        reviewNotes.push(`${localeCode} ${path}: contains zero-width characters`);
+      }
+      for (const problem of glossaryProblems(english, translated, localeCode)) {
+        reviewNotes.push(`${localeCode} ${path}: ${problem}`);
+      }
+    }
+  }
+  if (reviewNotes.length === 0) {
+    console.info(`[sync-locales] ${codes.length} locale(s) follow the glossary.`);
+  }
+  reportReviewNotes();
+  return reviewNotes.length;
 }
 
 /**
@@ -518,6 +756,8 @@ export async function regenerateLocales(localeFilter) {
     return;
   }
 
+  glossary = loadGlossary();
+  reviewNotes.length = 0;
   const source = await loadLocale(SOURCE_LOCALE);
   let targetLocaleCodes = files.filter((code) => code !== SOURCE_LOCALE);
 
@@ -536,6 +776,7 @@ export async function regenerateLocales(localeFilter) {
     const localeData = await loadLocale(localeCode);
     await processLocale(localeCode, source, localeData, cache, REGENERATE_CONFIG, true);
   }
+  reportReviewNotes();
 }
 
 /**
@@ -673,6 +914,7 @@ async function confirmProceed(args, message) {
  * Flags:
  *   --regenerate     Force re-translation of all strings (uses longer timeouts).
  *   --locale=<code>  Limit regeneration to a single locale (only valid with --regenerate).
+ *   --check          Check existing translations against the glossary.
  *   --yes / -y       Skip the confirmation prompt.
  */
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -682,6 +924,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
   if (process.exitCode) {
     process.exit(process.exitCode);
+  }
+
+  if (args.includes('--check')) {
+    const problems = await checkLocales(localeFilter);
+    process.exit(process.exitCode || (problems > 0 ? 1 : 0));
   }
 
   if (isRegenerate) {

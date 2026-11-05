@@ -197,7 +197,33 @@ npm run regenerate-locales
 npm run sync-locales -- --locale fr
 ```
 
-The sync script uses Google Translate. Provide a service-account key in `GOOGLE_API_KEY` (env var or `.env` file at the project root).
+The sync script uses Google Translate’s free endpoint (no key needed).
+Run `npm run sync-locales -- --check` to check existing translations against the glossary without translating.
+
+#### Glossary
+
+Google translates one string at a time, so it guesses at game words: "hex" became hexadecimal or witch, "Command Deck" a ship's deck, and `!hexploration set language` Italian words. An optional `scripts/locale-glossary.json` stops this:
+
+```json
+{
+  "keep": ["Command Deck", "Hex (V)", "!hexploration set language"],
+  "terms": [
+    {
+      "en": "hex",
+      "sendAs": "hex tile",
+      "locales": {
+        "de": { "use": ["hexfeld", "hex-", "hexkart"], "avoid": ["hexe", "verhex", "hexadezimal"] },
+        "fr": { "use": ["hexagon"], "avoid": ["hexadécimal"] }
+      }
+    }
+  ]
+}
+```
+
+- `keep`: names and commands sent masked and kept in English. `Roll20`, `Jumpgate`, `Legacy` and `Beacon` are always kept. Write a command with its sub-commands (`!mod set language`); `!mod` on its own is always masked, but the words after it are not.
+- `terms`: words Google gets wrong without context. `en` matches the word and its plural; `sendAs` (optional) is clearer English sent in its place. For each locale, a translation must contain one of the `use` stems and none of the `avoid` stems (case-insensitive substrings, so list stems that cover the word's forms and compounds).
+- After translating, the script lists every new translation that breaks a rule. `--check` runs the same checks over the existing files (and reports zero-width characters) and exits with `1` if anything is listed, without contacting Google.
+- The checks are a proofreading aid, not a guarantee: they find wrong or missing terms, not wrong grammar. Review the listed strings by hand.
 
 ### Updating the project layout table
 
