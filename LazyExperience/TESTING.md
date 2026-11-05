@@ -47,6 +47,50 @@ The tests were driven with the playwright-tests harness on copied browser profil
 | 15  | Help and Command Deck handouts and the menu, Party, settings and status cards render in the chat panel                 | Pass   |
 | 16  | German chat cards and menu; Hebrew Help handout reads right to left                                                    | Pass   |
 
+## Sheet tests — 5 November 2026, Jumpgate, sandbox v1.5
+
+Game: **Mod Test Lab - Sheets** (22183801), a new empty Jumpgate game with LazyExperience and a probe Mod. For each sheet, the game's Character Sheet Template was switched in Game Settings and the sandbox restarted. Then:
+
+1. A PC (ticked as Party Member) and a creature with a token were made.
+2. Their fields were filled in through the sheet's own inputs, so the sheet saved them as if a player had typed them.
+3. LazyExperience ran `add` and `end`. The saved attributes were read back.
+4. The creature's HP bar was set to 0 from the GM's client.
+
+The option values in the Game Settings sheet list are the sheet names Mods see (`ogl5e`, `pathfinderneceros`, …). The profiles use them.
+
+| Sheet                    | Before → after award                      | Sheet's own calculations                  | Level-up notice             | Creature defeated                       |
+| ------------------------ | ----------------------------------------- | ----------------------------------------- | --------------------------- | --------------------------------------- |
+| `ogl5e`                  | `experience` 250 → 350                    | `showleveler` 0 → 1 (Level Up button)     | Level 2                     | CR 2 → sheet's `npc_xp` 450, prompt 450 |
+| `dnd5eshaped2`           | `xp` 200 → 300                            | —                                         | Level 2                     | CR 2 → sheet's `xp` 450, prompt 450     |
+| `pathfinderofficial`     | `xp` 1950 → 2050                          | `level` from `class1_level`               | Level 2 (medium track)      | CR ½ → prompt 200                       |
+| `pathfinderneceros`      | `experience` 1950 → 2050                  | —                                         | — (run before the fallback) | CR 1 → prompt 400                       |
+| `pathfinder2eofficial`   | `xp` 950 → 1050                           | —                                         | Level 2, "take 1,000 off"   | Level 3 vs party 1 → prompt 80          |
+| `starfinder`             | `xp` 1250 → 1350                          | `character_level` from `class_1_level`    | — (run before the fallback) | CR ½ → prompt 200                       |
+| `oldschoolessentialsaac` | `XP` 1950 → 2050 (`Next` 2000)            | —                                         | Level 2                     | No XP: prompt asks for an amount        |
+| `dccofficial`            | `xp` 5 → 15                               | —                                         | Level 1 (from 0)            | No XP: prompt asks for an amount        |
+| `dungeonworldofficial`   | `xp` 7 → 8                                | —                                         | Level 2 (level + 7)         | No XP: prompt asks for an amount        |
+| `wfrp4official`          | new `repeating_experience` row, amount 50 | `total_xp` and `current_xp` stayed 0      | —                           | No XP: prompt asks for an amount        |
+| `shadowrun5thedition`    | `karma` 3 → 8, `total karma` 20 → 25      | —                                         | —                           | —                                       |
+| `shadowrun6world`        | `karma` 3 → 8, `total_karma` 20 → 25      | —                                         | —                           | —                                       |
+| `cypherstemsr20`         | `xp` 2 → 4                                | —                                         | —                           | —                                       |
+| `savageworldsofficial`   | not written; warning; summary "No XP"     | —                                         | —                           | —                                       |
+| `official13thage`        | not written; warning                      | —                                         | —                           | —                                       |
+| `coc7e`                  | not written; warning                      | —                                         | —                           | —                                       |
+| `cosmereofficial`        | not tested                                | Roll20 kept the previous sheet when saved | —                           | —                                       |
+
+### Found while testing sheets, and fixed
+
+- The D&D 5E (Classic) sheet's `sanitizeXP` worker calls `.trim()` on the XP. LazyExperience wrote a number, so the worker crashed and the sheet never saw the change. Legacy sheets are now written with text, as a player would type it.
+- The guessed sheet names were wrong for most sheets (for example `5eshaped` instead of `dnd5eshaped2`), and a loose name pattern took `pathfinderneceros` for Pathfinder 1E. Profiles now use the exact names from the Game Settings list. Copies are recognised by their attributes.
+- Pathfinder and Starfinder only store `xp_max` when it differs from the sheet's default. A blank value gave no level-up notice, so Pathfinder now falls back to the medium track and Starfinder to its own table. A sheet's next-level value, when there is one, always comes first.
+- A character on a system without XP (Savage Worlds and others) was listed in the session summary as paid. It isn't any more.
+
+### Sheet facts
+
+- Characters made by a Mod with `createObj` report a blank `_charactersheetname`, so the game's sheet (`Campaign().sheetName`) is used.
+- The sandbox only learns the game's new sheet after it restarts.
+- After the game was switched to `pathfinder2eofficial`, saving Game Settings with another sheet (Cosmere, WFRP) left it on Pathfinder 2e.
+
 ## Translations
 
 The 23 translations were written by Claude (Google Translate refused the sync with HTTP 429) and checked by script against en-US: same keys and list lengths, every `{placeholder}` and command kept, and no characters that would break a Roll20 query. The few strings still identical to English are words that are the same in that language (Session, Version, Menu, Status) or names kept on purpose (Mod sandbox). They have not been proofread by native speakers.
@@ -65,14 +109,16 @@ The 23 translations were written by Claude (Google Translate refused the sync wi
 
 ## Not yet tested live
 
-- D&D 2014, Shaped, Pathfinder, Starfinder and the other legacy-sheet profiles. Field names were checked against the Roll20 sheet sources, and the internal sheet names are matched loosely and by attributes. Each needs a game with that sheet.
+- Cosmere RPG (Roll20 would not switch the test game to it), and Pathfinder Community and Starfinder level-up notices with the fallback tables (added after their runs; covered by tests).
+- WFRP 4E totals: the ledger row is added, but the sheet did not recalculate `total_xp` and `current_xp`.
+- Sheets in a game that has used them for a while (the tests used new characters).
 - DeathTracker 1.0's `onStatusChange` (DeathTracker 1.0 is still being written).
 - Upgrading a live game that has 0.1.14 state (covered by tests only).
 - Mod sandbox v1.0 with the 2024 sheet (covered by tests only).
 - Legacy (non-Jumpgate) engine.
 - One-Click install options.
 
-## Manual checklist for other sheets
+## Manual checklist for a sheet
 
 1. Make a game with the sheet, two PCs controlled by players and one monster.
 2. `!lazyxp status`: the expected game system is listed.

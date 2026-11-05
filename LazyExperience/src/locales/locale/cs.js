@@ -400,13 +400,17 @@ export default {
       colChecked: 'Ověřeno',
       verified: {
         live: 'Otestováno v Roll20',
+        partial: 'Částečně otestováno v Roll20',
         source: 'Ze zdroje karty',
         none: '—',
       },
       points: [
-        'Karty, které nejsou na seznamu, používají běžné názvy polí experience, xp a level.',
-        'Karty Beacon, například D&D 2024, vyžadují Mod sandbox v1.5.',
-        'Karty Beacon nelze z Modu nastavit na 0 XP.',
+        'Kartu vyber podle jejího názvu v Nastavení hry. Karty, které nejsou na seznamu, používají běžné názvy polí experience, xp a level, nebo nastav Herní systém na custom.',
+        'Otestováno v Roll20 znamená, že se XP zapsaly na tu kartu ve hře Jumpgate, proběhly vlastní výpočty karty a ověřilo se, jak fungují poražení tvorové a oznámení o postupu.',
+        'Karty Beacon, například D&D 2024, vyžadují Mod sandbox v1.5 a Mod je nemůže nastavit na 0 XP.',
+        'Pathfinder 1E a Starfinder používají pro oznámení o postupu políčko karty s XP do další úrovně. Když je prázdné, Pathfinder použije střední postup a Starfinder vlastní tabulku.',
+        'WFRP 4E: každá odměna se přidá jako řádek do seznamu Experience na kartě, ale karta si při testování nepřepočítala součty XP, proto je zkontroluj na kartě.',
+        'Savage Worlds, 13th Age, Cosmere a Call of Cthulhu nemají žádné XP, které by Mod mohl zapsat: použij režim milníků.',
       ],
     },
     settings: {

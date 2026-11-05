@@ -419,13 +419,17 @@ export default {
       colChecked: 'Verificado',
       verified: {
         live: 'Testado no Roll20',
+        partial: 'Testado parcialmente no Roll20',
         source: 'Do código da ficha',
         none: '—',
       },
       points: [
-        'As fichas que não constam da lista usam os nomes de campo comuns experience, xp e level.',
-        'As fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5.',
-        'As fichas Beacon não podem ser definidas com 0 XP por um Mod.',
+        'Escolha a ficha pelo nome nas Definições do jogo. As fichas que não constam da lista usam os nomes de campo comuns experience, xp e level, ou defina o Sistema de jogo como custom.',
+        'Testado no Roll20 significa que o XP foi escrito nessa ficha num jogo Jumpgate, os cálculos da própria ficha correram, e as criaturas derrotadas e os avisos de nível foram verificados.',
+        'As fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5, e um Mod não as pode definir com 0 XP.',
+        'Pathfinder 1E e Starfinder usam a caixa de XP para o nível seguinte da ficha para os avisos de nível. Quando está vazia, o Pathfinder usa a progressão média e o Starfinder a sua própria tabela.',
+        'WFRP 4E: cada atribuição é adicionada como uma linha na lista Experience da ficha, mas nos testes a ficha não recalculou os totais de XP, por isso verifique-os na ficha.',
+        'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever: use o modo de marcos.',
       ],
     },
     settings: {

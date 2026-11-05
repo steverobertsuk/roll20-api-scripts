@@ -398,13 +398,17 @@ export default {
       colChecked: 'נבדק',
       verified: {
         live: 'נבדק ב-Roll20',
+        partial: 'נבדק חלקית ב-Roll20',
         source: 'מקוד המקור של הדף',
         none: '—',
       },
       points: [
-        'דפים שאינם ברשימה משתמשים בשמות השדות הנפוצים experience, xp ו-level.',
-        'דפי Beacon כמו D&D 2024 דורשים Mod sandbox v1.5.',
-        'אי אפשר להגדיר דפי Beacon ל-0 XP מתוך Mod.',
+        'בחרו את הדף לפי שמו בהגדרות של המשחק. דפים שאינם ברשימה משתמשים בשמות השדות הנפוצים experience, xp ו-level, או הגדירו מערכת משחק כ-custom.',
+        'נבדק ב-Roll20 פירושו שנכתב XP לדף הזה במשחק Jumpgate, החישובים של הדף עצמו רצו, ויצורים שהובסו והודעות עלייה ברמה נבדקו.',
+        'דפי Beacon כמו D&D 2024 דורשים Mod sandbox v1.5, ואי אפשר להגדיר אותם ל-0 XP מתוך Mod.',
+        'Pathfinder 1E ו-Starfinder משתמשים בתיבת ה-XP לרמה הבאה שבדף עבור הודעות עלייה ברמה. כשהיא ריקה, Pathfinder משתמש במסלול הבינוני ו-Starfinder בטבלה משלו.',
+        'WFRP 4E: כל הענקה מתווספת כשורה ברשימת Experience שבדף, אבל בבדיקות הדף לא חישב מחדש את סכומי ה-XP שלו, לכן בדקו אותם בדף.',
+        'ל-Savage Worlds, 13th Age, Cosmere ו-Call of Cthulhu אין XP ש-Mod יכול לכתוב: השתמשו במצב אבני דרך.',
       ],
     },
     settings: {

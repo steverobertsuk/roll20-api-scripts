@@ -413,13 +413,17 @@ export default {
       colChecked: 'Ellenőrizve',
       verified: {
         live: 'Roll20-ban tesztelve',
+        partial: 'Roll20-ban részben tesztelve',
         source: 'A lap forrásából',
         none: '—',
       },
       points: [
-        'A listán nem szereplő lapok a gyakori experience, xp és level mezőneveket használják.',
-        'A Beacon lapokhoz, például a D&D 2024-hez, Mod sandbox v1.5 kell.',
-        'A Beacon lapokat Modból nem lehet 0 XP-re állítani.',
+        'A lapot a neve alapján válaszd ki a játék Beállításaiban. A listán nem szereplő lapok a gyakori experience, xp és level mezőneveket használják, vagy állítsd a Játékrendszert custom-ra.',
+        'A „Roll20-ban tesztelve” azt jelenti, hogy XP-t írtak arra a lapra egy Jumpgate-játékban, lefutottak a lap saját számításai, és ellenőrizték a legyőzött lényeket és a szintlépési értesítéseket.',
+        'A Beacon lapokhoz, például a D&D 2024-hez, Mod sandbox v1.5 kell, és Modból nem lehet őket 0 XP-re állítani.',
+        'A Pathfinder 1E és a Starfinder a lap „XP a következő szintig” mezőjét használja a szintlépési értesítésekhez. Ha az üres, a Pathfinder a közepes haladási ütemet, a Starfinder a saját táblázatát használja.',
+        'WFRP 4E: minden jutalom egy sorként kerül a lap Experience listájára, de a lap tesztelés közben nem számolta újra az XP-összegeit, ezért ellenőrizd őket a lapon.',
+        'A Savage Worlds, a 13th Age, a Cosmere és a Call of Cthulhu esetében nincs XP, amit egy Mod írhatna: használd a mérföldkő módot.',
       ],
     },
     settings: {

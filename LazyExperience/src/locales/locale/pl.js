@@ -407,13 +407,17 @@ export default {
       colChecked: 'Sprawdzono',
       verified: {
         live: 'Przetestowano w Roll20',
+        partial: 'Częściowo przetestowano w Roll20',
         source: 'Ze źródła karty',
         none: '—',
       },
       points: [
-        'Karty spoza listy używają popularnych nazw pól experience, xp i level.',
-        'Karty Beacon, takie jak D&D 2024, wymagają Mod sandbox v1.5.',
-        'Na kartach Beacon Mod nie może ustawić 0 XP.',
+        'Wybierz kartę po jej nazwie w Ustawieniach gry. Karty spoza listy używają popularnych nazw pól experience, xp i level, albo ustaw System gry na custom.',
+        'Przetestowano w Roll20 oznacza, że w grze Jumpgate zapisano XP na tej karcie, zadziałały jej własne obliczenia oraz sprawdzono pokonane stworzenia i powiadomienia o awansie.',
+        'Karty Beacon, takie jak D&D 2024, wymagają Mod sandbox v1.5, a Mod nie może ustawić na nich 0 XP.',
+        'Pathfinder 1E i Starfinder używają do powiadomień o awansie pola karty z XP do następnego poziomu. Gdy jest puste, Pathfinder korzysta ze średniego tempa, a Starfinder z własnej tabeli.',
+        'WFRP 4E: każda nagroda jest dodawana jako wiersz na liście Experience na karcie, ale podczas testów karta nie przeliczyła swoich sum XP, więc sprawdź je na karcie.',
+        'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu nie mają XP, które mógłby zapisać Mod: użyj trybu kamieni milowych.',
       ],
     },
     settings: {

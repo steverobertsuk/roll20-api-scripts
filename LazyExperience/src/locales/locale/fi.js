@@ -406,13 +406,17 @@ export default {
       colChecked: 'Tarkistettu',
       verified: {
         live: 'Testattu Roll20:ssa',
+        partial: 'Osittain testattu Roll20:ssa',
         source: 'Lomakkeen lähdekoodista',
         none: '—',
       },
       points: [
-        'Luettelossa olemattomat lomakkeet käyttävät yleisiä kenttänimiä experience, xp ja level.',
-        'Beacon-lomakkeet kuten D&D 2024 tarvitsevat Mod sandbox v1.5:n.',
-        'Modi ei voi asettaa Beacon-lomakkeita 0 XP:hen.',
+        'Valitse lomake sen nimellä pelin Asetuksista. Luettelossa olemattomat lomakkeet käyttävät yleisiä kenttänimiä experience, xp ja level, tai aseta Pelijärjestelmä arvoon custom.',
+        'Testattu Roll20:ssa tarkoittaa, että XP kirjoitettiin kyseiseen lomakkeeseen Jumpgate-pelissä, lomakkeen omat laskutoimitukset suoritettiin ja kukistetut olennot sekä tasonnousuilmoitukset tarkistettiin.',
+        'Beacon-lomakkeet kuten D&D 2024 tarvitsevat Mod sandbox v1.5:n, eikä Modi voi asettaa niitä 0 XP:hen.',
+        'Pathfinder 1E ja Starfinder käyttävät tasonnousuilmoituksiin lomakkeen kenttää, jossa on XP seuraavaan tasoon. Kun se on tyhjä, Pathfinder käyttää keskinopeaa etenemistä ja Starfinder omaa taulukkoaan.',
+        'WFRP 4E: jokainen palkinto lisätään riviksi lomakkeen Experience-luetteloon, mutta lomake ei laskenut XP-summiaan uudelleen testauksessa, joten tarkista ne lomakkeelta.',
+        'Savage Worlds, 13th Age, Cosmere ja Call of Cthulhu eivät käytä XP:tä, jonka Modi voisi kirjoittaa: käytä virstanpylväs-tilaa.',
       ],
     },
     settings: {

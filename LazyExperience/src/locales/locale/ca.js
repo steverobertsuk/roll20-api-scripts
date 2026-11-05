@@ -415,13 +415,17 @@ export default {
       colChecked: 'Comprovat',
       verified: {
         live: 'Provat a Roll20',
+        partial: 'Provat parcialment a Roll20',
         source: 'Del codi de la fitxa',
         none: '—',
       },
       points: [
-        'Les fitxes que no surten a la llista fan servir els noms de camp habituals experience, xp i level.',
-        'Les fitxes Beacon com la de D&D 2024 necessiten el Mod sandbox v1.5.',
-        'Un Mod no pot posar a 0 XP les fitxes Beacon.',
+        'Tria la fitxa pel seu nom a la Configuració de la partida. Les fitxes que no surten a la llista fan servir els noms de camp habituals experience, xp i level, o defineix el Sistema de joc com a custom.',
+        "Provat a Roll20 vol dir que s'ha escrit XP en aquesta fitxa en una partida Jumpgate, que s'han executat els càlculs propis de la fitxa, i que s'han comprovat les criatures derrotades i els avisos de nivell.",
+        'Les fitxes Beacon com la de D&D 2024 necessiten el Mod sandbox v1.5, i un Mod no les pot posar a 0 XP.',
+        "Pathfinder 1E i Starfinder fan servir la casella d'XP per al nivell següent de la fitxa per als avisos de nivell. Si està en blanc, Pathfinder usa la progressió mitjana i Starfinder la seva pròpia taula.",
+        "WFRP 4E: cada atorgament s'afegeix com a fila a la llista Experience de la fitxa, però en les proves la fitxa no va recalcular els seus totals d'XP, així que comprova'ls a la fitxa.",
+        'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu no tenen XP que un Mod pugui escriure: fes servir el mode de fites.',
       ],
     },
     settings: {

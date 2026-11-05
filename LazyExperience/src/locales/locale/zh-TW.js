@@ -394,13 +394,17 @@ export default {
       colChecked: '驗證狀態',
       verified: {
         live: '已在 Roll20 測試',
+        partial: '已部分在 Roll20 測試',
         source: '依角色卡原始碼',
         none: '—',
       },
       points: [
-        '未列出的角色卡會使用常見的欄位名稱 experience、xp 與 level。',
-        '像 D&D 2024 這類 Beacon 角色卡需要 Mod sandbox v1.5。',
-        'Mod 無法將 Beacon 角色卡設為 0 XP。',
+        '請在遊戲的設定中依名稱選擇角色卡。未列出的角色卡會使用常見的欄位名稱 experience、xp 與 level,或將遊戲系統設為 custom。',
+        '已在 Roll20 測試表示曾在 Jumpgate 遊戲中將 XP 寫入該角色卡、角色卡本身的計算正常執行,並檢查過已擊敗的生物與升級通知。',
+        '像 D&D 2024 這類 Beacon 角色卡需要 Mod sandbox v1.5,且 Mod 無法將它們設為 0 XP。',
+        'Pathfinder 1E 與 Starfinder 使用角色卡上的「下一級所需 XP」欄位來發出升級通知。該欄位空白時,Pathfinder 使用中速進度,Starfinder 使用自己的表格。',
+        'WFRP 4E:每次獎勵都會在角色卡的 Experience 清單中新增一列,但測試中角色卡並未重新計算 XP 總計,請在角色卡上自行檢查。',
+        'Savage Worlds、13th Age、Cosmere 與 Call of Cthulhu 沒有可供 Mod 寫入的 XP:請使用里程碑模式。',
       ],
     },
     settings: {

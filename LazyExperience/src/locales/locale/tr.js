@@ -408,13 +408,17 @@ export default {
       colChecked: 'Kontrol edildi',
       verified: {
         live: 'Roll20’de test edildi',
+        partial: 'Roll20’de kısmen test edildi',
         source: 'Kâğıdın kaynağından',
         none: '—',
       },
       points: [
-        'Listede olmayan kâğıtlar yaygın alan adları olan experience, xp ve level’i kullanır.',
-        'D&D 2024 gibi Beacon kâğıtları Mod sandbox v1.5 gerektirir.',
-        'Beacon kâğıtları bir Mod tarafından 0 XP’ye ayarlanamaz.',
+        'Kâğıdı, oyunun Ayarlar bölümündeki adıyla seç. Listede olmayan kâğıtlar yaygın alan adları olan experience, xp ve level’i kullanır; ya da Oyun sistemini custom yap.',
+        'Roll20’de test edildi, XP’nin o kâğıda bir Jumpgate oyununda yazıldığı, kâğıdın kendi hesaplamalarının çalıştığı ve yenilen yaratıklarla seviye atlama bildirimlerinin kontrol edildiği anlamına gelir.',
+        'D&D 2024 gibi Beacon kâğıtları Mod sandbox v1.5 gerektirir ve bir Mod tarafından 0 XP’ye ayarlanamaz.',
+        'Pathfinder 1E ve Starfinder, seviye atlama bildirimleri için kâğıdın sonraki seviye XP kutusunu kullanır. Boşsa Pathfinder orta ilerleme hızını, Starfinder ise kendi tablosunu kullanır.',
+        'WFRP 4E: her ödül kâğıdın Experience listesine bir satır olarak eklenir, ancak testte kâğıt XP toplamlarını yeniden hesaplamadı; bu yüzden onları kâğıt üzerinden kontrol et.',
+        'Savage Worlds, 13th Age, Cosmere ve Call of Cthulhu’da bir Mod’un yazabileceği XP yoktur: kilometre taşı modunu kullan.',
       ],
     },
     settings: {

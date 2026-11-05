@@ -408,13 +408,17 @@ export default {
       colChecked: 'Geprüft',
       verified: {
         live: 'In Roll20 getestet',
+        partial: 'Teilweise in Roll20 getestet',
         source: 'Aus dem Quellcode des Bogens',
         none: '—',
       },
       points: [
-        'Nicht aufgeführte Bögen verwenden die gängigen Feldnamen experience, xp und level.',
-        'Beacon-Bögen wie D&D 2024 benötigen Mod sandbox v1.5.',
-        'Beacon-Bögen können von einem Mod nicht auf 0 EP gesetzt werden.',
+        'Wähle den Bogen über seinen Namen in den Einstellungen des Spiels. Nicht aufgeführte Bögen verwenden die gängigen Feldnamen experience, xp und level, oder stelle das Spielsystem auf custom.',
+        'In Roll20 getestet heißt: In einem Jumpgate-Spiel wurden EP auf diesen Bogen geschrieben, die eigenen Berechnungen des Bogens liefen, und besiegte Kreaturen sowie Stufenaufstiegs-Hinweise wurden geprüft.',
+        'Beacon-Bögen wie D&D 2024 benötigen Mod sandbox v1.5, und ein Mod kann sie nicht auf 0 EP setzen.',
+        'Pathfinder 1E und Starfinder nutzen für Stufenaufstiegs-Hinweise das Feld des Bogens für die EP bis zur nächsten Stufe. Ist es leer, verwendet Pathfinder die mittlere Aufstiegsgeschwindigkeit und Starfinder seine eigene Tabelle.',
+        'WFRP 4E: Jede Vergabe wird als Zeile in die Experience-Liste des Bogens eingetragen, aber der Bogen hat seine EP-Summen beim Testen nicht neu berechnet; prüfe sie daher auf dem Bogen.',
+        'Savage Worlds, 13th Age, Cosmere und Call of Cthulhu haben keine EP, die ein Mod schreiben könnte: Nutze den Meilenstein-Modus.',
       ],
     },
     settings: {

@@ -6,13 +6,13 @@ A rewrite of Robin Kuiper's 0.1.14. Existing games are upgraded automatically.
 
 ### Added
 
-- Game-system profiles, picked per character from its sheet:
+- Game-system profiles, picked per character from its sheet. Each was tested in Roll20 except where noted, and the README lists them under Supported sheets:
   - D&D 5E 2024 (Beacon, read and written with `getSheetItem`/`setSheetItem`)
   - D&D 5E 2014 and 5e Shaped
   - Pathfinder 1E (Roll20 and Community) and Pathfinder 2E
   - Starfinder, Old-School Essentials, Dungeon Crawl Classics and Dungeon World
-  - WFRP 4E (XP ledger rows), Shadowrun 5E/6E (karma) and Cypher
-  - Level-only systems, which use milestone mode
+  - WFRP 4E (XP ledger rows; partly supported, as the sheet does not recalculate its totals), Shadowrun 5E/6E (karma) and Cypher
+  - Savage Worlds, 13th Age, Cosmere (not tested) and Call of Cthulhu, which use milestone mode
   - A custom profile with your own field names and level table
 - Roll20's own party (Jumpgate's Party Member) as the roster, falling back to characters controlled by players. `party add`/`remove` ticks Party Member from chat.
 - Defeated creatures, noticed in the same way as HealthColors:

@@ -137,10 +137,16 @@ export function buildHelpHtml(locale) {
     escapeHtml(t(`settings.${key}.desc`, lang)),
   ]);
 
+  // Long sheet names must wrap, or the table is wider than the handout.
+  const wrapCode = (text) =>
+    `<span style="${STYLE.code.replace('white-space:nowrap;', 'word-break:break-all;')}">${escapeHtml(text)}</span>`;
   const systems = PROFILES.map((p) => [
     escapeHtml(p.label),
-    code(p.id),
-    escapeHtml(p.sheets.join(', ') || '—'),
+    wrapCode(p.id),
+    // Roll20's name for the sheet (as in Game Settings), then the name Mods see.
+    p.roll20Name
+      ? `${escapeHtml(p.roll20Name)}<br>${wrapCode(p.sheets.join(', '))}`
+      : escapeHtml(p.sheets.join(', ') || '—'),
     escapeHtml(t(`handout.systems.verified.${p.verified}`, lang)),
   ]);
 

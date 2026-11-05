@@ -405,13 +405,17 @@ export default {
       colChecked: 'Gecontroleerd',
       verified: {
         live: 'Getest in Roll20',
+        partial: 'Gedeeltelijk getest in Roll20',
         source: 'Uit de broncode van de sheet',
         none: '—',
       },
       points: [
-        'Sheets die niet in de lijst staan, gebruiken de gangbare veldnamen experience, xp en level.',
-        'Beacon-sheets zoals D&D 2024 hebben Mod sandbox v1.5 nodig.',
-        'Beacon-sheets kunnen door een Mod niet op 0 XP worden gezet.',
+        'Kies de sheet op naam in de Instellingen van het spel. Sheets die niet in de lijst staan, gebruiken de gangbare veldnamen experience, xp en level, of stel Spelsysteem in op custom.',
+        'Getest in Roll20 betekent dat XP in een Jumpgate-spel naar die sheet is geschreven, de eigen berekeningen van de sheet zijn uitgevoerd, en verslagen wezens en niveaumeldingen zijn gecontroleerd.',
+        'Beacon-sheets zoals D&D 2024 hebben Mod sandbox v1.5 nodig, en een Mod kan ze niet op 0 XP zetten.',
+        'Pathfinder 1E en Starfinder gebruiken het vak voor XP tot het volgende niveau op de sheet voor niveaumeldingen. Als het leeg is, gebruikt Pathfinder het gemiddelde traject en Starfinder een eigen tabel.',
+        'WFRP 4E: elke toekenning wordt als rij toegevoegd aan de Experience-lijst van de sheet, maar de sheet herberekende zijn XP-totalen niet tijdens het testen, dus controleer ze op de sheet.',
+        'Savage Worlds, 13th Age, Cosmere en Call of Cthulhu hebben geen XP die een Mod kan schrijven: gebruik de mijlpaalmodus.',
       ],
     },
     settings: {

@@ -402,13 +402,17 @@ export default {
       colChecked: 'Nagegaan',
       verified: {
         live: 'In Roll20 getoets',
+        partial: 'Gedeeltelik getoets in Roll20',
         source: 'Uit die blad se bronkode',
         none: '—',
       },
       points: [
-        'Blaaie wat nie gelys is nie, gebruik die algemene veldname experience, xp en level.',
-        'Beacon-blaaie soos D&D 2024 het Mod sandbox v1.5 nodig.',
-        "Beacon-blaaie kan nie deur 'n Mod op 0 XP gestel word nie.",
+        'Kies die blad volgens sy naam in die spel se Instellings. Blaaie wat nie gelys is nie, gebruik die algemene veldname experience, xp en level, of stel Speelstelsel op custom.',
+        "Getoets in Roll20 beteken XP is in 'n Jumpgate-speletjie na daardie blad geskryf, die blad se eie berekeninge het gewerk, en verslane wesens en vlakstygingkennisgewings is nagegaan.",
+        "Beacon-blaaie soos D&D 2024 het Mod sandbox v1.5 nodig, en 'n Mod kan hulle nie op 0 XP stel nie.",
+        'Pathfinder 1E en Starfinder gebruik die blad se XP-vir-volgende-vlak-blokkie vir vlakstygingkennisgewings. Wanneer dit leeg is, gebruik Pathfinder die medium-baan en Starfinder sy eie tabel.',
+        "WFRP 4E: elke toekenning word as 'n ry by die blad se Experience-lys gevoeg, maar die blad het sy XP-totale nie tydens toetsing herbereken nie, so gaan dit op die blad na.",
+        "Savage Worlds, 13th Age, Cosmere en Call of Cthulhu het geen XP vir 'n Mod om te skryf nie: gebruik mylpaalmodus.",
       ],
     },
     settings: {

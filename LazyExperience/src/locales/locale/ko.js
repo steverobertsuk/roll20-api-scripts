@@ -405,13 +405,17 @@ export default {
       colChecked: '확인 상태',
       verified: {
         live: 'Roll20에서 테스트함',
+        partial: 'Roll20에서 일부 테스트함',
         source: '시트 소스 기준',
         none: '—',
       },
       points: [
-        '목록에 없는 시트는 흔히 쓰는 필드 이름 experience, xp, level을 사용합니다.',
-        'D&D 2024 같은 Beacon 시트에는 Mod sandbox v1.5가 필요합니다.',
-        'Beacon 시트는 Mod에서 0 XP로 설정할 수 없습니다.',
+        '시트는 게임 설정에 있는 이름으로 고릅니다. 목록에 없는 시트는 흔히 쓰는 필드 이름 experience, xp, level을 사용하며, 게임 시스템을 custom으로 설정할 수도 있습니다.',
+        'Roll20에서 테스트함은 Jumpgate 게임에서 해당 시트에 XP를 기록했고, 시트 자체 계산이 실행되었으며, 처치한 크리처와 레벨 업 알림을 확인했다는 뜻입니다.',
+        'D&D 2024 같은 Beacon 시트에는 Mod sandbox v1.5가 필요하며, Mod에서는 0 XP로 설정할 수 없습니다.',
+        'Pathfinder 1E와 Starfinder는 레벨 업 알림에 시트의 다음 레벨까지 필요한 XP 칸을 사용합니다. 비어 있으면 Pathfinder는 중간 진행 속도를, Starfinder는 자체 표를 사용합니다.',
+        'WFRP 4E: 지급할 때마다 시트의 Experience 목록에 행이 하나씩 추가되지만, 테스트에서 시트가 XP 합계를 다시 계산하지 않았으므로 시트에서 확인하세요.',
+        'Savage Worlds, 13th Age, Cosmere, Call of Cthulhu에는 Mod가 기록할 XP가 없습니다. 마일스톤 모드를 사용하세요.',
       ],
     },
     settings: {

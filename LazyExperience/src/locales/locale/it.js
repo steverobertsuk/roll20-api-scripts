@@ -413,13 +413,17 @@ export default {
       colChecked: 'Verificato',
       verified: {
         live: 'Testato in Roll20',
+        partial: 'Testato in parte in Roll20',
         source: 'Dal codice della scheda',
         none: '—',
       },
       points: [
-        'Le schede non elencate usano i nomi di campo comuni experience, xp e level.',
-        'Le schede Beacon come D&D 2024 richiedono Mod sandbox v1.5.',
-        'Le schede Beacon non possono essere impostate a 0 PE da un Mod.',
+        'Scegli la scheda dal suo nome nelle Impostazioni della partita. Le schede non elencate usano i nomi di campo comuni experience, xp e level, oppure imposta il sistema di gioco su custom.',
+        'Testato in Roll20 significa che i PE sono stati scritti su quella scheda in una partita Jumpgate, i calcoli propri della scheda sono stati eseguiti e sono state verificate le creature sconfitte e gli avvisi di salto di livello.',
+        'Le schede Beacon come D&D 2024 richiedono Mod sandbox v1.5 e un Mod non può impostarle a 0 PE.',
+        'Pathfinder 1E e Starfinder usano la casella dei PE per il livello successivo della scheda per gli avvisi di salto di livello. Se è vuota, Pathfinder usa la progressione media e Starfinder una tabella propria.',
+        "WFRP 4E: ogni assegnazione viene aggiunta come riga nell'elenco Experience della scheda, ma nei test la scheda non ha ricalcolato i totali di PE, quindi controllali sulla scheda.",
+        'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu non hanno PE che un Mod possa scrivere: usa la modalità milestone.',
       ],
     },
     settings: {

@@ -2,7 +2,7 @@
 
 LazyExperience collects the experience points (XP) a party earns during a session, splits them fairly and writes them to the character sheets. It works with the D&D 2024 sheet and many other sheets.
 
-- **Any sheet.** It reads and writes the D&D 5E 2024 (Beacon) sheet, the 2014 sheet, 5e Shaped, Pathfinder 1E and 2E, Starfinder, Old-School Essentials, Dungeon Crawl Classics, Dungeon World, WFRP 4E (XP ledger), Shadowrun (karma) and Cypher. Other sheets work through common field names, or fields you name yourself.
+- **Many sheets, tested in Roll20.** D&D 5E 2024 (Beacon), D&D 5E Classic and Shaped, Pathfinder 1E, Community and 2E, Starfinder, Old School Essentials, Dungeon Crawl Classics, Dungeon World, Shadowrun 5E and 6E (karma) and Cypher. WFRP 4E is partly supported. Other sheets work through common field names, or fields you name yourself. See **Supported sheets**.
 - **Roll20's own party.** Characters ticked as **Party Member** share the XP. Without a party, the characters controlled by players do.
 - **Defeated creatures.** A creature dropping to 0 HP, getting the defeated marker, or being marked dead by DeathTracker adds its XP to the session. By default you're asked first. The XP comes from the sheet's XP value or challenge rating.
 - **Fair splits.** Absent players can get nothing or part of a share, and characters can have their own share. There's bonus XP for one character and extra shares for companions. XP that doesn't divide evenly carries over to the next session.
@@ -77,27 +77,44 @@ Commands for characters use the selected tokens, or `--ids` followed by characte
 
 All settings can also be set on install from the One-Click options.
 
-## Game systems
+## Supported sheets
 
-| System                                            | XP field(s)               | Level-up notice from         | Creature XP from                   |
-| ------------------------------------------------- | ------------------------- | ---------------------------- | ---------------------------------- |
-| D&D 5E 2024 (Beacon)                              | `experience`              | 5e table; sheet has Level Up | `npc_xp`, else `npc_challenge`     |
-| D&D 5E 2014                                       | `experience`              | 5e table                     | `npc_xp`, else `npc_challenge`     |
-| 5e Shaped                                         | `xp`                      | 5e table                     | `xp`, else `challenge`             |
-| Pathfinder 1E                                     | `xp`                      | `xp_max`                     | `xp`, else `npc_cr`                |
-| Pathfinder 1E Community                           | `experience`              | `experience_max`             | `npc-xp`, else `npc-cr`            |
-| Pathfinder 2E                                     | `xp`                      | 1,000 XP                     | creature level vs party level      |
-| Starfinder                                        | `xp`                      | `xp_max`                     | `xp`, else CR in `character_level` |
-| Old-School Essentials                             | `XP`                      | `Next`                       | `XP`                               |
-| Dungeon Crawl Classics                            | `xp`                      | DCC table (level 0 funnel)   | `xp`                               |
-| Dungeon World                                     | `xp`                      | level + 7                    | —                                  |
-| WFRP 4E                                           | new XP ledger row         | —                            | —                                  |
-| Shadowrun 5E / 6E                                 | `karma` and total karma   | —                            | —                                  |
-| Cypher System                                     | `xp`                      | —                            | —                                  |
-| Savage Worlds, 13th Age, Cosmere, Call of Cthulhu | none (use milestones)     | —                            | —                                  |
-| Any other sheet                                   | `experience`, `xp`, `exp` | custom level table           | `npc_xp`, `xp`, CR                 |
+LazyExperience picks a game-system profile for each character from the sheet the game uses. That is the **Character Sheet Template** in the game's Settings. Every sheet below was tested in a Jumpgate game on 5 November 2026. Each test filled in a PC and a creature through the sheet itself, then:
 
-The D&D 2024 sheet was tested in Roll20. The others were checked against the sheets' source code. Beacon sheets such as D&D 2024 need **Mod sandbox v1.5** and can't be set to 0 XP by a Mod.
+- paid XP with **End Session**;
+- checked the value saved on the sheet and that the sheet's own calculations ran;
+- dropped the creature's HP to 0;
+- checked for the level-up notice.
+
+| Sheet in Roll20's settings                          | Sheet name (Mods)        | XP written to                                                      | Level-up notice from                              | Defeated creature's XP                       | Result                                                  |
+| --------------------------------------------------- | ------------------------ | ------------------------------------------------------------------ | ------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------- |
+| D&D Fifth Edition (5E & 5.5E)                       | `dnd2024byroll20`        | `experience` (Beacon)                                              | 5e table; the sheet shows its own Level Up button | `npc_xp` (450 for an Ogre), else CR          | Tested                                                  |
+| D&D 5E (Classic)                                    | `ogl5e`                  | `experience`                                                       | 5e table; the sheet turns on its Level Up button  | `npc_xp`, which the sheet fills from CR      | Tested                                                  |
+| D&D 5E (Shaped)                                     | `dnd5eshaped2`           | `xp`                                                               | `xp_next_level`, else the 5e table                | `xp`, which the sheet fills from `challenge` | Tested                                                  |
+| Pathfinder                                          | `pathfinderofficial`     | `xp`                                                               | `xp_max`, else the medium track                   | `npc_cr` (CR ½ = 200)                        | Tested                                                  |
+| Pathfinder Community                                | `pathfinderneceros`      | `experience`                                                       | `experience_max`, else the medium track           | `npc-xp`, else `npc-cr` (CR 1 = 400)         | Tested                                                  |
+| Pathfinder 2e (Demiplane Optional)                  | `pathfinder2eofficial`   | `xp`                                                               | 1,000 XP (take 1,000 off when levelling)          | creature level vs party level (+2 = 80)      | Tested                                                  |
+| Starfinder                                          | `starfinder`             | `xp`                                                               | `xp_max`, else the Starfinder table               | CR in `character_level` (CR ½ = 200)         | Tested                                                  |
+| Old School Essentials by Necrotic Gnome             | `oldschoolessentialsaac` | `XP`                                                               | `Next`                                            | —                                            | Tested                                                  |
+| Dungeon Crawl Classics by Goodman Games             | `dccofficial`, `dcc`     | `xp`                                                               | DCC table (level 0 funnel to level 1 at 10 XP)    | —                                            | Tested                                                  |
+| Dungeon World by Roll20                             | `dungeonworldofficial`   | `xp`                                                               | level + 7                                         | —                                            | Tested                                                  |
+| Shadowrun 5th Edition                               | `shadowrun5thedition`    | `karma` and `total karma`                                          | —                                                 | —                                            | Tested                                                  |
+| Shadowrun, Sixth World                              | `shadowrun6world`        | `karma` and `total_karma`                                          | —                                                 | —                                            | Tested                                                  |
+| Cypher Systems                                      | `cypherstemsr20`         | `xp`                                                               | —                                                 | —                                            | Tested                                                  |
+| Warhammer Fantasy Roleplay 4e Official by Cubicle 7 | `wfrp4official`          | a new row in the Experience list                                   | —                                                 | —                                            | Partly: the sheet did not recalculate its XP totals     |
+| Official Savage Worlds by Pinnacle                  | `savageworldsofficial`   | nothing: the sheet counts Advances                                 | use milestone mode                                | —                                            | Tested (XP refused with a warning)                      |
+| 13th Age                                            | `official13thage`        | nothing: no XP on the sheet                                        | use milestone mode                                | —                                            | Tested (XP refused with a warning)                      |
+| Call of Cthulhu 7th Edition                         | `coc7e`, `callofcthulu`  | nothing: no XP on the sheet                                        | —                                                 | —                                            | Tested (XP refused with a warning)                      |
+| Cosmere RPG (Demiplane Optional)                    | `cosmereofficial`        | nothing: levels by milestone                                       | use milestone mode                                | —                                            | Not tested: Roll20 would not switch the test game to it |
+| Any other sheet                                     | —                        | `experience`, `xp`, `exp` or `experience_points`, whichever exists | custom level table                                | `npc_xp`, `xp` or `experience`, else CR      | Use **Game system: custom** to name the fields          |
+
+Notes:
+
+- Sheets that aren't listed but are copies of a listed one are recognised by attributes only that sheet has.
+- Characters made by another Mod (not in the journal) report no sheet name, so the game's sheet is used.
+- Legacy sheets get XP as text through the sheet's own workers, as if a player had typed it.
+- Beacon sheets (D&D 2024) need **Mod sandbox v1.5**, and a Mod can't set them to 0 XP.
+- Sheets offered through Demiplane (`nexus_…`), such as Daggerheart and Starfinder 2e, keep their data outside Roll20's attributes. They aren't supported.
 
 ## Upgrading from 0.1
 

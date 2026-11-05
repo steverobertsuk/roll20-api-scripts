@@ -406,13 +406,17 @@ export default {
       colChecked: 'Kontrolleret',
       verified: {
         live: 'Testet i Roll20',
+        partial: 'Delvist testet i Roll20',
         source: 'Fra arkets kildekode',
         none: '—',
       },
       points: [
-        'Ark, der ikke er på listen, bruger de almindelige feltnavne experience, xp og level.',
-        'Beacon-ark som D&D 2024 kræver Mod sandbox v1.5.',
-        'Beacon-ark kan ikke sættes til 0 XP af et Mod.',
+        'Vælg arket ud fra dets navn i spillets Indstillinger. Ark, der ikke er på listen, bruger de almindelige feltnavne experience, xp og level, eller sæt Spilsystem til custom.',
+        'Testet i Roll20 betyder, at XP blev skrevet til det ark i et Jumpgate-spil, arkets egne beregninger kørte, og besejrede væsener og niveaumeddelelser blev kontrolleret.',
+        'Beacon-ark som D&D 2024 kræver Mod sandbox v1.5, og et Mod kan ikke sætte dem til 0 XP.',
+        'Pathfinder 1E og Starfinder bruger arkets felt for XP til næste niveau til niveaumeddelelser. Når det er tomt, bruger Pathfinder det mellemste forløb, og Starfinder sin egen tabel.',
+        'WFRP 4E: hver tildeling tilføjes som en række i arkets Experience-liste, men arket genberegnede ikke sine XP-totaler under test, så tjek dem på arket.',
+        'Savage Worlds, 13th Age, Cosmere og Call of Cthulhu har ingen XP, som et Mod kan skrive: brug milepælstilstand.',
       ],
     },
     settings: {

@@ -406,13 +406,17 @@ export default {
       colChecked: '確認状況',
       verified: {
         live: 'Roll20 でテスト済み',
+        partial: 'Roll20 で一部テスト済み',
         source: 'シートのソースから',
         none: '—',
       },
       points: [
-        '一覧にないシートは、一般的なフィールド名 experience、xp、level を使います。',
-        'D&D 2024 のような Beacon シートには Mod sandbox v1.5 が必要です。',
-        'Beacon シートは Mod から 0 XP に設定できません。',
+        'シートは、ゲームの設定にある名前で選びます。一覧にないシートは、一般的なフィールド名 experience、xp、level を使います。または、ゲームシステムを custom に設定してください。',
+        '「Roll20 でテスト済み」とは、Jumpgate のゲームでそのシートに XP が書き込まれ、シート自身の計算が実行され、撃破したクリーチャーとレベルアップ通知が確認されたことを意味します。',
+        'D&D 2024 のような Beacon シートには Mod sandbox v1.5 が必要で、Mod から 0 XP に設定することはできません。',
+        'Pathfinder 1E と Starfinder は、レベルアップ通知にシートの「次のレベルまでの XP」欄を使います。空欄の場合、Pathfinder は中速の成長曲線を、Starfinder は独自の表を使います。',
+        'WFRP 4E: 付与のたびにシートの Experience リストに1行追加されますが、テストではシートが XP の合計を再計算しなかったため、シートで確認してください。',
+        'Savage Worlds、13th Age、Cosmere、Call of Cthulhu には Mod が書き込める XP がありません。マイルストーンモードを使ってください。',
       ],
     },
     settings: {

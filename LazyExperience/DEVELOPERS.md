@@ -64,14 +64,14 @@ npm run sync-locales          # translate new or changed en-US strings
 
 Add a profile to `PROFILES` in `src/systems.js`:
 
-- `sheets`: exact `_charactersheetname` values. `match` is a regular expression for the name. `fingerprint` lists attribute names only that sheet has, used when the name is unknown (Roll20 doesn't document sheet names).
+- `sheets`: exact sheet names, which are the option values of `select[name=charsheettype]` on the game's Game Settings page (`/campaigns/campaignsettings/<id>`), for example `ogl5e` or `pathfinderneceros`. Characters report the same value as `_charactersheetname`, but characters made with `createObj` report a blank one, so `Campaign().sheetName` is the fallback. `roll20Name` is the sheet's name in that list, shown in the Help handout. `fingerprint` lists attributes only that sheet has, used for copies of a sheet. `match` (a regular expression) is supported but not used: loose patterns caught the wrong sheets.
 - `access`: `beacon` or `legacy`. Beacon profiles must only list fields the sheet defines: `getSheetItem` logs an error that can't be caught for an unknown name.
 - `pc.xp`, `pc.level`, `pc.next` (next-level XP field), `npc.xp`, `npc.cr`, `npc.level`: field names, tried in order.
 - `levels` (XP for each level, with `firstLevel` when it isn't 1), or `nextXp(level)`.
 - `crXp(cr)` or `creatureXp(level, partyLevel)`.
 - Write variations: `write: { kind: 'repeatingRow', … }` (ledger sheets), `alsoAdd` (running totals), `xpless` (systems without XP).
 - `levelUpHint`: which note goes under a level-up notice.
-- `verified`: `live`, `source` or `none`, shown in the Help handout.
+- `verified`: `live`, `partial`, `source` or `none`, shown in the Help handout. TESTING.md describes how a sheet is tested in a test game.
 
 Add a test in `tests/systems.test.mjs`.
 
@@ -82,3 +82,5 @@ Add a test in `tests/systems.test.mjs`.
 - `character.get('inParty')` is Roll20's Party Member box (Jumpgate). The API can set it, and ticking it fires `change:character`.
 - API changes raise no events, so changes made by other Mods are seen through TokenMod's `ObserveTokenChange` and DeathTracker's `onStatusChange`.
 - Values from sheets and names are passed through `escapeForChat` before they go to chat.
+- Legacy attributes are written as text with `setWithWorker`: the D&D 5E (Classic) sheet's `sanitizeXP` worker calls `.trim()` and fails on numbers.
+- Pathfinder and Starfinder only store `xp_max` when it differs from the sheet's default, so a profile's level table is a fallback for a blank next-level field.

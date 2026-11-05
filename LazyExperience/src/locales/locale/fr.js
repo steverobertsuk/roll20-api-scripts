@@ -418,13 +418,17 @@ export default {
       colChecked: 'Vérifié',
       verified: {
         live: 'Testé dans Roll20',
+        partial: 'Partiellement testé dans Roll20',
         source: 'D’après la source de la fiche',
         none: '—',
       },
       points: [
-        'Les fiches non listées utilisent les noms de champ courants experience, xp et level.',
-        'Les fiches Beacon comme D&D 2024 nécessitent Mod sandbox v1.5.',
-        'Les fiches Beacon ne peuvent pas être mises à 0 PX par un Mod.',
+        'Choisissez la fiche par son nom dans les Réglages de la partie. Les fiches non listées utilisent les noms de champ courants experience, xp et level, ou réglez le système de jeu sur custom.',
+        'Testé dans Roll20 signifie que des PX ont été écrits sur cette fiche dans une partie Jumpgate, que les calculs propres à la fiche ont tourné, et que les créatures vaincues et les annonces de niveau ont été vérifiées.',
+        'Les fiches Beacon comme D&D 2024 nécessitent Mod sandbox v1.5, et un Mod ne peut pas les mettre à 0 PX.',
+        'Pathfinder 1E et Starfinder utilisent la case de PX pour le niveau suivant de la fiche pour les annonces de niveau. Quand elle est vide, Pathfinder utilise la progression moyenne et Starfinder sa propre table.',
+        'WFRP 4E : chaque attribution est ajoutée comme une ligne dans la liste Experience de la fiche, mais lors des tests la fiche n’a pas recalculé ses totaux de PX ; vérifiez-les sur la fiche.',
+        'Savage Worlds, 13th Age, Cosmere et Call of Cthulhu n’ont pas de PX qu’un Mod puisse écrire : utilisez le mode jalons.',
       ],
     },
     settings: {

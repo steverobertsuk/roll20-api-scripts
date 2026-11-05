@@ -415,13 +415,17 @@ export default {
       colChecked: 'Comprobado',
       verified: {
         live: 'Probado en Roll20',
+        partial: 'Probado en parte en Roll20',
         source: 'Del código de la hoja',
         none: '—',
       },
       points: [
-        'Las hojas que no figuran usan los nombres de campo habituales experience, xp y level.',
-        'Las hojas Beacon como D&D 2024 necesitan Mod sandbox v1.5.',
-        'Un Mod no puede poner las hojas Beacon a 0 PX.',
+        'Elige la hoja por su nombre en los Ajustes de la partida. Las hojas que no figuran usan los nombres de campo habituales experience, xp y level, o fija el sistema de juego en custom.',
+        'Probado en Roll20 significa que se escribieron PX en esa hoja en una partida de Jumpgate, se ejecutaron los cálculos propios de la hoja y se comprobaron las criaturas derrotadas y los avisos de subida de nivel.',
+        'Las hojas Beacon como D&D 2024 necesitan Mod sandbox v1.5, y un Mod no puede ponerlas a 0 PX.',
+        'Pathfinder 1E y Starfinder usan la casilla de PX para el siguiente nivel de la hoja en los avisos de subida de nivel. Si está vacía, Pathfinder usa la progresión media y Starfinder su propia tabla.',
+        'WFRP 4E: cada concesión se añade como una fila en la lista Experience de la hoja, pero en las pruebas la hoja no recalculó sus totales de PX, así que compruébalos en la hoja.',
+        'Savage Worlds, 13th Age, Cosmere y Call of Cthulhu no tienen PX que un Mod pueda escribir: usa el modo de hitos.',
       ],
     },
     settings: {

@@ -402,13 +402,17 @@ export default {
       colChecked: 'Checked',
       verified: {
         live: 'Tested in Roll20',
+        partial: 'Partly tested in Roll20',
         source: 'From the sheet’s source',
         none: '—',
       },
       points: [
-        'Sheets not listed use the common field names experience, xp and level.',
-        'Beacon sheets such as D&D 2024 need Mod sandbox v1.5.',
-        'Beacon sheets cannot be set to 0 XP by a Mod.',
+        'Pick the sheet by its name in the game’s Settings. Sheets not listed use the common field names experience, xp and level, or set Game system to custom.',
+        'Tested in Roll20 means XP was written to that sheet in a Jumpgate game, the sheet’s own calculations ran, and defeated creatures and level-up notices were checked.',
+        'Beacon sheets such as D&D 2024 need Mod sandbox v1.5, and a Mod cannot set them to 0 XP.',
+        'Pathfinder 1E and Starfinder use the sheet’s XP-for-next-level box for level-up notices. When it is blank, Pathfinder uses the medium track and Starfinder its own table.',
+        'WFRP 4E: each award is added as a row in the sheet’s Experience list, but the sheet did not recalculate its XP totals in testing, so check them on the sheet.',
+        'Savage Worlds, 13th Age, Cosmere and Call of Cthulhu have no XP for a Mod to write: use milestone mode.',
       ],
     },
     settings: {

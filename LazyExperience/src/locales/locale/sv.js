@@ -403,13 +403,17 @@ export default {
       colChecked: 'Kontrollerat',
       verified: {
         live: 'Testat i Roll20',
+        partial: 'Delvis testat i Roll20',
         source: 'Från bladets källkod',
         none: '—',
       },
       points: [
-        'Blad som inte finns i listan använder de vanliga fältnamnen experience, xp och level.',
-        'Beacon-blad som D&D 2024 kräver Mod sandbox v1.5.',
-        'Beacon-blad kan inte sättas till 0 XP av en Mod.',
+        'Välj bladet efter dess namn i spelets Inställningar. Blad som inte finns i listan använder de vanliga fältnamnen experience, xp och level, eller sätt Spelsystem till custom.',
+        'Testat i Roll20 betyder att XP skrevs till det bladet i ett Jumpgate-spel, bladets egna beräkningar kördes, och besegrade varelser och nivåmeddelanden kontrollerades.',
+        'Beacon-blad som D&D 2024 kräver Mod sandbox v1.5, och en Mod kan inte sätta dem till 0 XP.',
+        'Pathfinder 1E och Starfinder använder bladets ruta för XP till nästa nivå för nivåmeddelanden. När den är tom använder Pathfinder den medelsnabba banan och Starfinder sin egen tabell.',
+        'WFRP 4E: varje tilldelning läggs till som en rad i bladets Experience-lista, men bladet räknade inte om sina XP-summor under testningen, så kontrollera dem på bladet.',
+        'Savage Worlds, 13th Age, Cosmere och Call of Cthulhu har ingen XP som en Mod kan skriva: använd milstolpeläge.',
       ],
     },
     settings: {

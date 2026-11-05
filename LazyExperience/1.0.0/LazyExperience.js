@@ -5,7 +5,7 @@
  * Name: LazyExperience
  * Script: LazyExperience.js
  * Version: 1.0.0
- * Built: 2026-11-04T21:42:57.223Z
+ * Built: 2026-11-05T01:08:35.503Z
  */
 const LazyExperienceMod = (() => {
   'use strict';
@@ -13,7 +13,7 @@ const LazyExperienceMod = (() => {
   // Build-time placeholders replaced by rollup.config.js inject-build-metadata plugin.
   const SCRIPT_NAME = 'LazyExperience';
   const SCRIPT_VERSION = '1.0.0';
-  const SCRIPT_LAST_UPDATED = '2026-11-04T21:42:57.223Z';
+  const SCRIPT_LAST_UPDATED = '2026-11-05T01:08:35.503Z';
 
   const DEFAULT_LOCALE$1 = 'en-US';
 
@@ -1089,13 +1089,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Nagegaan',
         verified: {
           live: 'In Roll20 getoets',
+          partial: 'Gedeeltelik getoets in Roll20',
           source: 'Uit die blad se bronkode',
           none: '—',
         },
         points: [
-          'Blaaie wat nie gelys is nie, gebruik die algemene veldname experience, xp en level.',
-          'Beacon-blaaie soos D&D 2024 het Mod sandbox v1.5 nodig.',
-          "Beacon-blaaie kan nie deur 'n Mod op 0 XP gestel word nie.",
+          'Kies die blad volgens sy naam in die spel se Instellings. Blaaie wat nie gelys is nie, gebruik die algemene veldname experience, xp en level, of stel Speelstelsel op custom.',
+          "Getoets in Roll20 beteken XP is in 'n Jumpgate-speletjie na daardie blad geskryf, die blad se eie berekeninge het gewerk, en verslane wesens en vlakstygingkennisgewings is nagegaan.",
+          "Beacon-blaaie soos D&D 2024 het Mod sandbox v1.5 nodig, en 'n Mod kan hulle nie op 0 XP stel nie.",
+          'Pathfinder 1E en Starfinder gebruik die blad se XP-vir-volgende-vlak-blokkie vir vlakstygingkennisgewings. Wanneer dit leeg is, gebruik Pathfinder die medium-baan en Starfinder sy eie tabel.',
+          "WFRP 4E: elke toekenning word as 'n ry by die blad se Experience-lys gevoeg, maar die blad het sy XP-totale nie tydens toetsing herbereken nie, so gaan dit op die blad na.",
+          "Savage Worlds, 13th Age, Cosmere en Call of Cthulhu het geen XP vir 'n Mod om te skryf nie: gebruik mylpaalmodus.",
         ],
       },
       settings: {
@@ -1559,13 +1563,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Comprovat',
         verified: {
           live: 'Provat a Roll20',
+          partial: 'Provat parcialment a Roll20',
           source: 'Del codi de la fitxa',
           none: '—',
         },
         points: [
-          'Les fitxes que no surten a la llista fan servir els noms de camp habituals experience, xp i level.',
-          'Les fitxes Beacon com la de D&D 2024 necessiten el Mod sandbox v1.5.',
-          'Un Mod no pot posar a 0 XP les fitxes Beacon.',
+          'Tria la fitxa pel seu nom a la Configuració de la partida. Les fitxes que no surten a la llista fan servir els noms de camp habituals experience, xp i level, o defineix el Sistema de joc com a custom.',
+          "Provat a Roll20 vol dir que s'ha escrit XP en aquesta fitxa en una partida Jumpgate, que s'han executat els càlculs propis de la fitxa, i que s'han comprovat les criatures derrotades i els avisos de nivell.",
+          'Les fitxes Beacon com la de D&D 2024 necessiten el Mod sandbox v1.5, i un Mod no les pot posar a 0 XP.',
+          "Pathfinder 1E i Starfinder fan servir la casella d'XP per al nivell següent de la fitxa per als avisos de nivell. Si està en blanc, Pathfinder usa la progressió mitjana i Starfinder la seva pròpia taula.",
+          "WFRP 4E: cada atorgament s'afegeix com a fila a la llista Experience de la fitxa, però en les proves la fitxa no va recalcular els seus totals d'XP, així que comprova'ls a la fitxa.",
+          'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu no tenen XP que un Mod pugui escriure: fes servir el mode de fites.',
         ],
       },
       settings: {
@@ -2008,13 +2016,17 @@ const LazyExperienceMod = (() => {
         colChecked: '驗證狀態',
         verified: {
           live: '已在 Roll20 測試',
+          partial: '已部分在 Roll20 測試',
           source: '依角色卡原始碼',
           none: '—',
         },
         points: [
-          '未列出的角色卡會使用常見的欄位名稱 experience、xp 與 level。',
-          '像 D&D 2024 這類 Beacon 角色卡需要 Mod sandbox v1.5。',
-          'Mod 無法將 Beacon 角色卡設為 0 XP。',
+          '請在遊戲的設定中依名稱選擇角色卡。未列出的角色卡會使用常見的欄位名稱 experience、xp 與 level,或將遊戲系統設為 custom。',
+          '已在 Roll20 測試表示曾在 Jumpgate 遊戲中將 XP 寫入該角色卡、角色卡本身的計算正常執行,並檢查過已擊敗的生物與升級通知。',
+          '像 D&D 2024 這類 Beacon 角色卡需要 Mod sandbox v1.5,且 Mod 無法將它們設為 0 XP。',
+          'Pathfinder 1E 與 Starfinder 使用角色卡上的「下一級所需 XP」欄位來發出升級通知。該欄位空白時,Pathfinder 使用中速進度,Starfinder 使用自己的表格。',
+          'WFRP 4E:每次獎勵都會在角色卡的 Experience 清單中新增一列,但測試中角色卡並未重新計算 XP 總計,請在角色卡上自行檢查。',
+          'Savage Worlds、13th Age、Cosmere 與 Call of Cthulhu 沒有可供 Mod 寫入的 XP:請使用里程碑模式。',
         ],
       },
       settings: {
@@ -2462,13 +2474,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Ověřeno',
         verified: {
           live: 'Otestováno v Roll20',
+          partial: 'Částečně otestováno v Roll20',
           source: 'Ze zdroje karty',
           none: '—',
         },
         points: [
-          'Karty, které nejsou na seznamu, používají běžné názvy polí experience, xp a level.',
-          'Karty Beacon, například D&D 2024, vyžadují Mod sandbox v1.5.',
-          'Karty Beacon nelze z Modu nastavit na 0 XP.',
+          'Kartu vyber podle jejího názvu v Nastavení hry. Karty, které nejsou na seznamu, používají běžné názvy polí experience, xp a level, nebo nastav Herní systém na custom.',
+          'Otestováno v Roll20 znamená, že se XP zapsaly na tu kartu ve hře Jumpgate, proběhly vlastní výpočty karty a ověřilo se, jak fungují poražení tvorové a oznámení o postupu.',
+          'Karty Beacon, například D&D 2024, vyžadují Mod sandbox v1.5 a Mod je nemůže nastavit na 0 XP.',
+          'Pathfinder 1E a Starfinder používají pro oznámení o postupu políčko karty s XP do další úrovně. Když je prázdné, Pathfinder použije střední postup a Starfinder vlastní tabulku.',
+          'WFRP 4E: každá odměna se přidá jako řádek do seznamu Experience na kartě, ale karta si při testování nepřepočítala součty XP, proto je zkontroluj na kartě.',
+          'Savage Worlds, 13th Age, Cosmere a Call of Cthulhu nemají žádné XP, které by Mod mohl zapsat: použij režim milníků.',
         ],
       },
       settings: {
@@ -2922,13 +2938,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Kontrolleret',
         verified: {
           live: 'Testet i Roll20',
+          partial: 'Delvist testet i Roll20',
           source: 'Fra arkets kildekode',
           none: '—',
         },
         points: [
-          'Ark, der ikke er på listen, bruger de almindelige feltnavne experience, xp og level.',
-          'Beacon-ark som D&D 2024 kræver Mod sandbox v1.5.',
-          'Beacon-ark kan ikke sættes til 0 XP af et Mod.',
+          'Vælg arket ud fra dets navn i spillets Indstillinger. Ark, der ikke er på listen, bruger de almindelige feltnavne experience, xp og level, eller sæt Spilsystem til custom.',
+          'Testet i Roll20 betyder, at XP blev skrevet til det ark i et Jumpgate-spil, arkets egne beregninger kørte, og besejrede væsener og niveaumeddelelser blev kontrolleret.',
+          'Beacon-ark som D&D 2024 kræver Mod sandbox v1.5, og et Mod kan ikke sætte dem til 0 XP.',
+          'Pathfinder 1E og Starfinder bruger arkets felt for XP til næste niveau til niveaumeddelelser. Når det er tomt, bruger Pathfinder det mellemste forløb, og Starfinder sin egen tabel.',
+          'WFRP 4E: hver tildeling tilføjes som en række i arkets Experience-liste, men arket genberegnede ikke sine XP-totaler under test, så tjek dem på arket.',
+          'Savage Worlds, 13th Age, Cosmere og Call of Cthulhu har ingen XP, som et Mod kan skrive: brug milepælstilstand.',
         ],
       },
       settings: {
@@ -3386,13 +3406,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Gecontroleerd',
         verified: {
           live: 'Getest in Roll20',
+          partial: 'Gedeeltelijk getest in Roll20',
           source: 'Uit de broncode van de sheet',
           none: '—',
         },
         points: [
-          'Sheets die niet in de lijst staan, gebruiken de gangbare veldnamen experience, xp en level.',
-          'Beacon-sheets zoals D&D 2024 hebben Mod sandbox v1.5 nodig.',
-          'Beacon-sheets kunnen door een Mod niet op 0 XP worden gezet.',
+          'Kies de sheet op naam in de Instellingen van het spel. Sheets die niet in de lijst staan, gebruiken de gangbare veldnamen experience, xp en level, of stel Spelsysteem in op custom.',
+          'Getest in Roll20 betekent dat XP in een Jumpgate-spel naar die sheet is geschreven, de eigen berekeningen van de sheet zijn uitgevoerd, en verslagen wezens en niveaumeldingen zijn gecontroleerd.',
+          'Beacon-sheets zoals D&D 2024 hebben Mod sandbox v1.5 nodig, en een Mod kan ze niet op 0 XP zetten.',
+          'Pathfinder 1E en Starfinder gebruiken het vak voor XP tot het volgende niveau op de sheet voor niveaumeldingen. Als het leeg is, gebruikt Pathfinder het gemiddelde traject en Starfinder een eigen tabel.',
+          'WFRP 4E: elke toekenning wordt als rij toegevoegd aan de Experience-lijst van de sheet, maar de sheet herberekende zijn XP-totalen niet tijdens het testen, dus controleer ze op de sheet.',
+          'Savage Worlds, 13th Age, Cosmere en Call of Cthulhu hebben geen XP die een Mod kan schrijven: gebruik de mijlpaalmodus.',
         ],
       },
       settings: {
@@ -3843,13 +3867,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Checked',
         verified: {
           live: 'Tested in Roll20',
+          partial: 'Partly tested in Roll20',
           source: 'From the sheet’s source',
           none: '—',
         },
         points: [
-          'Sheets not listed use the common field names experience, xp and level.',
-          'Beacon sheets such as D&D 2024 need Mod sandbox v1.5.',
-          'Beacon sheets cannot be set to 0 XP by a Mod.',
+          'Pick the sheet by its name in the game’s Settings. Sheets not listed use the common field names experience, xp and level, or set Game system to custom.',
+          'Tested in Roll20 means XP was written to that sheet in a Jumpgate game, the sheet’s own calculations ran, and defeated creatures and level-up notices were checked.',
+          'Beacon sheets such as D&D 2024 need Mod sandbox v1.5, and a Mod cannot set them to 0 XP.',
+          'Pathfinder 1E and Starfinder use the sheet’s XP-for-next-level box for level-up notices. When it is blank, Pathfinder uses the medium track and Starfinder its own table.',
+          'WFRP 4E: each award is added as a row in the sheet’s Experience list, but the sheet did not recalculate its XP totals in testing, so check them on the sheet.',
+          'Savage Worlds, 13th Age, Cosmere and Call of Cthulhu have no XP for a Mod to write: use milestone mode.',
         ],
       },
       settings: {
@@ -4307,13 +4335,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Tarkistettu',
         verified: {
           live: 'Testattu Roll20:ssa',
+          partial: 'Osittain testattu Roll20:ssa',
           source: 'Lomakkeen lähdekoodista',
           none: '—',
         },
         points: [
-          'Luettelossa olemattomat lomakkeet käyttävät yleisiä kenttänimiä experience, xp ja level.',
-          'Beacon-lomakkeet kuten D&D 2024 tarvitsevat Mod sandbox v1.5:n.',
-          'Modi ei voi asettaa Beacon-lomakkeita 0 XP:hen.',
+          'Valitse lomake sen nimellä pelin Asetuksista. Luettelossa olemattomat lomakkeet käyttävät yleisiä kenttänimiä experience, xp ja level, tai aseta Pelijärjestelmä arvoon custom.',
+          'Testattu Roll20:ssa tarkoittaa, että XP kirjoitettiin kyseiseen lomakkeeseen Jumpgate-pelissä, lomakkeen omat laskutoimitukset suoritettiin ja kukistetut olennot sekä tasonnousuilmoitukset tarkistettiin.',
+          'Beacon-lomakkeet kuten D&D 2024 tarvitsevat Mod sandbox v1.5:n, eikä Modi voi asettaa niitä 0 XP:hen.',
+          'Pathfinder 1E ja Starfinder käyttävät tasonnousuilmoituksiin lomakkeen kenttää, jossa on XP seuraavaan tasoon. Kun se on tyhjä, Pathfinder käyttää keskinopeaa etenemistä ja Starfinder omaa taulukkoaan.',
+          'WFRP 4E: jokainen palkinto lisätään riviksi lomakkeen Experience-luetteloon, mutta lomake ei laskenut XP-summiaan uudelleen testauksessa, joten tarkista ne lomakkeelta.',
+          'Savage Worlds, 13th Age, Cosmere ja Call of Cthulhu eivät käytä XP:tä, jonka Modi voisi kirjoittaa: käytä virstanpylväs-tilaa.',
         ],
       },
       settings: {
@@ -4779,13 +4811,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Vérifié',
         verified: {
           live: 'Testé dans Roll20',
+          partial: 'Partiellement testé dans Roll20',
           source: 'D’après la source de la fiche',
           none: '—',
         },
         points: [
-          'Les fiches non listées utilisent les noms de champ courants experience, xp et level.',
-          'Les fiches Beacon comme D&D 2024 nécessitent Mod sandbox v1.5.',
-          'Les fiches Beacon ne peuvent pas être mises à 0 PX par un Mod.',
+          'Choisissez la fiche par son nom dans les Réglages de la partie. Les fiches non listées utilisent les noms de champ courants experience, xp et level, ou réglez le système de jeu sur custom.',
+          'Testé dans Roll20 signifie que des PX ont été écrits sur cette fiche dans une partie Jumpgate, que les calculs propres à la fiche ont tourné, et que les créatures vaincues et les annonces de niveau ont été vérifiées.',
+          'Les fiches Beacon comme D&D 2024 nécessitent Mod sandbox v1.5, et un Mod ne peut pas les mettre à 0 PX.',
+          'Pathfinder 1E et Starfinder utilisent la case de PX pour le niveau suivant de la fiche pour les annonces de niveau. Quand elle est vide, Pathfinder utilise la progression moyenne et Starfinder sa propre table.',
+          'WFRP 4E : chaque attribution est ajoutée comme une ligne dans la liste Experience de la fiche, mais lors des tests la fiche n’a pas recalculé ses totaux de PX ; vérifiez-les sur la fiche.',
+          'Savage Worlds, 13th Age, Cosmere et Call of Cthulhu n’ont pas de PX qu’un Mod puisse écrire : utilisez le mode jalons.',
         ],
       },
       settings: {
@@ -5249,13 +5285,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Geprüft',
         verified: {
           live: 'In Roll20 getestet',
+          partial: 'Teilweise in Roll20 getestet',
           source: 'Aus dem Quellcode des Bogens',
           none: '—',
         },
         points: [
-          'Nicht aufgeführte Bögen verwenden die gängigen Feldnamen experience, xp und level.',
-          'Beacon-Bögen wie D&D 2024 benötigen Mod sandbox v1.5.',
-          'Beacon-Bögen können von einem Mod nicht auf 0 EP gesetzt werden.',
+          'Wähle den Bogen über seinen Namen in den Einstellungen des Spiels. Nicht aufgeführte Bögen verwenden die gängigen Feldnamen experience, xp und level, oder stelle das Spielsystem auf custom.',
+          'In Roll20 getestet heißt: In einem Jumpgate-Spiel wurden EP auf diesen Bogen geschrieben, die eigenen Berechnungen des Bogens liefen, und besiegte Kreaturen sowie Stufenaufstiegs-Hinweise wurden geprüft.',
+          'Beacon-Bögen wie D&D 2024 benötigen Mod sandbox v1.5, und ein Mod kann sie nicht auf 0 EP setzen.',
+          'Pathfinder 1E und Starfinder nutzen für Stufenaufstiegs-Hinweise das Feld des Bogens für die EP bis zur nächsten Stufe. Ist es leer, verwendet Pathfinder die mittlere Aufstiegsgeschwindigkeit und Starfinder seine eigene Tabelle.',
+          'WFRP 4E: Jede Vergabe wird als Zeile in die Experience-Liste des Bogens eingetragen, aber der Bogen hat seine EP-Summen beim Testen nicht neu berechnet; prüfe sie daher auf dem Bogen.',
+          'Savage Worlds, 13th Age, Cosmere und Call of Cthulhu haben keine EP, die ein Mod schreiben könnte: Nutze den Meilenstein-Modus.',
         ],
       },
       settings: {
@@ -5721,13 +5761,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Έλεγχος',
         verified: {
           live: 'Δοκιμάστηκε στο Roll20',
+          partial: 'Δοκιμάστηκε εν μέρει στο Roll20',
           source: 'Από τον πηγαίο κώδικα του φύλλου',
           none: '—',
         },
         points: [
-          'Τα φύλλα που δεν αναφέρονται χρησιμοποιούν τα κοινά ονόματα πεδίων experience, xp και level.',
-          'Τα φύλλα Beacon, όπως το D&D 2024, χρειάζονται Mod sandbox v1.5.',
-          'Τα φύλλα Beacon δεν μπορούν να οριστούν στα 0 XP από ένα Mod.',
+          'Επιλέξτε το φύλλο με το όνομά του στις Ρυθμίσεις του παιχνιδιού. Τα φύλλα που δεν αναφέρονται χρησιμοποιούν τα κοινά ονόματα πεδίων experience, xp και level, ή ορίστε το Σύστημα παιχνιδιού σε custom.',
+          'Το «Δοκιμάστηκε στο Roll20» σημαίνει ότι γράφτηκαν XP σε εκείνο το φύλλο σε παιχνίδι Jumpgate, εκτελέστηκαν οι δικοί του υπολογισμοί και ελέγχθηκαν τα πλάσματα που νικήθηκαν και οι ειδοποιήσεις νέου επιπέδου.',
+          'Τα φύλλα Beacon, όπως το D&D 2024, χρειάζονται Mod sandbox v1.5 και ένα Mod δεν μπορεί να τα ορίσει στα 0 XP.',
+          'Το Pathfinder 1E και το Starfinder χρησιμοποιούν το πλαίσιο XP για το επόμενο επίπεδο του φύλλου για τις ειδοποιήσεις νέου επιπέδου. Όταν είναι κενό, το Pathfinder χρησιμοποιεί τον μεσαίο ρυθμό και το Starfinder τον δικό του πίνακα.',
+          'WFRP 4E: κάθε απονομή προστίθεται ως γραμμή στη λίστα Experience του φύλλου, αλλά στις δοκιμές το φύλλο δεν ξαναυπολόγισε τα σύνολα XP του, γι’ αυτό ελέγξτε τα στο φύλλο.',
+          'Στα Savage Worlds, 13th Age, Cosmere και Call of Cthulhu δεν υπάρχουν XP για να γράψει ένα Mod: χρησιμοποιήστε τη λειτουργία ορόσημων.',
         ],
       },
       settings: {
@@ -6174,13 +6218,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'נבדק',
         verified: {
           live: 'נבדק ב-Roll20',
+          partial: 'נבדק חלקית ב-Roll20',
           source: 'מקוד המקור של הדף',
           none: '—',
         },
         points: [
-          'דפים שאינם ברשימה משתמשים בשמות השדות הנפוצים experience, xp ו-level.',
-          'דפי Beacon כמו D&D 2024 דורשים Mod sandbox v1.5.',
-          'אי אפשר להגדיר דפי Beacon ל-0 XP מתוך Mod.',
+          'בחרו את הדף לפי שמו בהגדרות של המשחק. דפים שאינם ברשימה משתמשים בשמות השדות הנפוצים experience, xp ו-level, או הגדירו מערכת משחק כ-custom.',
+          'נבדק ב-Roll20 פירושו שנכתב XP לדף הזה במשחק Jumpgate, החישובים של הדף עצמו רצו, ויצורים שהובסו והודעות עלייה ברמה נבדקו.',
+          'דפי Beacon כמו D&D 2024 דורשים Mod sandbox v1.5, ואי אפשר להגדיר אותם ל-0 XP מתוך Mod.',
+          'Pathfinder 1E ו-Starfinder משתמשים בתיבת ה-XP לרמה הבאה שבדף עבור הודעות עלייה ברמה. כשהיא ריקה, Pathfinder משתמש במסלול הבינוני ו-Starfinder בטבלה משלו.',
+          'WFRP 4E: כל הענקה מתווספת כשורה ברשימת Experience שבדף, אבל בבדיקות הדף לא חישב מחדש את סכומי ה-XP שלו, לכן בדקו אותם בדף.',
+          'ל-Savage Worlds, 13th Age, Cosmere ו-Call of Cthulhu אין XP ש-Mod יכול לכתוב: השתמשו במצב אבני דרך.',
         ],
       },
       settings: {
@@ -6642,13 +6690,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Ellenőrizve',
         verified: {
           live: 'Roll20-ban tesztelve',
+          partial: 'Roll20-ban részben tesztelve',
           source: 'A lap forrásából',
           none: '—',
         },
         points: [
-          'A listán nem szereplő lapok a gyakori experience, xp és level mezőneveket használják.',
-          'A Beacon lapokhoz, például a D&D 2024-hez, Mod sandbox v1.5 kell.',
-          'A Beacon lapokat Modból nem lehet 0 XP-re állítani.',
+          'A lapot a neve alapján válaszd ki a játék Beállításaiban. A listán nem szereplő lapok a gyakori experience, xp és level mezőneveket használják, vagy állítsd a Játékrendszert custom-ra.',
+          'A „Roll20-ban tesztelve” azt jelenti, hogy XP-t írtak arra a lapra egy Jumpgate-játékban, lefutottak a lap saját számításai, és ellenőrizték a legyőzött lényeket és a szintlépési értesítéseket.',
+          'A Beacon lapokhoz, például a D&D 2024-hez, Mod sandbox v1.5 kell, és Modból nem lehet őket 0 XP-re állítani.',
+          'A Pathfinder 1E és a Starfinder a lap „XP a következő szintig” mezőjét használja a szintlépési értesítésekhez. Ha az üres, a Pathfinder a közepes haladási ütemet, a Starfinder a saját táblázatát használja.',
+          'WFRP 4E: minden jutalom egy sorként kerül a lap Experience listájára, de a lap tesztelés közben nem számolta újra az XP-összegeit, ezért ellenőrizd őket a lapon.',
+          'A Savage Worlds, a 13th Age, a Cosmere és a Call of Cthulhu esetében nincs XP, amit egy Mod írhatna: használd a mérföldkő módot.',
         ],
       },
       settings: {
@@ -7114,13 +7166,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Verificato',
         verified: {
           live: 'Testato in Roll20',
+          partial: 'Testato in parte in Roll20',
           source: 'Dal codice della scheda',
           none: '—',
         },
         points: [
-          'Le schede non elencate usano i nomi di campo comuni experience, xp e level.',
-          'Le schede Beacon come D&D 2024 richiedono Mod sandbox v1.5.',
-          'Le schede Beacon non possono essere impostate a 0 PE da un Mod.',
+          'Scegli la scheda dal suo nome nelle Impostazioni della partita. Le schede non elencate usano i nomi di campo comuni experience, xp e level, oppure imposta il sistema di gioco su custom.',
+          'Testato in Roll20 significa che i PE sono stati scritti su quella scheda in una partita Jumpgate, i calcoli propri della scheda sono stati eseguiti e sono state verificate le creature sconfitte e gli avvisi di salto di livello.',
+          'Le schede Beacon come D&D 2024 richiedono Mod sandbox v1.5 e un Mod non può impostarle a 0 PE.',
+          'Pathfinder 1E e Starfinder usano la casella dei PE per il livello successivo della scheda per gli avvisi di salto di livello. Se è vuota, Pathfinder usa la progressione media e Starfinder una tabella propria.',
+          "WFRP 4E: ogni assegnazione viene aggiunta come riga nell'elenco Experience della scheda, ma nei test la scheda non ha ricalcolato i totali di PE, quindi controllali sulla scheda.",
+          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu non hanno PE che un Mod possa scrivere: usa la modalità milestone.',
         ],
       },
       settings: {
@@ -7576,13 +7632,17 @@ const LazyExperienceMod = (() => {
         colChecked: '確認状況',
         verified: {
           live: 'Roll20 でテスト済み',
+          partial: 'Roll20 で一部テスト済み',
           source: 'シートのソースから',
           none: '—',
         },
         points: [
-          '一覧にないシートは、一般的なフィールド名 experience、xp、level を使います。',
-          'D&D 2024 のような Beacon シートには Mod sandbox v1.5 が必要です。',
-          'Beacon シートは Mod から 0 XP に設定できません。',
+          'シートは、ゲームの設定にある名前で選びます。一覧にないシートは、一般的なフィールド名 experience、xp、level を使います。または、ゲームシステムを custom に設定してください。',
+          '「Roll20 でテスト済み」とは、Jumpgate のゲームでそのシートに XP が書き込まれ、シート自身の計算が実行され、撃破したクリーチャーとレベルアップ通知が確認されたことを意味します。',
+          'D&D 2024 のような Beacon シートには Mod sandbox v1.5 が必要で、Mod から 0 XP に設定することはできません。',
+          'Pathfinder 1E と Starfinder は、レベルアップ通知にシートの「次のレベルまでの XP」欄を使います。空欄の場合、Pathfinder は中速の成長曲線を、Starfinder は独自の表を使います。',
+          'WFRP 4E: 付与のたびにシートの Experience リストに1行追加されますが、テストではシートが XP の合計を再計算しなかったため、シートで確認してください。',
+          'Savage Worlds、13th Age、Cosmere、Call of Cthulhu には Mod が書き込める XP がありません。マイルストーンモードを使ってください。',
         ],
       },
       settings: {
@@ -8035,13 +8095,17 @@ const LazyExperienceMod = (() => {
         colChecked: '확인 상태',
         verified: {
           live: 'Roll20에서 테스트함',
+          partial: 'Roll20에서 일부 테스트함',
           source: '시트 소스 기준',
           none: '—',
         },
         points: [
-          '목록에 없는 시트는 흔히 쓰는 필드 이름 experience, xp, level을 사용합니다.',
-          'D&D 2024 같은 Beacon 시트에는 Mod sandbox v1.5가 필요합니다.',
-          'Beacon 시트는 Mod에서 0 XP로 설정할 수 없습니다.',
+          '시트는 게임 설정에 있는 이름으로 고릅니다. 목록에 없는 시트는 흔히 쓰는 필드 이름 experience, xp, level을 사용하며, 게임 시스템을 custom으로 설정할 수도 있습니다.',
+          'Roll20에서 테스트함은 Jumpgate 게임에서 해당 시트에 XP를 기록했고, 시트 자체 계산이 실행되었으며, 처치한 크리처와 레벨 업 알림을 확인했다는 뜻입니다.',
+          'D&D 2024 같은 Beacon 시트에는 Mod sandbox v1.5가 필요하며, Mod에서는 0 XP로 설정할 수 없습니다.',
+          'Pathfinder 1E와 Starfinder는 레벨 업 알림에 시트의 다음 레벨까지 필요한 XP 칸을 사용합니다. 비어 있으면 Pathfinder는 중간 진행 속도를, Starfinder는 자체 표를 사용합니다.',
+          'WFRP 4E: 지급할 때마다 시트의 Experience 목록에 행이 하나씩 추가되지만, 테스트에서 시트가 XP 합계를 다시 계산하지 않았으므로 시트에서 확인하세요.',
+          'Savage Worlds, 13th Age, Cosmere, Call of Cthulhu에는 Mod가 기록할 XP가 없습니다. 마일스톤 모드를 사용하세요.',
         ],
       },
       settings: {
@@ -8496,13 +8560,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Sprawdzono',
         verified: {
           live: 'Przetestowano w Roll20',
+          partial: 'Częściowo przetestowano w Roll20',
           source: 'Ze źródła karty',
           none: '—',
         },
         points: [
-          'Karty spoza listy używają popularnych nazw pól experience, xp i level.',
-          'Karty Beacon, takie jak D&D 2024, wymagają Mod sandbox v1.5.',
-          'Na kartach Beacon Mod nie może ustawić 0 XP.',
+          'Wybierz kartę po jej nazwie w Ustawieniach gry. Karty spoza listy używają popularnych nazw pól experience, xp i level, albo ustaw System gry na custom.',
+          'Przetestowano w Roll20 oznacza, że w grze Jumpgate zapisano XP na tej karcie, zadziałały jej własne obliczenia oraz sprawdzono pokonane stworzenia i powiadomienia o awansie.',
+          'Karty Beacon, takie jak D&D 2024, wymagają Mod sandbox v1.5, a Mod nie może ustawić na nich 0 XP.',
+          'Pathfinder 1E i Starfinder używają do powiadomień o awansie pola karty z XP do następnego poziomu. Gdy jest puste, Pathfinder korzysta ze średniego tempa, a Starfinder z własnej tabeli.',
+          'WFRP 4E: każda nagroda jest dodawana jako wiersz na liście Experience na karcie, ale podczas testów karta nie przeliczyła swoich sum XP, więc sprawdź je na karcie.',
+          'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu nie mają XP, które mógłby zapisać Mod: użyj trybu kamieni milowych.',
         ],
       },
       settings: {
@@ -8971,13 +9039,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Verificado',
         verified: {
           live: 'Testado no Roll20',
+          partial: 'Testado parcialmente no Roll20',
           source: 'Do código da ficha',
           none: '—',
         },
         points: [
-          'As fichas que não constam da lista usam os nomes de campo comuns experience, xp e level.',
-          'As fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5.',
-          'As fichas Beacon não podem ser definidas com 0 XP por um Mod.',
+          'Escolha a ficha pelo nome nas Definições do jogo. As fichas que não constam da lista usam os nomes de campo comuns experience, xp e level, ou defina o Sistema de jogo como custom.',
+          'Testado no Roll20 significa que o XP foi escrito nessa ficha num jogo Jumpgate, os cálculos da própria ficha correram, e as criaturas derrotadas e os avisos de nível foram verificados.',
+          'As fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5, e um Mod não as pode definir com 0 XP.',
+          'Pathfinder 1E e Starfinder usam a caixa de XP para o nível seguinte da ficha para os avisos de nível. Quando está vazia, o Pathfinder usa a progressão média e o Starfinder a sua própria tabela.',
+          'WFRP 4E: cada atribuição é adicionada como uma linha na lista Experience da ficha, mas nos testes a ficha não recalculou os totais de XP, por isso verifique-os na ficha.',
+          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever: use o modo de marcos.',
         ],
       },
       settings: {
@@ -9442,13 +9514,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Verificado',
         verified: {
           live: 'Testado no Roll20',
+          partial: 'Parcialmente testado no Roll20',
           source: 'Do código da ficha',
           none: '—',
         },
         points: [
-          'As fichas não listadas usam os nomes de campo comuns experience, xp e level.',
-          'Fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5.',
-          'Fichas Beacon não podem ser definidas com 0 XP por um Mod.',
+          'Escolha a ficha pelo nome nas Configurações do jogo. As fichas não listadas usam os nomes de campo comuns experience, xp e level, ou defina o Sistema de jogo como custom.',
+          'Testado no Roll20 significa que o XP foi escrito nessa ficha em um jogo Jumpgate, os cálculos da própria ficha rodaram, e as criaturas derrotadas e os avisos de nível foram verificados.',
+          'Fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5, e um Mod não pode defini-las com 0 XP.',
+          'Pathfinder 1E e Starfinder usam a caixa de XP para o próximo nível da ficha nos avisos de nível. Quando ela está vazia, o Pathfinder usa a progressão média e o Starfinder a sua própria tabela.',
+          'WFRP 4E: cada concessão é adicionada como uma linha na lista Experience da ficha, mas nos testes a ficha não recalculou os totais de XP, então confira-os na ficha.',
+          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever: use o modo de marcos.',
         ],
       },
       settings: {
@@ -9907,13 +9983,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Проверено',
         verified: {
           live: 'Проверено в Roll20',
+          partial: 'Частично проверено в Roll20',
           source: 'По исходному коду листа',
           none: '—',
         },
         points: [
-          'Листы, которых нет в списке, используют распространённые поля experience, xp и level.',
-          'Листам Beacon, например D&D 2024, нужен Mod sandbox v1.5.',
-          'Листам Beacon мод не может установить 0 XP.',
+          'Выберите лист по его названию в Настройках игры. Листы, которых нет в списке, используют распространённые поля experience, xp и level, или задайте игровую систему как custom.',
+          '«Проверено в Roll20» означает, что XP записали в этот лист в игре Jumpgate, собственные расчёты листа сработали, а побеждённые существа и уведомления о новом уровне проверили.',
+          'Листам Beacon, например D&D 2024, нужен Mod sandbox v1.5, а мод не может установить им 0 XP.',
+          'Pathfinder 1E и Starfinder берут для уведомлений о новом уровне поле листа с XP до следующего уровня. Если оно пусто, Pathfinder использует средний темп, а Starfinder — собственную таблицу.',
+          'WFRP 4E: каждая награда добавляется строкой в список Experience листа, но при тестировании лист не пересчитал суммы XP, поэтому проверьте их на листе.',
+          'В Savage Worlds, 13th Age, Cosmere и Call of Cthulhu нет XP, которые мог бы записать мод: используйте режим вех.',
         ],
       },
       settings: {
@@ -10378,13 +10458,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Comprobado',
         verified: {
           live: 'Probado en Roll20',
+          partial: 'Probado en parte en Roll20',
           source: 'Del código de la hoja',
           none: '—',
         },
         points: [
-          'Las hojas que no figuran usan los nombres de campo habituales experience, xp y level.',
-          'Las hojas Beacon como D&D 2024 necesitan Mod sandbox v1.5.',
-          'Un Mod no puede poner las hojas Beacon a 0 PX.',
+          'Elige la hoja por su nombre en los Ajustes de la partida. Las hojas que no figuran usan los nombres de campo habituales experience, xp y level, o fija el sistema de juego en custom.',
+          'Probado en Roll20 significa que se escribieron PX en esa hoja en una partida de Jumpgate, se ejecutaron los cálculos propios de la hoja y se comprobaron las criaturas derrotadas y los avisos de subida de nivel.',
+          'Las hojas Beacon como D&D 2024 necesitan Mod sandbox v1.5, y un Mod no puede ponerlas a 0 PX.',
+          'Pathfinder 1E y Starfinder usan la casilla de PX para el siguiente nivel de la hoja en los avisos de subida de nivel. Si está vacía, Pathfinder usa la progresión media y Starfinder su propia tabla.',
+          'WFRP 4E: cada concesión se añade como una fila en la lista Experience de la hoja, pero en las pruebas la hoja no recalculó sus totales de PX, así que compruébalos en la hoja.',
+          'Savage Worlds, 13th Age, Cosmere y Call of Cthulhu no tienen PX que un Mod pueda escribir: usa el modo de hitos.',
         ],
       },
       settings: {
@@ -10838,13 +10922,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Kontrollerat',
         verified: {
           live: 'Testat i Roll20',
+          partial: 'Delvis testat i Roll20',
           source: 'Från bladets källkod',
           none: '—',
         },
         points: [
-          'Blad som inte finns i listan använder de vanliga fältnamnen experience, xp och level.',
-          'Beacon-blad som D&D 2024 kräver Mod sandbox v1.5.',
-          'Beacon-blad kan inte sättas till 0 XP av en Mod.',
+          'Välj bladet efter dess namn i spelets Inställningar. Blad som inte finns i listan använder de vanliga fältnamnen experience, xp och level, eller sätt Spelsystem till custom.',
+          'Testat i Roll20 betyder att XP skrevs till det bladet i ett Jumpgate-spel, bladets egna beräkningar kördes, och besegrade varelser och nivåmeddelanden kontrollerades.',
+          'Beacon-blad som D&D 2024 kräver Mod sandbox v1.5, och en Mod kan inte sätta dem till 0 XP.',
+          'Pathfinder 1E och Starfinder använder bladets ruta för XP till nästa nivå för nivåmeddelanden. När den är tom använder Pathfinder den medelsnabba banan och Starfinder sin egen tabell.',
+          'WFRP 4E: varje tilldelning läggs till som en rad i bladets Experience-lista, men bladet räknade inte om sina XP-summor under testningen, så kontrollera dem på bladet.',
+          'Savage Worlds, 13th Age, Cosmere och Call of Cthulhu har ingen XP som en Mod kan skriva: använd milstolpeläge.',
         ],
       },
       settings: {
@@ -11305,13 +11393,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Kontrol edildi',
         verified: {
           live: 'Roll20’de test edildi',
+          partial: 'Roll20’de kısmen test edildi',
           source: 'Kâğıdın kaynağından',
           none: '—',
         },
         points: [
-          'Listede olmayan kâğıtlar yaygın alan adları olan experience, xp ve level’i kullanır.',
-          'D&D 2024 gibi Beacon kâğıtları Mod sandbox v1.5 gerektirir.',
-          'Beacon kâğıtları bir Mod tarafından 0 XP’ye ayarlanamaz.',
+          'Kâğıdı, oyunun Ayarlar bölümündeki adıyla seç. Listede olmayan kâğıtlar yaygın alan adları olan experience, xp ve level’i kullanır; ya da Oyun sistemini custom yap.',
+          'Roll20’de test edildi, XP’nin o kâğıda bir Jumpgate oyununda yazıldığı, kâğıdın kendi hesaplamalarının çalıştığı ve yenilen yaratıklarla seviye atlama bildirimlerinin kontrol edildiği anlamına gelir.',
+          'D&D 2024 gibi Beacon kâğıtları Mod sandbox v1.5 gerektirir ve bir Mod tarafından 0 XP’ye ayarlanamaz.',
+          'Pathfinder 1E ve Starfinder, seviye atlama bildirimleri için kâğıdın sonraki seviye XP kutusunu kullanır. Boşsa Pathfinder orta ilerleme hızını, Starfinder ise kendi tablosunu kullanır.',
+          'WFRP 4E: her ödül kâğıdın Experience listesine bir satır olarak eklenir, ancak testte kâğıt XP toplamlarını yeniden hesaplamadı; bu yüzden onları kâğıt üzerinden kontrol et.',
+          'Savage Worlds, 13th Age, Cosmere ve Call of Cthulhu’da bir Mod’un yazabileceği XP yoktur: kilometre taşı modunu kullan.',
         ],
       },
       settings: {
@@ -11760,13 +11852,17 @@ const LazyExperienceMod = (() => {
         colChecked: 'Перевірено',
         verified: {
           live: 'Перевірено в Roll20',
+          partial: 'Частково перевірено в Roll20',
           source: 'За вихідним кодом аркуша',
           none: '—',
         },
         points: [
-          'Аркуші, яких немає в списку, використовують поширені поля experience, xp і level.',
-          'Аркушам Beacon, наприклад D&D 2024, потрібен Mod sandbox v1.5.',
-          'Аркушам Beacon мод не може встановити 0 XP.',
+          'Виберіть аркуш за його назвою в Налаштуваннях гри. Аркуші, яких немає в списку, використовують поширені поля experience, xp і level, або задайте ігрову систему як custom.',
+          '«Перевірено в Roll20» означає, що XP записали в цей аркуш у грі Jumpgate, власні обчислення аркуша спрацювали, а переможених істот і сповіщення про новий рівень перевірили.',
+          'Аркушам Beacon, наприклад D&D 2024, потрібен Mod sandbox v1.5, а мод не може встановити їм 0 XP.',
+          'Pathfinder 1E і Starfinder беруть для сповіщень про новий рівень поле аркуша з XP до наступного рівня. Якщо воно порожнє, Pathfinder використовує середній темп, а Starfinder — власну таблицю.',
+          'WFRP 4E: кожна нагорода додається рядком до списку Experience аркуша, але під час тестування аркуш не перерахував суми XP, тож перевірте їх на аркуші.',
+          'У Savage Worlds, 13th Age, Cosmere і Call of Cthulhu немає XP, які міг би записати мод: використовуйте режим віх.',
         ],
       },
       settings: {
@@ -12501,6 +12597,18 @@ const LazyExperienceMod = (() => {
     30: 155000,
   };
 
+  // Pathfinder 1e XP to reach each level, by advancement track.
+  const PF1_LEVELS = {
+    medium: [
+      0, 2000, 5000, 9000, 15000, 23000, 35000, 51000, 75000, 105000, 155000, 220000, 315000,
+      445000, 635000, 890000, 1300000, 1800000, 2550000, 3600000,
+    ],
+    fast: [
+      0, 1300, 3300, 6000, 10000, 15000, 23000, 34000, 50000, 71000, 105000, 145000, 210000, 295000,
+      425000, 600000, 850000, 1200000, 1700000, 2400000,
+    ],
+  };
+
   // Pathfinder 1e XP by CR (also used by Starfinder 1e).
   const PF1_CR_XP = {
     0.125: 50,
@@ -12583,14 +12691,17 @@ const LazyExperienceMod = (() => {
   }
 
   /**
-   * The built-in profiles. `sheets` are the `_charactersheetname` values a profile is
-   * picked for; `match` catches renamed copies of community sheets.
+   * The built-in profiles. `sheets` are the sheet names Roll20 uses (the values of the
+   * Character Sheet Template list in Game Settings, which characters report as
+   * `_charactersheetname`). `fingerprint` attributes pick a profile when the name is not
+   * listed, for example on copies of a sheet.
    */
   const PROFILES = [
     {
       id: 'dnd2024',
       label: 'D&D 5E (2024 / 5.5E) by Roll20',
       sheets: ['dnd2024byroll20'],
+      roll20Name: 'D&D Fifth Edition (5E & 5.5E)',
       access: 'beacon',
       pc: { xp: ['experience'], level: ['level'] },
       npc: { xp: ['npc_xp'], cr: ['npc_challenge'] },
@@ -12602,60 +12713,61 @@ const LazyExperienceMod = (() => {
     {
       id: 'dnd2014',
       label: 'D&D 5E (2014) by Roll20',
-      sheets: ['ogl5e', 'dnd5e', 'dnd5ebyroll20', '5th edition ogl by roll20'],
-      match: /5th ?edition ?legacy|dd5thedition|ogl/,
+      sheets: ['ogl5e'],
+      roll20Name: 'D&D 5E (Classic)',
       fingerprint: ['npc_challenge', 'base_level'],
       access: 'legacy',
       pc: { xp: ['experience'], level: ['level'] },
       npc: { xp: ['npc_xp'], cr: ['npc_challenge'] },
       levels: DND5E_LEVELS,
       crXp: (cr) => lookupCr(DND5E_CR_XP, cr),
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'shaped5e',
       label: 'D&D 5E Shaped',
-      sheets: ['5eshaped', '5e shaped'],
-      match: /shaped/,
+      sheets: ['dnd5eshaped2'],
+      roll20Name: 'D&D 5E (Shaped)',
       fingerprint: ['xp_next_level', 'xp_readable'],
       access: 'legacy',
       pc: { xp: ['xp'], level: ['level'], next: ['xp_next_level'] },
       npc: { xp: ['xp'], cr: ['challenge'] },
       levels: DND5E_LEVELS,
       crXp: (cr) => lookupCr(DND5E_CR_XP, cr),
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'pf1',
       label: 'Pathfinder (1E) by Roll20',
-      sheets: ['pathfinder', 'pathfinderbyroll20', 'pathfinder by roll20'],
-      match: /^pathfinder(?!.*(2|second|community))/,
+      sheets: ['pathfinderofficial'],
+      roll20Name: 'Pathfinder',
       fingerprint: ['npc_cr', 'class1_level'],
       access: 'legacy',
       pc: { xp: ['xp'], level: ['level'], next: ['xp_max'] },
       npc: { xp: ['xp'], cr: ['npc_cr'] },
-      levels: null,
+      // The sheet has no track setting, so the medium track is the fallback when xp_max is blank.
+      levels: PF1_LEVELS.medium,
       crXp: (cr) => lookupCr(PF1_CR_XP, cr),
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'pf1community',
       label: 'Pathfinder (1E) Community',
-      sheets: ['pathfinder community', 'pathfinder_community'],
-      match: /pathfinder.*community/,
+      sheets: ['pathfinderneceros'],
+      roll20Name: 'Pathfinder Community',
       fingerprint: ['npc-cr', 'npc-xp', 'experience_max'],
       access: 'legacy',
       pc: { xp: ['experience'], level: ['level'], next: ['experience_max'] },
       npc: { xp: ['npc-xp'], cr: ['npc-cr'] },
-      levels: null,
+      levels: PF1_LEVELS.medium,
       crXp: (cr) => lookupCr(PF1_CR_XP, cr),
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'pf2',
       label: 'Pathfinder Second Edition by Roll20',
-      sheets: ['pathfinder2', 'pf2', 'pathfinder second edition by roll20'],
-      match: /pathfinder ?(2|second)|pf2/,
+      sheets: ['pathfinder2eofficial'],
+      roll20Name: 'Pathfinder 2e (Demiplane Optional)',
       access: 'legacy',
       pc: { xp: ['xp'], level: ['level'] },
       npc: { level: ['level'] },
@@ -12663,51 +12775,52 @@ const LazyExperienceMod = (() => {
       nextXp: () => 1000,
       levelUpHint: 'pf2',
       creatureXp: pf2CreatureXp,
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'sf1',
       label: 'Starfinder by Roll20',
-      sheets: ['starfinder', 'starfinderbyroll20', 'starfinder by roll20'],
-      match: /starfinder/,
+      sheets: ['starfinder'],
+      roll20Name: 'Starfinder',
       fingerprint: ['character_level'],
       access: 'legacy',
       pc: { xp: ['xp'], level: ['character_level'], next: ['xp_max'] },
       npc: { xp: ['xp'], cr: ['character_level'] },
-      levels: null,
+      // Starfinder uses the Pathfinder fast track.
+      levels: PF1_LEVELS.fast,
       crXp: (cr) => lookupCr(PF1_CR_XP, cr),
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'ose',
       label: 'Old-School Essentials',
-      sheets: ['ose', 'old school essentials'],
-      match: /old.?school|^ose/,
+      sheets: ['oldschoolessentialsaac'],
+      roll20Name: 'Old School Essentials by Necrotic Gnome',
       fingerprint: ['ExpPercentage'],
       access: 'legacy',
       pc: { xp: ['XP'], level: ['level'], next: ['Next'] },
       npc: { xp: ['XP'] },
       levels: null,
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'dcc',
       label: 'Dungeon Crawl Classics',
-      sheets: ['dcc', 'dcc_official', 'dungeon crawl classics'],
-      match: /dcc|dungeon ?crawl/,
+      sheets: ['dccofficial', 'dcc'],
+      roll20Name: 'Dungeon Crawl Classics by Goodman Games',
       fingerprint: ['xp_mod'],
       access: 'legacy',
       pc: { xp: ['xp'], level: ['level'] },
       npc: { xp: ['xp'] },
       levels: [0, 10, 50, 110, 190, 290, 410, 550, 710, 890, 1090],
       firstLevel: 0,
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'dungeonworld',
       label: 'Dungeon World',
-      sheets: ['dungeon world', 'dungeonworld'],
-      match: /dungeon ?world/,
+      sheets: ['dungeonworldofficial'],
+      roll20Name: 'Dungeon World by Roll20',
       fingerprint: ['isNPC', 'calc_isNPC'],
       access: 'legacy',
       pc: { xp: ['xp'], level: ['level'] },
@@ -12715,13 +12828,13 @@ const LazyExperienceMod = (() => {
       // Level up at level + 7 XP, spending the XP.
       nextXp: (level) => level + 7,
       levelUpHint: 'spend',
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'wfrp4',
       label: 'Warhammer Fantasy Roleplay 4E',
-      sheets: ['wfrp4', 'warhammer fantasy roleplay 4e'],
-      match: /wfrp|warhammer/,
+      sheets: ['wfrp4official'],
+      roll20Name: 'Warhammer Fantasy Roleplay 4e Official by Cubicle 7',
       fingerprint: ['current_xp', 'spent_xp'],
       access: 'legacy',
       pc: { xp: ['current_xp'], level: [] },
@@ -12733,81 +12846,81 @@ const LazyExperienceMod = (() => {
         amount: 'experience_amount',
         note: 'experience_desc',
       },
-      verified: 'source',
+      verified: 'partial',
     },
     {
       id: 'shadowrun5',
       label: 'Shadowrun 5E (karma)',
-      sheets: ['shadowrun5thedition', 'shadowrun 5th edition'],
-      match: /shadowrun ?5/,
+      sheets: ['shadowrun5thedition'],
+      roll20Name: 'Shadowrun 5th Edition',
       fingerprint: ['total karma'],
       access: 'legacy',
       pc: { xp: ['karma'], level: [] },
       npc: {},
       alsoAdd: ['total karma'],
       unit: 'karma',
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'shadowrun6',
       label: 'Shadowrun 6E (karma)',
-      sheets: ['shadowrun6thedition', 'shadowrun sixth world'],
-      match: /shadowrun ?(6|sixth)/,
+      sheets: ['shadowrun6world'],
+      roll20Name: 'Shadowrun, Sixth World',
       fingerprint: ['total_karma'],
       access: 'legacy',
       pc: { xp: ['karma'], level: [] },
       npc: {},
       alsoAdd: ['total_karma'],
       unit: 'karma',
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'cypher',
       label: 'Cypher System',
-      sheets: ['cypher', 'cypher systems by roll20'],
-      match: /cypher/,
+      sheets: ['cypherstemsr20'],
+      roll20Name: 'Cypher Systems',
       fingerprint: ['sheet_style'],
       access: 'legacy',
       pc: { xp: ['xp'], level: ['tier'] },
       npc: {},
       levels: null,
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'swade',
       label: 'Savage Worlds (advances)',
-      sheets: ['savage worlds', 'savageworlds', 'official savage worlds'],
-      match: /savage ?worlds|swade/,
+      sheets: ['savageworldsofficial'],
+      roll20Name: 'Official Savage Worlds by Pinnacle',
       fingerprint: ['manualAdvance', 'setadvance'],
       access: 'legacy',
       pc: { xp: [], level: ['rank'] },
       npc: {},
       // The sheet counts Advances from its Edges list; XP cannot be written.
       xpless: true,
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'levelonly',
       label: '13th Age, Cosmere and other level-only sheets',
-      sheets: ['13th age', '13th_age_official', 'cosmere', 'stormlight archives'],
-      match: /13th ?age|cosmere|stormlight/,
+      sheets: ['official13thage', 'cosmereofficial'],
+      roll20Name: '13th Age; Cosmere RPG (Demiplane Optional)',
       fingerprint: ['is_adversary'],
       access: 'legacy',
       pc: { xp: [], level: ['level'] },
       npc: {},
       xpless: true,
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'cthulhu',
       label: 'Call of Cthulhu 7E (no XP)',
-      sheets: ['call of cthulhu', 'coc_7th_ed'],
-      match: /cthulhu|^coc/,
+      sheets: ['coc7e', 'callofcthulu'],
+      roll20Name: 'Call of Cthulhu 7th Edition',
       access: 'legacy',
       pc: { xp: [], level: [] },
       npc: {},
       xpless: true,
-      verified: 'source',
+      verified: 'live',
     },
     {
       id: 'generic',
@@ -13080,10 +13193,16 @@ const LazyExperienceMod = (() => {
       escapeHtml(t(`settings.${key}.desc`, lang)),
     ]);
 
+    // Long sheet names must wrap, or the table is wider than the handout.
+    const wrapCode = (text) =>
+      `<span style="${STYLE.code.replace('white-space:nowrap;', 'word-break:break-all;')}">${escapeHtml(text)}</span>`;
     const systems = PROFILES.map((p) => [
       escapeHtml(p.label),
-      code(p.id),
-      escapeHtml(p.sheets.join(', ') || '—'),
+      wrapCode(p.id),
+      // Roll20's name for the sheet (as in Game Settings), then the name Mods see.
+      p.roll20Name
+        ? `${escapeHtml(p.roll20Name)}<br>${wrapCode(p.sheets.join(', '))}`
+        : escapeHtml(p.sheets.join(', ') || '—'),
       escapeHtml(t(`handout.systems.verified.${p.verified}`, lang)),
     ]);
 
@@ -13577,17 +13696,7 @@ const LazyExperienceMod = (() => {
       await setSheetItem(character.id, name, value);
       return { ok: true };
     }
-    const attr = findAttribute(character.id, name);
-    if (attr) {
-      // setWithWorker lets the sheet's own workers update level and totals.
-      if (typeof attr.setWithWorker === 'function') {
-        attr.setWithWorker({ current: value });
-      } else {
-        attr.set('current', value);
-      }
-    } else {
-      createObj('attribute', { characterid: character.id, name, current: value });
-    }
+    setLegacy(character, findAttribute(character.id, name), name, value);
     // Karma-style sheets keep a running total next to the spendable amount.
     for (const total of profile.alsoAdd || []) {
       const totalAttr = findAttribute(character.id, total);
@@ -13611,10 +13720,14 @@ const LazyExperienceMod = (() => {
       const created = createObj('attribute', { characterid: character.id, name, current: '' });
       attr = created;
     }
+    // Sheets hold what players type, which is text; some sheet workers fail on numbers
+    // (the D&D 5E 2014 sheet's sanitizeXP calls trim()). setWithWorker lets the sheet's
+    // own workers update level and totals.
+    const text = String(value);
     if (typeof attr.setWithWorker === 'function') {
-      attr.setWithWorker({ current: value });
+      attr.setWithWorker({ current: text });
     } else {
-      attr.set('current', value);
+      attr.set('current', text);
     }
   }
 
@@ -13797,10 +13910,13 @@ const LazyExperienceMod = (() => {
     }
     const profile = result.profile || {};
     const first = profile.firstLevel ?? 1;
-    let reached = levelForXp(profile.levels, result.after, first);
-    // Sheets that hold "XP for next level" (or systems with a rule for it) instead of a table.
-    if (reached === null && Number.isFinite(result.next) && Number.isFinite(result.level)) {
+    // A sheet's own "XP for next level" field (or the system's rule for it) comes first,
+    // because the GM may have chosen another track; the profile's table is the fallback.
+    let reached = null;
+    if (Number.isFinite(result.next) && Number.isFinite(result.level)) {
       reached = result.after >= result.next ? result.level + 1 : result.level;
+    } else {
+      reached = levelForXp(profile.levels, result.after, first);
     }
     if (reached === null) {
       return null;
@@ -13957,6 +14073,11 @@ const LazyExperienceMod = (() => {
         const result = await addXp(character, row.xp);
         if (result.ok) {
           checkLevelUp(character, result);
+        } else if (result.reason === 'xpless') {
+          // A system without XP (Savage Worlds, 13th Age…): nothing was given, so the
+          // summary must not say otherwise.
+          session.paid[row.id] -= row.xp;
+          if (session.paid[row.id] === 0) delete session.paid[row.id];
         }
         results.push({
           id: row.id,
