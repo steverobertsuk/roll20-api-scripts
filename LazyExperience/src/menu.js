@@ -60,7 +60,13 @@ export function showMainMenu(playerId) {
         `<strong>${formatNumber(session.pool)}</strong>${session.carried ? ` (+${formatNumber(session.carried)})` : ''}`
       ),
       buildRow(tr('menu.payout'), escapeForChat(tr(`options.payout.${config.payout}`))),
-      buildRow(tr('menu.shares'), formatNumber(split.shares)),
+      // Half shares are common, so shares keep up to two decimals (3.5, not 4).
+      buildRow(
+        tr('menu.shares'),
+        Number.isInteger(split.shares)
+          ? formatNumber(split.shares)
+          : String(Math.round(split.shares * 100) / 100)
+      ),
       buildRow(tr('menu.perShare'), formatNumber(split.perShare))
     );
     lines.push(

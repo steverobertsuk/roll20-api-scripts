@@ -26,6 +26,33 @@ The tests run against a stubbed Roll20 API. Beacon sheets are faked, so check th
 
 The tests were driven with the playwright-tests harness on copied browser profiles (GM and Test Player).
 
+## Playwright spec — 6 November 2026
+
+`tests/lazyexperience/lazyexperience.spec.ts` in the playwright-tests project repeats the main live checks in the test game's Battle Map page. Each test starts from the default settings, an empty session and the four PCs in Roll20's party, and puts every page back afterwards.
+
+```bash
+ROLL20_GAME_ID=22183309 npx playwright test tests/lazyexperience
+```
+
+All 12 pass:
+
+1. `!lazyxp` opens the menu, and `!xp` is an alias.
+2. Add XP asks for the XP and a reason and splits it between the party.
+3. A creature typed down to 0 HP prompts the GM, and Add puts its XP in the session.
+4. TokenMod setting HP to 0 is noticed, and Ignore adds nothing.
+5. The dead marker counts as a defeat once only.
+6. Other Amount adds the XP typed in.
+7. An absent character gets no share, and bonus XP goes to one character.
+8. Undo takes back the last award.
+9. End Session writes the 2024 sheets, announces the session and whispers Test Player. The XP is then taken off again with a negative `give`.
+10. Milestone mode raises a level and refuses XP.
+11. A settings button makes defeats add their XP straight away.
+12. The Party card's Share button sets a half share.
+
+The game is slow for about half a minute after it opens, while old chat loads, so the spec waits until the page answers quickly before each test.
+
+The spec found that the menu rounded shares, showing a half share in a party of four as "Shares 4" rather than 3.5. Shares are now shown to two decimal places.
+
 ## Live results — 4 November 2026, Jumpgate, sandbox v1.5
 
 | #   | Check                                                                                                                  | Result |

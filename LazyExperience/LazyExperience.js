@@ -5,7 +5,7 @@
  * Name: LazyExperience
  * Script: LazyExperience.js
  * Version: 1.0.0
- * Built: 2026-11-05T01:08:35.503Z
+ * Built: 2026-11-06T07:28:31.628Z
  */
 const LazyExperienceMod = (() => {
   'use strict';
@@ -13,7 +13,7 @@ const LazyExperienceMod = (() => {
   // Build-time placeholders replaced by rollup.config.js inject-build-metadata plugin.
   const SCRIPT_NAME = 'LazyExperience';
   const SCRIPT_VERSION = '1.0.0';
-  const SCRIPT_LAST_UPDATED = '2026-11-05T01:08:35.503Z';
+  const SCRIPT_LAST_UPDATED = '2026-11-06T07:28:31.628Z';
 
   const DEFAULT_LOCALE$1 = 'en-US';
 
@@ -14737,7 +14737,13 @@ const LazyExperienceMod = (() => {
           `<strong>${formatNumber(session.pool)}</strong>${session.carried ? ` (+${formatNumber(session.carried)})` : ''}`
         ),
         buildRow(tr('menu.payout'), escapeForChat(tr(`options.payout.${config.payout}`))),
-        buildRow(tr('menu.shares'), formatNumber(split.shares)),
+        // Half shares are common, so shares keep up to two decimals (3.5, not 4).
+        buildRow(
+          tr('menu.shares'),
+          Number.isInteger(split.shares)
+            ? formatNumber(split.shares)
+            : String(Math.round(split.shares * 100) / 100)
+        ),
         buildRow(tr('menu.perShare'), formatNumber(split.perShare))
       );
       lines.push(

@@ -26,6 +26,16 @@ test('starts, installs handouts and answers !lazyxp', async () => {
   assert.equal(typeof g.sandbox.LazyExperience.addToPool, 'function');
 });
 
+test('the menu shows a half share as 0.5 of a share, not rounded', async () => {
+  const g = await game();
+  await g.command(`!lazyxp share 0.5 --ids ${g.atala.id}`);
+  await g.command('!lazyxp add 30');
+  await g.command('!lazyxp');
+  const text = g.lastChat().replace(/<[^>]+>/g, ' ');
+  assert.match(text, /Shares\s+1\.5\s/);
+  assert.match(text, /XP per share\s+20\s/);
+});
+
 test('!xp is an alias only when no other XP Mod uses it', async () => {
   const g = await game();
   await g.command('!xp help');
