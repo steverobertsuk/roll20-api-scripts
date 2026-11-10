@@ -27,7 +27,7 @@ export const HANDOUT_DECK_NAME = `LazyExperience - ${DECK_TITLE}`;
 // Journal icon (the handouts' avatar): the plain LazyExperience icon in Roll20's
 // file store. Roll20 keeps it as `.../max.webp?<number>`, so an icon is matched
 // on its image path. Only the webp files exist (thumb.png is a 404).
-export const HANDOUT_ICON_PATH = '/images/506962421/gmR_lA6AOQyhhKHu1hEBkQ/';
+export const HANDOUT_ICON_PATH = '/images/506991614/emQ4__XezYV7Y1Zl9wDy8g/';
 export const HANDOUT_ICON = `https://files.d20.io${HANDOUT_ICON_PATH}thumb.webp`;
 export const HANDOUT_LOG_NAME = 'LazyExperience - Session Log';
 

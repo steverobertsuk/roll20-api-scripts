@@ -442,7 +442,7 @@ test('every menu and card renders', async () => {
 });
 
 test('the handouts get the LazyExperience journal icon, also handouts made before', async () => {
-  const icon = 'https://files.d20.io/images/506962421/gmR_lA6AOQyhhKHu1hEBkQ/thumb.webp';
+  const icon = 'https://files.d20.io/images/506991614/emQ4__XezYV7Y1Zl9wDy8g/thumb.webp';
   const api = createSandbox();
   api.sandbox.createObj('handout', { name: 'LazyExperience - Help', avatar: '' });
   await api.ready();
