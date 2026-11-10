@@ -87,7 +87,7 @@ test('the handouts build in every language; Hebrew is right to left', async () =
 });
 
 test('the handouts get the InspirationTracker journal icon, also handouts made before', async () => {
-  const icon = 'https://files.d20.io/images/506962420/42YaK-ecdnponp_FpJVTfA/thumb.webp';
+  const icon = 'https://files.d20.io/images/506991612/MVQIb3bWgcO-XABFmcaezw/thumb.webp';
   const api = createSandbox();
   api.sandbox.createObj('handout', { name: 'InspirationTracker - Help', avatar: '' });
   await api.ready();
