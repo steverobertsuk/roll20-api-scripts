@@ -5,7 +5,7 @@
  * Name: InspirationTracker
  * Script: InspirationTracker.js
  * Version: 1.0.0
- * Built: 2026-11-04T23:03:10.226Z
+ * Built: 2026-11-10T00:57:32.422Z
  */
 const InspirationTrackerMod = (() => {
   'use strict';
@@ -13,7 +13,7 @@ const InspirationTrackerMod = (() => {
   // Build-time placeholders replaced by rollup.config.js inject-build-metadata plugin.
   const SCRIPT_NAME = 'InspirationTracker';
   const SCRIPT_VERSION = '1.0.0';
-  const SCRIPT_LAST_UPDATED = '2026-11-04T23:03:10.226Z';
+  const SCRIPT_LAST_UPDATED = '2026-11-10T00:57:32.422Z';
 
   const DEFAULT_LOCALE$1 = 'en-US';
 
@@ -29,6 +29,11 @@ const InspirationTrackerMod = (() => {
 
   const HANDOUT_HELP_NAME = 'InspirationTracker - Help';
   const HANDOUT_DECK_NAME = 'InspirationTracker - Command Deck';
+  // Journal icon (the handouts' avatar): the plain InspirationTracker icon in Roll20's
+  // file store. Roll20 keeps it as `.../max.webp?<number>`, so an icon is matched
+  // on its image path. Only the webp files exist (thumb.png is a 404).
+  const HANDOUT_ICON_PATH = '/images/506962420/42YaK-ecdnponp_FpJVTfA/';
+  const HANDOUT_ICON = `https://files.d20.io${HANDOUT_ICON_PATH}thumb.webp`;
 
   // The token action macro players use to spend inspiration.
   const MACRO_NAME = 'Inspiration';
@@ -4008,7 +4013,7 @@ const InspirationTrackerMod = (() => {
       passInvalid: 'בחר חבר בחבורה שאינו זה שמחזיק בה.',
       undoGone: 'השימוש הזה כבר בוטל, או שהוא ישן מדי.',
       unknownMarker: 'אין סמן אסימון בשם "{value}".',
-      unknownMarkerHint: 'השתמש בכפתור סמן בהגדרות כדי לבחור אחד מערכות הסמנים שלך.',
+      unknownMarkerHint: 'השתמש בכפתור סמן בהגדרות כדי לבחור אחד ממערכות הסמנים שלך.',
       badSetting: 'לא ניתן להגדיר את {key} ל-"{value}".',
       badSettingHint: 'הקלד !inspiration set כדי לראות כל הגדרה והאפשרויות שלה.',
       unknownCommand: 'פקודה לא מוכרת: {command}.',
@@ -4102,7 +4107,7 @@ const InspirationTrackerMod = (() => {
       beacon: 'גיליונות D&D 2024',
       legacy: 'גיליונות 2014',
       none: 'דמויות ללא תיבת השראה',
-      rules2024: 'משתמשות בכללי 2024',
+      rules2024: 'דמויות לפי כללי 2024',
       party: 'חברי החבורה',
       marker: 'סמן',
       fx: 'אפקט מיוחד',
@@ -9671,11 +9676,14 @@ const InspirationTrackerMod = (() => {
   function upsertHandout(name, html) {
     const existing = findObjs({ _type: 'handout', name });
     const [primary, ...duplicates] = existing;
-    const handout = primary || createObj('handout', { name });
+    const handout = primary || createObj('handout', { name, avatar: HANDOUT_ICON });
     if (!handout) {
       return;
     }
     handout.set({ inplayerjournals: '', controlledby: '' });
+    if (!String(handout.get('avatar') || '').includes(HANDOUT_ICON_PATH)) {
+      handout.set('avatar', HANDOUT_ICON);
+    }
     handout.set('notes', html);
     for (const dup of duplicates) {
       dup.remove();
