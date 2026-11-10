@@ -440,3 +440,17 @@ test('every menu and card renders', async () => {
   await g.command('!lazyxp');
   assert.match(g.lastChat(), /Milestone: Whole Party/);
 });
+
+test('the handouts get the LazyExperience journal icon, also handouts made before', async () => {
+  const icon = 'https://files.d20.io/images/506962421/gmR_lA6AOQyhhKHu1hEBkQ/thumb.webp';
+  const api = createSandbox();
+  api.sandbox.createObj('handout', { name: 'LazyExperience - Help', avatar: '' });
+  await api.ready();
+  const handouts = api.sandbox
+    .findObjs({ _type: 'handout' })
+    .filter((h) => h.get('name').startsWith('LazyExperience - '));
+  assert.ok(handouts.length >= 2);
+  for (const handout of handouts) {
+    assert.equal(handout.get('avatar'), icon, handout.get('name'));
+  }
+});

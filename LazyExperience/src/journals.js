@@ -16,6 +16,8 @@ import {
   DEFAULT_CONFIG,
   HANDOUT_DECK_NAME,
   HANDOUT_HELP_NAME,
+  HANDOUT_ICON,
+  HANDOUT_ICON_PATH,
   HANDOUT_LOG_NAME,
   LONG_COMMAND,
   MAX_LOGGED_SESSIONS,
@@ -333,11 +335,14 @@ export function logSession(summary) {
 function upsertHandout(name, html) {
   const existing = findObjs({ _type: 'handout', name });
   const [primary, ...duplicates] = existing;
-  const handout = primary || createObj('handout', { name });
+  const handout = primary || createObj('handout', { name, avatar: HANDOUT_ICON });
   if (!handout) {
     return;
   }
   handout.set({ inplayerjournals: '', controlledby: '' });
+  if (!String(handout.get('avatar') || '').includes(HANDOUT_ICON_PATH)) {
+    handout.set('avatar', HANDOUT_ICON);
+  }
   handout.set('notes', html);
   for (const dup of duplicates) {
     dup.remove();
