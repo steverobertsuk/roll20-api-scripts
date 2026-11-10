@@ -32,7 +32,7 @@ const InspirationTrackerMod = (() => {
   // Journal icon (the handouts' avatar): the plain InspirationTracker icon in Roll20's
   // file store. Roll20 keeps it as `.../max.webp?<number>`, so an icon is matched
   // on its image path. Only the webp files exist (thumb.png is a 404).
-  const HANDOUT_ICON_PATH = '/images/506962420/42YaK-ecdnponp_FpJVTfA/';
+  const HANDOUT_ICON_PATH = '/images/506991612/MVQIb3bWgcO-XABFmcaezw/';
   const HANDOUT_ICON = `https://files.d20.io${HANDOUT_ICON_PATH}thumb.webp`;
 
   // The token action macro players use to spend inspiration.
