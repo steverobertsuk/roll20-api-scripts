@@ -5,7 +5,7 @@
  * Name: LazyExperience
  * Script: LazyExperience.js
  * Version: 1.0.0
- * Built: 2026-11-10T00:57:36.452Z
+ * Built: 2026-11-13T19:10:40.652Z
  */
 const LazyExperienceMod = (() => {
   'use strict';
@@ -13,7 +13,7 @@ const LazyExperienceMod = (() => {
   // Build-time placeholders replaced by rollup.config.js inject-build-metadata plugin.
   const SCRIPT_NAME = 'LazyExperience';
   const SCRIPT_VERSION = '1.0.0';
-  const SCRIPT_LAST_UPDATED = '2026-11-10T00:57:36.452Z';
+  const SCRIPT_LAST_UPDATED = '2026-11-13T19:10:40.652Z';
 
   const DEFAULT_LOCALE$1 = 'en-US';
 
@@ -58,7 +58,6 @@ const LazyExperienceMod = (() => {
   };
 
   // Option lists for settings.
-  const MODE_OPTIONS = ['xp', 'milestone'];
   const PAYOUT_OPTIONS = ['end', 'instant'];
   const ROSTER_OPTIONS = ['auto', 'party', 'players', 'manual'];
   const KILL_MODE_OPTIONS = ['prompt', 'auto', 'off'];
@@ -68,7 +67,6 @@ const LazyExperienceMod = (() => {
   // Default configuration for new installs. Migrated 0.1.x games keep their own values.
   const DEFAULT_CONFIG = {
     language: DEFAULT_LOCALE$1,
-    mode: 'xp',
     payout: 'end',
     updateSheets: true,
     system: 'auto',
@@ -93,7 +91,6 @@ const LazyExperienceMod = (() => {
   // Settings shown on the settings card, in order, and how each one is edited.
   const SETTING_TYPES = {
     language: 'locale',
-    mode: MODE_OPTIONS,
     payout: PAYOUT_OPTIONS,
     updateSheets: 'boolean',
     system: 'system',
@@ -705,7 +702,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sessie',
-      mode: 'Modus',
       pool: 'Sessie-XP',
       payout: 'Uitbetaal',
       shares: 'Aandele',
@@ -745,8 +741,6 @@ const LazyExperienceMod = (() => {
       include: 'Sluit in',
       partyAdd: 'Voeg gekiesde by groep',
       partyRemove: 'Verwyder gekiesde',
-      levelUp: 'Vlakstyging',
-      milestoneAll: 'Mylpaal: Hele groep',
       addKill: 'Voeg {xp} XP by',
       otherXp: 'Ander hoeveelheid',
       ignore: 'Ignoreer',
@@ -756,11 +750,9 @@ const LazyExperienceMod = (() => {
       reason: 'Rede (opsioneel)',
       share: 'Aandeel (1 = volle, 0,5 = half)',
       confirmEnd: 'Die sessie beëindig en die XP uitdeel?',
-      confirmMilestone: 'Elke groeplid een vlak verhoog?',
     },
     options: {
       yesNo: { yes: 'Ja', no: 'Nee' },
-      mode: { xp: 'Ervaringspunte', milestone: 'Mylpale' },
       payout: { end: 'Aan die einde van die sessie', instant: 'Dadelik' },
       roster: {
         auto: 'Outomaties',
@@ -785,10 +777,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Taal', desc: 'Taal vir klets-kaarte en handouts.' },
-      mode: {
-        label: 'Modus',
-        desc: 'Ervaringspunte (xp) of vlakstyging met mylpale (milestone). Mylpale kondig vlakke aan en ken geen XP toe nie.',
-      },
       payout: {
         label: 'Betaal XP',
         desc: 'end: XP versamel in die sessiepot en word uitgedeel wanneer die sessie eindig. instant: elke toekenning word verdeel en dadelik uitbetaal.',
@@ -883,7 +871,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} het genoeg XP vir vlak {level}!',
-      milestone: '{name} bereik vlak {level}!',
       sheetButton: 'Gebruik die vlakstygingknoppie op die karakterblad.',
       updateSheet: 'Dateer die vlak op die karakterblad op.',
       pf2: 'Verhoog die vlak op die blad en trek 1 000 van die XP af.',
@@ -938,8 +925,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: "{name}: die blad kan nie vanaf 'n Mod op 0 XP gestel word nie. Verander dit op die blad.",
         sandbox: '{name}: hierdie blad het Mod sandbox v1.5 nodig om XP op te dateer.',
-        xpless:
-          '{name}: hierdie speelstelsel gebruik nie XP nie (of die blad bereken dit self). Gebruik mylpaalmodus.',
+        xpless: '{name}: hierdie speelstelsel gebruik nie XP nie (of die blad bereken dit self).',
         noField:
           '{name}: geen XP-veld is vir hierdie blad bekend nie. Stel Speelstelsel op custom en noem die veld.',
         error: '{name}: die blad kon nie met {xp} XP opgedateer word nie. Kyk na die Mod-konsole.',
@@ -957,8 +943,6 @@ const LazyExperienceMod = (() => {
       badShare: "Gee die aandeel as 'n getal van 0 tot 10, soos 0,5 of 50%.",
       noCharacters: 'Kies tokens wat karakters verteenwoordig, of gebruik --ids.',
       noTokens: 'Kies eers die verslane tokens, of gebruik --ids.',
-      milestoneMode:
-        'Die spel gebruik vlakstyging met mylpale, so XP word nie bygehou nie. Verander Modus in die instellings.',
     },
     status: {
       version: 'Weergawe',
@@ -993,7 +977,6 @@ const LazyExperienceMod = (() => {
       undo: 'Neem die laaste toekenning terug wat nog nie uitbetaal is nie.',
       end: 'Beëindig die sessie: betaal die XP uit, kondig dit aan en teken dit aan.',
       resetSession: 'Vee die sessie-XP uit sonder om dit uit te betaal.',
-      milestone: 'Verhoog die groep (of die gekiesde karakters) een vlak.',
       show: 'Wys elke groeplid se XP en vlak vanaf die blad.',
       roster: 'Wys die groepkaart.',
       party: 'Merk of ontmerk Roll20 se Party Member-blokkie vir die gekiesde karakters.',
@@ -1012,7 +995,7 @@ const LazyExperienceMod = (() => {
       selected: 'Gekiesde tokens',
       selectedDesc: 'Kies eers tokens op die kaart.',
       party: 'Groep',
-      partyDesc: 'Wie die XP deel, en mylpaalvlakke.',
+      partyDesc: 'Wie die XP deel.',
       tools: 'Gereedskap',
       toolsDesc: 'Instellings, status en hulp.',
       footer: 'Knoppies voer LazyExperience-bevele uit. Sien die {help}-handout vir besonderhede.',
@@ -1023,7 +1006,7 @@ const LazyExperienceMod = (() => {
       footer: 'Knoppies vir elke bevel is in die {deck}-handout.',
       overview: {
         heading: 'Oorsig',
-        body: "LazyExperience versamel die ervaringspunte wat gedurende 'n sessie verdien word, verdeel dit onder die groep en skryf dit na die karakterblaaie. Dit lees en skryf die D&D 2024-blad sowel as ouer en ander blaaie, gebruik Roll20 se eie groep, merk verslane wesens op, hanteer afwesige spelers en bonus-XP, kondig vlakstygings aan en hou 'n logboek van elke sessie. Speletjies wat met mylpale vlakke styg, kan dit gebruik om vlakke aan te kondig.",
+        body: "LazyExperience versamel die ervaringspunte wat gedurende 'n sessie verdien word, verdeel dit onder die groep en skryf dit na die karakterblaaie. Dit lees en skryf die D&D 2024-blad sowel as ouer en ander blaaie, gebruik Roll20 se eie groep, merk verslane wesens op, hanteer afwesige spelers en bonus-XP, kondig vlakstygings aan en hou 'n logboek van elke sessie.",
       },
       quickStart: {
         heading: 'Vinnige begin',
@@ -1077,11 +1060,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Vlakke en mylpale',
+        heading: 'Vlakstygings',
         points: [
           "Nadat XP geskryf is, kontroleer LazyExperience die stelsel se vlaktabel en kondig aan wanneer 'n karakter genoeg XP vir 'n nuwe vlak het.",
           'Op die D&D 2024-blad druk die speler dan die blad se vlakstygingknoppie.',
-          'Mylpaalmodus skakel XP af. Mylpaal verhoog die groep (of gekiesde karakters) een vlak en kondig dit aan. Blaaie word nie verander nie.',
         ],
       },
       systems: {
@@ -1104,7 +1086,7 @@ const LazyExperienceMod = (() => {
           "Beacon-blaaie soos D&D 2024 het Mod sandbox v1.5 nodig, en 'n Mod kan hulle nie op 0 XP stel nie.",
           'Pathfinder 1E en Starfinder gebruik die blad se XP-vir-volgende-vlak-blokkie vir vlakstygingkennisgewings. Wanneer dit leeg is, gebruik Pathfinder die medium-baan en Starfinder sy eie tabel.',
           "WFRP 4E: elke toekenning word as 'n ry by die blad se Experience-lys gevoeg, maar die blad het sy XP-totale nie tydens toetsing herbereken nie, so gaan dit op die blad na.",
-          "Savage Worlds, 13th Age, Cosmere en Call of Cthulhu het geen XP vir 'n Mod om te skryf nie: gebruik mylpaalmodus.",
+          "Savage Worlds, 13th Age, Cosmere en Call of Cthulhu het geen XP vir 'n Mod om te skryf nie.",
         ],
       },
       settings: {
@@ -1172,7 +1154,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sessió',
-      mode: 'Mode',
       pool: 'XP de la sessió',
       payout: 'Pagat',
       shares: 'Parts',
@@ -1212,8 +1193,6 @@ const LazyExperienceMod = (() => {
       include: 'Inclou',
       partyAdd: 'Afegeix els seleccionats al grup',
       partyRemove: 'Treu els seleccionats',
-      levelUp: 'Puja de nivell',
-      milestoneAll: 'Fita: tot el grup',
       addKill: 'Afegeix {xp} XP',
       otherXp: 'Una altra quantitat',
       ignore: 'Ignora',
@@ -1223,11 +1202,9 @@ const LazyExperienceMod = (() => {
       reason: 'Motiu (opcional)',
       share: 'Part (1 = completa, 0,5 = meitat)',
       confirmEnd: "Vols acabar la sessió i repartir l'XP?",
-      confirmMilestone: 'Vols pujar un nivell a cada membre del grup?',
     },
     options: {
       yesNo: { yes: 'Sí', no: 'No' },
-      mode: { xp: "Punts d'experiència", milestone: 'Fites' },
       payout: { end: 'Al final de la sessió', instant: 'Immediatament' },
       roster: {
         auto: 'Automàtic',
@@ -1252,10 +1229,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Llengua', desc: 'Llengua de les targetes del xat i dels handouts.' },
-      mode: {
-        label: 'Mode',
-        desc: "Punts d'experiència (xp) o pujada de nivell per fites (milestone). Les fites anuncien nivells i no atorguen XP.",
-      },
       payout: {
         label: "Paga l'XP",
         desc: "end: l'XP s'acumula al fons de la sessió i es reparteix quan aquesta acaba. instant: cada premi es divideix i es paga a l'acte.",
@@ -1356,7 +1329,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} té prou XP per al nivell {level}!',
-      milestone: '{name} arriba al nivell {level}!',
       sheetButton: 'Fes servir el botó de pujar de nivell de la fitxa del personatge.',
       updateSheet: 'Actualitza el nivell a la fitxa del personatge.',
       pf2: "Puja el nivell a la fitxa i resta 1.000 de l'XP.",
@@ -1412,7 +1384,7 @@ const LazyExperienceMod = (() => {
         zero: '{name}: un Mod no pot posar la fitxa a 0 XP. Canvia-ho a la fitxa.',
         sandbox: "{name}: aquesta fitxa necessita el Mod sandbox v1.5 per actualitzar l'XP.",
         xpless:
-          '{name}: aquest sistema de joc no fa servir XP (o la fitxa el calcula ella mateixa). Fes servir el mode milestone.',
+          '{name}: aquest sistema de joc no fa servir XP (o la fitxa el calcula ella mateixa).',
         noField:
           "{name}: no es coneix cap camp d'XP per a aquesta fitxa. Posa el Sistema de joc a custom i indica el camp.",
         error: "{name}: no s'ha pogut actualitzar la fitxa amb {xp} XP. Mira la consola de Mods.",
@@ -1430,8 +1402,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Indica la part com un nombre de 0 a 10, com ara 0,5 o 50%.',
       noCharacters: 'Selecciona tokens que representin personatges, o fes servir --ids.',
       noTokens: 'Selecciona primer els tokens derrotats, o fes servir --ids.',
-      milestoneMode:
-        "La partida puja de nivell per fites, així que l'XP no es comptabilitza. Canvia el Mode a la configuració.",
     },
     status: {
       version: 'Versió',
@@ -1466,7 +1436,6 @@ const LazyExperienceMod = (() => {
       undo: "Desfà l'últim premi que encara no s'ha pagat.",
       end: "Acaba la sessió: paga l'XP, l'anuncia i el registra.",
       resetSession: "Esborra l'XP de la sessió sense pagar-lo.",
-      milestone: 'Puja un nivell el grup (o els personatges triats).',
       show: "Mostra l'XP i el nivell de cada membre del grup segons la fitxa.",
       roster: 'Mostra la targeta del grup.',
       party: 'Marca o desmarca la casella Party Member de Roll20 per als personatges seleccionats.',
@@ -1485,7 +1454,7 @@ const LazyExperienceMod = (() => {
       selected: 'Tokens seleccionats',
       selectedDesc: 'Selecciona primer els tokens al mapa.',
       party: 'Grup',
-      partyDesc: "Qui comparteix l'XP, i els nivells per fites.",
+      partyDesc: "Qui comparteix l'XP.",
       tools: 'Eines',
       toolsDesc: 'Configuració, estat i ajuda.',
       footer:
@@ -1497,7 +1466,7 @@ const LazyExperienceMod = (() => {
       footer: 'Els botons de totes les ordres són al handout {deck}.',
       overview: {
         heading: 'Visió general',
-        body: "LazyExperience recull els punts d'experiència guanyats durant una sessió, els reparteix entre el grup i els escriu a les fitxes dels personatges. Llegeix i escriu la fitxa de D&D 2024 i també fitxes més antigues i d'altres sistemes, fa servir el grup de Roll20, s'adona de les criatures derrotades, gestiona els jugadors absents i l'XP de bonificació, anuncia les pujades de nivell i en porta un registre de cada sessió. Les partides que pugen de nivell per fites el poden fer servir per anunciar els nivells.",
+        body: "LazyExperience recull els punts d'experiència guanyats durant una sessió, els reparteix entre el grup i els escriu a les fitxes dels personatges. Llegeix i escriu la fitxa de D&D 2024 i també fitxes més antigues i d'altres sistemes, fa servir el grup de Roll20, s'adona de les criatures derrotades, gestiona els jugadors absents i l'XP de bonificació, anuncia les pujades de nivell i en porta un registre de cada sessió.",
       },
       quickStart: {
         heading: 'Inici ràpid',
@@ -1551,11 +1520,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Nivells i fites',
+        heading: 'Pujades de nivell',
         points: [
           "Després d'escriure l'XP, LazyExperience consulta la taula de nivells del sistema i avisa quan un personatge té prou XP per a un nivell nou.",
           'A la fitxa de D&D 2024, el jugador prem llavors el botó de pujar de nivell de la fitxa.',
-          "El mode de fites desactiva l'XP. Fita puja un nivell el grup (o els personatges triats) i ho anuncia. Les fitxes no es modifiquen.",
         ],
       },
       systems: {
@@ -1578,7 +1546,7 @@ const LazyExperienceMod = (() => {
           'Les fitxes Beacon com la de D&D 2024 necessiten el Mod sandbox v1.5, i un Mod no les pot posar a 0 XP.',
           "Pathfinder 1E i Starfinder fan servir la casella d'XP per al nivell següent de la fitxa per als avisos de nivell. Si està en blanc, Pathfinder usa la progressió mitjana i Starfinder la seva pròpia taula.",
           "WFRP 4E: cada atorgament s'afegeix com a fila a la llista Experience de la fitxa, però en les proves la fitxa no va recalcular els seus totals d'XP, així que comprova'ls a la fitxa.",
-          'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu no tenen XP que un Mod pugui escriure: fes servir el mode de fites.',
+          'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu no tenen XP que un Mod pugui escriure.',
         ],
       },
       settings: {
@@ -1646,7 +1614,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: '場次',
-      mode: '模式',
       pool: '場次 XP',
       payout: '發放',
       shares: '份數',
@@ -1686,8 +1653,6 @@ const LazyExperienceMod = (() => {
       include: '納入',
       partyAdd: '將已選取者加入隊伍',
       partyRemove: '移除已選取者',
-      levelUp: '升級',
-      milestoneAll: '里程碑:整個隊伍',
       addKill: '新增 {xp} XP',
       otherXp: '其他數值',
       ignore: '忽略',
@@ -1697,11 +1662,9 @@ const LazyExperienceMod = (() => {
       reason: '原因(選填)',
       share: '份數(1 = 全額,0.5 = 一半)',
       confirmEnd: '要結束場次並發放 XP 嗎?',
-      confirmMilestone: '要讓所有隊伍成員升一級嗎?',
     },
     options: {
       yesNo: { yes: '是', no: '否' },
-      mode: { xp: '經驗值', milestone: '里程碑' },
       payout: { end: '場次結束時', instant: '立即' },
       roster: {
         auto: '自動',
@@ -1721,10 +1684,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: '語言', desc: '聊天卡片與講義所使用的語言。' },
-      mode: {
-        label: '模式',
-        desc: '經驗值(xp)或里程碑升級(milestone)。里程碑模式只會公告等級,不發放 XP。',
-      },
       payout: {
         label: '發放 XP',
         desc: 'end:XP 累積在場次池中,於場次結束時發放。instant:每次發放都會立即分配並支付。',
@@ -1818,7 +1777,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} 的 XP 已足夠升到 {level} 級!',
-      milestone: '{name} 達到 {level} 級!',
       sheetButton: '請使用角色卡上的升級按鈕。',
       updateSheet: '請更新角色卡上的等級。',
       pf2: '請提升角色卡上的等級,並從 XP 中扣除 1,000。',
@@ -1870,7 +1828,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}:Mod 無法把角色卡設為 0 XP。請在角色卡上自行修改。',
         sandbox: '{name}:這張角色卡需要 Mod sandbox v1.5 才能更新 XP。',
-        xpless: '{name}:此遊戲系統不使用 XP(或由角色卡自行計算)。請使用里程碑模式。',
+        xpless: '{name}:此遊戲系統不使用 XP(或由角色卡自行計算)。',
         noField: '{name}:不知道這張角色卡的 XP 欄位。請將遊戲系統設為 custom 並指定欄位名稱。',
         error: '{name}:無法將角色卡更新為 {xp} XP。請查看 Mod 主控台。',
       },
@@ -1887,7 +1845,6 @@ const LazyExperienceMod = (() => {
       badShare: '份數請輸入 0 到 10 之間的數字,例如 0.5 或 50%。',
       noCharacters: '請選取代表角色的權標,或使用 --ids。',
       noTokens: '請先選取已擊敗的權標,或使用 --ids。',
-      milestoneMode: '此遊戲使用里程碑升級,因此不追蹤 XP。請在設定中更改模式。',
     },
     status: {
       version: '版本',
@@ -1921,7 +1878,6 @@ const LazyExperienceMod = (() => {
       undo: '收回最後一筆尚未發放的獎勵。',
       end: '結束場次:發放 XP、公告並記錄。',
       resetSession: '清除場次 XP,但不發放。',
-      milestone: '讓隊伍(或指定的角色)升一級。',
       show: '顯示角色卡上每位隊伍成員的 XP 與等級。',
       roster: '顯示隊伍卡片。',
       party: '為選取的角色勾選或取消勾選 Roll20 的隊伍成員欄位。',
@@ -1940,7 +1896,7 @@ const LazyExperienceMod = (() => {
       selected: '已選取的權標',
       selectedDesc: '請先在地圖上選取權標。',
       party: '隊伍',
-      partyDesc: '誰分享 XP,以及里程碑等級。',
+      partyDesc: '誰分享 XP。',
       tools: '工具',
       toolsDesc: '設定、狀態與說明。',
       footer: '按鈕會執行 LazyExperience 指令。詳情請見 {help} 講義。',
@@ -1951,7 +1907,7 @@ const LazyExperienceMod = (() => {
       footer: '每個指令的按鈕都在 {deck} 講義中。',
       overview: {
         heading: '概要',
-        body: 'LazyExperience 會收集場次中獲得的經驗值,分配給隊伍,並寫入角色卡。它能讀寫 D&D 2024 角色卡,也支援舊版與其他角色卡;使用 Roll20 自己的隊伍、偵測被擊敗的生物、處理缺席玩家與額外 XP、公告升級,並為每個場次保留紀錄。以里程碑升級的遊戲也可以改用它來公告等級。',
+        body: 'LazyExperience 會收集場次中獲得的經驗值,分配給隊伍,並寫入角色卡。它能讀寫 D&D 2024 角色卡,也支援舊版與其他角色卡;使用 Roll20 自己的隊伍、偵測被擊敗的生物、處理缺席玩家與額外 XP、公告升級,並為每個場次保留紀錄。',
       },
       quickStart: {
         heading: '快速開始',
@@ -2004,11 +1960,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: '等級與里程碑',
+        heading: '升級',
         points: [
           '寫入 XP 後,LazyExperience 會檢查該系統的等級表,並在角色的 XP 足以升級時公告。',
           '在 D&D 2024 角色卡上,玩家接著按下角色卡的升級按鈕。',
-          '里程碑模式會關閉 XP。里程碑會讓隊伍(或指定的角色)升一級並公告,不會更動角色卡。',
         ],
       },
       systems: {
@@ -2031,7 +1986,7 @@ const LazyExperienceMod = (() => {
           '像 D&D 2024 這類 Beacon 角色卡需要 Mod sandbox v1.5,且 Mod 無法將它們設為 0 XP。',
           'Pathfinder 1E 與 Starfinder 使用角色卡上的「下一級所需 XP」欄位來發出升級通知。該欄位空白時,Pathfinder 使用中速進度,Starfinder 使用自己的表格。',
           'WFRP 4E:每次獎勵都會在角色卡的 Experience 清單中新增一列,但測試中角色卡並未重新計算 XP 總計,請在角色卡上自行檢查。',
-          'Savage Worlds、13th Age、Cosmere 與 Call of Cthulhu 沒有可供 Mod 寫入的 XP:請使用里程碑模式。',
+          'Savage Worlds、13th Age、Cosmere 與 Call of Cthulhu 沒有可供 Mod 寫入的 XP。',
         ],
       },
       settings: {
@@ -2098,7 +2053,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Seance',
-      mode: 'Režim',
       pool: 'XP seance',
       payout: 'Vyplaceno',
       shares: 'Podíly',
@@ -2138,8 +2092,6 @@ const LazyExperienceMod = (() => {
       include: 'Zahrnout',
       partyAdd: 'Přidat vybrané do družiny',
       partyRemove: 'Odebrat vybrané',
-      levelUp: 'Postup na úroveň',
-      milestoneAll: 'Milník: celá družina',
       addKill: 'Přidat {xp} XP',
       otherXp: 'Jiná hodnota',
       ignore: 'Ignorovat',
@@ -2149,11 +2101,9 @@ const LazyExperienceMod = (() => {
       reason: 'Důvod (volitelný)',
       share: 'Podíl (1 = plný, 0,5 = poloviční)',
       confirmEnd: 'Ukončit seanci a rozdělit XP?',
-      confirmMilestone: 'Zvýšit každého člena družiny o jednu úroveň?',
     },
     options: {
       yesNo: { yes: 'Ano', no: 'Ne' },
-      mode: { xp: 'Zkušenostní body', milestone: 'Milníky' },
       payout: { end: 'Na konci seance', instant: 'Okamžitě' },
       roster: {
         auto: 'Automaticky',
@@ -2173,10 +2123,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Jazyk', desc: 'Jazyk karet v chatu a handoutů.' },
-      mode: {
-        label: 'Režim',
-        desc: 'Zkušenostní body (xp) nebo postup podle milníků (milestone). Milníky oznamují úrovně a neudělují XP.',
-      },
       payout: {
         label: 'Výplata XP',
         desc: 'end: XP se shromažďují ve fondu seance a rozdělí se po jejím skončení. instant: každá odměna se hned rozdělí a vyplatí.',
@@ -2271,7 +2217,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} má dost XP na úroveň {level}!',
-      milestone: '{name} dosahuje úrovně {level}!',
       sheetButton: 'Použij tlačítko Level Up na kartě postavy.',
       updateSheet: 'Aktualizuj úroveň na kartě postavy.',
       pf2: 'Zvyš úroveň na kartě a odečti 1000 od XP.',
@@ -2324,8 +2269,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: Mod nemůže nastavit kartu na 0 XP. Změň to na kartě.',
         sandbox: '{name}: tato karta potřebuje k aktualizaci XP Mod sandbox v1.5.',
-        xpless:
-          '{name}: tento herní systém XP nepoužívá (nebo si je karta počítá sama). Použij režim milestone.',
+        xpless: '{name}: tento herní systém XP nepoužívá (nebo si je karta počítá sama).',
         noField:
           '{name}: pro tuto kartu není známo pole XP. Nastav Herní systém na custom a zadej název pole.',
         error: '{name}: kartu se nepodařilo aktualizovat o {xp} XP. Podívej se do konzole Modů.',
@@ -2343,8 +2287,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Zadej podíl jako číslo od 0 do 10, například 0.5 nebo 50%.',
       noCharacters: 'Vyber žetony představující postavy, nebo použij --ids.',
       noTokens: 'Nejprve vyber poražené žetony, nebo použij --ids.',
-      milestoneMode:
-        'Hra používá postup podle milníků, takže se XP nesledují. Změň Režim v nastavení.',
     },
     status: {
       version: 'Verze',
@@ -2378,7 +2320,6 @@ const LazyExperienceMod = (() => {
       undo: 'Vezme zpět poslední odměnu, která ještě nebyla vyplacena.',
       end: 'Ukončí seanci: vyplatí XP, oznámí je a zapíše do záznamu.',
       resetSession: 'Vymaže XP seance bez vyplacení.',
-      milestone: 'Zvýší družinu (nebo vybrané postavy) o jednu úroveň.',
       show: 'Zobrazí XP a úroveň každého člena družiny z karty.',
       roster: 'Zobrazí kartu družiny.',
       party: 'Zaškrtne nebo odškrtne políčko Party Member v Roll20 u vybraných postav.',
@@ -2397,7 +2338,7 @@ const LazyExperienceMod = (() => {
       selected: 'Vybrané žetony',
       selectedDesc: 'Nejprve vyber žetony na mapě.',
       party: 'Družina',
-      partyDesc: 'Kdo dělí XP, a milníkové úrovně.',
+      partyDesc: 'Kdo dělí XP.',
       tools: 'Nástroje',
       toolsDesc: 'Nastavení, stav a nápověda.',
       footer: 'Tlačítka spouštějí příkazy LazyExperience. Podrobnosti v handoutu {help}.',
@@ -2408,7 +2349,7 @@ const LazyExperienceMod = (() => {
       footer: 'Tlačítka pro všechny příkazy jsou v handoutu {deck}.',
       overview: {
         heading: 'Přehled',
-        body: 'LazyExperience shromažďuje zkušenostní body získané během seance, rozděluje je mezi družinu a zapisuje je na karty postav. Čte a zapisuje kartu D&D 2024 i starší a jiné karty, využívá družinu Roll20, všímá si poražených tvorů, zvládá nepřítomné hráče a bonusové XP, oznamuje postup na novou úroveň a vede záznam o každé seanci. Hry s postupem podle milníků ho mohou používat k oznamování úrovní.',
+        body: 'LazyExperience shromažďuje zkušenostní body získané během seance, rozděluje je mezi družinu a zapisuje je na karty postav. Čte a zapisuje kartu D&D 2024 i starší a jiné karty, využívá družinu Roll20, všímá si poražených tvorů, zvládá nepřítomné hráče a bonusové XP, oznamuje postup na novou úroveň a vede záznam o každé seanci.',
       },
       quickStart: {
         heading: 'Rychlý start',
@@ -2462,11 +2403,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Úrovně a milníky',
+        heading: 'Postup na vyšší úroveň',
         points: [
           'Po zapsání XP LazyExperience zkontroluje tabulku úrovní systému a oznámí, když má postava dost XP na novou úroveň.',
           'Na kartě D&D 2024 pak hráč stiskne tlačítko Level Up na kartě.',
-          'Režim milníků vypíná XP. Milník zvýší družinu (nebo vybrané postavy) o jednu úroveň a oznámí to. Karty se nemění.',
         ],
       },
       systems: {
@@ -2489,7 +2429,7 @@ const LazyExperienceMod = (() => {
           'Karty Beacon, například D&D 2024, vyžadují Mod sandbox v1.5 a Mod je nemůže nastavit na 0 XP.',
           'Pathfinder 1E a Starfinder používají pro oznámení o postupu políčko karty s XP do další úrovně. Když je prázdné, Pathfinder použije střední postup a Starfinder vlastní tabulku.',
           'WFRP 4E: každá odměna se přidá jako řádek do seznamu Experience na kartě, ale karta si při testování nepřepočítala součty XP, proto je zkontroluj na kartě.',
-          'Savage Worlds, 13th Age, Cosmere a Call of Cthulhu nemají žádné XP, které by Mod mohl zapsat: použij režim milníků.',
+          'Savage Worlds, 13th Age, Cosmere a Call of Cthulhu nemají žádné XP, které by Mod mohl zapsat.',
         ],
       },
       settings: {
@@ -2556,7 +2496,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Session',
-      mode: 'Tilstand',
       pool: 'Sessionens XP',
       payout: 'Udbetalt',
       shares: 'Andele',
@@ -2596,8 +2535,6 @@ const LazyExperienceMod = (() => {
       include: 'Tag med',
       partyAdd: 'Tilføj valgte til gruppen',
       partyRemove: 'Fjern valgte',
-      levelUp: 'Niveaustigning',
-      milestoneAll: 'Milepæl: Hele gruppen',
       addKill: 'Tilføj {xp} XP',
       otherXp: 'Andet beløb',
       ignore: 'Ignorer',
@@ -2607,11 +2544,9 @@ const LazyExperienceMod = (() => {
       reason: 'Årsag (valgfri)',
       share: 'Andel (1 = hel, 0,5 = halv)',
       confirmEnd: 'Afslutte sessionen og dele XP ud?',
-      confirmMilestone: 'Hæve hvert gruppemedlem et niveau?',
     },
     options: {
       yesNo: { yes: 'Ja', no: 'Nej' },
-      mode: { xp: 'Erfaringspoint', milestone: 'Milepæle' },
       payout: { end: 'Ved sessionens slutning', instant: 'Med det samme' },
       roster: {
         auto: 'Automatisk',
@@ -2631,10 +2566,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Sprog', desc: 'Sprog til chatkort og handouts.' },
-      mode: {
-        label: 'Tilstand',
-        desc: 'Erfaringspoint (xp) eller niveaustigning med milepæle (milestone). Milepæle melder niveauer og uddeler ingen XP.',
-      },
       payout: {
         label: 'Udbetal XP',
         desc: 'end: XP samles i sessionens pulje og deles ud, når sessionen slutter. instant: hver tildeling deles og udbetales med det samme.',
@@ -2732,7 +2663,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} har nok XP til niveau {level}!',
-      milestone: '{name} når niveau {level}!',
       sheetButton: 'Brug knappen til niveaustigning på karakterarket.',
       updateSheet: 'Opdater niveauet på karakterarket.',
       pf2: 'Hæv niveauet på arket, og træk 1.000 fra XP.',
@@ -2787,8 +2717,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: arket kan ikke sættes til 0 XP fra et Mod. Ret det på arket.',
         sandbox: '{name}: dette ark kræver Mod sandbox v1.5 for at opdatere XP.',
-        xpless:
-          '{name}: dette spilsystem bruger ikke XP (eller arket regner det selv ud). Brug milepælstilstand.',
+        xpless: '{name}: dette spilsystem bruger ikke XP (eller arket regner det selv ud).',
         noField:
           '{name}: intet XP-felt er kendt for dette ark. Sæt Spilsystem til custom, og angiv feltet.',
         error: '{name}: arket kunne ikke opdateres med {xp} XP. Se Mod-konsollen.',
@@ -2806,8 +2735,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Angiv andelen som et tal fra 0 til 10, fx 0,5 eller 50 %.',
       noCharacters: 'Vælg tokens, der står for karakterer, eller brug --ids.',
       noTokens: 'Vælg de besejrede tokens først, eller brug --ids.',
-      milestoneMode:
-        'Spillet bruger niveaustigning med milepæle, så XP spores ikke. Ændr Tilstand i indstillingerne.',
     },
     status: {
       version: 'Version',
@@ -2842,7 +2769,6 @@ const LazyExperienceMod = (() => {
       undo: 'Tag den seneste tildeling tilbage, som ikke er udbetalt.',
       end: 'Afslut sessionen: udbetal XP, meld det og log det.',
       resetSession: 'Ryd sessionens XP uden at udbetale den.',
-      milestone: 'Hæv gruppen (eller de valgte karakterer) et niveau.',
       show: 'Vis hvert gruppemedlems XP og niveau fra arket.',
       roster: 'Vis gruppekortet.',
       party: 'Sæt eller fjern kryds i Roll20s felt Party Member for de valgte karakterer.',
@@ -2861,7 +2787,7 @@ const LazyExperienceMod = (() => {
       selected: 'Valgte tokens',
       selectedDesc: 'Vælg først tokens på kortet.',
       party: 'Gruppe',
-      partyDesc: 'Hvem der deler XP, og milepælsniveauer.',
+      partyDesc: 'Hvem der deler XP.',
       tools: 'Værktøjer',
       toolsDesc: 'Indstillinger, status og hjælp.',
       footer: 'Knapperne kører LazyExperience-kommandoer. Se handouten {help} for detaljer.',
@@ -2872,7 +2798,7 @@ const LazyExperienceMod = (() => {
       footer: 'Knapper til alle kommandoer findes i handouten {deck}.',
       overview: {
         heading: 'Overblik',
-        body: 'LazyExperience samler de erfaringspoint, der optjenes i løbet af en session, deler dem mellem gruppen og skriver dem til karakterarkene. Det læser og skriver D&D 2024-arket såvel som ældre og andre ark, bruger Roll20s egen gruppe, bemærker besejrede væsener, håndterer fraværende spillere og bonus-XP, melder niveaustigninger og fører log over hver session. Spil, der stiger i niveau med milepæle, kan bruge det til at melde niveauer i stedet.',
+        body: 'LazyExperience samler de erfaringspoint, der optjenes i løbet af en session, deler dem mellem gruppen og skriver dem til karakterarkene. Det læser og skriver D&D 2024-arket såvel som ældre og andre ark, bruger Roll20s egen gruppe, bemærker besejrede væsener, håndterer fraværende spillere og bonus-XP, melder niveaustigninger og fører log over hver session.',
       },
       quickStart: {
         heading: 'Hurtig start',
@@ -2926,11 +2852,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Niveauer og milepæle',
+        heading: 'Niveaustigninger',
         points: [
           'Når XP er skrevet, tjekker LazyExperience systemets niveautabel og melder, når en karakter har nok XP til et nyt niveau.',
           'På D&D 2024-arket trykker spilleren derefter på arkets knap til niveaustigning.',
-          'Milepælstilstand slår XP fra. Milepæl hæver gruppen (eller de valgte karakterer) et niveau og melder det. Ark ændres ikke.',
         ],
       },
       systems: {
@@ -2953,7 +2878,7 @@ const LazyExperienceMod = (() => {
           'Beacon-ark som D&D 2024 kræver Mod sandbox v1.5, og et Mod kan ikke sætte dem til 0 XP.',
           'Pathfinder 1E og Starfinder bruger arkets felt for XP til næste niveau til niveaumeddelelser. Når det er tomt, bruger Pathfinder det mellemste forløb, og Starfinder sin egen tabel.',
           'WFRP 4E: hver tildeling tilføjes som en række i arkets Experience-liste, men arket genberegnede ikke sine XP-totaler under test, så tjek dem på arket.',
-          'Savage Worlds, 13th Age, Cosmere og Call of Cthulhu har ingen XP, som et Mod kan skrive: brug milepælstilstand.',
+          'Savage Worlds, 13th Age, Cosmere og Call of Cthulhu har ingen XP, som et Mod kan skrive.',
         ],
       },
       settings: {
@@ -3020,7 +2945,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sessie',
-      mode: 'Modus',
       pool: 'Sessie-XP',
       payout: 'Uitbetaald',
       shares: 'Aandelen',
@@ -3060,8 +2984,6 @@ const LazyExperienceMod = (() => {
       include: 'Opnemen',
       partyAdd: 'Selectie aan groep toevoegen',
       partyRemove: 'Selectie verwijderen',
-      levelUp: 'Niveau omhoog',
-      milestoneAll: 'Mijlpaal: hele groep',
       addKill: '{xp} XP toevoegen',
       otherXp: 'Ander bedrag',
       ignore: 'Negeren',
@@ -3071,11 +2993,9 @@ const LazyExperienceMod = (() => {
       reason: 'Reden (optioneel)',
       share: 'Aandeel (1 = volledig, 0,5 = half)',
       confirmEnd: 'De sessie afronden en de XP uitdelen?',
-      confirmMilestone: 'Elk groepslid één niveau omhoog zetten?',
     },
     options: {
       yesNo: { yes: 'Ja', no: 'Nee' },
-      mode: { xp: 'Ervaringspunten', milestone: 'Mijlpalen' },
       payout: { end: 'Aan het einde van de sessie', instant: 'Meteen' },
       roster: {
         auto: 'Automatisch',
@@ -3100,10 +3020,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Taal', desc: 'Taal voor chatkaarten en handouts.' },
-      mode: {
-        label: 'Modus',
-        desc: 'Ervaringspunten (xp) of niveaus via mijlpalen (milestone). Mijlpalen kondigen niveaus aan en kennen geen XP toe.',
-      },
       payout: {
         label: 'XP uitbetalen',
         desc: 'end: XP verzamelt zich in de sessiepot en wordt uitgedeeld als de sessie eindigt. instant: elke toekenning wordt meteen verdeeld en uitbetaald.',
@@ -3201,7 +3117,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} heeft genoeg XP voor niveau {level}!',
-      milestone: '{name} bereikt niveau {level}!',
       sheetButton: 'Gebruik de niveau-omhoogknop op de personagesheet.',
       updateSheet: 'Werk het niveau op de personagesheet bij.',
       pf2: 'Verhoog het niveau op de sheet en trek 1.000 af van de XP.',
@@ -3255,8 +3170,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: de sheet kan vanuit een Mod niet op 0 XP worden gezet. Pas het op de sheet aan.',
         sandbox: '{name}: deze sheet heeft Mod sandbox v1.5 nodig om XP bij te werken.',
-        xpless:
-          '{name}: dit spelsysteem gebruikt geen XP (of de sheet rekent het zelf uit). Gebruik de modus milestone.',
+        xpless: '{name}: dit spelsysteem gebruikt geen XP (of de sheet rekent het zelf uit).',
         noField:
           '{name}: voor deze sheet is geen XP-veld bekend. Zet Spelsysteem op custom en geef het veld op.',
         error: '{name}: de sheet kon niet worden bijgewerkt met {xp} XP. Zie de Mod-console.',
@@ -3274,8 +3188,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Geef het aandeel op als getal van 0 tot 10, zoals 0,5 of 50%.',
       noCharacters: 'Selecteer tokens die personages voorstellen, of gebruik --ids.',
       noTokens: 'Selecteer eerst de verslagen tokens, of gebruik --ids.',
-      milestoneMode:
-        'Het spel gebruikt niveaus via mijlpalen, dus XP wordt niet bijgehouden. Wijzig de Modus in de instellingen.',
     },
     status: {
       version: 'Versie',
@@ -3310,7 +3222,6 @@ const LazyExperienceMod = (() => {
       undo: 'Neem de laatste toekenning terug die nog niet is uitbetaald.',
       end: 'Rond de sessie af: betaal de XP uit, kondig het aan en log het.',
       resetSession: 'Wis de sessie-XP zonder die uit te betalen.',
-      milestone: 'Zet de groep (of de gekozen personages) één niveau omhoog.',
       show: 'Toon de XP en het niveau van elk groepslid volgens de sheet.',
       roster: 'Toon de groepskaart.',
       party: 'Vink het vakje Party Member van Roll20 aan of uit voor de geselecteerde personages.',
@@ -3329,7 +3240,7 @@ const LazyExperienceMod = (() => {
       selected: 'Geselecteerde tokens',
       selectedDesc: 'Selecteer eerst tokens op de kaart.',
       party: 'Groep',
-      partyDesc: 'Wie de XP deelt, en mijlpaalniveaus.',
+      partyDesc: 'Wie de XP deelt.',
       tools: 'Hulpmiddelen',
       toolsDesc: 'Instellingen, status en help.',
       footer: 'Knoppen voeren LazyExperience-commando’s uit. Zie de handout {help} voor details.',
@@ -3340,7 +3251,7 @@ const LazyExperienceMod = (() => {
       footer: 'Knoppen voor alle commando’s staan in de handout {deck}.',
       overview: {
         heading: 'Overzicht',
-        body: 'LazyExperience verzamelt de ervaringspunten die tijdens een sessie zijn verdiend, verdeelt ze over de groep en schrijft ze naar de personagesheets. Het leest en schrijft de D&D 2024-sheet en ook oudere en andere sheets, gebruikt de eigen groep van Roll20, merkt verslagen wezens op, regelt afwezige spelers en bonus-XP, kondigt niveaus omhoog aan en houdt een logboek bij van elke sessie. Spellen die via mijlpalen levelen, kunnen het gebruiken om niveaus aan te kondigen.',
+        body: 'LazyExperience verzamelt de ervaringspunten die tijdens een sessie zijn verdiend, verdeelt ze over de groep en schrijft ze naar de personagesheets. Het leest en schrijft de D&D 2024-sheet en ook oudere en andere sheets, gebruikt de eigen groep van Roll20, merkt verslagen wezens op, regelt afwezige spelers en bonus-XP, kondigt niveaus omhoog aan en houdt een logboek bij van elke sessie.',
       },
       quickStart: {
         heading: 'Snel aan de slag',
@@ -3394,11 +3305,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Niveaus en mijlpalen',
+        heading: 'Niveaustijgingen',
         points: [
           'Nadat de XP is geschreven, controleert LazyExperience de niveautabel van het systeem en meldt het wanneer een personage genoeg XP heeft voor een nieuw niveau.',
           'Op de D&D 2024-sheet drukt de speler dan op de niveau-omhoogknop van de sheet.',
-          'De mijlpaalmodus schakelt XP uit. Mijlpaal zet de groep (of de gekozen personages) één niveau omhoog en kondigt het aan. Sheets worden niet gewijzigd.',
         ],
       },
       systems: {
@@ -3421,7 +3331,7 @@ const LazyExperienceMod = (() => {
           'Beacon-sheets zoals D&D 2024 hebben Mod sandbox v1.5 nodig, en een Mod kan ze niet op 0 XP zetten.',
           'Pathfinder 1E en Starfinder gebruiken het vak voor XP tot het volgende niveau op de sheet voor niveaumeldingen. Als het leeg is, gebruikt Pathfinder het gemiddelde traject en Starfinder een eigen tabel.',
           'WFRP 4E: elke toekenning wordt als rij toegevoegd aan de Experience-lijst van de sheet, maar de sheet herberekende zijn XP-totalen niet tijdens het testen, dus controleer ze op de sheet.',
-          'Savage Worlds, 13th Age, Cosmere en Call of Cthulhu hebben geen XP die een Mod kan schrijven: gebruik de mijlpaalmodus.',
+          'Savage Worlds, 13th Age, Cosmere en Call of Cthulhu hebben geen XP die een Mod kan schrijven.',
         ],
       },
       settings: {
@@ -3488,7 +3398,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Session',
-      mode: 'Mode',
       pool: 'Session XP',
       payout: 'Paid',
       shares: 'Shares',
@@ -3528,8 +3437,6 @@ const LazyExperienceMod = (() => {
       include: 'Include',
       partyAdd: 'Add Selected to Party',
       partyRemove: 'Remove Selected',
-      levelUp: 'Level Up',
-      milestoneAll: 'Milestone: Whole Party',
       addKill: 'Add {xp} XP',
       otherXp: 'Other Amount',
       ignore: 'Ignore',
@@ -3539,11 +3446,9 @@ const LazyExperienceMod = (() => {
       reason: 'Reason (optional)',
       share: 'Share (1 = full, 0.5 = half)',
       confirmEnd: 'End the session and hand out the XP?',
-      confirmMilestone: 'Raise every party member by one level?',
     },
     options: {
       yesNo: { yes: 'Yes', no: 'No' },
-      mode: { xp: 'Experience points', milestone: 'Milestones' },
       payout: { end: 'At the end of the session', instant: 'Straight away' },
       roster: {
         auto: 'Automatic',
@@ -3563,10 +3468,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Language', desc: 'Language for chat cards and handouts.' },
-      mode: {
-        label: 'Mode',
-        desc: 'Experience points (xp) or milestone levelling (milestone). Milestones announce levels and award no XP.',
-      },
       payout: {
         label: 'Pay XP',
         desc: 'end: XP collects in the session pool and is handed out when the session ends. instant: every award is split and paid straight away.',
@@ -3661,7 +3562,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} has enough XP for level {level}!',
-      milestone: '{name} reaches level {level}!',
       sheetButton: 'Use the Level Up button on the character sheet.',
       updateSheet: 'Update the level on the character sheet.',
       pf2: 'Raise the level on the sheet and take 1,000 off the XP.',
@@ -3716,8 +3616,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: the sheet cannot be set to 0 XP from a Mod. Change it on the sheet.',
         sandbox: '{name}: this sheet needs Mod sandbox v1.5 to update XP.',
-        xpless:
-          '{name}: this game system does not use XP (or the sheet works it out itself). Use milestone mode.',
+        xpless: '{name}: this game system does not use XP (or the sheet works it out itself).',
         noField:
           '{name}: no XP field is known for this sheet. Set Game system to custom and name the field.',
         error: '{name}: the sheet could not be updated with {xp} XP. See the Mod console.',
@@ -3735,8 +3634,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Give the share as a number from 0 to 10, such as 0.5 or 50%.',
       noCharacters: 'Select tokens that stand for characters, or use --ids.',
       noTokens: 'Select the defeated tokens first, or use --ids.',
-      milestoneMode:
-        'The game uses milestone levelling, so XP is not tracked. Change Mode in the settings.',
     },
     status: {
       version: 'Version',
@@ -3771,7 +3668,6 @@ const LazyExperienceMod = (() => {
       undo: 'Take back the last award that has not been paid.',
       end: 'End the session: pay the XP, announce it and log it.',
       resetSession: 'Clear the session XP without paying it.',
-      milestone: 'Raise the party (or the chosen characters) by one level.',
       show: 'Show each party member’s XP and level from the sheet.',
       roster: 'Show the party card.',
       party: 'Tick or untick Roll20’s Party Member box for the selected characters.',
@@ -3790,7 +3686,7 @@ const LazyExperienceMod = (() => {
       selected: 'Selected tokens',
       selectedDesc: 'Select tokens on the map first.',
       party: 'Party',
-      partyDesc: 'Who shares the XP, and milestone levels.',
+      partyDesc: 'Who shares the XP.',
       tools: 'Tools',
       toolsDesc: 'Settings, status and help.',
       footer: 'Buttons run LazyExperience commands. See the {help} handout for details.',
@@ -3801,7 +3697,7 @@ const LazyExperienceMod = (() => {
       footer: 'Buttons for every command are in the {deck} handout.',
       overview: {
         heading: 'Overview',
-        body: 'LazyExperience collects the experience points earned during a session, splits them between the party and writes them to the character sheets. It reads and writes the D&D 2024 sheet as well as older and other sheets, uses Roll20’s own party, notices defeated creatures, handles absent players and bonus XP, announces level-ups and keeps a log of every session. Games that level by milestones can use it to announce levels instead.',
+        body: 'LazyExperience collects the experience points earned during a session, splits them between the party and writes them to the character sheets. It reads and writes the D&D 2024 sheet as well as older and other sheets, uses Roll20’s own party, notices defeated creatures, handles absent players and bonus XP, announces level-ups and keeps a log of every session.',
       },
       quickStart: {
         heading: 'Quick start',
@@ -3855,11 +3751,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Levels and milestones',
+        heading: 'Level-ups',
         points: [
           'After XP is written, LazyExperience checks the system’s level table and announces when a character has enough XP for a new level.',
           'On the D&D 2024 sheet the player then presses the sheet’s Level Up button.',
-          'Milestone mode turns XP off. Milestone raises the party (or chosen characters) by one level and announces it. Sheets are not changed.',
         ],
       },
       systems: {
@@ -3882,7 +3777,7 @@ const LazyExperienceMod = (() => {
           'Beacon sheets such as D&D 2024 need Mod sandbox v1.5, and a Mod cannot set them to 0 XP.',
           'Pathfinder 1E and Starfinder use the sheet’s XP-for-next-level box for level-up notices. When it is blank, Pathfinder uses the medium track and Starfinder its own table.',
           'WFRP 4E: each award is added as a row in the sheet’s Experience list, but the sheet did not recalculate its XP totals in testing, so check them on the sheet.',
-          'Savage Worlds, 13th Age, Cosmere and Call of Cthulhu have no XP for a Mod to write: use milestone mode.',
+          'Savage Worlds, 13th Age, Cosmere and Call of Cthulhu have no XP for a Mod to write.',
         ],
       },
       settings: {
@@ -3949,7 +3844,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sessio',
-      mode: 'Tila',
       pool: 'Session XP',
       payout: 'Maksettu',
       shares: 'Osuudet',
@@ -3989,8 +3883,6 @@ const LazyExperienceMod = (() => {
       include: 'Ota mukaan',
       partyAdd: 'Lisää valitut seurueeseen',
       partyRemove: 'Poista valitut',
-      levelUp: 'Tasonnousu',
-      milestoneAll: 'Virstanpylväs: Koko seurue',
       addKill: 'Lisää {xp} XP',
       otherXp: 'Muu määrä',
       ignore: 'Ohita',
@@ -4000,11 +3892,9 @@ const LazyExperienceMod = (() => {
       reason: 'Syy (valinnainen)',
       share: 'Osuus (1 = koko, 0,5 = puolikas)',
       confirmEnd: 'Päätetäänkö sessio ja jaetaanko XP?',
-      confirmMilestone: 'Nostetaanko jokaista seurueen jäsentä yhdellä tasolla?',
     },
     options: {
       yesNo: { yes: 'Kyllä', no: 'Ei' },
-      mode: { xp: 'Kokemuspisteet', milestone: 'Virstanpylväät' },
       payout: { end: 'Session lopussa', instant: 'Heti' },
       roster: {
         auto: 'Automaattinen',
@@ -4029,10 +3919,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Kieli', desc: 'Chat-korttien ja handoutien kieli.' },
-      mode: {
-        label: 'Tila',
-        desc: 'Kokemuspisteet (xp) tai tasonnousu virstanpylväillä (milestone). Virstanpylväät ilmoittavat tasot eivätkä jaa XP:tä.',
-      },
       payout: {
         label: 'Maksa XP',
         desc: 'end: XP kertyy session pottiin ja jaetaan session päättyessä. instant: jokainen palkkio jaetaan ja maksetaan heti.',
@@ -4130,7 +4016,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} on saanut tarpeeksi XP:tä tasolle {level}!',
-      milestone: '{name} saavuttaa tason {level}!',
       sheetButton: 'Käytä hahmolomakkeen tasonnousupainiketta.',
       updateSheet: 'Päivitä taso hahmolomakkeeseen.',
       pf2: 'Nosta taso lomakkeella ja vähennä XP:stä 1 000.',
@@ -4184,8 +4069,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: lomaketta ei voi asettaa 0 XP:hen modista. Muuta se lomakkeella.',
         sandbox: '{name}: tämä lomake tarvitsee Mod sandbox v1.5:n XP:n päivittämiseen.',
-        xpless:
-          '{name}: tämä pelijärjestelmä ei käytä XP:tä (tai lomake laskee sen itse). Käytä virstanpylväs-tilaa.',
+        xpless: '{name}: tämä pelijärjestelmä ei käytä XP:tä (tai lomake laskee sen itse).',
         noField:
           '{name}: tälle lomakkeelle ei tunneta XP-kenttää. Aseta Pelijärjestelmäksi custom ja nimeä kenttä.',
         error: '{name}: lomaketta ei voitu päivittää {xp} XP:llä. Katso Mod-konsoli.',
@@ -4203,8 +4087,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Anna osuus lukuna 0–10, esimerkiksi 0,5 tai 50 %.',
       noCharacters: 'Valitse hahmoja esittävät nappulat tai käytä --ids.',
       noTokens: 'Valitse ensin kukistetut nappulat tai käytä --ids.',
-      milestoneMode:
-        'Peli käyttää tasonnousua virstanpylväillä, joten XP:tä ei seurata. Muuta Tilaa asetuksista.',
     },
     status: {
       version: 'Versio',
@@ -4239,7 +4121,6 @@ const LazyExperienceMod = (() => {
       undo: 'Ota takaisin viimeisin palkkio, jota ei ole maksettu.',
       end: 'Päätä sessio: maksa XP, ilmoita siitä ja kirjaa se lokiin.',
       resetSession: 'Tyhjennä session XP maksamatta sitä.',
-      milestone: 'Nosta seuruetta (tai valittuja hahmoja) yhdellä tasolla.',
       show: 'Näytä kunkin seurueen jäsenen XP ja taso lomakkeelta.',
       roster: 'Näytä seuruekortti.',
       party: 'Merkitse tai poista merkintä Roll20:n Party Member -ruudusta valituille hahmoille.',
@@ -4258,7 +4139,7 @@ const LazyExperienceMod = (() => {
       selected: 'Valitut nappulat',
       selectedDesc: 'Valitse ensin nappulat kartalta.',
       party: 'Seurue',
-      partyDesc: 'Ketkä jakavat XP:n, ja virstanpylvästasot.',
+      partyDesc: 'Ketkä jakavat XP:n.',
       tools: 'Työkalut',
       toolsDesc: 'Asetukset, tila ja ohje.',
       footer: 'Painikkeet ajavat LazyExperience-komentoja. Katso lisätiedot handoutista {help}.',
@@ -4269,7 +4150,7 @@ const LazyExperienceMod = (() => {
       footer: 'Painikkeet kaikille komennoille ovat handoutissa {deck}.',
       overview: {
         heading: 'Yleiskatsaus',
-        body: 'LazyExperience kerää session aikana ansaitut kokemuspisteet, jakaa ne seurueen kesken ja kirjoittaa ne hahmolomakkeisiin. Se lukee ja kirjoittaa D&D 2024 -lomaketta sekä vanhempia ja muita lomakkeita, käyttää Roll20:n omaa seuruetta, huomaa kukistetut olennot, hoitaa poissaolevat pelaajat ja bonus-XP:n, ilmoittaa tasonnousut ja pitää lokia jokaisesta sessiosta. Pelit, joissa tasot nousevat virstanpylväillä, voivat käyttää sitä tasojen ilmoittamiseen.',
+        body: 'LazyExperience kerää session aikana ansaitut kokemuspisteet, jakaa ne seurueen kesken ja kirjoittaa ne hahmolomakkeisiin. Se lukee ja kirjoittaa D&D 2024 -lomaketta sekä vanhempia ja muita lomakkeita, käyttää Roll20:n omaa seuruetta, huomaa kukistetut olennot, hoitaa poissaolevat pelaajat ja bonus-XP:n, ilmoittaa tasonnousut ja pitää lokia jokaisesta sessiosta.',
       },
       quickStart: {
         heading: 'Pikaopas',
@@ -4323,11 +4204,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Tasot ja virstanpylväät',
+        heading: 'Tason nousut',
         points: [
           'XP:n kirjoittamisen jälkeen LazyExperience tarkistaa järjestelmän tasotaulukon ja ilmoittaa, kun hahmolla on tarpeeksi XP:tä uuteen tasoon.',
           'D&D 2024 -lomakkeella pelaaja painaa sitten lomakkeen tasonnousupainiketta.',
-          'Virstanpylväs-tila poistaa XP:n käytöstä. Virstanpylväs nostaa seuruetta (tai valittuja hahmoja) yhdellä tasolla ja ilmoittaa siitä. Lomakkeita ei muuteta.',
         ],
       },
       systems: {
@@ -4350,7 +4230,7 @@ const LazyExperienceMod = (() => {
           'Beacon-lomakkeet kuten D&D 2024 tarvitsevat Mod sandbox v1.5:n, eikä Modi voi asettaa niitä 0 XP:hen.',
           'Pathfinder 1E ja Starfinder käyttävät tasonnousuilmoituksiin lomakkeen kenttää, jossa on XP seuraavaan tasoon. Kun se on tyhjä, Pathfinder käyttää keskinopeaa etenemistä ja Starfinder omaa taulukkoaan.',
           'WFRP 4E: jokainen palkinto lisätään riviksi lomakkeen Experience-luetteloon, mutta lomake ei laskenut XP-summiaan uudelleen testauksessa, joten tarkista ne lomakkeelta.',
-          'Savage Worlds, 13th Age, Cosmere ja Call of Cthulhu eivät käytä XP:tä, jonka Modi voisi kirjoittaa: käytä virstanpylväs-tilaa.',
+          'Savage Worlds, 13th Age, Cosmere ja Call of Cthulhu eivät käytä XP:tä, jonka Modi voisi kirjoittaa.',
         ],
       },
       settings: {
@@ -4417,7 +4297,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Séance',
-      mode: 'Mode',
       pool: 'PX de la séance',
       payout: 'Versé',
       shares: 'Parts',
@@ -4458,8 +4337,6 @@ const LazyExperienceMod = (() => {
       include: 'Inclure',
       partyAdd: 'Ajouter la sélection au groupe',
       partyRemove: 'Retirer la sélection',
-      levelUp: 'Monter de niveau',
-      milestoneAll: 'Jalon : tout le groupe',
       addKill: 'Ajouter {xp} PX',
       otherXp: 'Autre montant',
       ignore: 'Ignorer',
@@ -4469,11 +4346,9 @@ const LazyExperienceMod = (() => {
       reason: 'Raison (facultatif)',
       share: 'Part (1 = complète, 0,5 = moitié)',
       confirmEnd: 'Terminer la séance et distribuer les PX ?',
-      confirmMilestone: 'Faire gagner un niveau à chaque membre du groupe ?',
     },
     options: {
       yesNo: { yes: 'Oui', no: 'Non' },
-      mode: { xp: 'Points d’expérience', milestone: 'Jalons' },
       payout: { end: 'À la fin de la séance', instant: 'Immédiatement' },
       roster: {
         auto: 'Automatique',
@@ -4498,10 +4373,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Langue', desc: 'Langue des cartes de chat et des handouts.' },
-      mode: {
-        label: 'Mode',
-        desc: 'Points d’expérience (xp) ou progression par jalons (milestone). Les jalons annoncent les niveaux et n’attribuent aucun PX.',
-      },
       payout: {
         label: 'Versement des PX',
         desc: 'end : les PX s’accumulent dans la réserve de la séance et sont distribués à la fin de la séance. instant : chaque attribution est partagée et versée immédiatement.',
@@ -4602,7 +4473,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} a assez de PX pour le niveau {level} !',
-      milestone: '{name} atteint le niveau {level} !',
       sheetButton: 'Utilisez le bouton Level Up de la fiche de personnage.',
       updateSheet: 'Mettez à jour le niveau sur la fiche de personnage.',
       pf2: 'Augmentez le niveau sur la fiche et retirez 1 000 PX.',
@@ -4659,7 +4529,7 @@ const LazyExperienceMod = (() => {
         zero: '{name} : la fiche ne peut pas être mise à 0 PX depuis un Mod. Modifiez-la sur la fiche.',
         sandbox: '{name} : cette fiche nécessite Mod sandbox v1.5 pour mettre à jour les PX.',
         xpless:
-          '{name} : ce système de jeu n’utilise pas de PX (ou la fiche les calcule elle-même). Utilisez le mode milestone.',
+          '{name} : ce système de jeu n’utilise pas de PX (ou la fiche les calcule elle-même).',
         noField:
           '{name} : aucun champ de PX n’est connu pour cette fiche. Réglez le système de jeu sur custom et indiquez le champ.',
         error:
@@ -4678,8 +4548,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Indiquez la part sous forme de nombre de 0 à 10, par exemple 0.5 ou 50 %.',
       noCharacters: 'Sélectionnez des pions qui représentent des personnages, ou utilisez --ids.',
       noTokens: 'Sélectionnez d’abord les pions vaincus, ou utilisez --ids.',
-      milestoneMode:
-        'La partie utilise la progression par jalons, donc les PX ne sont pas suivis. Changez le mode dans les réglages.',
     },
     status: {
       version: 'Version',
@@ -4714,7 +4582,6 @@ const LazyExperienceMod = (() => {
       undo: 'Annule la dernière attribution qui n’a pas été versée.',
       end: 'Termine la séance : verse les PX, les annonce et les consigne.',
       resetSession: 'Efface les PX de la séance sans les verser.',
-      milestone: 'Fait gagner un niveau au groupe (ou aux personnages choisis).',
       show: 'Affiche les PX et le niveau de chaque membre du groupe d’après la fiche.',
       roster: 'Affiche la carte du groupe.',
       party: 'Coche ou décoche la case Party Member de Roll20 pour les personnages sélectionnés.',
@@ -4733,7 +4600,7 @@ const LazyExperienceMod = (() => {
       selected: 'Pions sélectionnés',
       selectedDesc: 'Sélectionnez d’abord des pions sur la carte.',
       party: 'Groupe',
-      partyDesc: 'Qui se partage les PX, et les niveaux par jalons.',
+      partyDesc: 'Qui se partage les PX.',
       tools: 'Outils',
       toolsDesc: 'Réglages, état et aide.',
       footer:
@@ -4745,7 +4612,7 @@ const LazyExperienceMod = (() => {
       footer: 'Les boutons de toutes les commandes se trouvent dans le handout {deck}.',
       overview: {
         heading: 'Présentation',
-        body: 'LazyExperience collecte les points d’expérience gagnés pendant une séance, les répartit entre le groupe et les écrit sur les fiches de personnage. Il lit et écrit la fiche D&D 2024 ainsi que les fiches plus anciennes ou différentes, utilise le groupe propre à Roll20, repère les créatures vaincues, gère les joueurs absents et les PX bonus, annonce les montées de niveau et tient un journal de chaque séance. Les parties qui progressent par jalons peuvent l’utiliser pour annoncer les niveaux à la place.',
+        body: 'LazyExperience collecte les points d’expérience gagnés pendant une séance, les répartit entre le groupe et les écrit sur les fiches de personnage. Il lit et écrit la fiche D&D 2024 ainsi que les fiches plus anciennes ou différentes, utilise le groupe propre à Roll20, repère les créatures vaincues, gère les joueurs absents et les PX bonus, annonce les montées de niveau et tient un journal de chaque séance.',
       },
       quickStart: {
         heading: 'Démarrage rapide',
@@ -4799,11 +4666,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Niveaux et jalons',
+        heading: 'Montées de niveau',
         points: [
           'Une fois les PX écrits, LazyExperience consulte la table de niveaux du système et annonce quand un personnage a assez de PX pour un nouveau niveau.',
           'Sur la fiche D&D 2024, le joueur appuie ensuite sur le bouton Level Up de la fiche.',
-          'Le mode jalons désactive les PX. Un jalon fait gagner un niveau au groupe (ou aux personnages choisis) et l’annonce. Les fiches ne sont pas modifiées.',
         ],
       },
       systems: {
@@ -4826,7 +4692,7 @@ const LazyExperienceMod = (() => {
           'Les fiches Beacon comme D&D 2024 nécessitent Mod sandbox v1.5, et un Mod ne peut pas les mettre à 0 PX.',
           'Pathfinder 1E et Starfinder utilisent la case de PX pour le niveau suivant de la fiche pour les annonces de niveau. Quand elle est vide, Pathfinder utilise la progression moyenne et Starfinder sa propre table.',
           'WFRP 4E : chaque attribution est ajoutée comme une ligne dans la liste Experience de la fiche, mais lors des tests la fiche n’a pas recalculé ses totaux de PX ; vérifiez-les sur la fiche.',
-          'Savage Worlds, 13th Age, Cosmere et Call of Cthulhu n’ont pas de PX qu’un Mod puisse écrire : utilisez le mode jalons.',
+          'Savage Worlds, 13th Age, Cosmere et Call of Cthulhu n’ont pas de PX qu’un Mod puisse écrire.',
         ],
       },
       settings: {
@@ -4894,7 +4760,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sitzung',
-      mode: 'Modus',
       pool: 'Sitzungs-EP',
       payout: 'Ausgezahlt',
       shares: 'Anteile',
@@ -4935,8 +4800,6 @@ const LazyExperienceMod = (() => {
       include: 'Einschließen',
       partyAdd: 'Auswahl zur Gruppe hinzufügen',
       partyRemove: 'Auswahl entfernen',
-      levelUp: 'Stufenaufstieg',
-      milestoneAll: 'Meilenstein: ganze Gruppe',
       addKill: '{xp} EP hinzufügen',
       otherXp: 'Anderer Betrag',
       ignore: 'Ignorieren',
@@ -4946,11 +4809,9 @@ const LazyExperienceMod = (() => {
       reason: 'Grund (optional)',
       share: 'Anteil (1 = voll, 0,5 = halb)',
       confirmEnd: 'Die Sitzung beenden und die EP verteilen?',
-      confirmMilestone: 'Jedes Gruppenmitglied um eine Stufe aufsteigen lassen?',
     },
     options: {
       yesNo: { yes: 'Ja', no: 'Nein' },
-      mode: { xp: 'Erfahrungspunkte', milestone: 'Meilensteine' },
       payout: { end: 'Am Ende der Sitzung', instant: 'Sofort' },
       roster: {
         auto: 'Automatisch',
@@ -4970,10 +4831,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Sprache', desc: 'Sprache für Chatkarten und Handouts.' },
-      mode: {
-        label: 'Modus',
-        desc: 'Erfahrungspunkte (xp) oder Stufenaufstieg per Meilenstein (milestone). Meilensteine verkünden Stufen und vergeben keine EP.',
-      },
       payout: {
         label: 'EP auszahlen',
         desc: 'end: Die EP sammeln sich im Sitzungspool und werden am Ende der Sitzung verteilt. instant: Jede Vergabe wird sofort aufgeteilt und ausgezahlt.',
@@ -5075,7 +4932,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} hat genug EP für Stufe {level}!',
-      milestone: '{name} erreicht Stufe {level}!',
       sheetButton: 'Nutze die Schaltfläche Level Up auf dem Charakterbogen.',
       updateSheet: 'Aktualisiere die Stufe auf dem Charakterbogen.',
       pf2: 'Erhöhe die Stufe auf dem Bogen und ziehe 1.000 EP ab.',
@@ -5132,7 +4988,7 @@ const LazyExperienceMod = (() => {
         zero: '{name}: Der Bogen kann von einem Mod nicht auf 0 EP gesetzt werden. Ändere es auf dem Bogen.',
         sandbox: '{name}: Dieser Bogen benötigt Mod sandbox v1.5, um die EP zu aktualisieren.',
         xpless:
-          '{name}: Dieses Spielsystem verwendet keine EP (oder der Bogen berechnet sie selbst). Nutze den Modus milestone.',
+          '{name}: Dieses Spielsystem verwendet keine EP (oder der Bogen berechnet sie selbst).',
         noField:
           '{name}: Für diesen Bogen ist kein EP-Feld bekannt. Setze das Spielsystem auf custom und gib das Feld an.',
         error:
@@ -5151,8 +5007,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Gib den Anteil als Zahl von 0 bis 10 an, zum Beispiel 0.5 oder 50 %.',
       noCharacters: 'Wähle Spielfiguren aus, die für Charaktere stehen, oder verwende --ids.',
       noTokens: 'Wähle zuerst die besiegten Spielfiguren aus oder verwende --ids.',
-      milestoneMode:
-        'Das Spiel nutzt Stufenaufstieg per Meilenstein, daher werden EP nicht verfolgt. Ändere den Modus in den Einstellungen.',
     },
     status: {
       version: 'Version',
@@ -5187,7 +5041,6 @@ const LazyExperienceMod = (() => {
       undo: 'Nimmt die letzte noch nicht ausgezahlte Vergabe zurück.',
       end: 'Beendet die Sitzung: zahlt die EP aus, verkündet sie und protokolliert sie.',
       resetSession: 'Löscht die Sitzungs-EP, ohne sie auszuzahlen.',
-      milestone: 'Lässt die Gruppe (oder die gewählten Charaktere) um eine Stufe aufsteigen.',
       show: 'Zeigt EP und Stufe jedes Gruppenmitglieds aus dem Bogen.',
       roster: 'Zeigt die Gruppenkarte.',
       party:
@@ -5207,7 +5060,7 @@ const LazyExperienceMod = (() => {
       selected: 'Ausgewählte Spielfiguren',
       selectedDesc: 'Wähle zuerst Spielfiguren auf der Karte aus.',
       party: 'Gruppe',
-      partyDesc: 'Wer sich die EP teilt, und Meilenstein-Stufen.',
+      partyDesc: 'Wer sich die EP teilt.',
       tools: 'Werkzeuge',
       toolsDesc: 'Einstellungen, Status und Hilfe.',
       footer:
@@ -5219,7 +5072,7 @@ const LazyExperienceMod = (() => {
       footer: 'Schaltflächen für alle Befehle findest du im Handout {deck}.',
       overview: {
         heading: 'Überblick',
-        body: 'LazyExperience sammelt die in einer Sitzung verdienten Erfahrungspunkte, teilt sie unter der Gruppe auf und schreibt sie in die Charakterbögen. Es liest und schreibt den D&D-2024-Bogen sowie ältere und andere Bögen, nutzt die Gruppe von Roll20 selbst, bemerkt besiegte Kreaturen, kümmert sich um abwesende Spieler und Bonus-EP, verkündet Stufenaufstiege und führt ein Protokoll jeder Sitzung. Spiele, die per Meilenstein aufsteigen, können es stattdessen nutzen, um Stufen zu verkünden.',
+        body: 'LazyExperience sammelt die in einer Sitzung verdienten Erfahrungspunkte, teilt sie unter der Gruppe auf und schreibt sie in die Charakterbögen. Es liest und schreibt den D&D-2024-Bogen sowie ältere und andere Bögen, nutzt die Gruppe von Roll20 selbst, bemerkt besiegte Kreaturen, kümmert sich um abwesende Spieler und Bonus-EP, verkündet Stufenaufstiege und führt ein Protokoll jeder Sitzung.',
       },
       quickStart: {
         heading: 'Schnellstart',
@@ -5273,11 +5126,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Stufen und Meilensteine',
+        heading: 'Stufenaufstiege',
         points: [
           'Nachdem EP geschrieben wurden, prüft LazyExperience die Stufentabelle des Systems und verkündet, wenn ein Charakter genug EP für eine neue Stufe hat.',
           'Auf dem D&D-2024-Bogen drückt der Spieler dann die Schaltfläche Level Up des Bogens.',
-          'Der Meilenstein-Modus schaltet EP ab. Ein Meilenstein lässt die Gruppe (oder gewählte Charaktere) um eine Stufe aufsteigen und verkündet es. Bögen werden nicht verändert.',
         ],
       },
       systems: {
@@ -5300,7 +5152,7 @@ const LazyExperienceMod = (() => {
           'Beacon-Bögen wie D&D 2024 benötigen Mod sandbox v1.5, und ein Mod kann sie nicht auf 0 EP setzen.',
           'Pathfinder 1E und Starfinder nutzen für Stufenaufstiegs-Hinweise das Feld des Bogens für die EP bis zur nächsten Stufe. Ist es leer, verwendet Pathfinder die mittlere Aufstiegsgeschwindigkeit und Starfinder seine eigene Tabelle.',
           'WFRP 4E: Jede Vergabe wird als Zeile in die Experience-Liste des Bogens eingetragen, aber der Bogen hat seine EP-Summen beim Testen nicht neu berechnet; prüfe sie daher auf dem Bogen.',
-          'Savage Worlds, 13th Age, Cosmere und Call of Cthulhu haben keine EP, die ein Mod schreiben könnte: Nutze den Meilenstein-Modus.',
+          'Savage Worlds, 13th Age, Cosmere und Call of Cthulhu haben keine EP, die ein Mod schreiben könnte.',
         ],
       },
       settings: {
@@ -5368,7 +5220,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Συνεδρία',
-      mode: 'Λειτουργία',
       pool: 'XP συνεδρίας',
       payout: 'Πληρώθηκε',
       shares: 'Μερίδια',
@@ -5409,8 +5260,6 @@ const LazyExperienceMod = (() => {
       include: 'Συμπερίληψη',
       partyAdd: 'Προσθήκη επιλεγμένων στην ομάδα',
       partyRemove: 'Αφαίρεση επιλεγμένων',
-      levelUp: 'Αύξηση επιπέδου',
-      milestoneAll: 'Ορόσημο: όλη η ομάδα',
       addKill: 'Προσθήκη {xp} XP',
       otherXp: 'Άλλο ποσό',
       ignore: 'Παράβλεψη',
@@ -5420,11 +5269,9 @@ const LazyExperienceMod = (() => {
       reason: 'Αιτία (προαιρετικά)',
       share: 'Μερίδιο (1 = πλήρες, 0.5 = μισό)',
       confirmEnd: 'Να λήξει η συνεδρία και να μοιραστούν τα XP;',
-      confirmMilestone: 'Να αυξηθεί κατά ένα το επίπεδο κάθε μέλους της ομάδας;',
     },
     options: {
       yesNo: { yes: 'Ναι', no: 'Όχι' },
-      mode: { xp: 'Πόντοι εμπειρίας', milestone: 'Ορόσημα' },
       payout: { end: 'Στο τέλος της συνεδρίας', instant: 'Αμέσως' },
       roster: {
         auto: 'Αυτόματα',
@@ -5449,10 +5296,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Γλώσσα', desc: 'Γλώσσα για τις κάρτες συνομιλίας και τα handouts.' },
-      mode: {
-        label: 'Λειτουργία',
-        desc: 'Πόντοι εμπειρίας (xp) ή άνοδος επιπέδου με ορόσημα (milestone). Τα ορόσημα ανακοινώνουν επίπεδα και δεν απονέμουν XP.',
-      },
       payout: {
         label: 'Πληρωμή XP',
         desc: 'end: τα XP συγκεντρώνονται στο απόθεμα της συνεδρίας και μοιράζονται όταν λήξει. instant: κάθε απονομή μοιράζεται και πληρώνεται αμέσως.',
@@ -5553,7 +5396,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: 'Ο/Η {name} έχει αρκετά XP για το επίπεδο {level}!',
-      milestone: 'Ο/Η {name} φτάνει στο επίπεδο {level}!',
       sheetButton: 'Χρησιμοποιήστε το κουμπί αύξησης επιπέδου στο φύλλο χαρακτήρα.',
       updateSheet: 'Ενημερώστε το επίπεδο στο φύλλο χαρακτήρα.',
       pf2: 'Αυξήστε το επίπεδο στο φύλλο και αφαιρέστε 1.000 από τα XP.',
@@ -5609,7 +5451,7 @@ const LazyExperienceMod = (() => {
         zero: '{name}: το φύλλο δεν μπορεί να οριστεί στα 0 XP από ένα Mod. Αλλάξτε το στο ίδιο το φύλλο.',
         sandbox: '{name}: αυτό το φύλλο χρειάζεται Mod sandbox v1.5 για να ενημερωθούν τα XP.',
         xpless:
-          '{name}: αυτό το σύστημα παιχνιδιού δεν χρησιμοποιεί XP (ή το φύλλο τα υπολογίζει μόνο του). Χρησιμοποιήστε τη λειτουργία ορόσημων.',
+          '{name}: αυτό το σύστημα παιχνιδιού δεν χρησιμοποιεί XP (ή το φύλλο τα υπολογίζει μόνο του).',
         noField:
           '{name}: δεν είναι γνωστό πεδίο XP για αυτό το φύλλο. Ορίστε το Σύστημα παιχνιδιού σε custom και ονομάστε το πεδίο.',
         error: '{name}: το φύλλο δεν μπόρεσε να ενημερωθεί με {xp} XP. Δείτε την κονσόλα των Mod.',
@@ -5627,8 +5469,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Δώστε το μερίδιο ως αριθμό από 0 έως 10, π.χ. 0.5 ή 50%.',
       noCharacters: 'Επιλέξτε tokens που αντιπροσωπεύουν χαρακτήρες ή χρησιμοποιήστε --ids.',
       noTokens: 'Επιλέξτε πρώτα τα tokens που νικήθηκαν ή χρησιμοποιήστε --ids.',
-      milestoneMode:
-        'Το παιχνίδι χρησιμοποιεί άνοδο επιπέδου με ορόσημα, οπότε τα XP δεν καταγράφονται. Αλλάξτε τη λειτουργία στις ρυθμίσεις.',
     },
     status: {
       version: 'Έκδοση',
@@ -5663,7 +5503,6 @@ const LazyExperienceMod = (() => {
       undo: 'Αναιρεί την τελευταία απονομή που δεν έχει πληρωθεί.',
       end: 'Λήξη συνεδρίας: πληρωμή των XP, ανακοίνωση και καταγραφή.',
       resetSession: 'Μηδενίζει τα XP συνεδρίας χωρίς να τα πληρώσει.',
-      milestone: 'Αυξάνει κατά ένα το επίπεδο της ομάδας (ή των επιλεγμένων χαρακτήρων).',
       show: 'Εμφανίζει τα XP και το επίπεδο κάθε μέλους της ομάδας από το φύλλο.',
       roster: 'Εμφανίζει την κάρτα της ομάδας.',
       party:
@@ -5683,7 +5522,7 @@ const LazyExperienceMod = (() => {
       selected: 'Επιλεγμένα tokens',
       selectedDesc: 'Επιλέξτε πρώτα tokens στον χάρτη.',
       party: 'Ομάδα',
-      partyDesc: 'Ποιοι μοιράζονται τα XP και επίπεδα ορόσημων.',
+      partyDesc: 'Ποιοι μοιράζονται τα XP.',
       tools: 'Εργαλεία',
       toolsDesc: 'Ρυθμίσεις, κατάσταση και βοήθεια.',
       footer:
@@ -5695,7 +5534,7 @@ const LazyExperienceMod = (() => {
       footer: 'Κουμπιά για κάθε εντολή υπάρχουν στο handout {deck}.',
       overview: {
         heading: 'Επισκόπηση',
-        body: 'Το LazyExperience συγκεντρώνει τους πόντους εμπειρίας που κερδίζονται κατά τη διάρκεια μιας συνεδρίας, τους μοιράζει στην ομάδα και τους γράφει στα φύλλα χαρακτήρων. Διαβάζει και γράφει το φύλλο D&D 2024 καθώς και παλαιότερα και άλλα φύλλα, χρησιμοποιεί τη δική του ομάδα του Roll20, εντοπίζει τα πλάσματα που νικήθηκαν, διαχειρίζεται τους απόντες παίκτες και τα μπόνους XP, ανακοινώνει τις ανόδους επιπέδου και κρατά αρχείο κάθε συνεδρίας. Τα παιχνίδια που ανεβάζουν επίπεδο με ορόσημα μπορούν να το χρησιμοποιούν για να ανακοινώνουν επίπεδα.',
+        body: 'Το LazyExperience συγκεντρώνει τους πόντους εμπειρίας που κερδίζονται κατά τη διάρκεια μιας συνεδρίας, τους μοιράζει στην ομάδα και τους γράφει στα φύλλα χαρακτήρων. Διαβάζει και γράφει το φύλλο D&D 2024 καθώς και παλαιότερα και άλλα φύλλα, χρησιμοποιεί τη δική του ομάδα του Roll20, εντοπίζει τα πλάσματα που νικήθηκαν, διαχειρίζεται τους απόντες παίκτες και τα μπόνους XP, ανακοινώνει τις ανόδους επιπέδου και κρατά αρχείο κάθε συνεδρίας.',
       },
       quickStart: {
         heading: 'Γρήγορη εκκίνηση',
@@ -5749,11 +5588,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Επίπεδα και ορόσημα',
+        heading: 'Ανεβάσματα επιπέδου',
         points: [
           'Μετά την εγγραφή των XP, το LazyExperience ελέγχει τον πίνακα επιπέδων του συστήματος και ανακοινώνει όταν ένας χαρακτήρας έχει αρκετά XP για νέο επίπεδο.',
           'Στο φύλλο D&D 2024, ο παίκτης πατά στη συνέχεια το κουμπί αύξησης επιπέδου του φύλλου.',
-          'Η λειτουργία ορόσημων απενεργοποιεί τα XP. Το ορόσημο αυξάνει κατά ένα το επίπεδο της ομάδας (ή των επιλεγμένων χαρακτήρων) και το ανακοινώνει. Τα φύλλα δεν αλλάζουν.',
         ],
       },
       systems: {
@@ -5776,7 +5614,7 @@ const LazyExperienceMod = (() => {
           'Τα φύλλα Beacon, όπως το D&D 2024, χρειάζονται Mod sandbox v1.5 και ένα Mod δεν μπορεί να τα ορίσει στα 0 XP.',
           'Το Pathfinder 1E και το Starfinder χρησιμοποιούν το πλαίσιο XP για το επόμενο επίπεδο του φύλλου για τις ειδοποιήσεις νέου επιπέδου. Όταν είναι κενό, το Pathfinder χρησιμοποιεί τον μεσαίο ρυθμό και το Starfinder τον δικό του πίνακα.',
           'WFRP 4E: κάθε απονομή προστίθεται ως γραμμή στη λίστα Experience του φύλλου, αλλά στις δοκιμές το φύλλο δεν ξαναυπολόγισε τα σύνολα XP του, γι’ αυτό ελέγξτε τα στο φύλλο.',
-          'Στα Savage Worlds, 13th Age, Cosmere και Call of Cthulhu δεν υπάρχουν XP για να γράψει ένα Mod: χρησιμοποιήστε τη λειτουργία ορόσημων.',
+          'Στα Savage Worlds, 13th Age, Cosmere και Call of Cthulhu δεν υπάρχουν XP για να γράψει ένα Mod.',
         ],
       },
       settings: {
@@ -5843,7 +5681,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'מפגש',
-      mode: 'מצב',
       pool: 'XP של המפגש',
       payout: 'שולם',
       shares: 'חלקים',
@@ -5883,8 +5720,6 @@ const LazyExperienceMod = (() => {
       include: 'הכללה',
       partyAdd: 'הוספת הנבחרים לקבוצה',
       partyRemove: 'הסרת הנבחרים',
-      levelUp: 'עלייה ברמה',
-      milestoneAll: 'אבן דרך: כל הקבוצה',
       addKill: 'הוספת {xp} XP',
       otherXp: 'כמות אחרת',
       ignore: 'התעלמות',
@@ -5894,11 +5729,9 @@ const LazyExperienceMod = (() => {
       reason: 'סיבה (לא חובה)',
       share: 'חלק (1 = מלא, 0.5 = חצי)',
       confirmEnd: 'לסיים את המפגש ולחלק את ה-XP?',
-      confirmMilestone: 'להעלות כל חבר בקבוצה ברמה אחת?',
     },
     options: {
       yesNo: { yes: 'כן', no: 'לא' },
-      mode: { xp: 'נקודות ניסיון', milestone: 'אבני דרך' },
       payout: { end: 'בסוף המפגש', instant: 'מיד' },
       roster: {
         auto: 'אוטומטי',
@@ -5918,10 +5751,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'שפה', desc: 'השפה של כרטיסי הצ׳אט וה-handouts.' },
-      mode: {
-        label: 'מצב',
-        desc: 'נקודות ניסיון (xp) או עלייה ברמה לפי אבני דרך (milestone). אבני דרך מכריזות על רמות ואינן מעניקות XP.',
-      },
       payout: {
         label: 'תשלום XP',
         desc: 'end: ה-XP נאסף במאגר המפגש ומחולק בסיומו. instant: כל הענקה מחולקת ומשולמת מיד.',
@@ -6016,7 +5845,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: 'ל-{name} יש מספיק XP לרמה {level}!',
-      milestone: '{name} מגיע לרמה {level}!',
       sheetButton: 'השתמשו בכפתור העלייה ברמה בדף הדמות.',
       updateSheet: 'עדכנו את הרמה בדף הדמות.',
       pf2: 'העלו את הרמה בדף והפחיתו 1,000 מה-XP.',
@@ -6068,8 +5896,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: אי אפשר להגדיר את הדף ל-0 XP מתוך Mod. שנו זאת בדף עצמו.',
         sandbox: '{name}: הדף הזה צריך Mod sandbox v1.5 כדי לעדכן XP.',
-        xpless:
-          '{name}: מערכת המשחק הזו אינה משתמשת ב-XP (או שהדף מחשב אותו בעצמו). השתמשו במצב אבני דרך.',
+        xpless: '{name}: מערכת המשחק הזו אינה משתמשת ב-XP (או שהדף מחשב אותו בעצמו).',
         noField:
           '{name}: לא ידוע שדה XP עבור הדף הזה. הגדירו את מערכת המשחק ל-custom וציינו את שם השדה.',
         error: '{name}: לא ניתן היה לעדכן את הדף ב-{xp} XP. עיינו בקונסולת ה-Mod.',
@@ -6087,8 +5914,6 @@ const LazyExperienceMod = (() => {
       badShare: 'ציינו את החלק כמספר בין 0 ל-10, למשל 0.5 או 50%.',
       noCharacters: 'בחרו טוקנים שמייצגים דמויות, או השתמשו ב---ids.',
       noTokens: 'בחרו קודם את הטוקנים שהובסו, או השתמשו ב---ids.',
-      milestoneMode:
-        'המשחק משתמש בעלייה ברמה לפי אבני דרך, ולכן XP אינו נרשם. שנו את המצב בהגדרות.',
     },
     status: {
       version: 'גרסה',
@@ -6122,7 +5947,6 @@ const LazyExperienceMod = (() => {
       undo: 'ביטול ההענקה האחרונה שטרם שולמה.',
       end: 'סיום המפגש: תשלום ה-XP, הכרזה ורישום ביומן.',
       resetSession: 'ניקוי ה-XP של המפגש בלי לשלם אותו.',
-      milestone: 'העלאת הקבוצה (או הדמויות שנבחרו) ברמה אחת.',
       show: 'הצגת ה-XP והרמה של כל חבר בקבוצה מתוך הדף.',
       roster: 'הצגת כרטיס הקבוצה.',
       party: 'סימון או ביטול סימון של התיבה Party Member ב-Roll20 עבור הדמויות הנבחרות.',
@@ -6141,7 +5965,7 @@ const LazyExperienceMod = (() => {
       selected: 'טוקנים נבחרים',
       selectedDesc: 'בחרו קודם טוקנים על המפה.',
       party: 'קבוצה',
-      partyDesc: 'מי חולק את ה-XP, ורמות לפי אבני דרך.',
+      partyDesc: 'מי חולק את ה-XP.',
       tools: 'כלים',
       toolsDesc: 'הגדרות, מצב ועזרה.',
       footer: 'הכפתורים מריצים פקודות של LazyExperience. פרטים ב-handout {help}.',
@@ -6152,7 +5976,7 @@ const LazyExperienceMod = (() => {
       footer: 'כפתורים לכל פקודה נמצאים ב-handout {deck}.',
       overview: {
         heading: 'סקירה',
-        body: 'LazyExperience אוסף את נקודות הניסיון שהושגו במהלך מפגש, מחלק אותן בין חברי הקבוצה וכותב אותן לדפי הדמויות. הוא קורא וכותב את דף D&D 2024 וכן דפים ישנים יותר ואחרים, משתמש בקבוצה של Roll20 עצמו, מזהה יצורים שהובסו, מטפל בשחקנים נעדרים וב-XP בונוס, מכריז על עליות ברמה ומנהל יומן של כל מפגש. משחקים שבהם עולים ברמה לפי אבני דרך יכולים להשתמש בו כדי להכריז על רמות.',
+        body: 'LazyExperience אוסף את נקודות הניסיון שהושגו במהלך מפגש, מחלק אותן בין חברי הקבוצה וכותב אותן לדפי הדמויות. הוא קורא וכותב את דף D&D 2024 וכן דפים ישנים יותר ואחרים, משתמש בקבוצה של Roll20 עצמו, מזהה יצורים שהובסו, מטפל בשחקנים נעדרים וב-XP בונוס, מכריז על עליות ברמה ומנהל יומן של כל מפגש.',
       },
       quickStart: {
         heading: 'התחלה מהירה',
@@ -6206,11 +6030,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'רמות ואבני דרך',
+        heading: 'עליות רמה',
         points: [
           'לאחר כתיבת ה-XP, LazyExperience בודק את טבלת הרמות של המערכת ומכריז כשלדמות יש מספיק XP לרמה חדשה.',
           'בדף D&D 2024 השחקן לוחץ אז על כפתור העלייה ברמה של הדף.',
-          'מצב אבני דרך מכבה את ה-XP. אבן דרך מעלה את הקבוצה (או הדמויות שנבחרו) ברמה אחת ומכריזה על כך. דפי הדמות אינם משתנים.',
         ],
       },
       systems: {
@@ -6233,7 +6056,7 @@ const LazyExperienceMod = (() => {
           'דפי Beacon כמו D&D 2024 דורשים Mod sandbox v1.5, ואי אפשר להגדיר אותם ל-0 XP מתוך Mod.',
           'Pathfinder 1E ו-Starfinder משתמשים בתיבת ה-XP לרמה הבאה שבדף עבור הודעות עלייה ברמה. כשהיא ריקה, Pathfinder משתמש במסלול הבינוני ו-Starfinder בטבלה משלו.',
           'WFRP 4E: כל הענקה מתווספת כשורה ברשימת Experience שבדף, אבל בבדיקות הדף לא חישב מחדש את סכומי ה-XP שלו, לכן בדקו אותם בדף.',
-          'ל-Savage Worlds, 13th Age, Cosmere ו-Call of Cthulhu אין XP ש-Mod יכול לכתוב: השתמשו במצב אבני דרך.',
+          'ל-Savage Worlds, 13th Age, Cosmere ו-Call of Cthulhu אין XP ש-Mod יכול לכתוב.',
         ],
       },
       settings: {
@@ -6300,7 +6123,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Játékalkalom',
-      mode: 'Mód',
       pool: 'Alkalom XP',
       payout: 'Kifizetve',
       shares: 'Részek',
@@ -6340,8 +6162,6 @@ const LazyExperienceMod = (() => {
       include: 'Felvétel',
       partyAdd: 'Kijelöltek a csapatba',
       partyRemove: 'Kijelöltek eltávolítása',
-      levelUp: 'Szintlépés',
-      milestoneAll: 'Mérföldkő: az egész csapat',
       addKill: '{xp} XP hozzáadása',
       otherXp: 'Más mennyiség',
       ignore: 'Mellőzés',
@@ -6351,11 +6171,9 @@ const LazyExperienceMod = (() => {
       reason: 'Indok (nem kötelező)',
       share: 'Rész (1 = teljes, 0,5 = fél)',
       confirmEnd: 'Lezárod az alkalmat és kiosztod az XP-t?',
-      confirmMilestone: 'Egy szinttel megemeled a csapat minden tagját?',
     },
     options: {
       yesNo: { yes: 'Igen', no: 'Nem' },
-      mode: { xp: 'Tapasztalati pontok', milestone: 'Mérföldkövek' },
       payout: { end: 'Az alkalom végén', instant: 'Azonnal' },
       roster: {
         auto: 'Automatikus',
@@ -6380,10 +6198,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Nyelv', desc: 'A csevegőkártyák és a handoutok nyelve.' },
-      mode: {
-        label: 'Mód',
-        desc: 'Tapasztalati pontok (xp) vagy szintlépés mérföldkövekkel (milestone). A mérföldkövek bejelentik a szinteket, és nem adnak XP-t.',
-      },
       payout: {
         label: 'XP kifizetése',
         desc: 'end: az XP az alkalom készletében gyűlik, és az alkalom végén osztják szét. instant: minden jutalom azonnal elosztásra és kifizetésre kerül.',
@@ -6483,7 +6297,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} elég XP-vel rendelkezik a(z) {level}. szinthez!',
-      milestone: '{name} eléri a(z) {level}. szintet!',
       sheetButton: 'Használd a karakterlap Level Up gombját.',
       updateSheet: 'Frissítsd a szintet a karakterlapon.',
       pf2: 'Emeld a szintet a lapon, és vonj le 1000-et az XP-ből.',
@@ -6537,8 +6350,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: a lapot Modból nem lehet 0 XP-re állítani. Módosítsd a lapon.',
         sandbox: '{name}: ennek a lapnak az XP frissítéséhez Mod sandbox v1.5 szükséges.',
-        xpless:
-          '{name}: ez a játékrendszer nem használ XP-t (vagy a lap maga számolja ki). Használd a milestone módot.',
+        xpless: '{name}: ez a játékrendszer nem használ XP-t (vagy a lap maga számolja ki).',
         noField:
           '{name}: ehhez a laphoz nem ismert XP-mező. Állítsd a Játékrendszert custom-ra, és add meg a mező nevét.',
         error: '{name}: a lapot nem sikerült {xp} XP-vel frissíteni. Nézd meg a Mod konzolt.',
@@ -6556,8 +6368,6 @@ const LazyExperienceMod = (() => {
       badShare: 'A részt 0 és 10 közötti számként add meg, például 0.5 vagy 50%.',
       noCharacters: 'Jelölj ki karaktereket ábrázoló tokeneket, vagy használd a --ids kapcsolót.',
       noTokens: 'Először jelöld ki a legyőzött tokeneket, vagy használd a --ids kapcsolót.',
-      milestoneMode:
-        'A játék mérföldköves szintlépést használ, ezért az XP nincs nyilvántartva. Módosítsd a Módot a beállításokban.',
     },
     status: {
       version: 'Verzió',
@@ -6592,7 +6402,6 @@ const LazyExperienceMod = (() => {
       undo: 'Az utolsó, még ki nem fizetett jutalom visszavonása.',
       end: 'Az alkalom lezárása: az XP kifizetése, bejelentése és naplózása.',
       resetSession: 'Az alkalom XP-jének törlése kifizetés nélkül.',
-      milestone: 'A csapat (vagy a kiválasztott karakterek) emelése egy szinttel.',
       show: 'A csapat minden tagjának XP-je és szintje a lapról.',
       roster: 'A csapatkártya megjelenítése.',
       party:
@@ -6612,7 +6421,7 @@ const LazyExperienceMod = (() => {
       selected: 'Kijelölt tokenek',
       selectedDesc: 'Először jelölj ki tokeneket a térképen.',
       party: 'Csapat',
-      partyDesc: 'Kik osztoznak az XP-n, és a mérföldkő-szintek.',
+      partyDesc: 'Kik osztoznak az XP-n.',
       tools: 'Eszközök',
       toolsDesc: 'Beállítások, állapot és súgó.',
       footer:
@@ -6624,7 +6433,7 @@ const LazyExperienceMod = (() => {
       footer: 'Az összes parancs gombjai a {deck} handoutban vannak.',
       overview: {
         heading: 'Áttekintés',
-        body: 'A LazyExperience összegyűjti az alkalom során szerzett tapasztalati pontokat, elosztja őket a csapat tagjai között, és ráírja a karakterlapokra. Olvassa és írja a D&D 2024 lapot, valamint a régebbi és más lapokat, használja a Roll20 saját csapatát, észreveszi a legyőzött lényeket, kezeli a távollévő játékosokat és a bónusz XP-t, bejelenti a szintlépéseket, és naplót vezet minden alkalomról. A mérföldkövekkel szintlépő játékok ezt a szintek bejelentésére használhatják.',
+        body: 'A LazyExperience összegyűjti az alkalom során szerzett tapasztalati pontokat, elosztja őket a csapat tagjai között, és ráírja a karakterlapokra. Olvassa és írja a D&D 2024 lapot, valamint a régebbi és más lapokat, használja a Roll20 saját csapatát, észreveszi a legyőzött lényeket, kezeli a távollévő játékosokat és a bónusz XP-t, bejelenti a szintlépéseket, és naplót vezet minden alkalomról.',
       },
       quickStart: {
         heading: 'Gyors kezdés',
@@ -6678,11 +6487,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Szintek és mérföldkövek',
+        heading: 'Szintlépések',
         points: [
           'Az XP beírása után a LazyExperience ellenőrzi a rendszer szinttáblázatát, és bejelenti, ha egy karakternek elég XP-je van egy új szinthez.',
           'A D&D 2024 lapon a játékos ekkor megnyomja a lap Level Up gombját.',
-          'A mérföldkő mód kikapcsolja az XP-t. A mérföldkő egy szinttel emeli a csapatot (vagy a kiválasztott karaktereket), és bejelenti. A lapok nem változnak.',
         ],
       },
       systems: {
@@ -6705,7 +6513,7 @@ const LazyExperienceMod = (() => {
           'A Beacon lapokhoz, például a D&D 2024-hez, Mod sandbox v1.5 kell, és Modból nem lehet őket 0 XP-re állítani.',
           'A Pathfinder 1E és a Starfinder a lap „XP a következő szintig” mezőjét használja a szintlépési értesítésekhez. Ha az üres, a Pathfinder a közepes haladási ütemet, a Starfinder a saját táblázatát használja.',
           'WFRP 4E: minden jutalom egy sorként kerül a lap Experience listájára, de a lap tesztelés közben nem számolta újra az XP-összegeit, ezért ellenőrizd őket a lapon.',
-          'A Savage Worlds, a 13th Age, a Cosmere és a Call of Cthulhu esetében nincs XP, amit egy Mod írhatna: használd a mérföldkő módot.',
+          'A Savage Worlds, a 13th Age, a Cosmere és a Call of Cthulhu esetében nincs XP, amit egy Mod írhatna.',
         ],
       },
       settings: {
@@ -6773,7 +6581,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sessione',
-      mode: 'Modalità',
       pool: 'PE della sessione',
       payout: 'Pagati',
       shares: 'Quote',
@@ -6813,8 +6620,6 @@ const LazyExperienceMod = (() => {
       include: 'Includi',
       partyAdd: 'Aggiungi selezione al gruppo',
       partyRemove: 'Rimuovi selezione',
-      levelUp: 'Sali di livello',
-      milestoneAll: 'Milestone: tutto il gruppo',
       addKill: 'Aggiungi {xp} PE',
       otherXp: 'Altro importo',
       ignore: 'Ignora',
@@ -6824,11 +6629,9 @@ const LazyExperienceMod = (() => {
       reason: 'Motivo (facoltativo)',
       share: 'Quota (1 = intera, 0,5 = metà)',
       confirmEnd: 'Terminare la sessione e distribuire i PE?',
-      confirmMilestone: 'Far salire di un livello ogni membro del gruppo?',
     },
     options: {
       yesNo: { yes: 'Sì', no: 'No' },
-      mode: { xp: 'Punti esperienza', milestone: 'Milestone' },
       payout: { end: 'Alla fine della sessione', instant: 'Subito' },
       roster: {
         auto: 'Automatico',
@@ -6853,10 +6656,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Lingua', desc: 'Lingua per le schede della chat e i handout.' },
-      mode: {
-        label: 'Modalità',
-        desc: 'Punti esperienza (xp) o avanzamento di livello a milestone (milestone). Le milestone annunciano i livelli e non assegnano PE.',
-      },
       payout: {
         label: 'Pagamento dei PE',
         desc: 'end: i PE si accumulano nella riserva della sessione e vengono distribuiti al termine della sessione. instant: ogni assegnazione viene divisa e pagata subito.',
@@ -6957,7 +6756,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} ha PE sufficienti per il livello {level}!',
-      milestone: '{name} raggiunge il livello {level}!',
       sheetButton: 'Usa il pulsante Level Up sulla scheda del personaggio.',
       updateSheet: 'Aggiorna il livello sulla scheda del personaggio.',
       pf2: 'Aumenta il livello sulla scheda e sottrai 1.000 dai PE.',
@@ -7013,8 +6811,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: un Mod non può impostare la scheda a 0 PE. Modificalo sulla scheda.',
         sandbox: '{name}: questa scheda richiede Mod sandbox v1.5 per aggiornare i PE.',
-        xpless:
-          '{name}: questo sistema di gioco non usa i PE (o la scheda li calcola da sola). Usa la modalità milestone.',
+        xpless: '{name}: questo sistema di gioco non usa i PE (o la scheda li calcola da sola).',
         noField:
           '{name}: per questa scheda non è noto alcun campo PE. Imposta il sistema di gioco su custom e indica il campo.',
         error:
@@ -7033,8 +6830,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Indica la quota come numero da 0 a 10, ad esempio 0.5 o 50%.',
       noCharacters: 'Seleziona token che rappresentano personaggi, oppure usa --ids.',
       noTokens: 'Seleziona prima i token sconfitti, oppure usa --ids.',
-      milestoneMode:
-        'La partita usa l’avanzamento a milestone, quindi i PE non vengono tracciati. Cambia la modalità nelle impostazioni.',
     },
     status: {
       version: 'Versione',
@@ -7069,7 +6864,6 @@ const LazyExperienceMod = (() => {
       undo: 'Annulla l’ultima assegnazione non ancora pagata.',
       end: 'Termina la sessione: paga i PE, li annuncia e li registra.',
       resetSession: 'Azzera i PE della sessione senza pagarli.',
-      milestone: 'Fa salire di un livello il gruppo (o i personaggi scelti).',
       show: 'Mostra i PE e il livello di ogni membro del gruppo dalla scheda.',
       roster: 'Mostra la scheda del gruppo.',
       party: 'Spunta o deseleziona la casella Party Member di Roll20 per i personaggi selezionati.',
@@ -7088,7 +6882,7 @@ const LazyExperienceMod = (() => {
       selected: 'Token selezionati',
       selectedDesc: 'Seleziona prima dei token sulla mappa.',
       party: 'Gruppo',
-      partyDesc: 'Chi si divide i PE, e i livelli a milestone.',
+      partyDesc: 'Chi si divide i PE.',
       tools: 'Strumenti',
       toolsDesc: 'Impostazioni, stato e guida.',
       footer:
@@ -7100,7 +6894,7 @@ const LazyExperienceMod = (() => {
       footer: 'I pulsanti per ogni comando si trovano nel handout {deck}.',
       overview: {
         heading: 'Panoramica',
-        body: 'LazyExperience raccoglie i punti esperienza guadagnati durante una sessione, li divide tra il gruppo e li scrive sulle schede dei personaggi. Legge e scrive la scheda di D&D 2024 oltre a schede più vecchie e di altri sistemi, usa il gruppo di Roll20, si accorge delle creature sconfitte, gestisce i giocatori assenti e i PE bonus, annuncia i salti di livello e tiene un registro di ogni sessione. Le partite che avanzano di livello a milestone possono usarlo per annunciare i livelli.',
+        body: 'LazyExperience raccoglie i punti esperienza guadagnati durante una sessione, li divide tra il gruppo e li scrive sulle schede dei personaggi. Legge e scrive la scheda di D&D 2024 oltre a schede più vecchie e di altri sistemi, usa il gruppo di Roll20, si accorge delle creature sconfitte, gestisce i giocatori assenti e i PE bonus, annuncia i salti di livello e tiene un registro di ogni sessione.',
       },
       quickStart: {
         heading: 'Avvio rapido',
@@ -7154,11 +6948,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Livelli e milestone',
+        heading: 'Avanzamenti di livello',
         points: [
           'Dopo aver scritto i PE, LazyExperience controlla la tabella dei livelli del sistema e annuncia quando un personaggio ha PE sufficienti per un nuovo livello.',
           'Sulla scheda di D&D 2024 il giocatore preme poi il pulsante Level Up della scheda.',
-          'La modalità milestone disattiva i PE. Una milestone fa salire di un livello il gruppo (o i personaggi scelti) e lo annuncia. Le schede non vengono modificate.',
         ],
       },
       systems: {
@@ -7181,7 +6974,7 @@ const LazyExperienceMod = (() => {
           'Le schede Beacon come D&D 2024 richiedono Mod sandbox v1.5 e un Mod non può impostarle a 0 PE.',
           'Pathfinder 1E e Starfinder usano la casella dei PE per il livello successivo della scheda per gli avvisi di salto di livello. Se è vuota, Pathfinder usa la progressione media e Starfinder una tabella propria.',
           "WFRP 4E: ogni assegnazione viene aggiunta come riga nell'elenco Experience della scheda, ma nei test la scheda non ha ricalcolato i totali di PE, quindi controllali sulla scheda.",
-          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu non hanno PE che un Mod possa scrivere: usa la modalità milestone.',
+          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu non hanno PE che un Mod possa scrivere.',
         ],
       },
       settings: {
@@ -7249,7 +7042,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'セッション',
-      mode: 'モード',
       pool: 'セッション XP',
       payout: '支払い',
       shares: '配分',
@@ -7289,8 +7081,6 @@ const LazyExperienceMod = (() => {
       include: '含める',
       partyAdd: '選択中をパーティに追加',
       partyRemove: '選択中を削除',
-      levelUp: 'レベルアップ',
-      milestoneAll: 'マイルストーン: パーティ全員',
       addKill: '{xp} XP を追加',
       otherXp: 'その他の数値',
       ignore: '無視',
@@ -7300,11 +7090,9 @@ const LazyExperienceMod = (() => {
       reason: '理由(任意)',
       share: '配分(1 = 全額、0.5 = 半分)',
       confirmEnd: 'セッションを終了して XP を配布しますか?',
-      confirmMilestone: 'パーティ全員のレベルを1つ上げますか?',
     },
     options: {
       yesNo: { yes: 'はい', no: 'いいえ' },
-      mode: { xp: '経験値', milestone: 'マイルストーン' },
       payout: { end: 'セッション終了時', instant: 'すぐに' },
       roster: {
         auto: '自動',
@@ -7324,10 +7112,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: '言語', desc: 'チャットカードとハンドアウトの言語。' },
-      mode: {
-        label: 'モード',
-        desc: '経験値(xp)またはマイルストーンによるレベルアップ(milestone)。マイルストーンではレベルを通知しますが、XP は付与しません。',
-      },
       payout: {
         label: 'XP の支払い',
         desc: 'end: XP はセッションプールに貯まり、セッション終了時に配布されます。instant: 付与のたびにすぐ分配して支払います。',
@@ -7425,7 +7209,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} はレベル {level} に必要な XP に達しました!',
-      milestone: '{name} はレベル {level} に到達しました!',
       sheetButton: 'キャラクターシートのレベルアップボタンを使用してください。',
       updateSheet: 'キャラクターシートのレベルを更新してください。',
       pf2: 'シートのレベルを上げ、XP から 1,000 を引いてください。',
@@ -7479,8 +7262,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: Mod からシートを 0 XP にすることはできません。シートで変更してください。',
         sandbox: '{name}: このシートの XP を更新するには Mod sandbox v1.5 が必要です。',
-        xpless:
-          '{name}: このゲームシステムは XP を使用しません(またはシートが自動計算します)。マイルストーンモードを使ってください。',
+        xpless: '{name}: このゲームシステムは XP を使用しません(またはシートが自動計算します)。',
         noField:
           '{name}: このシートの XP フィールドが不明です。ゲームシステムを custom にして、フィールド名を指定してください。',
         error:
@@ -7499,8 +7281,6 @@ const LazyExperienceMod = (() => {
       badShare: '配分は 0 から 10 までの数値で、0.5 や 50% のように指定してください。',
       noCharacters: 'キャラクターを表すトークンを選択するか、--ids を使ってください。',
       noTokens: '先に撃破したトークンを選択するか、--ids を使ってください。',
-      milestoneMode:
-        'このゲームはマイルストーンによるレベルアップのため、XP は記録されません。設定でモードを変更してください。',
     },
     status: {
       version: 'バージョン',
@@ -7535,7 +7315,6 @@ const LazyExperienceMod = (() => {
       undo: 'まだ支払われていない直近の付与を取り消します。',
       end: 'セッションを終了します: XP の支払い、通知、記録を行います。',
       resetSession: '支払わずにセッション XP をクリアします。',
-      milestone: 'パーティ(または選択したキャラクター)のレベルを1つ上げます。',
       show: 'シートにある各パーティメンバーの XP とレベルを表示します。',
       roster: 'パーティカードを表示します。',
       party: '選択したキャラクターの Roll20「パーティメンバー」欄のオンとオフを切り替えます。',
@@ -7554,7 +7333,7 @@ const LazyExperienceMod = (() => {
       selected: '選択中のトークン',
       selectedDesc: '先にマップ上のトークンを選択してください。',
       party: 'パーティ',
-      partyDesc: 'XP を分け合うメンバーと、マイルストーンのレベル。',
+      partyDesc: 'XP を分け合うメンバー。',
       tools: 'ツール',
       toolsDesc: '設定、ステータス、ヘルプ。',
       footer:
@@ -7566,7 +7345,7 @@ const LazyExperienceMod = (() => {
       footer: 'すべてのコマンドのボタンは {deck} ハンドアウトにあります。',
       overview: {
         heading: '概要',
-        body: 'LazyExperience は、セッション中に獲得した経験値を集め、パーティに分配して、キャラクターシートに書き込みます。D&D 2024 シートのほか、旧版やその他のシートも読み書きでき、Roll20 のパーティを利用し、撃破したクリーチャーを検知し、欠席者やボーナス XP を扱い、レベルアップを通知し、すべてのセッションのログを残します。マイルストーンでレベルアップするゲームでは、代わりにレベルの通知用として使えます。',
+        body: 'LazyExperience は、セッション中に獲得した経験値を集め、パーティに分配して、キャラクターシートに書き込みます。D&D 2024 シートのほか、旧版やその他のシートも読み書きでき、Roll20 のパーティを利用し、撃破したクリーチャーを検知し、欠席者やボーナス XP を扱い、レベルアップを通知し、すべてのセッションのログを残します。',
       },
       quickStart: {
         heading: 'クイックスタート',
@@ -7620,11 +7399,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'レベルとマイルストーン',
+        heading: 'レベルアップ',
         points: [
           'XP の書き込み後、LazyExperience はシステムのレベル表を確認し、新しいレベルに必要な XP に達したキャラクターを通知します。',
           'D&D 2024 シートでは、その後プレイヤーがシートのレベルアップボタンを押します。',
-          'マイルストーンモードでは XP がオフになります。マイルストーンはパーティ(または選択したキャラクター)のレベルを1つ上げて通知します。シートは変更されません。',
         ],
       },
       systems: {
@@ -7647,7 +7425,7 @@ const LazyExperienceMod = (() => {
           'D&D 2024 のような Beacon シートには Mod sandbox v1.5 が必要で、Mod から 0 XP に設定することはできません。',
           'Pathfinder 1E と Starfinder は、レベルアップ通知にシートの「次のレベルまでの XP」欄を使います。空欄の場合、Pathfinder は中速の成長曲線を、Starfinder は独自の表を使います。',
           'WFRP 4E: 付与のたびにシートの Experience リストに1行追加されますが、テストではシートが XP の合計を再計算しなかったため、シートで確認してください。',
-          'Savage Worlds、13th Age、Cosmere、Call of Cthulhu には Mod が書き込める XP がありません。マイルストーンモードを使ってください。',
+          'Savage Worlds、13th Age、Cosmere、Call of Cthulhu には Mod が書き込める XP がありません。',
         ],
       },
       settings: {
@@ -7714,7 +7492,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: '세션',
-      mode: '모드',
       pool: '세션 XP',
       payout: '지급',
       shares: '몫',
@@ -7754,8 +7531,6 @@ const LazyExperienceMod = (() => {
       include: '포함',
       partyAdd: '선택 항목을 파티에 추가',
       partyRemove: '선택 항목 제거',
-      levelUp: '레벨 업',
-      milestoneAll: '마일스톤: 파티 전체',
       addKill: '{xp} XP 추가',
       otherXp: '다른 수치',
       ignore: '무시',
@@ -7765,11 +7540,9 @@ const LazyExperienceMod = (() => {
       reason: '사유 (선택)',
       share: '몫 (1 = 전체, 0.5 = 절반)',
       confirmEnd: '세션을 종료하고 XP를 나눠 줄까요?',
-      confirmMilestone: '파티원 모두의 레벨을 1 올릴까요?',
     },
     options: {
       yesNo: { yes: '예', no: '아니요' },
-      mode: { xp: '경험치', milestone: '마일스톤' },
       payout: { end: '세션 종료 시', instant: '즉시' },
       roster: {
         auto: '자동',
@@ -7789,10 +7562,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: '언어', desc: '채팅 카드와 핸드아웃에 쓰는 언어입니다.' },
-      mode: {
-        label: '모드',
-        desc: '경험치(xp) 또는 마일스톤 레벨 업(milestone). 마일스톤은 레벨을 알리기만 하고 XP는 지급하지 않습니다.',
-      },
       payout: {
         label: 'XP 지급',
         desc: 'end: XP가 세션 풀에 모였다가 세션이 끝날 때 지급됩니다. instant: 지급할 때마다 바로 나누어 줍니다.',
@@ -7890,7 +7659,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name}이(가) 레벨 {level}에 필요한 XP를 모았습니다!',
-      milestone: '{name}이(가) 레벨 {level}에 도달했습니다!',
       sheetButton: '캐릭터 시트의 레벨 업 버튼을 사용하세요.',
       updateSheet: '캐릭터 시트의 레벨을 갱신하세요.',
       pf2: '시트의 레벨을 올리고 XP에서 1,000을 빼세요.',
@@ -7943,8 +7711,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: Mod에서는 시트를 0 XP로 설정할 수 없습니다. 시트에서 직접 바꾸세요.',
         sandbox: '{name}: 이 시트의 XP를 갱신하려면 Mod sandbox v1.5가 필요합니다.',
-        xpless:
-          '{name}: 이 게임 시스템은 XP를 사용하지 않습니다(또는 시트가 직접 계산합니다). 마일스톤 모드를 사용하세요.',
+        xpless: '{name}: 이 게임 시스템은 XP를 사용하지 않습니다(또는 시트가 직접 계산합니다).',
         noField:
           '{name}: 이 시트의 XP 필드를 알 수 없습니다. 게임 시스템을 custom으로 설정하고 필드 이름을 지정하세요.',
         error: '{name}: 시트를 {xp} XP로 갱신하지 못했습니다. Mod 콘솔을 확인하세요.',
@@ -7962,8 +7729,6 @@ const LazyExperienceMod = (() => {
       badShare: '몫은 0.5나 50%처럼 0에서 10 사이의 숫자로 입력하세요.',
       noCharacters: '캐릭터를 나타내는 토큰을 선택하거나 --ids를 사용하세요.',
       noTokens: '먼저 처치한 토큰을 선택하거나 --ids를 사용하세요.',
-      milestoneMode:
-        '이 게임은 마일스톤 레벨 업을 사용하므로 XP를 추적하지 않습니다. 설정에서 모드를 바꾸세요.',
     },
     status: {
       version: '버전',
@@ -7998,7 +7763,6 @@ const LazyExperienceMod = (() => {
       undo: '아직 지급되지 않은 마지막 지급을 되돌립니다.',
       end: '세션을 종료합니다: XP를 지급하고, 알리고, 기록합니다.',
       resetSession: '지급하지 않고 세션 XP를 지웁니다.',
-      milestone: '파티(또는 선택한 캐릭터)의 레벨을 1 올립니다.',
       show: '시트에 있는 각 파티원의 XP와 레벨을 표시합니다.',
       roster: '파티 카드를 표시합니다.',
       party: '선택한 캐릭터의 Roll20 파티 구성원 체크를 켜거나 끕니다.',
@@ -8017,7 +7781,7 @@ const LazyExperienceMod = (() => {
       selected: '선택한 토큰',
       selectedDesc: '먼저 맵에서 토큰을 선택하세요.',
       party: '파티',
-      partyDesc: 'XP를 나눠 가질 구성원과 마일스톤 레벨.',
+      partyDesc: 'XP를 나눠 가질 구성원.',
       tools: '도구',
       toolsDesc: '설정, 상태, 도움말.',
       footer:
@@ -8029,7 +7793,7 @@ const LazyExperienceMod = (() => {
       footer: '모든 명령어의 버튼은 {deck} 핸드아웃에 있습니다.',
       overview: {
         heading: '개요',
-        body: 'LazyExperience는 세션 중에 얻은 경험치를 모아 파티에 나누고 캐릭터 시트에 기록합니다. D&D 2024 시트는 물론 이전 시트와 다른 시트도 읽고 쓰며, Roll20 자체 파티를 사용하고, 처치된 크리처를 알아채고, 결석자와 보너스 XP를 처리하고, 레벨 업을 알리고, 모든 세션의 기록을 남깁니다. 마일스톤으로 레벨을 올리는 게임에서는 대신 레벨 알림용으로 쓸 수 있습니다.',
+        body: 'LazyExperience는 세션 중에 얻은 경험치를 모아 파티에 나누고 캐릭터 시트에 기록합니다. D&D 2024 시트는 물론 이전 시트와 다른 시트도 읽고 쓰며, Roll20 자체 파티를 사용하고, 처치된 크리처를 알아채고, 결석자와 보너스 XP를 처리하고, 레벨 업을 알리고, 모든 세션의 기록을 남깁니다.',
       },
       quickStart: {
         heading: '빠른 시작',
@@ -8083,11 +7847,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: '레벨과 마일스톤',
+        heading: '레벨 업',
         points: [
           'XP를 기록한 뒤 LazyExperience는 시스템의 레벨 표를 확인하고, 새 레벨에 필요한 XP를 모은 캐릭터를 알립니다.',
           'D&D 2024 시트에서는 이후 플레이어가 시트의 레벨 업 버튼을 누릅니다.',
-          '마일스톤 모드는 XP를 끕니다. 마일스톤은 파티(또는 선택한 캐릭터)의 레벨을 1 올리고 알립니다. 시트는 바뀌지 않습니다.',
         ],
       },
       systems: {
@@ -8110,7 +7873,7 @@ const LazyExperienceMod = (() => {
           'D&D 2024 같은 Beacon 시트에는 Mod sandbox v1.5가 필요하며, Mod에서는 0 XP로 설정할 수 없습니다.',
           'Pathfinder 1E와 Starfinder는 레벨 업 알림에 시트의 다음 레벨까지 필요한 XP 칸을 사용합니다. 비어 있으면 Pathfinder는 중간 진행 속도를, Starfinder는 자체 표를 사용합니다.',
           'WFRP 4E: 지급할 때마다 시트의 Experience 목록에 행이 하나씩 추가되지만, 테스트에서 시트가 XP 합계를 다시 계산하지 않았으므로 시트에서 확인하세요.',
-          'Savage Worlds, 13th Age, Cosmere, Call of Cthulhu에는 Mod가 기록할 XP가 없습니다. 마일스톤 모드를 사용하세요.',
+          'Savage Worlds, 13th Age, Cosmere, Call of Cthulhu에는 Mod가 기록할 XP가 없습니다.',
         ],
       },
       settings: {
@@ -8177,7 +7940,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sesja',
-      mode: 'Tryb',
       pool: 'XP sesji',
       payout: 'Wypłata',
       shares: 'Udziały',
@@ -8217,8 +7979,6 @@ const LazyExperienceMod = (() => {
       include: 'Uwzględnij',
       partyAdd: 'Dodaj zaznaczonych do drużyny',
       partyRemove: 'Usuń zaznaczonych',
-      levelUp: 'Awans na poziom',
-      milestoneAll: 'Kamień milowy: cała drużyna',
       addKill: 'Dodaj {xp} XP',
       otherXp: 'Inna wartość',
       ignore: 'Zignoruj',
@@ -8228,11 +7988,9 @@ const LazyExperienceMod = (() => {
       reason: 'Powód (opcjonalnie)',
       share: 'Udział (1 = pełny, 0,5 = połowa)',
       confirmEnd: 'Zakończyć sesję i rozdać XP?',
-      confirmMilestone: 'Podnieść każdego członka drużyny o jeden poziom?',
     },
     options: {
       yesNo: { yes: 'Tak', no: 'Nie' },
-      mode: { xp: 'Punkty doświadczenia', milestone: 'Kamienie milowe' },
       payout: { end: 'Na koniec sesji', instant: 'Od razu' },
       roster: {
         auto: 'Automatycznie',
@@ -8257,10 +8015,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Język', desc: 'Język kart na czacie i handoutów.' },
-      mode: {
-        label: 'Tryb',
-        desc: 'Punkty doświadczenia (xp) lub awans za kamienie milowe (milestone). Kamienie milowe ogłaszają poziomy i nie przyznają XP.',
-      },
       payout: {
         label: 'Wypłata XP',
         desc: 'end: XP gromadzi się w puli sesji i jest rozdawane po jej zakończeniu. instant: każda nagroda jest od razu dzielona i wypłacana.',
@@ -8355,7 +8109,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} ma dość XP na poziom {level}!',
-      milestone: '{name} osiąga poziom {level}!',
       sheetButton: 'Użyj przycisku Level Up na karcie postaci.',
       updateSheet: 'Zaktualizuj poziom na karcie postaci.',
       pf2: 'Podnieś poziom na karcie i odejmij 1000 od XP.',
@@ -8409,8 +8162,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: Mod nie może ustawić na karcie 0 XP. Zmień to na karcie.',
         sandbox: '{name}: ta karta wymaga Mod sandbox v1.5, aby zaktualizować XP.',
-        xpless:
-          '{name}: ten system gry nie używa XP (lub karta sama je oblicza). Użyj trybu milestone.',
+        xpless: '{name}: ten system gry nie używa XP (lub karta sama je oblicza).',
         noField:
           '{name}: dla tej karty nie jest znane pole XP. Ustaw System gry na custom i podaj nazwę pola.',
         error: '{name}: nie udało się zaktualizować karty o {xp} XP. Zajrzyj do konsoli Modów.',
@@ -8428,8 +8180,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Podaj udział jako liczbę od 0 do 10, np. 0.5 lub 50%.',
       noCharacters: 'Zaznacz tokeny reprezentujące postacie lub użyj --ids.',
       noTokens: 'Najpierw zaznacz pokonane tokeny lub użyj --ids.',
-      milestoneMode:
-        'Gra używa awansu za kamienie milowe, więc XP nie jest śledzone. Zmień Tryb w ustawieniach.',
     },
     status: {
       version: 'Wersja',
@@ -8464,7 +8214,6 @@ const LazyExperienceMod = (() => {
       undo: 'Cofnij ostatnią nagrodę, która nie została jeszcze wypłacona.',
       end: 'Zakończ sesję: wypłać XP, ogłoś je i zapisz w dzienniku.',
       resetSession: 'Wyczyść XP sesji bez wypłacania.',
-      milestone: 'Podnieś drużynę (lub wybrane postacie) o jeden poziom.',
       show: 'Pokaż XP i poziom każdego członka drużyny z karty.',
       roster: 'Pokaż kartę drużyny.',
       party: 'Zaznacz lub odznacz pole Party Member w Roll20 dla zaznaczonych postaci.',
@@ -8483,7 +8232,7 @@ const LazyExperienceMod = (() => {
       selected: 'Zaznaczone tokeny',
       selectedDesc: 'Najpierw zaznacz tokeny na mapie.',
       party: 'Drużyna',
-      partyDesc: 'Kto dzieli XP oraz poziomy za kamienie milowe.',
+      partyDesc: 'Kto dzieli XP.',
       tools: 'Narzędzia',
       toolsDesc: 'Ustawienia, stan i pomoc.',
       footer: 'Przyciski uruchamiają polecenia LazyExperience. Szczegóły w handoucie {help}.',
@@ -8494,7 +8243,7 @@ const LazyExperienceMod = (() => {
       footer: 'Przyciski do każdego polecenia znajdziesz w handoucie {deck}.',
       overview: {
         heading: 'Przegląd',
-        body: 'LazyExperience zbiera punkty doświadczenia zdobyte podczas sesji, dzieli je między drużynę i zapisuje na kartach postaci. Czyta i zapisuje kartę D&D 2024 oraz starsze i inne karty, korzysta z drużyny Roll20, zauważa pokonane stworzenia, obsługuje nieobecnych graczy i bonusowe XP, ogłasza awanse i prowadzi dziennik każdej sesji. Gry z awansem za kamienie milowe mogą go używać do ogłaszania poziomów.',
+        body: 'LazyExperience zbiera punkty doświadczenia zdobyte podczas sesji, dzieli je między drużynę i zapisuje na kartach postaci. Czyta i zapisuje kartę D&D 2024 oraz starsze i inne karty, korzysta z drużyny Roll20, zauważa pokonane stworzenia, obsługuje nieobecnych graczy i bonusowe XP, ogłasza awanse i prowadzi dziennik każdej sesji.',
       },
       quickStart: {
         heading: 'Szybki start',
@@ -8548,11 +8297,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Poziomy i kamienie milowe',
+        heading: 'Awanse na poziom',
         points: [
           'Po zapisaniu XP LazyExperience sprawdza tabelę poziomów systemu i ogłasza, gdy postać ma dość XP na nowy poziom.',
           'Na karcie D&D 2024 gracz naciska wtedy przycisk Level Up na karcie.',
-          'Tryb kamieni milowych wyłącza XP. Kamień milowy podnosi drużynę (lub wybrane postacie) o jeden poziom i to ogłasza. Karty nie są zmieniane.',
         ],
       },
       systems: {
@@ -8575,7 +8323,7 @@ const LazyExperienceMod = (() => {
           'Karty Beacon, takie jak D&D 2024, wymagają Mod sandbox v1.5, a Mod nie może ustawić na nich 0 XP.',
           'Pathfinder 1E i Starfinder używają do powiadomień o awansie pola karty z XP do następnego poziomu. Gdy jest puste, Pathfinder korzysta ze średniego tempa, a Starfinder z własnej tabeli.',
           'WFRP 4E: każda nagroda jest dodawana jako wiersz na liście Experience na karcie, ale podczas testów karta nie przeliczyła swoich sum XP, więc sprawdź je na karcie.',
-          'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu nie mają XP, które mógłby zapisać Mod: użyj trybu kamieni milowych.',
+          'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu nie mają XP, które mógłby zapisać Mod.',
         ],
       },
       settings: {
@@ -8643,7 +8391,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sessão',
-      mode: 'Modo',
       pool: 'XP da sessão',
       payout: 'Pago',
       shares: 'Quotas',
@@ -8683,8 +8430,6 @@ const LazyExperienceMod = (() => {
       include: 'Incluir',
       partyAdd: 'Adicionar selecionados ao grupo',
       partyRemove: 'Remover selecionados',
-      levelUp: 'Subir de nível',
-      milestoneAll: 'Marco: grupo inteiro',
       addKill: 'Adicionar {xp} XP',
       otherXp: 'Outro valor',
       ignore: 'Ignorar',
@@ -8694,11 +8439,9 @@ const LazyExperienceMod = (() => {
       reason: 'Motivo (opcional)',
       share: 'Quota (1 = inteira, 0,5 = metade)',
       confirmEnd: 'Terminar a sessão e distribuir o XP?',
-      confirmMilestone: 'Subir todos os membros do grupo um nível?',
     },
     options: {
       yesNo: { yes: 'Sim', no: 'Não' },
-      mode: { xp: 'Pontos de experiência', milestone: 'Marcos' },
       payout: { end: 'No fim da sessão', instant: 'De imediato' },
       roster: {
         auto: 'Automático',
@@ -8727,10 +8470,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Idioma', desc: 'Idioma dos cartões do chat e dos handouts.' },
-      mode: {
-        label: 'Modo',
-        desc: 'Pontos de experiência (xp) ou progressão por marcos (milestone). Os marcos anunciam níveis e não atribuem XP.',
-      },
       payout: {
         label: 'Pagar XP',
         desc: 'end: o XP acumula-se na reserva da sessão e é distribuído quando esta termina. instant: cada recompensa é dividida e paga de imediato.',
@@ -8831,7 +8570,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} tem XP suficiente para o nível {level}!',
-      milestone: '{name} chega ao nível {level}!',
       sheetButton: 'Use o botão de subir de nível na ficha do personagem.',
       updateSheet: 'Atualize o nível na ficha do personagem.',
       pf2: 'Suba o nível na ficha e retire 1000 do XP.',
@@ -8885,8 +8623,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: a ficha não pode ser definida com 0 XP por um Mod. Altere-a na ficha.',
         sandbox: '{name}: esta ficha precisa do Mod sandbox v1.5 para atualizar o XP.',
-        xpless:
-          '{name}: este sistema de jogo não usa XP (ou a própria ficha calcula-o). Use o modo milestone.',
+        xpless: '{name}: este sistema de jogo não usa XP (ou a própria ficha calcula-o).',
         noField:
           '{name}: não se conhece nenhum campo de XP para esta ficha. Defina o Sistema de jogo como custom e indique o campo.',
         error:
@@ -8905,8 +8642,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Indique a quota como um número de 0 a 10, como 0,5 ou 50%.',
       noCharacters: 'Selecione tokens que representem personagens ou use --ids.',
       noTokens: 'Selecione primeiro os tokens derrotados ou use --ids.',
-      milestoneMode:
-        'O jogo usa progressão por marcos, por isso o XP não é registado. Altere o Modo nas definições.',
     },
     status: {
       version: 'Versão',
@@ -8941,7 +8676,6 @@ const LazyExperienceMod = (() => {
       undo: 'Anula a última recompensa que ainda não foi paga.',
       end: 'Termina a sessão: paga o XP, anuncia-o e regista-o.',
       resetSession: 'Limpa o XP da sessão sem o pagar.',
-      milestone: 'Sobe o grupo (ou os personagens escolhidos) um nível.',
       show: 'Mostra o XP e o nível de cada membro do grupo, segundo a ficha.',
       roster: 'Mostra o cartão do grupo.',
       party:
@@ -8961,7 +8695,7 @@ const LazyExperienceMod = (() => {
       selected: 'Tokens selecionados',
       selectedDesc: 'Selecione primeiro os tokens no mapa.',
       party: 'Grupo',
-      partyDesc: 'Quem divide o XP e os níveis por marco.',
+      partyDesc: 'Quem divide o XP.',
       tools: 'Ferramentas',
       toolsDesc: 'Definições, estado e ajuda.',
       footer:
@@ -8973,7 +8707,7 @@ const LazyExperienceMod = (() => {
       footer: 'Os botões de todos os comandos estão no handout {deck}.',
       overview: {
         heading: 'Visão geral',
-        body: 'O LazyExperience reúne os pontos de experiência ganhos durante uma sessão, divide-os pelo grupo e grava-os nas fichas dos personagens. Lê e grava a ficha de D&D 2024, bem como fichas mais antigas e de outros sistemas, usa o próprio grupo do Roll20, repara nas criaturas derrotadas, trata dos jogadores ausentes e do XP de bónus, anuncia subidas de nível e mantém um registo de cada sessão. Os jogos que progridem por marcos podem usá-lo para anunciar os níveis.',
+        body: 'O LazyExperience reúne os pontos de experiência ganhos durante uma sessão, divide-os pelo grupo e grava-os nas fichas dos personagens. Lê e grava a ficha de D&D 2024, bem como fichas mais antigas e de outros sistemas, usa o próprio grupo do Roll20, repara nas criaturas derrotadas, trata dos jogadores ausentes e do XP de bónus, anuncia subidas de nível e mantém um registo de cada sessão.',
       },
       quickStart: {
         heading: 'Início rápido',
@@ -9027,11 +8761,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Níveis e marcos',
+        heading: 'Subidas de nível',
         points: [
           'Depois de o XP ser gravado, o LazyExperience consulta a tabela de níveis do sistema e avisa quando um personagem tem XP suficiente para um novo nível.',
           'Na ficha de D&D 2024, o jogador carrega então no botão de subir de nível da ficha.',
-          'O modo de marcos desliga o XP. Marco sobe o grupo (ou os personagens escolhidos) um nível e anuncia-o. As fichas não são alteradas.',
         ],
       },
       systems: {
@@ -9054,7 +8787,7 @@ const LazyExperienceMod = (() => {
           'As fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5, e um Mod não as pode definir com 0 XP.',
           'Pathfinder 1E e Starfinder usam a caixa de XP para o nível seguinte da ficha para os avisos de nível. Quando está vazia, o Pathfinder usa a progressão média e o Starfinder a sua própria tabela.',
           'WFRP 4E: cada atribuição é adicionada como uma linha na lista Experience da ficha, mas nos testes a ficha não recalculou os totais de XP, por isso verifique-os na ficha.',
-          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever: use o modo de marcos.',
+          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever.',
         ],
       },
       settings: {
@@ -9121,7 +8854,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sessão',
-      mode: 'Modo',
       pool: 'XP da sessão',
       payout: 'Pago',
       shares: 'Cotas',
@@ -9161,8 +8893,6 @@ const LazyExperienceMod = (() => {
       include: 'Incluir',
       partyAdd: 'Adicionar selecionados ao grupo',
       partyRemove: 'Remover selecionados',
-      levelUp: 'Subir de nível',
-      milestoneAll: 'Marco: grupo todo',
       addKill: 'Adicionar {xp} XP',
       otherXp: 'Outro valor',
       ignore: 'Ignorar',
@@ -9172,11 +8902,9 @@ const LazyExperienceMod = (() => {
       reason: 'Motivo (opcional)',
       share: 'Cota (1 = inteira, 0,5 = metade)',
       confirmEnd: 'Encerrar a sessão e distribuir o XP?',
-      confirmMilestone: 'Subir todos os membros do grupo em um nível?',
     },
     options: {
       yesNo: { yes: 'Sim', no: 'Não' },
-      mode: { xp: 'Pontos de experiência', milestone: 'Marcos' },
       payout: { end: 'No fim da sessão', instant: 'Imediatamente' },
       roster: {
         auto: 'Automático',
@@ -9205,10 +8933,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Idioma', desc: 'Idioma dos cartões do chat e dos handouts.' },
-      mode: {
-        label: 'Modo',
-        desc: 'Pontos de experiência (xp) ou avanço por marcos (milestone). Marcos anunciam níveis e não concedem XP.',
-      },
       payout: {
         label: 'Pagar XP',
         desc: 'end: o XP se acumula na reserva da sessão e é distribuído quando ela termina. instant: cada recompensa é dividida e paga imediatamente.',
@@ -9309,7 +9033,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} tem XP suficiente para o nível {level}!',
-      milestone: '{name} chega ao nível {level}!',
       sheetButton: 'Use o botão de subir de nível na ficha do personagem.',
       updateSheet: 'Atualize o nível na ficha do personagem.',
       pf2: 'Suba o nível na ficha e tire 1.000 do XP.',
@@ -9363,8 +9086,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: a ficha não pode ser definida com 0 XP por um Mod. Altere na ficha.',
         sandbox: '{name}: esta ficha precisa do Mod sandbox v1.5 para atualizar o XP.',
-        xpless:
-          '{name}: este sistema de jogo não usa XP (ou a própria ficha calcula). Use o modo milestone.',
+        xpless: '{name}: este sistema de jogo não usa XP (ou a própria ficha calcula).',
         noField:
           '{name}: nenhum campo de XP é conhecido para esta ficha. Defina Sistema de jogo como custom e informe o campo.',
         error: '{name}: não foi possível atualizar a ficha com {xp} XP. Veja o console de Mods.',
@@ -9382,8 +9104,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Informe a cota como um número de 0 a 10, como 0,5 ou 50%.',
       noCharacters: 'Selecione tokens que representem personagens ou use --ids.',
       noTokens: 'Selecione primeiro os tokens derrotados ou use --ids.',
-      milestoneMode:
-        'O jogo usa avanço por marcos, então o XP não é registrado. Altere o Modo nas configurações.',
     },
     status: {
       version: 'Versão',
@@ -9418,7 +9138,6 @@ const LazyExperienceMod = (() => {
       undo: 'Desfaz a última recompensa que ainda não foi paga.',
       end: 'Encerra a sessão: paga o XP, anuncia e registra.',
       resetSession: 'Apaga o XP da sessão sem pagá-lo.',
-      milestone: 'Sobe o grupo (ou os personagens escolhidos) em um nível.',
       show: 'Mostra o XP e o nível de cada membro do grupo, conforme a ficha.',
       roster: 'Mostra o cartão do grupo.',
       party: 'Marca ou desmarca a caixa Party Member do Roll20 para os personagens selecionados.',
@@ -9437,7 +9156,7 @@ const LazyExperienceMod = (() => {
       selected: 'Tokens selecionados',
       selectedDesc: 'Selecione primeiro os tokens no mapa.',
       party: 'Grupo',
-      partyDesc: 'Quem divide o XP e os níveis por marco.',
+      partyDesc: 'Quem divide o XP.',
       tools: 'Ferramentas',
       toolsDesc: 'Configurações, status e ajuda.',
       footer: 'Os botões executam comandos do LazyExperience. Veja o handout {help} para detalhes.',
@@ -9448,7 +9167,7 @@ const LazyExperienceMod = (() => {
       footer: 'Os botões de todos os comandos estão no handout {deck}.',
       overview: {
         heading: 'Visão geral',
-        body: 'O LazyExperience reúne os pontos de experiência ganhos durante uma sessão, divide-os entre o grupo e os grava nas fichas dos personagens. Ele lê e grava a ficha de D&D 2024, além de fichas antigas e de outros sistemas, usa o próprio grupo do Roll20, percebe criaturas derrotadas, trata jogadores ausentes e XP de bônus, anuncia subidas de nível e mantém um registro de cada sessão. Jogos que avançam por marcos podem usá-lo para anunciar os níveis.',
+        body: 'O LazyExperience reúne os pontos de experiência ganhos durante uma sessão, divide-os entre o grupo e os grava nas fichas dos personagens. Ele lê e grava a ficha de D&D 2024, além de fichas antigas e de outros sistemas, usa o próprio grupo do Roll20, percebe criaturas derrotadas, trata jogadores ausentes e XP de bônus, anuncia subidas de nível e mantém um registro de cada sessão.',
       },
       quickStart: {
         heading: 'Início rápido',
@@ -9502,11 +9221,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Níveis e marcos',
+        heading: 'Subidas de nível',
         points: [
           'Depois que o XP é gravado, o LazyExperience consulta a tabela de níveis do sistema e avisa quando um personagem tem XP suficiente para um novo nível.',
           'Na ficha de D&D 2024, o jogador então clica no botão de subir de nível da ficha.',
-          'O modo de marcos desliga o XP. Marco sobe o grupo (ou os personagens escolhidos) em um nível e o anuncia. As fichas não são alteradas.',
         ],
       },
       systems: {
@@ -9529,7 +9247,7 @@ const LazyExperienceMod = (() => {
           'Fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5, e um Mod não pode defini-las com 0 XP.',
           'Pathfinder 1E e Starfinder usam a caixa de XP para o próximo nível da ficha nos avisos de nível. Quando ela está vazia, o Pathfinder usa a progressão média e o Starfinder a sua própria tabela.',
           'WFRP 4E: cada concessão é adicionada como uma linha na lista Experience da ficha, mas nos testes a ficha não recalculou os totais de XP, então confira-os na ficha.',
-          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever: use o modo de marcos.',
+          'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever.',
         ],
       },
       settings: {
@@ -9597,7 +9315,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Сессия',
-      mode: 'Режим',
       pool: 'Опыт сессии',
       payout: 'Выплачено',
       shares: 'Доли',
@@ -9637,8 +9354,6 @@ const LazyExperienceMod = (() => {
       include: 'Вернуть',
       partyAdd: 'Добавить выбранных в группу',
       partyRemove: 'Убрать выбранных',
-      levelUp: 'Повысить уровень',
-      milestoneAll: 'Веха: вся группа',
       addKill: 'Добавить {xp} XP',
       otherXp: 'Другое количество',
       ignore: 'Игнорировать',
@@ -9648,11 +9363,9 @@ const LazyExperienceMod = (() => {
       reason: 'Причина (необязательно)',
       share: 'Доля (1 = полная, 0.5 = половина)',
       confirmEnd: 'Завершить сессию и раздать XP?',
-      confirmMilestone: 'Повысить уровень каждого члена группы на один?',
     },
     options: {
       yesNo: { yes: 'Да', no: 'Нет' },
-      mode: { xp: 'Очки опыта', milestone: 'Вехи' },
       payout: { end: 'В конце сессии', instant: 'Сразу' },
       roster: {
         auto: 'Автоматически',
@@ -9677,10 +9390,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Язык', desc: 'Язык карточек в чате и хэндаутов.' },
-      mode: {
-        label: 'Режим',
-        desc: 'Очки опыта (xp) или повышение уровня по вехам (milestone). В режиме вех сообщается о новых уровнях, а XP не начисляется.',
-      },
       payout: {
         label: 'Выплата XP',
         desc: 'end: XP копится в опыте сессии и раздаётся по её завершении. instant: каждая награда делится и выплачивается сразу.',
@@ -9778,7 +9487,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: 'У {name} достаточно XP для уровня {level}!',
-      milestone: '{name} достигает уровня {level}!',
       sheetButton: 'Нажмите кнопку повышения уровня на листе персонажа.',
       updateSheet: 'Обновите уровень на листе персонажа.',
       pf2: 'Повысьте уровень на листе и вычтите 1 000 XP.',
@@ -9832,8 +9540,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: модуль не может установить на листе 0 XP. Измените значение на самом листе.',
         sandbox: '{name}: для обновления XP этому листу нужен Mod sandbox v1.5.',
-        xpless:
-          '{name}: эта игровая система не использует XP (или лист считает их сам). Используйте режим вех.',
+        xpless: '{name}: эта игровая система не использует XP (или лист считает их сам).',
         noField:
           '{name}: для этого листа неизвестно поле XP. Выберите игровую систему custom и укажите поле.',
         error: '{name}: не удалось обновить лист на {xp} XP. Смотрите консоль модов.',
@@ -9851,8 +9558,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Укажите долю числом от 0 до 10, например 0.5 или 50%.',
       noCharacters: 'Выберите токены персонажей или используйте --ids.',
       noTokens: 'Сначала выберите токены побеждённых существ или используйте --ids.',
-      milestoneMode:
-        'В игре используется повышение уровня по вехам, поэтому XP не отслеживаются. Измените режим в настройках.',
     },
     status: {
       version: 'Версия',
@@ -9887,7 +9592,6 @@ const LazyExperienceMod = (() => {
       undo: 'Отменить последнюю ещё не выплаченную награду.',
       end: 'Завершить сессию: выплатить XP, объявить об этом и записать в журнал.',
       resetSession: 'Сбросить опыт сессии без выплаты.',
-      milestone: 'Повысить уровень группы (или выбранных персонажей) на один.',
       show: 'Показать XP и уровень каждого члена группы по листу.',
       roster: 'Показать карточку группы.',
       party: 'Поставить или снять отметку Party Member в Roll20 у выбранных персонажей.',
@@ -9906,7 +9610,7 @@ const LazyExperienceMod = (() => {
       selected: 'Выбранные токены',
       selectedDesc: 'Сначала выберите токены на карте.',
       party: 'Группа',
-      partyDesc: 'Кто делит XP, и уровни по вехам.',
+      partyDesc: 'Кто делит XP.',
       tools: 'Инструменты',
       toolsDesc: 'Настройки, состояние и справка.',
       footer: 'Кнопки запускают команды LazyExperience. Подробности в хэндауте {help}.',
@@ -9917,7 +9621,7 @@ const LazyExperienceMod = (() => {
       footer: 'Кнопки для всех команд есть в хэндауте {deck}.',
       overview: {
         heading: 'Обзор',
-        body: 'LazyExperience собирает очки опыта, заработанные за сессию, делит их между членами группы и записывает в листы персонажей. Он читает и записывает лист D&D 2024, а также старые и другие листы, использует собственную группу Roll20, замечает побеждённых существ, учитывает отсутствующих игроков и бонусные XP, объявляет о новых уровнях и ведёт журнал каждой сессии. Игры с повышением уровня по вехам могут использовать его для объявления уровней.',
+        body: 'LazyExperience собирает очки опыта, заработанные за сессию, делит их между членами группы и записывает в листы персонажей. Он читает и записывает лист D&D 2024, а также старые и другие листы, использует собственную группу Roll20, замечает побеждённых существ, учитывает отсутствующих игроков и бонусные XP, объявляет о новых уровнях и ведёт журнал каждой сессии.',
       },
       quickStart: {
         heading: 'Быстрый старт',
@@ -9971,11 +9675,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Уровни и вехи',
+        heading: 'Повышение уровня',
         points: [
           'После записи XP LazyExperience проверяет таблицу уровней системы и сообщает, когда у персонажа достаточно XP для нового уровня.',
           'На листе D&D 2024 игрок затем нажимает кнопку повышения уровня на листе.',
-          'Режим вех отключает XP. «Веха» повышает уровень группы (или выбранных персонажей) на один и объявляет об этом. Листы не меняются.',
         ],
       },
       systems: {
@@ -9998,7 +9701,7 @@ const LazyExperienceMod = (() => {
           'Листам Beacon, например D&D 2024, нужен Mod sandbox v1.5, а мод не может установить им 0 XP.',
           'Pathfinder 1E и Starfinder берут для уведомлений о новом уровне поле листа с XP до следующего уровня. Если оно пусто, Pathfinder использует средний темп, а Starfinder — собственную таблицу.',
           'WFRP 4E: каждая награда добавляется строкой в список Experience листа, но при тестировании лист не пересчитал суммы XP, поэтому проверьте их на листе.',
-          'В Savage Worlds, 13th Age, Cosmere и Call of Cthulhu нет XP, которые мог бы записать мод: используйте режим вех.',
+          'В Savage Worlds, 13th Age, Cosmere и Call of Cthulhu нет XP, которые мог бы записать мод.',
         ],
       },
       settings: {
@@ -10066,7 +9769,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Sesión',
-      mode: 'Modo',
       pool: 'PX de la sesión',
       payout: 'Pagado',
       shares: 'Partes',
@@ -10106,8 +9808,6 @@ const LazyExperienceMod = (() => {
       include: 'Incluir',
       partyAdd: 'Añadir selección al grupo',
       partyRemove: 'Quitar selección',
-      levelUp: 'Subir de nivel',
-      milestoneAll: 'Hito: todo el grupo',
       addKill: 'Añadir {xp} PX',
       otherXp: 'Otra cantidad',
       ignore: 'Ignorar',
@@ -10117,11 +9817,9 @@ const LazyExperienceMod = (() => {
       reason: 'Motivo (opcional)',
       share: 'Parte (1 = completa, 0,5 = mitad)',
       confirmEnd: '¿Terminar la sesión y repartir los PX?',
-      confirmMilestone: '¿Subir un nivel a cada miembro del grupo?',
     },
     options: {
       yesNo: { yes: 'Sí', no: 'No' },
-      mode: { xp: 'Puntos de experiencia', milestone: 'Hitos' },
       payout: { end: 'Al final de la sesión', instant: 'De inmediato' },
       roster: {
         auto: 'Automático',
@@ -10146,10 +9844,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Idioma', desc: 'Idioma de las tarjetas de chat y los handouts.' },
-      mode: {
-        label: 'Modo',
-        desc: 'Puntos de experiencia (xp) o subida de nivel por hitos (milestone). Los hitos anuncian niveles y no otorgan PX.',
-      },
       payout: {
         label: 'Pagar PX',
         desc: 'end: los PX se acumulan en la reserva de la sesión y se reparten al terminar la sesión. instant: cada premio se divide y se paga de inmediato.',
@@ -10250,7 +9944,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '¡{name} tiene PX suficientes para el nivel {level}!',
-      milestone: '¡{name} alcanza el nivel {level}!',
       sheetButton: 'Usa el botón Level Up de la hoja de personaje.',
       updateSheet: 'Actualiza el nivel en la hoja de personaje.',
       pf2: 'Sube el nivel en la hoja y réstale 1000 a los PX.',
@@ -10305,8 +9998,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: un Mod no puede poner la hoja a 0 PX. Cámbialo en la hoja.',
         sandbox: '{name}: esta hoja necesita Mod sandbox v1.5 para actualizar los PX.',
-        xpless:
-          '{name}: este sistema de juego no usa PX (o la hoja los calcula sola). Usa el modo milestone.',
+        xpless: '{name}: este sistema de juego no usa PX (o la hoja los calcula sola).',
         noField:
           '{name}: no se conoce ningún campo de PX para esta hoja. Pon el sistema de juego en custom e indica el campo.',
         error: '{name}: no se pudo actualizar la hoja con {xp} PX. Consulta la consola del Mod.',
@@ -10324,8 +10016,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Indica la parte como un número de 0 a 10, por ejemplo 0.5 o 50 %.',
       noCharacters: 'Selecciona fichas que representen personajes, o usa --ids.',
       noTokens: 'Selecciona primero las fichas derrotadas, o usa --ids.',
-      milestoneMode:
-        'La partida usa subida de nivel por hitos, así que no se llevan PX. Cambia el modo en los ajustes.',
     },
     status: {
       version: 'Versión',
@@ -10360,7 +10050,6 @@ const LazyExperienceMod = (() => {
       undo: 'Deshace el último premio que no se ha pagado.',
       end: 'Termina la sesión: paga los PX, los anuncia y los registra.',
       resetSession: 'Borra los PX de la sesión sin pagarlos.',
-      milestone: 'Sube un nivel al grupo (o a los personajes elegidos).',
       show: 'Muestra los PX y el nivel de cada miembro del grupo según la hoja.',
       roster: 'Muestra la tarjeta del grupo.',
       party:
@@ -10380,7 +10069,7 @@ const LazyExperienceMod = (() => {
       selected: 'Fichas seleccionadas',
       selectedDesc: 'Selecciona primero fichas en el mapa.',
       party: 'Grupo',
-      partyDesc: 'Quién se reparte los PX, y niveles por hitos.',
+      partyDesc: 'Quién se reparte los PX.',
       tools: 'Herramientas',
       toolsDesc: 'Ajustes, estado y ayuda.',
       footer:
@@ -10392,7 +10081,7 @@ const LazyExperienceMod = (() => {
       footer: 'Los botones de todos los comandos están en el handout {deck}.',
       overview: {
         heading: 'Descripción general',
-        body: 'LazyExperience recoge los puntos de experiencia ganados durante una sesión, los reparte entre el grupo y los escribe en las hojas de personaje. Lee y escribe la hoja de D&D 2024 así como hojas más antiguas y de otros sistemas, usa el grupo propio de Roll20, detecta las criaturas derrotadas, gestiona jugadores ausentes y PX extra, anuncia las subidas de nivel y guarda un registro de cada sesión. Las partidas que suben de nivel por hitos pueden usarlo para anunciar los niveles en su lugar.',
+        body: 'LazyExperience recoge los puntos de experiencia ganados durante una sesión, los reparte entre el grupo y los escribe en las hojas de personaje. Lee y escribe la hoja de D&D 2024 así como hojas más antiguas y de otros sistemas, usa el grupo propio de Roll20, detecta las criaturas derrotadas, gestiona jugadores ausentes y PX extra, anuncia las subidas de nivel y guarda un registro de cada sesión.',
       },
       quickStart: {
         heading: 'Inicio rápido',
@@ -10446,11 +10135,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Niveles e hitos',
+        heading: 'Subidas de nivel',
         points: [
           'Tras escribir los PX, LazyExperience consulta la tabla de niveles del sistema y anuncia cuándo un personaje tiene PX suficientes para un nuevo nivel.',
           'En la hoja de D&D 2024, el jugador pulsa entonces el botón Level Up de la hoja.',
-          'El modo de hitos desactiva los PX. Un hito sube un nivel al grupo (o a los personajes elegidos) y lo anuncia. Las hojas no se modifican.',
         ],
       },
       systems: {
@@ -10473,7 +10161,7 @@ const LazyExperienceMod = (() => {
           'Las hojas Beacon como D&D 2024 necesitan Mod sandbox v1.5, y un Mod no puede ponerlas a 0 PX.',
           'Pathfinder 1E y Starfinder usan la casilla de PX para el siguiente nivel de la hoja en los avisos de subida de nivel. Si está vacía, Pathfinder usa la progresión media y Starfinder su propia tabla.',
           'WFRP 4E: cada concesión se añade como una fila en la lista Experience de la hoja, pero en las pruebas la hoja no recalculó sus totales de PX, así que compruébalos en la hoja.',
-          'Savage Worlds, 13th Age, Cosmere y Call of Cthulhu no tienen PX que un Mod pueda escribir: usa el modo de hitos.',
+          'Savage Worlds, 13th Age, Cosmere y Call of Cthulhu no tienen PX que un Mod pueda escribir.',
         ],
       },
       settings: {
@@ -10540,7 +10228,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Spelmöte',
-      mode: 'Läge',
       pool: 'Spelmötets XP',
       payout: 'Utbetalt',
       shares: 'Andelar',
@@ -10580,8 +10267,6 @@ const LazyExperienceMod = (() => {
       include: 'Ta med',
       partyAdd: 'Lägg valda i gruppen',
       partyRemove: 'Ta bort valda',
-      levelUp: 'Nivåhöjning',
-      milestoneAll: 'Milstolpe: Hela gruppen',
       addKill: 'Lägg till {xp} XP',
       otherXp: 'Annat belopp',
       ignore: 'Ignorera',
@@ -10591,11 +10276,9 @@ const LazyExperienceMod = (() => {
       reason: 'Orsak (valfritt)',
       share: 'Andel (1 = hel, 0,5 = halv)',
       confirmEnd: 'Avsluta spelmötet och dela ut XP?',
-      confirmMilestone: 'Höja varje gruppmedlem en nivå?',
     },
     options: {
       yesNo: { yes: 'Ja', no: 'Nej' },
-      mode: { xp: 'Erfarenhetspoäng', milestone: 'Milstolpar' },
       payout: { end: 'Vid spelmötets slut', instant: 'Direkt' },
       roster: {
         auto: 'Automatiskt',
@@ -10615,10 +10298,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Språk', desc: 'Språk för chattkort och handouts.' },
-      mode: {
-        label: 'Läge',
-        desc: 'Erfarenhetspoäng (xp) eller nivåhöjning med milstolpar (milestone). Milstolpar tillkännager nivåer och delar inte ut någon XP.',
-      },
       payout: {
         label: 'Utbetala XP',
         desc: 'end: XP samlas i spelmötets pott och delas ut när spelmötet avslutas. instant: varje tilldelning delas upp och betalas ut direkt.',
@@ -10716,7 +10395,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name} har tillräckligt med XP för nivå {level}!',
-      milestone: '{name} når nivå {level}!',
       sheetButton: 'Använd knappen för nivåhöjning på karaktärsbladet.',
       updateSheet: 'Uppdatera nivån på karaktärsbladet.',
       pf2: 'Höj nivån på bladet och dra bort 1 000 från XP.',
@@ -10772,7 +10450,7 @@ const LazyExperienceMod = (() => {
         zero: '{name}: bladet kan inte sättas till 0 XP från en Mod. Ändra det på bladet.',
         sandbox: '{name}: det här bladet kräver Mod sandbox v1.5 för att uppdatera XP.',
         xpless:
-          '{name}: det här spelsystemet använder inte XP (eller så räknar bladet ut det själv). Använd milstolpeläge.',
+          '{name}: det här spelsystemet använder inte XP (eller så räknar bladet ut det själv).',
         noField:
           '{name}: inget XP-fält är känt för det här bladet. Sätt Spelsystem till custom och ange fältet.',
         error: '{name}: bladet kunde inte uppdateras med {xp} XP. Se Mod-konsolen.',
@@ -10790,8 +10468,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Ange andelen som ett tal från 0 till 10, till exempel 0,5 eller 50 %.',
       noCharacters: 'Markera pjäser som representerar karaktärer, eller använd --ids.',
       noTokens: 'Markera de besegrade pjäserna först, eller använd --ids.',
-      milestoneMode:
-        'Spelet använder nivåhöjning med milstolpar, så XP spåras inte. Ändra Läge i inställningarna.',
     },
     status: {
       version: 'Version',
@@ -10826,7 +10502,6 @@ const LazyExperienceMod = (() => {
       undo: 'Ta tillbaka den senaste tilldelningen som inte har betalats ut.',
       end: 'Avsluta spelmötet: betala ut XP, tillkännage det och logga det.',
       resetSession: 'Rensa spelmötets XP utan att betala ut den.',
-      milestone: 'Höj gruppen (eller de valda karaktärerna) en nivå.',
       show: 'Visa varje gruppmedlems XP och nivå från bladet.',
       roster: 'Visa gruppkortet.',
       party: 'Kryssa i eller ur Roll20:s ruta Party Member för de valda karaktärerna.',
@@ -10845,7 +10520,7 @@ const LazyExperienceMod = (() => {
       selected: 'Valda pjäser',
       selectedDesc: 'Markera pjäser på kartan först.',
       party: 'Grupp',
-      partyDesc: 'Vem som delar på XP, och milstolpenivåer.',
+      partyDesc: 'Vem som delar på XP.',
       tools: 'Verktyg',
       toolsDesc: 'Inställningar, status och hjälp.',
       footer: 'Knapparna kör LazyExperience-kommandon. Se handouten {help} för detaljer.',
@@ -10856,7 +10531,7 @@ const LazyExperienceMod = (() => {
       footer: 'Knappar för alla kommandon finns i handouten {deck}.',
       overview: {
         heading: 'Översikt',
-        body: 'LazyExperience samlar ihop de erfarenhetspoäng som tjänas under ett spelmöte, delar dem mellan gruppen och skriver dem till karaktärsbladen. Det läser och skriver D&D 2024-bladet såväl som äldre och andra blad, använder Roll20:s egen grupp, märker när varelser besegras, hanterar frånvarande spelare och bonus-XP, tillkännager nivåhöjningar och för logg över varje spelmöte. Spel som höjer nivå med milstolpar kan använda det för att tillkännage nivåer i stället.',
+        body: 'LazyExperience samlar ihop de erfarenhetspoäng som tjänas under ett spelmöte, delar dem mellan gruppen och skriver dem till karaktärsbladen. Det läser och skriver D&D 2024-bladet såväl som äldre och andra blad, använder Roll20:s egen grupp, märker när varelser besegras, hanterar frånvarande spelare och bonus-XP, tillkännager nivåhöjningar och för logg över varje spelmöte.',
       },
       quickStart: {
         heading: 'Snabbstart',
@@ -10910,11 +10585,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Nivåer och milstolpar',
+        heading: 'Nivåhöjningar',
         points: [
           'När XP har skrivits kontrollerar LazyExperience systemets nivåtabell och tillkännager när en karaktär har tillräckligt med XP för en ny nivå.',
           'På D&D 2024-bladet trycker spelaren sedan på bladets knapp för nivåhöjning.',
-          'Milstolpeläge stänger av XP. Milstolpe höjer gruppen (eller de valda karaktärerna) en nivå och tillkännager det. Blad ändras inte.',
         ],
       },
       systems: {
@@ -10937,7 +10611,7 @@ const LazyExperienceMod = (() => {
           'Beacon-blad som D&D 2024 kräver Mod sandbox v1.5, och en Mod kan inte sätta dem till 0 XP.',
           'Pathfinder 1E och Starfinder använder bladets ruta för XP till nästa nivå för nivåmeddelanden. När den är tom använder Pathfinder den medelsnabba banan och Starfinder sin egen tabell.',
           'WFRP 4E: varje tilldelning läggs till som en rad i bladets Experience-lista, men bladet räknade inte om sina XP-summor under testningen, så kontrollera dem på bladet.',
-          'Savage Worlds, 13th Age, Cosmere och Call of Cthulhu har ingen XP som en Mod kan skriva: använd milstolpeläge.',
+          'Savage Worlds, 13th Age, Cosmere och Call of Cthulhu har ingen XP som en Mod kan skriva.',
         ],
       },
       settings: {
@@ -11005,7 +10679,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Oturum',
-      mode: 'Mod',
       pool: 'Oturum XP',
       payout: 'Ödenen',
       shares: 'Paylar',
@@ -11045,8 +10718,6 @@ const LazyExperienceMod = (() => {
       include: 'Dahil Et',
       partyAdd: 'Seçilileri Gruba Ekle',
       partyRemove: 'Seçilileri Çıkar',
-      levelUp: 'Seviye Atla',
-      milestoneAll: 'Kilometre Taşı: Tüm Grup',
       addKill: '{xp} XP Ekle',
       otherXp: 'Başka Miktar',
       ignore: 'Yoksay',
@@ -11056,11 +10727,9 @@ const LazyExperienceMod = (() => {
       reason: 'Neden (isteğe bağlı)',
       share: 'Pay (1 = tam, 0,5 = yarım)',
       confirmEnd: 'Oturum bitirilsin ve XP dağıtılsın mı?',
-      confirmMilestone: 'Her grup üyesi bir seviye yükseltilsin mi?',
     },
     options: {
       yesNo: { yes: 'Evet', no: 'Hayır' },
-      mode: { xp: 'Deneyim puanları', milestone: 'Kilometre taşları' },
       payout: { end: 'Oturum sonunda', instant: 'Hemen' },
       roster: {
         auto: 'Otomatik',
@@ -11085,10 +10754,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Dil', desc: 'Sohbet kartları ve handout’lar için dil.' },
-      mode: {
-        label: 'Mod',
-        desc: 'Deneyim puanları (xp) veya kilometre taşıyla seviye atlama (milestone). Kilometre taşları seviyeleri duyurur ve XP vermez.',
-      },
       payout: {
         label: 'XP ödemesi',
         desc: 'end: XP oturum havuzunda birikir ve oturum bitince dağıtılır. instant: her ödül hemen bölünür ve ödenir.',
@@ -11186,7 +10851,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: '{name}, {level}. seviye için yeterli XP’ye sahip!',
-      milestone: '{name}, {level}. seviyeye ulaştı!',
       sheetButton: 'Karakter kâğıdındaki Level Up düğmesini kullan.',
       updateSheet: 'Karakter kâğıdındaki seviyeyi güncelle.',
       pf2: 'Kâğıttaki seviyeyi yükselt ve XP’den 1.000 düş.',
@@ -11240,8 +10904,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: kâğıt bir Mod’dan 0 XP’ye ayarlanamaz. Kâğıt üzerinde değiştir.',
         sandbox: '{name}: bu kâğıdın XP’sini güncellemek için Mod sandbox v1.5 gerekir.',
-        xpless:
-          '{name}: bu oyun sistemi XP kullanmıyor (veya kâğıt kendisi hesaplıyor). milestone modunu kullan.',
+        xpless: '{name}: bu oyun sistemi XP kullanmıyor (veya kâğıt kendisi hesaplıyor).',
         noField:
           '{name}: bu kâğıt için bilinen bir XP alanı yok. Oyun sistemini custom yap ve alanın adını ver.',
         error: '{name}: kâğıt {xp} XP ile güncellenemedi. Mod konsoluna bak.',
@@ -11259,8 +10922,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Payı 0 ile 10 arasında, 0.5 veya 50% gibi bir sayı olarak ver.',
       noCharacters: 'Karakterleri temsil eden token’ları seç veya --ids kullan.',
       noTokens: 'Önce yenilen token’ları seç veya --ids kullan.',
-      milestoneMode:
-        'Oyun kilometre taşıyla seviye atlama kullanıyor, bu yüzden XP takip edilmiyor. Ayarlardan Modu değiştir.',
     },
     status: {
       version: 'Sürüm',
@@ -11295,7 +10956,6 @@ const LazyExperienceMod = (() => {
       undo: 'Henüz ödenmemiş son ödülü geri al.',
       end: 'Oturumu bitir: XP’yi öde, duyur ve günlüğe kaydet.',
       resetSession: 'Oturum XP’sini ödemeden temizle.',
-      milestone: 'Grubu (veya seçilen karakterleri) bir seviye yükselt.',
       show: 'Her grup üyesinin kâğıttaki XP ve seviyesini göster.',
       roster: 'Grup kartını göster.',
       party:
@@ -11315,7 +10975,7 @@ const LazyExperienceMod = (() => {
       selected: 'Seçili token’lar',
       selectedDesc: 'Önce haritadan token’ları seç.',
       party: 'Grup',
-      partyDesc: 'XP’yi kimlerin paylaştığı ve kilometre taşı seviyeleri.',
+      partyDesc: 'XP’yi kimlerin paylaştığı.',
       tools: 'Araçlar',
       toolsDesc: 'Ayarlar, durum ve yardım.',
       footer:
@@ -11327,7 +10987,7 @@ const LazyExperienceMod = (() => {
       footer: 'Her komutun düğmeleri {deck} handout’unda.',
       overview: {
         heading: 'Genel bakış',
-        body: 'LazyExperience, bir oturum boyunca kazanılan deneyim puanlarını toplar, grup arasında böler ve karakter kâğıtlarına yazar. D&D 2024 kâğıdını, eski ve diğer kâğıtları okur ve yazar, Roll20’nin kendi grubunu kullanır, yenilen yaratıkları fark eder, olmayan oyuncuları ve bonus XP’yi yönetir, seviye atlamaları duyurur ve her oturumun günlüğünü tutar. Kilometre taşıyla seviye atlayan oyunlar bunu seviyeleri duyurmak için kullanabilir.',
+        body: 'LazyExperience, bir oturum boyunca kazanılan deneyim puanlarını toplar, grup arasında böler ve karakter kâğıtlarına yazar. D&D 2024 kâğıdını, eski ve diğer kâğıtları okur ve yazar, Roll20’nin kendi grubunu kullanır, yenilen yaratıkları fark eder, olmayan oyuncuları ve bonus XP’yi yönetir, seviye atlamaları duyurur ve her oturumun günlüğünü tutar.',
       },
       quickStart: {
         heading: 'Hızlı başlangıç',
@@ -11381,11 +11041,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Seviyeler ve kilometre taşları',
+        heading: 'Seviye atlama',
         points: [
           'XP yazıldıktan sonra LazyExperience sistemin seviye tablosunu kontrol eder ve bir karakter yeni seviye için yeterli XP’ye sahip olduğunda duyurur.',
           'D&D 2024 kâğıdında oyuncu bunun üzerine kâğıttaki Level Up düğmesine basar.',
-          'Kilometre taşı modu XP’yi kapatır. Kilometre taşı grubu (veya seçilen karakterleri) bir seviye yükseltir ve duyurur. Kâğıtlar değiştirilmez.',
         ],
       },
       systems: {
@@ -11408,7 +11067,7 @@ const LazyExperienceMod = (() => {
           'D&D 2024 gibi Beacon kâğıtları Mod sandbox v1.5 gerektirir ve bir Mod tarafından 0 XP’ye ayarlanamaz.',
           'Pathfinder 1E ve Starfinder, seviye atlama bildirimleri için kâğıdın sonraki seviye XP kutusunu kullanır. Boşsa Pathfinder orta ilerleme hızını, Starfinder ise kendi tablosunu kullanır.',
           'WFRP 4E: her ödül kâğıdın Experience listesine bir satır olarak eklenir, ancak testte kâğıt XP toplamlarını yeniden hesaplamadı; bu yüzden onları kâğıt üzerinden kontrol et.',
-          'Savage Worlds, 13th Age, Cosmere ve Call of Cthulhu’da bir Mod’un yazabileceği XP yoktur: kilometre taşı modunu kullan.',
+          'Savage Worlds, 13th Age, Cosmere ve Call of Cthulhu’da bir Mod’un yazabileceği XP yoktur.',
         ],
       },
       settings: {
@@ -11475,7 +11134,6 @@ const LazyExperienceMod = (() => {
     },
     menu: {
       session: 'Сесія',
-      mode: 'Режим',
       pool: 'Досвід сесії',
       payout: 'Виплачено',
       shares: 'Частки',
@@ -11515,8 +11173,6 @@ const LazyExperienceMod = (() => {
       include: 'Повернути',
       partyAdd: 'Додати вибраних до групи',
       partyRemove: 'Прибрати вибраних',
-      levelUp: 'Підвищити рівень',
-      milestoneAll: 'Віха: вся група',
       addKill: 'Додати {xp} XP',
       otherXp: 'Інша кількість',
       ignore: 'Ігнорувати',
@@ -11526,11 +11182,9 @@ const LazyExperienceMod = (() => {
       reason: 'Причина (необов’язково)',
       share: 'Частка (1 = повна, 0.5 = половина)',
       confirmEnd: 'Завершити сесію та роздати XP?',
-      confirmMilestone: 'Підвищити рівень кожного члена групи на один?',
     },
     options: {
       yesNo: { yes: 'Так', no: 'Ні' },
-      mode: { xp: 'Очки досвіду', milestone: 'Віхи' },
       payout: { end: 'Наприкінці сесії', instant: 'Одразу' },
       roster: {
         auto: 'Автоматично',
@@ -11550,10 +11204,6 @@ const LazyExperienceMod = (() => {
     },
     settings: {
       language: { label: 'Мова', desc: 'Мова карток у чаті та хендаутів.' },
-      mode: {
-        label: 'Режим',
-        desc: 'Очки досвіду (xp) або підвищення рівня за віхами (milestone). У режимі віх повідомляється про нові рівні, а XP не нараховується.',
-      },
       payout: {
         label: 'Виплата XP',
         desc: 'end: XP збирається в досвіді сесії та роздається після її завершення. instant: кожна нагорода ділиться й виплачується одразу.',
@@ -11648,7 +11298,6 @@ const LazyExperienceMod = (() => {
     },
     levels: {
       reached: 'У {name} достатньо XP для рівня {level}!',
-      milestone: '{name} досягає рівня {level}!',
       sheetButton: 'Натисніть кнопку підвищення рівня на аркуші персонажа.',
       updateSheet: 'Оновіть рівень на аркуші персонажа.',
       pf2: 'Підвищте рівень на аркуші та відніміть 1 000 XP.',
@@ -11702,8 +11351,7 @@ const LazyExperienceMod = (() => {
       write: {
         zero: '{name}: мод не може встановити на аркуші 0 XP. Змініть значення на самому аркуші.',
         sandbox: '{name}: для оновлення XP цьому аркушу потрібен Mod sandbox v1.5.',
-        xpless:
-          '{name}: ця ігрова система не використовує XP (або аркуш рахує їх сам). Використовуйте режим віх.',
+        xpless: '{name}: ця ігрова система не використовує XP (або аркуш рахує їх сам).',
         noField:
           '{name}: для цього аркуша невідоме поле XP. Виберіть ігрову систему custom і вкажіть поле.',
         error: '{name}: не вдалося оновити аркуш на {xp} XP. Дивіться консоль модів.',
@@ -11721,8 +11369,6 @@ const LazyExperienceMod = (() => {
       badShare: 'Вкажіть частку числом від 0 до 10, наприклад 0.5 або 50%.',
       noCharacters: 'Виберіть токени персонажів або використайте --ids.',
       noTokens: 'Спершу виберіть токени переможених істот або використайте --ids.',
-      milestoneMode:
-        'У грі використовується підвищення рівня за віхами, тому XP не відстежуються. Змініть режим у налаштуваннях.',
     },
     status: {
       version: 'Версія',
@@ -11756,7 +11402,6 @@ const LazyExperienceMod = (() => {
       undo: 'Скасувати останню ще не виплачену нагороду.',
       end: 'Завершити сесію: виплатити XP, оголосити про це й записати в журнал.',
       resetSession: 'Скинути досвід сесії без виплати.',
-      milestone: 'Підвищити рівень групи (або вибраних персонажів) на один.',
       show: 'Показати XP та рівень кожного члена групи за аркушем.',
       roster: 'Показати картку групи.',
       party: 'Поставити або зняти позначку Party Member у Roll20 для вибраних персонажів.',
@@ -11775,7 +11420,7 @@ const LazyExperienceMod = (() => {
       selected: 'Вибрані токени',
       selectedDesc: 'Спершу виберіть токени на мапі.',
       party: 'Група',
-      partyDesc: 'Хто ділить XP, і рівні за віхами.',
+      partyDesc: 'Хто ділить XP.',
       tools: 'Інструменти',
       toolsDesc: 'Налаштування, стан і довідка.',
       footer: 'Кнопки запускають команди LazyExperience. Подробиці в хендауті {help}.',
@@ -11786,7 +11431,7 @@ const LazyExperienceMod = (() => {
       footer: 'Кнопки для всіх команд є в хендауті {deck}.',
       overview: {
         heading: 'Огляд',
-        body: 'LazyExperience збирає очки досвіду, зароблені за сесію, ділить їх між членами групи й записує в аркуші персонажів. Він читає та записує аркуш D&D 2024, а також старіші й інші аркуші, використовує власну групу Roll20, помічає переможених істот, враховує відсутніх гравців і бонусні XP, оголошує про нові рівні та веде журнал кожної сесії. Ігри з підвищенням рівня за віхами можуть використовувати його для оголошення рівнів.',
+        body: 'LazyExperience збирає очки досвіду, зароблені за сесію, ділить їх між членами групи й записує в аркуші персонажів. Він читає та записує аркуш D&D 2024, а також старіші й інші аркуші, використовує власну групу Roll20, помічає переможених істот, враховує відсутніх гравців і бонусні XP, оголошує про нові рівні та веде журнал кожної сесії.',
       },
       quickStart: {
         heading: 'Швидкий старт',
@@ -11840,11 +11485,10 @@ const LazyExperienceMod = (() => {
         ],
       },
       levels: {
-        heading: 'Рівні та віхи',
+        heading: 'Підвищення рівня',
         points: [
           'Після запису XP LazyExperience перевіряє таблицю рівнів системи й повідомляє, коли в персонажа достатньо XP для нового рівня.',
           'На аркуші D&D 2024 гравець потім натискає кнопку підвищення рівня на аркуші.',
-          'Режим віх вимикає XP. «Віха» підвищує рівень групи (або вибраних персонажів) на один і оголошує про це. Аркуші не змінюються.',
         ],
       },
       systems: {
@@ -11867,7 +11511,7 @@ const LazyExperienceMod = (() => {
           'Аркушам Beacon, наприклад D&D 2024, потрібен Mod sandbox v1.5, а мод не може встановити їм 0 XP.',
           'Pathfinder 1E і Starfinder беруть для сповіщень про новий рівень поле аркуша з XP до наступного рівня. Якщо воно порожнє, Pathfinder використовує середній темп, а Starfinder — власну таблицю.',
           'WFRP 4E: кожна нагорода додається рядком до списку Experience аркуша, але під час тестування аркуш не перерахував суми XP, тож перевірте їх на аркуші.',
-          'У Savage Worlds, 13th Age, Cosmere і Call of Cthulhu немає XP, які міг би записати мод: використовуйте режим віх.',
+          'У Savage Worlds, 13th Age, Cosmere і Call of Cthulhu немає XP, які міг би записати мод.',
         ],
       },
       settings: {
@@ -13179,7 +12823,6 @@ const LazyExperienceMod = (() => {
       ['undo', 'undo'],
       ['end', 'end'],
       ['reset session', 'resetSession'],
-      ['milestone [--ids …]', 'milestone'],
       ['show', 'show'],
       ['roster', 'roster'],
       ['party add | remove', 'party'],
@@ -13277,7 +12920,7 @@ const LazyExperienceMod = (() => {
     </div>
     ${group('deck.session', 'deck.sessionDesc', [btn('menu', ''), btn('addXp', `add ${xp} ${reason}`), btn('undo', 'undo', true), btn('show', 'show', true), btn('endSession', `end ?{${tr('prompts.confirmEnd')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`)])}
     ${group('deck.selected', 'deck.selectedDesc', [btn('killSelected', 'kill'), btn('bonusSelected', `bonus ${xp} ${reason}`), btn('giveSelected', `give ${xp} ${reason}`, true), btn('absent', 'absent', true), btn('present', 'present', true)])}
-    ${group('deck.party', 'deck.partyDesc', [btn('roster', 'roster'), btn('partyAdd', 'party add', true), btn('partyRemove', 'party remove', true), btn('milestoneAll', `milestone ?{${tr('prompts.confirmMilestone')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`, true)])}
+    ${group('deck.party', 'deck.partyDesc', [btn('roster', 'roster'), btn('partyAdd', 'party add', true), btn('partyRemove', 'party remove', true)])}
     ${group('deck.tools', 'deck.toolsDesc', [btn('settings', 'settings', true), btn('status', 'status', true), btn('log', 'log', true), btn('help', 'help', true)])}
     <div style="${STYLE.footer}">${escapeHtml(tr('deck.footer', { help: HANDOUT_HELP_NAME }))}</div>
   </div>`;
@@ -13843,12 +13486,12 @@ const LazyExperienceMod = (() => {
     return null;
   }
 
-  // Level-up notices and milestone levelling.
+  // Level-up notices.
 
   const levelObservers = [];
 
   /**
-   * Registers a function called with {character, level, reason} when a character levels.
+   * Registers a function called with {character, level} when a character levels.
    *
    * @param {Function} fn Observer.
    * @returns {void}
@@ -13880,15 +13523,14 @@ const LazyExperienceMod = (() => {
    *
    * @param {object} character Roll20 character.
    * @param {number} level New level.
-   * @param {'xp'|'milestone'} reason Why.
    * @returns {void}
    */
-  function announceLevel(character, level, reason) {
+  function announceLevel(character, level) {
     const lang = getConfig().language;
     const profile = getProfile(character);
     const name = escapeForChat(character.get('name'));
     const lines = [
-      `<div>${t(reason === 'milestone' ? 'levels.milestone' : 'levels.reached', lang, { name: `<strong>${name}</strong>`, level })}</div>`,
+      `<div>${t('levels.reached', lang, { name: `<strong>${name}</strong>`, level })}</div>`,
     ];
     const hint = { sheetButton: 'levels.sheetButton', pf2: 'levels.pf2', spend: 'levels.spend' }[
       profile.levelUpHint
@@ -13900,8 +13542,8 @@ const LazyExperienceMod = (() => {
       t('titles.levelUp', lang),
       lines
     );
-    getSession().levelUps.push({ id: character.id, name: character.get('name'), level, reason });
-    notifyObservers({ character, level, reason });
+    getSession().levelUps.push({ id: character.id, name: character.get('name'), level });
+    notifyObservers({ character, level });
   }
 
   /**
@@ -13934,35 +13576,8 @@ const LazyExperienceMod = (() => {
       return null;
     }
     rec.notified = reached;
-    announceLevel(character, reached, 'xp');
+    announceLevel(character, reached);
     return reached;
-  }
-
-  /**
-   * Raises the tracked level of characters by one (milestone levelling) and announces it.
-   * Sheets are not changed: on many sheets the level comes from class levels.
-   *
-   * @param {object[]} characters Roll20 characters.
-   * @returns {Promise<{name: string, level: number}[]>} New levels.
-   */
-  async function grantMilestone(characters) {
-    const results = [];
-    for (const character of characters) {
-      const rec = getCharacterRecord(character.id);
-      // The tracked level, or the sheet's if the player has levelled up past it.
-      const progress = await readProgress(character);
-      const current = Math.max(
-        Number.isFinite(rec.level) ? rec.level : 0,
-        Number.isFinite(progress.level) ? progress.level : 0,
-        1
-      );
-      const level = current + 1;
-      rec.level = level;
-      rec.notified = level;
-      announceLevel(character, level, 'milestone');
-      results.push({ name: character.get('name'), level });
-    }
-    return results;
   }
 
   // The session: the XP pool, bonuses, awards, paying out and ending a session.
@@ -14275,7 +13890,7 @@ const LazyExperienceMod = (() => {
     let rows = [];
     let results = [];
     let split = null;
-    if (config.mode === 'xp' && config.payout === 'end') {
+    if (config.payout === 'end') {
       const preview = previewPayout();
       split = preview.split;
       rows = preview.rows;
@@ -14288,7 +13903,6 @@ const LazyExperienceMod = (() => {
       number: session.number,
       started: session.started,
       ended: Date.now(),
-      mode: config.mode,
       payout: config.payout,
       pool: session.pool,
       awards: session.awards.filter((a) => !a.undone),
@@ -14402,13 +14016,6 @@ const LazyExperienceMod = (() => {
       lines.push(
         `<div>${escapeForChat(row.name)}: <strong>${formatNumber(row.xp)}</strong> XP</div>`
       );
-    }
-    if (summary.mode === 'milestone' && summary.levelUps.length > 0) {
-      for (const up of summary.levelUps) {
-        lines.push(
-          `<div>${escapeForChat(t('end.levelLine', lang, { name: up.name, level: up.level }))}</div>`
-        );
-      }
     }
     const owners = summary.totals.flatMap((r) => {
       const c = getObj('character', r.id);
@@ -14553,7 +14160,7 @@ const LazyExperienceMod = (() => {
    * @returns {void}
    */
   function handleTokenChange(token, prev) {
-    if (getConfig().killMode === 'off' || getConfig().mode !== 'xp') return;
+    if (getConfig().killMode === 'off') return;
     if (recentAttrTokens.has(token.id)) return;
     if (defeatSource(token, prev)) {
       void noticeDefeat(token);
@@ -14570,7 +14177,7 @@ const LazyExperienceMod = (() => {
    */
   function handleAttributeChange(attr, prev) {
     const config = getConfig();
-    if (config.killMode === 'off' || config.mode !== 'xp' || !config.killBar) return;
+    if (config.killMode === 'off' || !config.killBar) return;
     const now = parseHp(attr.get('current'));
     const before = parseHp(prevValue(prev, 'current'));
     if (now === null || before === null || !(now <= 0 && before > 0)) return;
@@ -14591,7 +14198,7 @@ const LazyExperienceMod = (() => {
    */
   function handleDeathTrackerStatus(event) {
     const config = getConfig();
-    if (config.killMode === 'off' || config.mode !== 'xp' || !config.killDeathTracker) return;
+    if (config.killMode === 'off' || !config.killDeathTracker) return;
     if (event?.status === 'dead' && event.token) {
       void noticeDefeat(event.token);
     }
@@ -14733,77 +14340,53 @@ const LazyExperienceMod = (() => {
     const config = getConfig();
     const session = getSession();
     const lines = [];
+    lines.push(buildRow(tr('menu.session'), `<strong>${session.number}</strong>`));
+    const { split, rows } = previewPayout();
     lines.push(
-      buildRow(tr('menu.session'), `<strong>${session.number}</strong>`),
-      buildRow(tr('menu.mode'), escapeForChat(tr(`options.mode.${config.mode}`)))
+      buildRow(
+        tr('menu.pool'),
+        `<strong>${formatNumber(session.pool)}</strong>${session.carried ? ` (+${formatNumber(session.carried)})` : ''}`
+      ),
+      buildRow(tr('menu.payout'), escapeForChat(tr(`options.payout.${config.payout}`))),
+      // Half shares are common, so shares keep up to two decimals (3.5, not 4).
+      buildRow(
+        tr('menu.shares'),
+        Number.isInteger(split.shares)
+          ? formatNumber(split.shares)
+          : String(Math.round(split.shares * 100) / 100)
+      ),
+      buildRow(tr('menu.perShare'), formatNumber(split.perShare))
     );
-    if (config.mode === 'xp') {
-      const { split, rows } = previewPayout();
+    lines.push(
+      buildSectionLabel(tr('menu.party', { source: tr(`options.roster.${rosterSource()}`) }))
+    );
+    if (rows.length === 0) {
+      lines.push(buildNote(escapeForChat(tr('menu.noParty'))));
+    }
+    for (const row of rows) {
+      const rec = getCharacterRecord(row.id);
+      const toggle = rec.absent
+        ? buildSecondaryButton(tr('buttons.present'), `${COMMAND} present --ids ${row.id} --menu`)
+        : buildSecondaryButton(tr('buttons.absent'), `${COMMAND} absent --ids ${row.id} --menu`);
+      const detail = [
+        config.payout === 'end' ? formatNumber(row.total) : formatNumber(session.paid[row.id] || 0),
+        rec.absent ? tr('menu.absentTag') : '',
+        row.bonus ? tr('menu.bonusTag', { xp: formatNumber(row.bonus) }) : '',
+      ]
+        .filter(Boolean)
+        .join(' ');
       lines.push(
         buildRow(
-          tr('menu.pool'),
-          `<strong>${formatNumber(session.pool)}</strong>${session.carried ? ` (+${formatNumber(session.carried)})` : ''}`
-        ),
-        buildRow(tr('menu.payout'), escapeForChat(tr(`options.payout.${config.payout}`))),
-        // Half shares are common, so shares keep up to two decimals (3.5, not 4).
-        buildRow(
-          tr('menu.shares'),
-          Number.isInteger(split.shares)
-            ? formatNumber(split.shares)
-            : String(Math.round(split.shares * 100) / 100)
-        ),
-        buildRow(tr('menu.perShare'), formatNumber(split.perShare))
-      );
-      lines.push(
-        buildSectionLabel(tr('menu.party', { source: tr(`options.roster.${rosterSource()}`) }))
-      );
-      if (rows.length === 0) {
-        lines.push(buildNote(escapeForChat(tr('menu.noParty'))));
-      }
-      for (const row of rows) {
-        const rec = getCharacterRecord(row.id);
-        const toggle = rec.absent
-          ? buildSecondaryButton(tr('buttons.present'), `${COMMAND} present --ids ${row.id} --menu`)
-          : buildSecondaryButton(tr('buttons.absent'), `${COMMAND} absent --ids ${row.id} --menu`);
-        const detail = [
-          config.payout === 'end'
-            ? formatNumber(row.total)
-            : formatNumber(session.paid[row.id] || 0),
-          rec.absent ? tr('menu.absentTag') : '',
-          row.bonus ? tr('menu.bonusTag', { xp: formatNumber(row.bonus) }) : '',
-        ]
-          .filter(Boolean)
-          .join(' ');
-        lines.push(
-          buildRow(
-            row.name,
-            `${escapeForChat(detail)} ${buildSecondaryButton('+', `${COMMAND} bonus ?{${tr('prompts.xp')}} --ids ${row.id} --menu`)}${toggle}`
-          )
-        );
-      }
-      lines.push(buildDivider());
-      lines.push(
-        `<div>${buildButton(tr('buttons.addXp'), `${COMMAND} add ?{${tr('prompts.xp')}} ?{${tr('prompts.reason')}| } --menu`)}${buildButton(tr('buttons.killSelected'), `${COMMAND} kill --menu`)}${buildButton(tr('buttons.bonusSelected'), `${COMMAND} bonus ?{${tr('prompts.xp')}} --menu`)}</div>`,
-        `<div>${buildButton(tr('buttons.endSession'), `${COMMAND} end ?{${tr('prompts.confirmEnd')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`)}${buildSecondaryButton(tr('buttons.undo'), `${COMMAND} undo --menu`)}</div>`
-      );
-    } else {
-      lines.push(
-        buildSectionLabel(tr('menu.party', { source: tr(`options.roster.${rosterSource()}`) }))
-      );
-      for (const c of getRoster()) {
-        const rec = getCharacterRecord(c.id);
-        lines.push(
-          buildRow(
-            c.get('name'),
-            `${rec.level ? escapeForChat(tr('menu.levelTag', { level: rec.level })) : ''} ${buildSecondaryButton(tr('buttons.levelUp'), `${COMMAND} milestone --ids ${c.id} --menu`)}`
-          )
-        );
-      }
-      lines.push(buildDivider());
-      lines.push(
-        `<div>${buildButton(tr('buttons.milestoneAll'), `${COMMAND} milestone ?{${tr('prompts.confirmMilestone')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no} --menu`)}${buildButton(tr('buttons.endSession'), `${COMMAND} end yes`)}</div>`
+          row.name,
+          `${escapeForChat(detail)} ${buildSecondaryButton('+', `${COMMAND} bonus ?{${tr('prompts.xp')}} --ids ${row.id} --menu`)}${toggle}`
+        )
       );
     }
+    lines.push(buildDivider());
+    lines.push(
+      `<div>${buildButton(tr('buttons.addXp'), `${COMMAND} add ?{${tr('prompts.xp')}} ?{${tr('prompts.reason')}| } --menu`)}${buildButton(tr('buttons.killSelected'), `${COMMAND} kill --menu`)}${buildButton(tr('buttons.bonusSelected'), `${COMMAND} bonus ?{${tr('prompts.xp')}} --menu`)}</div>`,
+      `<div>${buildButton(tr('buttons.endSession'), `${COMMAND} end ?{${tr('prompts.confirmEnd')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`)}${buildSecondaryButton(tr('buttons.undo'), `${COMMAND} undo --menu`)}</div>`
+    );
     lines.push(
       `<div>${buildSecondaryButton(tr('buttons.roster'), `${COMMAND} roster`)}${buildSecondaryButton(tr('buttons.settings'), `${COMMAND} settings`)}${buildSecondaryButton(tr('buttons.status'), `${COMMAND} status`)}${buildSecondaryButton(tr('buttons.help'), `${COMMAND} help`)}</div>`
     );
@@ -14934,7 +14517,7 @@ const LazyExperienceMod = (() => {
     const { tr } = helpers();
     const config = getConfig();
     const groups = [
-      ['menu.groupXp', ['language', 'mode', 'payout', 'updateSheets', 'announce', 'levelNotice']],
+      ['menu.groupXp', ['language', 'payout', 'updateSheets', 'announce', 'levelNotice']],
       ['menu.groupParty', ['roster', 'absentShare', 'extraShares']],
       [
         'menu.groupKills',
@@ -15281,7 +14864,6 @@ const LazyExperienceMod = (() => {
       ['absent | present [--ids]', 'absent'],
       ['end', 'end'],
       ['undo', 'undo'],
-      ['milestone [--ids]', 'milestone'],
       ['show', 'show'],
       ['roster', 'roster'],
       ['party add | remove', 'party'],
@@ -15400,10 +14982,6 @@ const LazyExperienceMod = (() => {
         return;
       }
       case 'add': {
-        if (config.mode !== 'xp') {
-          whisperWarning(who, t('errors.milestoneMode', lang));
-          return;
-        }
         // 0.1.x: "add session <xp>" and "add <characterid> <xp>".
         if (toText(args[0]).toLowerCase() === 'session') args.shift();
         const maybeChar = getObj('character', toText(args[0]));
@@ -15439,7 +15017,6 @@ const LazyExperienceMod = (() => {
         return;
       }
       case 'bonus': {
-        if (config.mode !== 'xp') return whisperWarning(who, t('errors.milestoneMode', lang));
         const xp = validXp(parseStrictInt(args.shift()), true);
         if (xp === null) return whisperError(who, t('errors.badXp', lang));
         const chars = targetCharacters(msg, flags);
@@ -15464,7 +15041,6 @@ const LazyExperienceMod = (() => {
         return;
       }
       case 'give': {
-        if (config.mode !== 'xp') return whisperWarning(who, t('errors.milestoneMode', lang));
         const xp = validXp(parseStrictInt(args.shift()), true);
         if (xp === null) return whisperError(who, t('errors.badXp', lang));
         const chars = targetCharacters(msg, flags);
@@ -15578,14 +15154,6 @@ const LazyExperienceMod = (() => {
         showSettings(who);
         return;
       }
-      case 'milestone': {
-        if (toText(args[0]).toLowerCase() === 'no') return;
-        const chars = typeof flags.ids === 'string' ? targetCharacters(msg, flags) : getRoster();
-        if (chars.length === 0) return whisperError(who, t('errors.noCharacters', lang));
-        await grantMilestone(chars);
-        reshow(who, flags);
-        return;
-      }
       default:
         whisperError(
           who,
@@ -15643,7 +15211,6 @@ const LazyExperienceMod = (() => {
   async function handleKill(msg, who, args, flags) {
     const config = getConfig();
     const lang = config.language;
-    if (config.mode !== 'xp') return whisperWarning(who, t('errors.milestoneMode', lang));
     const action = toText(args[0]).toLowerCase();
     if (action === 'confirm') {
       const xp = args[2] === undefined ? undefined : parseStrictInt(args[2]);
@@ -15774,7 +15341,7 @@ const LazyExperienceMod = (() => {
       },
       /** Calls fn({kind, xp, reason, targets}) after each award. */
       onAward,
-      /** Calls fn({character, level, reason}) after each level-up notice. */
+      /** Calls fn({character, level}) after each level-up notice. */
       onLevelUp,
       CheckInstall: () => {},
       RegisterEventHandlers: () => {},
