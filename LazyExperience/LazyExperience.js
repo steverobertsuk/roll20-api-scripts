@@ -5,7 +5,7 @@
  * Name: LazyExperience
  * Script: LazyExperience.js
  * Version: 1.0.0
- * Built: 2026-11-13T19:10:40.652Z
+ * Built: 2026-11-13T20:01:12.897Z
  */
 const LazyExperienceMod = (() => {
   'use strict';
@@ -13,7 +13,7 @@ const LazyExperienceMod = (() => {
   // Build-time placeholders replaced by rollup.config.js inject-build-metadata plugin.
   const SCRIPT_NAME = 'LazyExperience';
   const SCRIPT_VERSION = '1.0.0';
-  const SCRIPT_LAST_UPDATED = '2026-11-13T19:10:40.652Z';
+  const SCRIPT_LAST_UPDATED = '2026-11-13T20:01:12.897Z';
 
   const DEFAULT_LOCALE$1 = 'en-US';
 
@@ -442,13 +442,16 @@ const LazyExperienceMod = (() => {
     'margin:1px 2px',
   ].join(';');
 
+  // The same section bar as the handouts, so a card's sections stand out.
   const SECTION_LABEL_STYLE = [
-    `color:${COLOR_MUTED}`,
-    'font-size:0.8em',
-    'text-transform:uppercase',
-    'letter-spacing:0.08em',
-    'margin-top:4px',
-    'margin-bottom:2px',
+    `background:${COLOR_HEADER_BG}`,
+    `color:${COLOR_ACCENT}`,
+    `border-left:3px solid ${COLOR_ACCENT}`,
+    'padding:2px 6px',
+    'font-variant:small-caps',
+    'font-weight:bold',
+    'letter-spacing:0.05em',
+    'margin:6px 0 3px 0',
   ].join(';');
 
   const DIVIDER_STYLE = `border:none;border-top:1px solid ${COLOR_BORDER};margin:4px 0`;
