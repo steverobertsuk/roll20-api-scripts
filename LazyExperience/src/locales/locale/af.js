@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sessie',
-    mode: 'Modus',
     pool: 'Sessie-XP',
     payout: 'Uitbetaal',
     shares: 'Aandele',
@@ -59,8 +58,6 @@ export default {
     include: 'Sluit in',
     partyAdd: 'Voeg gekiesde by groep',
     partyRemove: 'Verwyder gekiesde',
-    levelUp: 'Vlakstyging',
-    milestoneAll: 'Mylpaal: Hele groep',
     addKill: 'Voeg {xp} XP by',
     otherXp: 'Ander hoeveelheid',
     ignore: 'Ignoreer',
@@ -70,11 +67,9 @@ export default {
     reason: 'Rede (opsioneel)',
     share: 'Aandeel (1 = volle, 0,5 = half)',
     confirmEnd: 'Die sessie beëindig en die XP uitdeel?',
-    confirmMilestone: 'Elke groeplid een vlak verhoog?',
   },
   options: {
     yesNo: { yes: 'Ja', no: 'Nee' },
-    mode: { xp: 'Ervaringspunte', milestone: 'Mylpale' },
     payout: { end: 'Aan die einde van die sessie', instant: 'Dadelik' },
     roster: {
       auto: 'Outomaties',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: 'Taal', desc: 'Taal vir klets-kaarte en handouts.' },
-    mode: {
-      label: 'Modus',
-      desc: 'Ervaringspunte (xp) of vlakstyging met mylpale (milestone). Mylpale kondig vlakke aan en ken geen XP toe nie.',
-    },
     payout: {
       label: 'Betaal XP',
       desc: 'end: XP versamel in die sessiepot en word uitgedeel wanneer die sessie eindig. instant: elke toekenning word verdeel en dadelik uitbetaal.',
@@ -192,7 +183,6 @@ export default {
   },
   levels: {
     reached: '{name} het genoeg XP vir vlak {level}!',
-    milestone: '{name} bereik vlak {level}!',
     sheetButton: 'Gebruik die vlakstygingknoppie op die karakterblad.',
     updateSheet: 'Dateer die vlak op die karakterblad op.',
     pf2: 'Verhoog die vlak op die blad en trek 1 000 van die XP af.',
@@ -246,8 +236,7 @@ export default {
     write: {
       zero: "{name}: die blad kan nie vanaf 'n Mod op 0 XP gestel word nie. Verander dit op die blad.",
       sandbox: '{name}: hierdie blad het Mod sandbox v1.5 nodig om XP op te dateer.',
-      xpless:
-        '{name}: hierdie speelstelsel gebruik nie XP nie (of die blad bereken dit self). Gebruik mylpaalmodus.',
+      xpless: '{name}: hierdie speelstelsel gebruik nie XP nie (of die blad bereken dit self).',
       noField:
         '{name}: geen XP-veld is vir hierdie blad bekend nie. Stel Speelstelsel op custom en noem die veld.',
       error: '{name}: die blad kon nie met {xp} XP opgedateer word nie. Kyk na die Mod-konsole.',
@@ -265,8 +254,6 @@ export default {
     badShare: "Gee die aandeel as 'n getal van 0 tot 10, soos 0,5 of 50%.",
     noCharacters: 'Kies tokens wat karakters verteenwoordig, of gebruik --ids.',
     noTokens: 'Kies eers die verslane tokens, of gebruik --ids.',
-    milestoneMode:
-      'Die spel gebruik vlakstyging met mylpale, so XP word nie bygehou nie. Verander Modus in die instellings.',
   },
   status: {
     version: 'Weergawe',
@@ -301,7 +288,6 @@ export default {
     undo: 'Neem die laaste toekenning terug wat nog nie uitbetaal is nie.',
     end: 'Beëindig die sessie: betaal die XP uit, kondig dit aan en teken dit aan.',
     resetSession: 'Vee die sessie-XP uit sonder om dit uit te betaal.',
-    milestone: 'Verhoog die groep (of die gekiesde karakters) een vlak.',
     show: 'Wys elke groeplid se XP en vlak vanaf die blad.',
     roster: 'Wys die groepkaart.',
     party: 'Merk of ontmerk Roll20 se Party Member-blokkie vir die gekiesde karakters.',
@@ -320,7 +306,7 @@ export default {
     selected: 'Gekiesde tokens',
     selectedDesc: 'Kies eers tokens op die kaart.',
     party: 'Groep',
-    partyDesc: 'Wie die XP deel, en mylpaalvlakke.',
+    partyDesc: 'Wie die XP deel.',
     tools: 'Gereedskap',
     toolsDesc: 'Instellings, status en hulp.',
     footer: 'Knoppies voer LazyExperience-bevele uit. Sien die {help}-handout vir besonderhede.',
@@ -331,7 +317,7 @@ export default {
     footer: 'Knoppies vir elke bevel is in die {deck}-handout.',
     overview: {
       heading: 'Oorsig',
-      body: "LazyExperience versamel die ervaringspunte wat gedurende 'n sessie verdien word, verdeel dit onder die groep en skryf dit na die karakterblaaie. Dit lees en skryf die D&D 2024-blad sowel as ouer en ander blaaie, gebruik Roll20 se eie groep, merk verslane wesens op, hanteer afwesige spelers en bonus-XP, kondig vlakstygings aan en hou 'n logboek van elke sessie. Speletjies wat met mylpale vlakke styg, kan dit gebruik om vlakke aan te kondig.",
+      body: "LazyExperience versamel die ervaringspunte wat gedurende 'n sessie verdien word, verdeel dit onder die groep en skryf dit na die karakterblaaie. Dit lees en skryf die D&D 2024-blad sowel as ouer en ander blaaie, gebruik Roll20 se eie groep, merk verslane wesens op, hanteer afwesige spelers en bonus-XP, kondig vlakstygings aan en hou 'n logboek van elke sessie.",
     },
     quickStart: {
       heading: 'Vinnige begin',
@@ -385,11 +371,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Vlakke en mylpale',
+      heading: 'Vlakstygings',
       points: [
         "Nadat XP geskryf is, kontroleer LazyExperience die stelsel se vlaktabel en kondig aan wanneer 'n karakter genoeg XP vir 'n nuwe vlak het.",
         'Op die D&D 2024-blad druk die speler dan die blad se vlakstygingknoppie.',
-        'Mylpaalmodus skakel XP af. Mylpaal verhoog die groep (of gekiesde karakters) een vlak en kondig dit aan. Blaaie word nie verander nie.',
       ],
     },
     systems: {
@@ -412,7 +397,7 @@ export default {
         "Beacon-blaaie soos D&D 2024 het Mod sandbox v1.5 nodig, en 'n Mod kan hulle nie op 0 XP stel nie.",
         'Pathfinder 1E en Starfinder gebruik die blad se XP-vir-volgende-vlak-blokkie vir vlakstygingkennisgewings. Wanneer dit leeg is, gebruik Pathfinder die medium-baan en Starfinder sy eie tabel.',
         "WFRP 4E: elke toekenning word as 'n ry by die blad se Experience-lys gevoeg, maar die blad het sy XP-totale nie tydens toetsing herbereken nie, so gaan dit op die blad na.",
-        "Savage Worlds, 13th Age, Cosmere en Call of Cthulhu het geen XP vir 'n Mod om te skryf nie: gebruik mylpaalmodus.",
+        "Savage Worlds, 13th Age, Cosmere en Call of Cthulhu het geen XP vir 'n Mod om te skryf nie.",
       ],
     },
     settings: {

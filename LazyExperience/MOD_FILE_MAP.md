@@ -52,7 +52,6 @@ A quick reference for where to find each feature in the source.
 | DeathTracker status        | `src/kills.js`  | `handleDeathTrackerStatus`                  |
 | Prompt, confirm, ignore    | `src/kills.js`  | `noticeDefeat`, `confirmKill`, `ignoreKill` |
 | Level-up notices           | `src/levels.js` | `checkLevelUp`, `announceLevel`             |
-| Milestones                 | `src/levels.js` | `grantMilestone`                            |
 
 ## Handouts
 

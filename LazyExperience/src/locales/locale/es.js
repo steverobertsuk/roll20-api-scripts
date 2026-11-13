@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sesión',
-    mode: 'Modo',
     pool: 'PX de la sesión',
     payout: 'Pagado',
     shares: 'Partes',
@@ -59,8 +58,6 @@ export default {
     include: 'Incluir',
     partyAdd: 'Añadir selección al grupo',
     partyRemove: 'Quitar selección',
-    levelUp: 'Subir de nivel',
-    milestoneAll: 'Hito: todo el grupo',
     addKill: 'Añadir {xp} PX',
     otherXp: 'Otra cantidad',
     ignore: 'Ignorar',
@@ -70,11 +67,9 @@ export default {
     reason: 'Motivo (opcional)',
     share: 'Parte (1 = completa, 0,5 = mitad)',
     confirmEnd: '¿Terminar la sesión y repartir los PX?',
-    confirmMilestone: '¿Subir un nivel a cada miembro del grupo?',
   },
   options: {
     yesNo: { yes: 'Sí', no: 'No' },
-    mode: { xp: 'Puntos de experiencia', milestone: 'Hitos' },
     payout: { end: 'Al final de la sesión', instant: 'De inmediato' },
     roster: {
       auto: 'Automático',
@@ -99,10 +94,6 @@ export default {
   },
   settings: {
     language: { label: 'Idioma', desc: 'Idioma de las tarjetas de chat y los handouts.' },
-    mode: {
-      label: 'Modo',
-      desc: 'Puntos de experiencia (xp) o subida de nivel por hitos (milestone). Los hitos anuncian niveles y no otorgan PX.',
-    },
     payout: {
       label: 'Pagar PX',
       desc: 'end: los PX se acumulan en la reserva de la sesión y se reparten al terminar la sesión. instant: cada premio se divide y se paga de inmediato.',
@@ -203,7 +194,6 @@ export default {
   },
   levels: {
     reached: '¡{name} tiene PX suficientes para el nivel {level}!',
-    milestone: '¡{name} alcanza el nivel {level}!',
     sheetButton: 'Usa el botón Level Up de la hoja de personaje.',
     updateSheet: 'Actualiza el nivel en la hoja de personaje.',
     pf2: 'Sube el nivel en la hoja y réstale 1000 a los PX.',
@@ -258,8 +248,7 @@ export default {
     write: {
       zero: '{name}: un Mod no puede poner la hoja a 0 PX. Cámbialo en la hoja.',
       sandbox: '{name}: esta hoja necesita Mod sandbox v1.5 para actualizar los PX.',
-      xpless:
-        '{name}: este sistema de juego no usa PX (o la hoja los calcula sola). Usa el modo milestone.',
+      xpless: '{name}: este sistema de juego no usa PX (o la hoja los calcula sola).',
       noField:
         '{name}: no se conoce ningún campo de PX para esta hoja. Pon el sistema de juego en custom e indica el campo.',
       error: '{name}: no se pudo actualizar la hoja con {xp} PX. Consulta la consola del Mod.',
@@ -277,8 +266,6 @@ export default {
     badShare: 'Indica la parte como un número de 0 a 10, por ejemplo 0.5 o 50 %.',
     noCharacters: 'Selecciona fichas que representen personajes, o usa --ids.',
     noTokens: 'Selecciona primero las fichas derrotadas, o usa --ids.',
-    milestoneMode:
-      'La partida usa subida de nivel por hitos, así que no se llevan PX. Cambia el modo en los ajustes.',
   },
   status: {
     version: 'Versión',
@@ -313,7 +300,6 @@ export default {
     undo: 'Deshace el último premio que no se ha pagado.',
     end: 'Termina la sesión: paga los PX, los anuncia y los registra.',
     resetSession: 'Borra los PX de la sesión sin pagarlos.',
-    milestone: 'Sube un nivel al grupo (o a los personajes elegidos).',
     show: 'Muestra los PX y el nivel de cada miembro del grupo según la hoja.',
     roster: 'Muestra la tarjeta del grupo.',
     party: 'Marca o desmarca la casilla Party Member de Roll20 para los personajes seleccionados.',
@@ -332,7 +318,7 @@ export default {
     selected: 'Fichas seleccionadas',
     selectedDesc: 'Selecciona primero fichas en el mapa.',
     party: 'Grupo',
-    partyDesc: 'Quién se reparte los PX, y niveles por hitos.',
+    partyDesc: 'Quién se reparte los PX.',
     tools: 'Herramientas',
     toolsDesc: 'Ajustes, estado y ayuda.',
     footer:
@@ -344,7 +330,7 @@ export default {
     footer: 'Los botones de todos los comandos están en el handout {deck}.',
     overview: {
       heading: 'Descripción general',
-      body: 'LazyExperience recoge los puntos de experiencia ganados durante una sesión, los reparte entre el grupo y los escribe en las hojas de personaje. Lee y escribe la hoja de D&D 2024 así como hojas más antiguas y de otros sistemas, usa el grupo propio de Roll20, detecta las criaturas derrotadas, gestiona jugadores ausentes y PX extra, anuncia las subidas de nivel y guarda un registro de cada sesión. Las partidas que suben de nivel por hitos pueden usarlo para anunciar los niveles en su lugar.',
+      body: 'LazyExperience recoge los puntos de experiencia ganados durante una sesión, los reparte entre el grupo y los escribe en las hojas de personaje. Lee y escribe la hoja de D&D 2024 así como hojas más antiguas y de otros sistemas, usa el grupo propio de Roll20, detecta las criaturas derrotadas, gestiona jugadores ausentes y PX extra, anuncia las subidas de nivel y guarda un registro de cada sesión.',
     },
     quickStart: {
       heading: 'Inicio rápido',
@@ -398,11 +384,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Niveles e hitos',
+      heading: 'Subidas de nivel',
       points: [
         'Tras escribir los PX, LazyExperience consulta la tabla de niveles del sistema y anuncia cuándo un personaje tiene PX suficientes para un nuevo nivel.',
         'En la hoja de D&D 2024, el jugador pulsa entonces el botón Level Up de la hoja.',
-        'El modo de hitos desactiva los PX. Un hito sube un nivel al grupo (o a los personajes elegidos) y lo anuncia. Las hojas no se modifican.',
       ],
     },
     systems: {
@@ -425,7 +410,7 @@ export default {
         'Las hojas Beacon como D&D 2024 necesitan Mod sandbox v1.5, y un Mod no puede ponerlas a 0 PX.',
         'Pathfinder 1E y Starfinder usan la casilla de PX para el siguiente nivel de la hoja en los avisos de subida de nivel. Si está vacía, Pathfinder usa la progresión media y Starfinder su propia tabla.',
         'WFRP 4E: cada concesión se añade como una fila en la lista Experience de la hoja, pero en las pruebas la hoja no recalculó sus totales de PX, así que compruébalos en la hoja.',
-        'Savage Worlds, 13th Age, Cosmere y Call of Cthulhu no tienen PX que un Mod pueda escribir: usa el modo de hitos.',
+        'Savage Worlds, 13th Age, Cosmere y Call of Cthulhu no tienen PX que un Mod pueda escribir.',
       ],
     },
     settings: {

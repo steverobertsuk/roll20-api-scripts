@@ -120,7 +120,6 @@ export function buildHelpHtml(locale) {
     ['undo', 'undo'],
     ['end', 'end'],
     ['reset session', 'resetSession'],
-    ['milestone [--ids …]', 'milestone'],
     ['show', 'show'],
     ['roster', 'roster'],
     ['party add | remove', 'party'],
@@ -218,7 +217,7 @@ export function buildDeckHtml(locale) {
     </div>
     ${group('deck.session', 'deck.sessionDesc', [btn('menu', ''), btn('addXp', `add ${xp} ${reason}`), btn('undo', 'undo', true), btn('show', 'show', true), btn('endSession', `end ?{${tr('prompts.confirmEnd')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`)])}
     ${group('deck.selected', 'deck.selectedDesc', [btn('killSelected', 'kill'), btn('bonusSelected', `bonus ${xp} ${reason}`), btn('giveSelected', `give ${xp} ${reason}`, true), btn('absent', 'absent', true), btn('present', 'present', true)])}
-    ${group('deck.party', 'deck.partyDesc', [btn('roster', 'roster'), btn('partyAdd', 'party add', true), btn('partyRemove', 'party remove', true), btn('milestoneAll', `milestone ?{${tr('prompts.confirmMilestone')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`, true)])}
+    ${group('deck.party', 'deck.partyDesc', [btn('roster', 'roster'), btn('partyAdd', 'party add', true), btn('partyRemove', 'party remove', true)])}
     ${group('deck.tools', 'deck.toolsDesc', [btn('settings', 'settings', true), btn('status', 'status', true), btn('log', 'log', true), btn('help', 'help', true)])}
     <div style="${STYLE.footer}">${escapeHtml(tr('deck.footer', { help: HANDOUT_HELP_NAME }))}</div>
   </div>`;

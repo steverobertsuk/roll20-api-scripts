@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Játékalkalom',
-    mode: 'Mód',
     pool: 'Alkalom XP',
     payout: 'Kifizetve',
     shares: 'Részek',
@@ -59,8 +58,6 @@ export default {
     include: 'Felvétel',
     partyAdd: 'Kijelöltek a csapatba',
     partyRemove: 'Kijelöltek eltávolítása',
-    levelUp: 'Szintlépés',
-    milestoneAll: 'Mérföldkő: az egész csapat',
     addKill: '{xp} XP hozzáadása',
     otherXp: 'Más mennyiség',
     ignore: 'Mellőzés',
@@ -70,11 +67,9 @@ export default {
     reason: 'Indok (nem kötelező)',
     share: 'Rész (1 = teljes, 0,5 = fél)',
     confirmEnd: 'Lezárod az alkalmat és kiosztod az XP-t?',
-    confirmMilestone: 'Egy szinttel megemeled a csapat minden tagját?',
   },
   options: {
     yesNo: { yes: 'Igen', no: 'Nem' },
-    mode: { xp: 'Tapasztalati pontok', milestone: 'Mérföldkövek' },
     payout: { end: 'Az alkalom végén', instant: 'Azonnal' },
     roster: {
       auto: 'Automatikus',
@@ -99,10 +94,6 @@ export default {
   },
   settings: {
     language: { label: 'Nyelv', desc: 'A csevegőkártyák és a handoutok nyelve.' },
-    mode: {
-      label: 'Mód',
-      desc: 'Tapasztalati pontok (xp) vagy szintlépés mérföldkövekkel (milestone). A mérföldkövek bejelentik a szinteket, és nem adnak XP-t.',
-    },
     payout: {
       label: 'XP kifizetése',
       desc: 'end: az XP az alkalom készletében gyűlik, és az alkalom végén osztják szét. instant: minden jutalom azonnal elosztásra és kifizetésre kerül.',
@@ -201,7 +192,6 @@ export default {
   },
   levels: {
     reached: '{name} elég XP-vel rendelkezik a(z) {level}. szinthez!',
-    milestone: '{name} eléri a(z) {level}. szintet!',
     sheetButton: 'Használd a karakterlap Level Up gombját.',
     updateSheet: 'Frissítsd a szintet a karakterlapon.',
     pf2: 'Emeld a szintet a lapon, és vonj le 1000-et az XP-ből.',
@@ -255,8 +245,7 @@ export default {
     write: {
       zero: '{name}: a lapot Modból nem lehet 0 XP-re állítani. Módosítsd a lapon.',
       sandbox: '{name}: ennek a lapnak az XP frissítéséhez Mod sandbox v1.5 szükséges.',
-      xpless:
-        '{name}: ez a játékrendszer nem használ XP-t (vagy a lap maga számolja ki). Használd a milestone módot.',
+      xpless: '{name}: ez a játékrendszer nem használ XP-t (vagy a lap maga számolja ki).',
       noField:
         '{name}: ehhez a laphoz nem ismert XP-mező. Állítsd a Játékrendszert custom-ra, és add meg a mező nevét.',
       error: '{name}: a lapot nem sikerült {xp} XP-vel frissíteni. Nézd meg a Mod konzolt.',
@@ -274,8 +263,6 @@ export default {
     badShare: 'A részt 0 és 10 közötti számként add meg, például 0.5 vagy 50%.',
     noCharacters: 'Jelölj ki karaktereket ábrázoló tokeneket, vagy használd a --ids kapcsolót.',
     noTokens: 'Először jelöld ki a legyőzött tokeneket, vagy használd a --ids kapcsolót.',
-    milestoneMode:
-      'A játék mérföldköves szintlépést használ, ezért az XP nincs nyilvántartva. Módosítsd a Módot a beállításokban.',
   },
   status: {
     version: 'Verzió',
@@ -310,7 +297,6 @@ export default {
     undo: 'Az utolsó, még ki nem fizetett jutalom visszavonása.',
     end: 'Az alkalom lezárása: az XP kifizetése, bejelentése és naplózása.',
     resetSession: 'Az alkalom XP-jének törlése kifizetés nélkül.',
-    milestone: 'A csapat (vagy a kiválasztott karakterek) emelése egy szinttel.',
     show: 'A csapat minden tagjának XP-je és szintje a lapról.',
     roster: 'A csapatkártya megjelenítése.',
     party:
@@ -330,7 +316,7 @@ export default {
     selected: 'Kijelölt tokenek',
     selectedDesc: 'Először jelölj ki tokeneket a térképen.',
     party: 'Csapat',
-    partyDesc: 'Kik osztoznak az XP-n, és a mérföldkő-szintek.',
+    partyDesc: 'Kik osztoznak az XP-n.',
     tools: 'Eszközök',
     toolsDesc: 'Beállítások, állapot és súgó.',
     footer:
@@ -342,7 +328,7 @@ export default {
     footer: 'Az összes parancs gombjai a {deck} handoutban vannak.',
     overview: {
       heading: 'Áttekintés',
-      body: 'A LazyExperience összegyűjti az alkalom során szerzett tapasztalati pontokat, elosztja őket a csapat tagjai között, és ráírja a karakterlapokra. Olvassa és írja a D&D 2024 lapot, valamint a régebbi és más lapokat, használja a Roll20 saját csapatát, észreveszi a legyőzött lényeket, kezeli a távollévő játékosokat és a bónusz XP-t, bejelenti a szintlépéseket, és naplót vezet minden alkalomról. A mérföldkövekkel szintlépő játékok ezt a szintek bejelentésére használhatják.',
+      body: 'A LazyExperience összegyűjti az alkalom során szerzett tapasztalati pontokat, elosztja őket a csapat tagjai között, és ráírja a karakterlapokra. Olvassa és írja a D&D 2024 lapot, valamint a régebbi és más lapokat, használja a Roll20 saját csapatát, észreveszi a legyőzött lényeket, kezeli a távollévő játékosokat és a bónusz XP-t, bejelenti a szintlépéseket, és naplót vezet minden alkalomról.',
     },
     quickStart: {
       heading: 'Gyors kezdés',
@@ -396,11 +382,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Szintek és mérföldkövek',
+      heading: 'Szintlépések',
       points: [
         'Az XP beírása után a LazyExperience ellenőrzi a rendszer szinttáblázatát, és bejelenti, ha egy karakternek elég XP-je van egy új szinthez.',
         'A D&D 2024 lapon a játékos ekkor megnyomja a lap Level Up gombját.',
-        'A mérföldkő mód kikapcsolja az XP-t. A mérföldkő egy szinttel emeli a csapatot (vagy a kiválasztott karaktereket), és bejelenti. A lapok nem változnak.',
       ],
     },
     systems: {
@@ -423,7 +408,7 @@ export default {
         'A Beacon lapokhoz, például a D&D 2024-hez, Mod sandbox v1.5 kell, és Modból nem lehet őket 0 XP-re állítani.',
         'A Pathfinder 1E és a Starfinder a lap „XP a következő szintig” mezőjét használja a szintlépési értesítésekhez. Ha az üres, a Pathfinder a közepes haladási ütemet, a Starfinder a saját táblázatát használja.',
         'WFRP 4E: minden jutalom egy sorként kerül a lap Experience listájára, de a lap tesztelés közben nem számolta újra az XP-összegeit, ezért ellenőrizd őket a lapon.',
-        'A Savage Worlds, a 13th Age, a Cosmere és a Call of Cthulhu esetében nincs XP, amit egy Mod írhatna: használd a mérföldkő módot.',
+        'A Savage Worlds, a 13th Age, a Cosmere és a Call of Cthulhu esetében nincs XP, amit egy Mod írhatna.',
       ],
     },
     settings: {

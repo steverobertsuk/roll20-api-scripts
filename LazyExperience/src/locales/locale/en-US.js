@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Session',
-    mode: 'Mode',
     pool: 'Session XP',
     payout: 'Paid',
     shares: 'Shares',
@@ -59,8 +58,6 @@ export default {
     include: 'Include',
     partyAdd: 'Add Selected to Party',
     partyRemove: 'Remove Selected',
-    levelUp: 'Level Up',
-    milestoneAll: 'Milestone: Whole Party',
     addKill: 'Add {xp} XP',
     otherXp: 'Other Amount',
     ignore: 'Ignore',
@@ -70,11 +67,9 @@ export default {
     reason: 'Reason (optional)',
     share: 'Share (1 = full, 0.5 = half)',
     confirmEnd: 'End the session and hand out the XP?',
-    confirmMilestone: 'Raise every party member by one level?',
   },
   options: {
     yesNo: { yes: 'Yes', no: 'No' },
-    mode: { xp: 'Experience points', milestone: 'Milestones' },
     payout: { end: 'At the end of the session', instant: 'Straight away' },
     roster: {
       auto: 'Automatic',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: 'Language', desc: 'Language for chat cards and handouts.' },
-    mode: {
-      label: 'Mode',
-      desc: 'Experience points (xp) or milestone levelling (milestone). Milestones announce levels and award no XP.',
-    },
     payout: {
       label: 'Pay XP',
       desc: 'end: XP collects in the session pool and is handed out when the session ends. instant: every award is split and paid straight away.',
@@ -192,7 +183,6 @@ export default {
   },
   levels: {
     reached: '{name} has enough XP for level {level}!',
-    milestone: '{name} reaches level {level}!',
     sheetButton: 'Use the Level Up button on the character sheet.',
     updateSheet: 'Update the level on the character sheet.',
     pf2: 'Raise the level on the sheet and take 1,000 off the XP.',
@@ -246,8 +236,7 @@ export default {
     write: {
       zero: '{name}: the sheet cannot be set to 0 XP from a Mod. Change it on the sheet.',
       sandbox: '{name}: this sheet needs Mod sandbox v1.5 to update XP.',
-      xpless:
-        '{name}: this game system does not use XP (or the sheet works it out itself). Use milestone mode.',
+      xpless: '{name}: this game system does not use XP (or the sheet works it out itself).',
       noField:
         '{name}: no XP field is known for this sheet. Set Game system to custom and name the field.',
       error: '{name}: the sheet could not be updated with {xp} XP. See the Mod console.',
@@ -265,8 +254,6 @@ export default {
     badShare: 'Give the share as a number from 0 to 10, such as 0.5 or 50%.',
     noCharacters: 'Select tokens that stand for characters, or use --ids.',
     noTokens: 'Select the defeated tokens first, or use --ids.',
-    milestoneMode:
-      'The game uses milestone levelling, so XP is not tracked. Change Mode in the settings.',
   },
   status: {
     version: 'Version',
@@ -301,7 +288,6 @@ export default {
     undo: 'Take back the last award that has not been paid.',
     end: 'End the session: pay the XP, announce it and log it.',
     resetSession: 'Clear the session XP without paying it.',
-    milestone: 'Raise the party (or the chosen characters) by one level.',
     show: 'Show each party member’s XP and level from the sheet.',
     roster: 'Show the party card.',
     party: 'Tick or untick Roll20’s Party Member box for the selected characters.',
@@ -320,7 +306,7 @@ export default {
     selected: 'Selected tokens',
     selectedDesc: 'Select tokens on the map first.',
     party: 'Party',
-    partyDesc: 'Who shares the XP, and milestone levels.',
+    partyDesc: 'Who shares the XP.',
     tools: 'Tools',
     toolsDesc: 'Settings, status and help.',
     footer: 'Buttons run LazyExperience commands. See the {help} handout for details.',
@@ -331,7 +317,7 @@ export default {
     footer: 'Buttons for every command are in the {deck} handout.',
     overview: {
       heading: 'Overview',
-      body: 'LazyExperience collects the experience points earned during a session, splits them between the party and writes them to the character sheets. It reads and writes the D&D 2024 sheet as well as older and other sheets, uses Roll20’s own party, notices defeated creatures, handles absent players and bonus XP, announces level-ups and keeps a log of every session. Games that level by milestones can use it to announce levels instead.',
+      body: 'LazyExperience collects the experience points earned during a session, splits them between the party and writes them to the character sheets. It reads and writes the D&D 2024 sheet as well as older and other sheets, uses Roll20’s own party, notices defeated creatures, handles absent players and bonus XP, announces level-ups and keeps a log of every session.',
     },
     quickStart: {
       heading: 'Quick start',
@@ -385,11 +371,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Levels and milestones',
+      heading: 'Level-ups',
       points: [
         'After XP is written, LazyExperience checks the system’s level table and announces when a character has enough XP for a new level.',
         'On the D&D 2024 sheet the player then presses the sheet’s Level Up button.',
-        'Milestone mode turns XP off. Milestone raises the party (or chosen characters) by one level and announces it. Sheets are not changed.',
       ],
     },
     systems: {
@@ -412,7 +397,7 @@ export default {
         'Beacon sheets such as D&D 2024 need Mod sandbox v1.5, and a Mod cannot set them to 0 XP.',
         'Pathfinder 1E and Starfinder use the sheet’s XP-for-next-level box for level-up notices. When it is blank, Pathfinder uses the medium track and Starfinder its own table.',
         'WFRP 4E: each award is added as a row in the sheet’s Experience list, but the sheet did not recalculate its XP totals in testing, so check them on the sheet.',
-        'Savage Worlds, 13th Age, Cosmere and Call of Cthulhu have no XP for a Mod to write: use milestone mode.',
+        'Savage Worlds, 13th Age, Cosmere and Call of Cthulhu have no XP for a Mod to write.',
       ],
     },
     settings: {

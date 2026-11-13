@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sessione',
-    mode: 'Modalità',
     pool: 'PE della sessione',
     payout: 'Pagati',
     shares: 'Quote',
@@ -59,8 +58,6 @@ export default {
     include: 'Includi',
     partyAdd: 'Aggiungi selezione al gruppo',
     partyRemove: 'Rimuovi selezione',
-    levelUp: 'Sali di livello',
-    milestoneAll: 'Milestone: tutto il gruppo',
     addKill: 'Aggiungi {xp} PE',
     otherXp: 'Altro importo',
     ignore: 'Ignora',
@@ -70,11 +67,9 @@ export default {
     reason: 'Motivo (facoltativo)',
     share: 'Quota (1 = intera, 0,5 = metà)',
     confirmEnd: 'Terminare la sessione e distribuire i PE?',
-    confirmMilestone: 'Far salire di un livello ogni membro del gruppo?',
   },
   options: {
     yesNo: { yes: 'Sì', no: 'No' },
-    mode: { xp: 'Punti esperienza', milestone: 'Milestone' },
     payout: { end: 'Alla fine della sessione', instant: 'Subito' },
     roster: {
       auto: 'Automatico',
@@ -99,10 +94,6 @@ export default {
   },
   settings: {
     language: { label: 'Lingua', desc: 'Lingua per le schede della chat e i handout.' },
-    mode: {
-      label: 'Modalità',
-      desc: 'Punti esperienza (xp) o avanzamento di livello a milestone (milestone). Le milestone annunciano i livelli e non assegnano PE.',
-    },
     payout: {
       label: 'Pagamento dei PE',
       desc: 'end: i PE si accumulano nella riserva della sessione e vengono distribuiti al termine della sessione. instant: ogni assegnazione viene divisa e pagata subito.',
@@ -200,7 +191,6 @@ export default {
   },
   levels: {
     reached: '{name} ha PE sufficienti per il livello {level}!',
-    milestone: '{name} raggiunge il livello {level}!',
     sheetButton: 'Usa il pulsante Level Up sulla scheda del personaggio.',
     updateSheet: 'Aggiorna il livello sulla scheda del personaggio.',
     pf2: 'Aumenta il livello sulla scheda e sottrai 1.000 dai PE.',
@@ -256,8 +246,7 @@ export default {
     write: {
       zero: '{name}: un Mod non può impostare la scheda a 0 PE. Modificalo sulla scheda.',
       sandbox: '{name}: questa scheda richiede Mod sandbox v1.5 per aggiornare i PE.',
-      xpless:
-        '{name}: questo sistema di gioco non usa i PE (o la scheda li calcola da sola). Usa la modalità milestone.',
+      xpless: '{name}: questo sistema di gioco non usa i PE (o la scheda li calcola da sola).',
       noField:
         '{name}: per questa scheda non è noto alcun campo PE. Imposta il sistema di gioco su custom e indica il campo.',
       error:
@@ -276,8 +265,6 @@ export default {
     badShare: 'Indica la quota come numero da 0 a 10, ad esempio 0.5 o 50%.',
     noCharacters: 'Seleziona token che rappresentano personaggi, oppure usa --ids.',
     noTokens: 'Seleziona prima i token sconfitti, oppure usa --ids.',
-    milestoneMode:
-      'La partita usa l’avanzamento a milestone, quindi i PE non vengono tracciati. Cambia la modalità nelle impostazioni.',
   },
   status: {
     version: 'Versione',
@@ -312,7 +299,6 @@ export default {
     undo: 'Annulla l’ultima assegnazione non ancora pagata.',
     end: 'Termina la sessione: paga i PE, li annuncia e li registra.',
     resetSession: 'Azzera i PE della sessione senza pagarli.',
-    milestone: 'Fa salire di un livello il gruppo (o i personaggi scelti).',
     show: 'Mostra i PE e il livello di ogni membro del gruppo dalla scheda.',
     roster: 'Mostra la scheda del gruppo.',
     party: 'Spunta o deseleziona la casella Party Member di Roll20 per i personaggi selezionati.',
@@ -331,7 +317,7 @@ export default {
     selected: 'Token selezionati',
     selectedDesc: 'Seleziona prima dei token sulla mappa.',
     party: 'Gruppo',
-    partyDesc: 'Chi si divide i PE, e i livelli a milestone.',
+    partyDesc: 'Chi si divide i PE.',
     tools: 'Strumenti',
     toolsDesc: 'Impostazioni, stato e guida.',
     footer: 'I pulsanti eseguono comandi di LazyExperience. Vedi il handout {help} per i dettagli.',
@@ -342,7 +328,7 @@ export default {
     footer: 'I pulsanti per ogni comando si trovano nel handout {deck}.',
     overview: {
       heading: 'Panoramica',
-      body: 'LazyExperience raccoglie i punti esperienza guadagnati durante una sessione, li divide tra il gruppo e li scrive sulle schede dei personaggi. Legge e scrive la scheda di D&D 2024 oltre a schede più vecchie e di altri sistemi, usa il gruppo di Roll20, si accorge delle creature sconfitte, gestisce i giocatori assenti e i PE bonus, annuncia i salti di livello e tiene un registro di ogni sessione. Le partite che avanzano di livello a milestone possono usarlo per annunciare i livelli.',
+      body: 'LazyExperience raccoglie i punti esperienza guadagnati durante una sessione, li divide tra il gruppo e li scrive sulle schede dei personaggi. Legge e scrive la scheda di D&D 2024 oltre a schede più vecchie e di altri sistemi, usa il gruppo di Roll20, si accorge delle creature sconfitte, gestisce i giocatori assenti e i PE bonus, annuncia i salti di livello e tiene un registro di ogni sessione.',
     },
     quickStart: {
       heading: 'Avvio rapido',
@@ -396,11 +382,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Livelli e milestone',
+      heading: 'Avanzamenti di livello',
       points: [
         'Dopo aver scritto i PE, LazyExperience controlla la tabella dei livelli del sistema e annuncia quando un personaggio ha PE sufficienti per un nuovo livello.',
         'Sulla scheda di D&D 2024 il giocatore preme poi il pulsante Level Up della scheda.',
-        'La modalità milestone disattiva i PE. Una milestone fa salire di un livello il gruppo (o i personaggi scelti) e lo annuncia. Le schede non vengono modificate.',
       ],
     },
     systems: {
@@ -423,7 +408,7 @@ export default {
         'Le schede Beacon come D&D 2024 richiedono Mod sandbox v1.5 e un Mod non può impostarle a 0 PE.',
         'Pathfinder 1E e Starfinder usano la casella dei PE per il livello successivo della scheda per gli avvisi di salto di livello. Se è vuota, Pathfinder usa la progressione media e Starfinder una tabella propria.',
         "WFRP 4E: ogni assegnazione viene aggiunta come riga nell'elenco Experience della scheda, ma nei test la scheda non ha ricalcolato i totali di PE, quindi controllali sulla scheda.",
-        'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu non hanno PE che un Mod possa scrivere: usa la modalità milestone.',
+        'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu non hanno PE che un Mod possa scrivere.',
       ],
     },
     settings: {

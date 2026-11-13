@@ -7,7 +7,7 @@ LazyExperience collects the experience points (XP) a party earns during a sessio
 - **Defeated creatures.** A creature dropping to 0 HP, getting the defeated marker, or being marked dead by DeathTracker adds its XP to the session. By default you're asked first. The XP comes from the sheet's XP value or challenge rating.
 - **Fair splits.** Absent players can get nothing or part of a share, and characters can have their own share. There's bonus XP for one character and extra shares for companions. XP that doesn't divide evenly carries over to the next session.
 - **Two ways to pay.** XP can be paid at the end of the session (the default) or straight away.
-- **Level-ups** are announced when a character has enough XP. **Milestone mode** announces levels without tracking XP.
+- **Level-ups** are announced when a character has enough XP.
 - **Session Log handout.** Every session is recorded, newest first.
 - Help and Command Deck handouts, in 24 languages.
 
@@ -41,7 +41,6 @@ Commands for characters use the selected tokens, or `--ids` followed by characte
 | `!lazyxp undo`                        | Take back the last award that hasn't been paid.                      |
 | `!lazyxp end`                         | End the session: pay, announce and log.                              |
 | `!lazyxp reset session`               | Clear the session XP without paying it.                              |
-| `!lazyxp milestone [--ids]`           | Raise the party (or the chosen characters) by one level.             |
 | `!lazyxp show`                        | Each party member's XP and level from the sheet, and the next level. |
 | `!lazyxp roster`                      | The Party card: who shares, shares, absence.                         |
 | `!lazyxp party add` / `remove`        | Tick or untick Roll20's Party Member for the selected characters.    |
@@ -58,7 +57,6 @@ Commands for characters use the selected tokens, or `--ids` followed by characte
 | Setting            | Default    | What it does                                                                                    |
 | ------------------ | ---------- | ----------------------------------------------------------------------------------------------- |
 | `language`         | `en-US`    | Language for chat cards and handouts.                                                           |
-| `mode`             | `xp`       | `xp` or `milestone`. Milestones announce levels and award no XP.                                |
 | `payout`           | `end`      | `end`: pay when the session ends. `instant`: split and pay every award at once.                 |
 | `updateSheets`     | `true`     | Write XP to the sheets. When off, the totals are only announced.                                |
 | `system`           | `auto`     | Game-system profile. `auto` picks one per character from its sheet; `custom` uses your fields.  |
@@ -102,10 +100,10 @@ LazyExperience picks a game-system profile for each character from the sheet the
 | Shadowrun, Sixth World                              | `shadowrun6world`        | `karma` and `total_karma`                                          | —                                                 | —                                            | Tested                                                  |
 | Cypher Systems                                      | `cypherstemsr20`         | `xp`                                                               | —                                                 | —                                            | Tested                                                  |
 | Warhammer Fantasy Roleplay 4e Official by Cubicle 7 | `wfrp4official`          | a new row in the Experience list                                   | —                                                 | —                                            | Partly: the sheet did not recalculate its XP totals     |
-| Official Savage Worlds by Pinnacle                  | `savageworldsofficial`   | nothing: the sheet counts Advances                                 | use milestone mode                                | —                                            | Tested (XP refused with a warning)                      |
-| 13th Age                                            | `official13thage`        | nothing: no XP on the sheet                                        | use milestone mode                                | —                                            | Tested (XP refused with a warning)                      |
+| Official Savage Worlds by Pinnacle                  | `savageworldsofficial`   | nothing: the sheet counts Advances                                 | —                                                 | —                                            | Tested (XP refused with a warning)                      |
+| 13th Age                                            | `official13thage`        | nothing: no XP on the sheet                                        | —                                                 | —                                            | Tested (XP refused with a warning)                      |
 | Call of Cthulhu 7th Edition                         | `coc7e`, `callofcthulu`  | nothing: no XP on the sheet                                        | —                                                 | —                                            | Tested (XP refused with a warning)                      |
-| Cosmere RPG (Demiplane Optional)                    | `cosmereofficial`        | nothing: levels by milestone                                       | use milestone mode                                | —                                            | Not tested: Roll20 would not switch the test game to it |
+| Cosmere RPG (Demiplane Optional)                    | `cosmereofficial`        | nothing: no XP on the sheet                                        | —                                                 | —                                            | Not tested: Roll20 would not switch the test game to it |
 | Any other sheet                                     | —                        | `experience`, `xp`, `exp` or `experience_points`, whichever exists | custom level table                                | `npc_xp`, `xp` or `experience`, else CR      | Use **Game system: custom** to name the fields          |
 
 Notes:

@@ -116,7 +116,7 @@ function publishApi() {
     },
     /** Calls fn({kind, xp, reason, targets}) after each award. */
     onAward,
-    /** Calls fn({character, level, reason}) after each level-up notice. */
+    /** Calls fn({character, level}) after each level-up notice. */
     onLevelUp,
     CheckInstall: () => {},
     RegisterEventHandlers: () => {},

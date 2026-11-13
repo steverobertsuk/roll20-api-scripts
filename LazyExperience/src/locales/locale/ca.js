@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sessió',
-    mode: 'Mode',
     pool: 'XP de la sessió',
     payout: 'Pagat',
     shares: 'Parts',
@@ -59,8 +58,6 @@ export default {
     include: 'Inclou',
     partyAdd: 'Afegeix els seleccionats al grup',
     partyRemove: 'Treu els seleccionats',
-    levelUp: 'Puja de nivell',
-    milestoneAll: 'Fita: tot el grup',
     addKill: 'Afegeix {xp} XP',
     otherXp: 'Una altra quantitat',
     ignore: 'Ignora',
@@ -70,11 +67,9 @@ export default {
     reason: 'Motiu (opcional)',
     share: 'Part (1 = completa, 0,5 = meitat)',
     confirmEnd: "Vols acabar la sessió i repartir l'XP?",
-    confirmMilestone: 'Vols pujar un nivell a cada membre del grup?',
   },
   options: {
     yesNo: { yes: 'Sí', no: 'No' },
-    mode: { xp: "Punts d'experiència", milestone: 'Fites' },
     payout: { end: 'Al final de la sessió', instant: 'Immediatament' },
     roster: {
       auto: 'Automàtic',
@@ -99,10 +94,6 @@ export default {
   },
   settings: {
     language: { label: 'Llengua', desc: 'Llengua de les targetes del xat i dels handouts.' },
-    mode: {
-      label: 'Mode',
-      desc: "Punts d'experiència (xp) o pujada de nivell per fites (milestone). Les fites anuncien nivells i no atorguen XP.",
-    },
     payout: {
       label: "Paga l'XP",
       desc: "end: l'XP s'acumula al fons de la sessió i es reparteix quan aquesta acaba. instant: cada premi es divideix i es paga a l'acte.",
@@ -203,7 +194,6 @@ export default {
   },
   levels: {
     reached: '{name} té prou XP per al nivell {level}!',
-    milestone: '{name} arriba al nivell {level}!',
     sheetButton: 'Fes servir el botó de pujar de nivell de la fitxa del personatge.',
     updateSheet: 'Actualitza el nivell a la fitxa del personatge.',
     pf2: "Puja el nivell a la fitxa i resta 1.000 de l'XP.",
@@ -258,8 +248,7 @@ export default {
     write: {
       zero: '{name}: un Mod no pot posar la fitxa a 0 XP. Canvia-ho a la fitxa.',
       sandbox: "{name}: aquesta fitxa necessita el Mod sandbox v1.5 per actualitzar l'XP.",
-      xpless:
-        '{name}: aquest sistema de joc no fa servir XP (o la fitxa el calcula ella mateixa). Fes servir el mode milestone.',
+      xpless: '{name}: aquest sistema de joc no fa servir XP (o la fitxa el calcula ella mateixa).',
       noField:
         "{name}: no es coneix cap camp d'XP per a aquesta fitxa. Posa el Sistema de joc a custom i indica el camp.",
       error: "{name}: no s'ha pogut actualitzar la fitxa amb {xp} XP. Mira la consola de Mods.",
@@ -277,8 +266,6 @@ export default {
     badShare: 'Indica la part com un nombre de 0 a 10, com ara 0,5 o 50%.',
     noCharacters: 'Selecciona tokens que representin personatges, o fes servir --ids.',
     noTokens: 'Selecciona primer els tokens derrotats, o fes servir --ids.',
-    milestoneMode:
-      "La partida puja de nivell per fites, així que l'XP no es comptabilitza. Canvia el Mode a la configuració.",
   },
   status: {
     version: 'Versió',
@@ -313,7 +300,6 @@ export default {
     undo: "Desfà l'últim premi que encara no s'ha pagat.",
     end: "Acaba la sessió: paga l'XP, l'anuncia i el registra.",
     resetSession: "Esborra l'XP de la sessió sense pagar-lo.",
-    milestone: 'Puja un nivell el grup (o els personatges triats).',
     show: "Mostra l'XP i el nivell de cada membre del grup segons la fitxa.",
     roster: 'Mostra la targeta del grup.',
     party: 'Marca o desmarca la casella Party Member de Roll20 per als personatges seleccionats.',
@@ -332,7 +318,7 @@ export default {
     selected: 'Tokens seleccionats',
     selectedDesc: 'Selecciona primer els tokens al mapa.',
     party: 'Grup',
-    partyDesc: "Qui comparteix l'XP, i els nivells per fites.",
+    partyDesc: "Qui comparteix l'XP.",
     tools: 'Eines',
     toolsDesc: 'Configuració, estat i ajuda.',
     footer:
@@ -344,7 +330,7 @@ export default {
     footer: 'Els botons de totes les ordres són al handout {deck}.',
     overview: {
       heading: 'Visió general',
-      body: "LazyExperience recull els punts d'experiència guanyats durant una sessió, els reparteix entre el grup i els escriu a les fitxes dels personatges. Llegeix i escriu la fitxa de D&D 2024 i també fitxes més antigues i d'altres sistemes, fa servir el grup de Roll20, s'adona de les criatures derrotades, gestiona els jugadors absents i l'XP de bonificació, anuncia les pujades de nivell i en porta un registre de cada sessió. Les partides que pugen de nivell per fites el poden fer servir per anunciar els nivells.",
+      body: "LazyExperience recull els punts d'experiència guanyats durant una sessió, els reparteix entre el grup i els escriu a les fitxes dels personatges. Llegeix i escriu la fitxa de D&D 2024 i també fitxes més antigues i d'altres sistemes, fa servir el grup de Roll20, s'adona de les criatures derrotades, gestiona els jugadors absents i l'XP de bonificació, anuncia les pujades de nivell i en porta un registre de cada sessió.",
     },
     quickStart: {
       heading: 'Inici ràpid',
@@ -398,11 +384,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Nivells i fites',
+      heading: 'Pujades de nivell',
       points: [
         "Després d'escriure l'XP, LazyExperience consulta la taula de nivells del sistema i avisa quan un personatge té prou XP per a un nivell nou.",
         'A la fitxa de D&D 2024, el jugador prem llavors el botó de pujar de nivell de la fitxa.',
-        "El mode de fites desactiva l'XP. Fita puja un nivell el grup (o els personatges triats) i ho anuncia. Les fitxes no es modifiquen.",
       ],
     },
     systems: {
@@ -425,7 +410,7 @@ export default {
         'Les fitxes Beacon com la de D&D 2024 necessiten el Mod sandbox v1.5, i un Mod no les pot posar a 0 XP.',
         "Pathfinder 1E i Starfinder fan servir la casella d'XP per al nivell següent de la fitxa per als avisos de nivell. Si està en blanc, Pathfinder usa la progressió mitjana i Starfinder la seva pròpia taula.",
         "WFRP 4E: cada atorgament s'afegeix com a fila a la llista Experience de la fitxa, però en les proves la fitxa no va recalcular els seus totals d'XP, així que comprova'ls a la fitxa.",
-        'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu no tenen XP que un Mod pugui escriure: fes servir el mode de fites.',
+        'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu no tenen XP que un Mod pugui escriure.',
       ],
     },
     settings: {

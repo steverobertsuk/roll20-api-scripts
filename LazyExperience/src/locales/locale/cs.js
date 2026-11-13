@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Seance',
-    mode: 'Režim',
     pool: 'XP seance',
     payout: 'Vyplaceno',
     shares: 'Podíly',
@@ -59,8 +58,6 @@ export default {
     include: 'Zahrnout',
     partyAdd: 'Přidat vybrané do družiny',
     partyRemove: 'Odebrat vybrané',
-    levelUp: 'Postup na úroveň',
-    milestoneAll: 'Milník: celá družina',
     addKill: 'Přidat {xp} XP',
     otherXp: 'Jiná hodnota',
     ignore: 'Ignorovat',
@@ -70,11 +67,9 @@ export default {
     reason: 'Důvod (volitelný)',
     share: 'Podíl (1 = plný, 0,5 = poloviční)',
     confirmEnd: 'Ukončit seanci a rozdělit XP?',
-    confirmMilestone: 'Zvýšit každého člena družiny o jednu úroveň?',
   },
   options: {
     yesNo: { yes: 'Ano', no: 'Ne' },
-    mode: { xp: 'Zkušenostní body', milestone: 'Milníky' },
     payout: { end: 'Na konci seance', instant: 'Okamžitě' },
     roster: {
       auto: 'Automaticky',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: 'Jazyk', desc: 'Jazyk karet v chatu a handoutů.' },
-    mode: {
-      label: 'Režim',
-      desc: 'Zkušenostní body (xp) nebo postup podle milníků (milestone). Milníky oznamují úrovně a neudělují XP.',
-    },
     payout: {
       label: 'Výplata XP',
       desc: 'end: XP se shromažďují ve fondu seance a rozdělí se po jejím skončení. instant: každá odměna se hned rozdělí a vyplatí.',
@@ -192,7 +183,6 @@ export default {
   },
   levels: {
     reached: '{name} má dost XP na úroveň {level}!',
-    milestone: '{name} dosahuje úrovně {level}!',
     sheetButton: 'Použij tlačítko Level Up na kartě postavy.',
     updateSheet: 'Aktualizuj úroveň na kartě postavy.',
     pf2: 'Zvyš úroveň na kartě a odečti 1000 od XP.',
@@ -245,8 +235,7 @@ export default {
     write: {
       zero: '{name}: Mod nemůže nastavit kartu na 0 XP. Změň to na kartě.',
       sandbox: '{name}: tato karta potřebuje k aktualizaci XP Mod sandbox v1.5.',
-      xpless:
-        '{name}: tento herní systém XP nepoužívá (nebo si je karta počítá sama). Použij režim milestone.',
+      xpless: '{name}: tento herní systém XP nepoužívá (nebo si je karta počítá sama).',
       noField:
         '{name}: pro tuto kartu není známo pole XP. Nastav Herní systém na custom a zadej název pole.',
       error: '{name}: kartu se nepodařilo aktualizovat o {xp} XP. Podívej se do konzole Modů.',
@@ -264,8 +253,6 @@ export default {
     badShare: 'Zadej podíl jako číslo od 0 do 10, například 0.5 nebo 50%.',
     noCharacters: 'Vyber žetony představující postavy, nebo použij --ids.',
     noTokens: 'Nejprve vyber poražené žetony, nebo použij --ids.',
-    milestoneMode:
-      'Hra používá postup podle milníků, takže se XP nesledují. Změň Režim v nastavení.',
   },
   status: {
     version: 'Verze',
@@ -299,7 +286,6 @@ export default {
     undo: 'Vezme zpět poslední odměnu, která ještě nebyla vyplacena.',
     end: 'Ukončí seanci: vyplatí XP, oznámí je a zapíše do záznamu.',
     resetSession: 'Vymaže XP seance bez vyplacení.',
-    milestone: 'Zvýší družinu (nebo vybrané postavy) o jednu úroveň.',
     show: 'Zobrazí XP a úroveň každého člena družiny z karty.',
     roster: 'Zobrazí kartu družiny.',
     party: 'Zaškrtne nebo odškrtne políčko Party Member v Roll20 u vybraných postav.',
@@ -318,7 +304,7 @@ export default {
     selected: 'Vybrané žetony',
     selectedDesc: 'Nejprve vyber žetony na mapě.',
     party: 'Družina',
-    partyDesc: 'Kdo dělí XP, a milníkové úrovně.',
+    partyDesc: 'Kdo dělí XP.',
     tools: 'Nástroje',
     toolsDesc: 'Nastavení, stav a nápověda.',
     footer: 'Tlačítka spouštějí příkazy LazyExperience. Podrobnosti v handoutu {help}.',
@@ -329,7 +315,7 @@ export default {
     footer: 'Tlačítka pro všechny příkazy jsou v handoutu {deck}.',
     overview: {
       heading: 'Přehled',
-      body: 'LazyExperience shromažďuje zkušenostní body získané během seance, rozděluje je mezi družinu a zapisuje je na karty postav. Čte a zapisuje kartu D&D 2024 i starší a jiné karty, využívá družinu Roll20, všímá si poražených tvorů, zvládá nepřítomné hráče a bonusové XP, oznamuje postup na novou úroveň a vede záznam o každé seanci. Hry s postupem podle milníků ho mohou používat k oznamování úrovní.',
+      body: 'LazyExperience shromažďuje zkušenostní body získané během seance, rozděluje je mezi družinu a zapisuje je na karty postav. Čte a zapisuje kartu D&D 2024 i starší a jiné karty, využívá družinu Roll20, všímá si poražených tvorů, zvládá nepřítomné hráče a bonusové XP, oznamuje postup na novou úroveň a vede záznam o každé seanci.',
     },
     quickStart: {
       heading: 'Rychlý start',
@@ -383,11 +369,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Úrovně a milníky',
+      heading: 'Postup na vyšší úroveň',
       points: [
         'Po zapsání XP LazyExperience zkontroluje tabulku úrovní systému a oznámí, když má postava dost XP na novou úroveň.',
         'Na kartě D&D 2024 pak hráč stiskne tlačítko Level Up na kartě.',
-        'Režim milníků vypíná XP. Milník zvýší družinu (nebo vybrané postavy) o jednu úroveň a oznámí to. Karty se nemění.',
       ],
     },
     systems: {
@@ -410,7 +395,7 @@ export default {
         'Karty Beacon, například D&D 2024, vyžadují Mod sandbox v1.5 a Mod je nemůže nastavit na 0 XP.',
         'Pathfinder 1E a Starfinder používají pro oznámení o postupu políčko karty s XP do další úrovně. Když je prázdné, Pathfinder použije střední postup a Starfinder vlastní tabulku.',
         'WFRP 4E: každá odměna se přidá jako řádek do seznamu Experience na kartě, ale karta si při testování nepřepočítala součty XP, proto je zkontroluj na kartě.',
-        'Savage Worlds, 13th Age, Cosmere a Call of Cthulhu nemají žádné XP, které by Mod mohl zapsat: použij režim milníků.',
+        'Savage Worlds, 13th Age, Cosmere a Call of Cthulhu nemají žádné XP, které by Mod mohl zapsat.',
       ],
     },
     settings: {

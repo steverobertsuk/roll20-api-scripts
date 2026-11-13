@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sessão',
-    mode: 'Modo',
     pool: 'XP da sessão',
     payout: 'Pago',
     shares: 'Quotas',
@@ -59,8 +58,6 @@ export default {
     include: 'Incluir',
     partyAdd: 'Adicionar selecionados ao grupo',
     partyRemove: 'Remover selecionados',
-    levelUp: 'Subir de nível',
-    milestoneAll: 'Marco: grupo inteiro',
     addKill: 'Adicionar {xp} XP',
     otherXp: 'Outro valor',
     ignore: 'Ignorar',
@@ -70,11 +67,9 @@ export default {
     reason: 'Motivo (opcional)',
     share: 'Quota (1 = inteira, 0,5 = metade)',
     confirmEnd: 'Terminar a sessão e distribuir o XP?',
-    confirmMilestone: 'Subir todos os membros do grupo um nível?',
   },
   options: {
     yesNo: { yes: 'Sim', no: 'Não' },
-    mode: { xp: 'Pontos de experiência', milestone: 'Marcos' },
     payout: { end: 'No fim da sessão', instant: 'De imediato' },
     roster: {
       auto: 'Automático',
@@ -103,10 +98,6 @@ export default {
   },
   settings: {
     language: { label: 'Idioma', desc: 'Idioma dos cartões do chat e dos handouts.' },
-    mode: {
-      label: 'Modo',
-      desc: 'Pontos de experiência (xp) ou progressão por marcos (milestone). Os marcos anunciam níveis e não atribuem XP.',
-    },
     payout: {
       label: 'Pagar XP',
       desc: 'end: o XP acumula-se na reserva da sessão e é distribuído quando esta termina. instant: cada recompensa é dividida e paga de imediato.',
@@ -207,7 +198,6 @@ export default {
   },
   levels: {
     reached: '{name} tem XP suficiente para o nível {level}!',
-    milestone: '{name} chega ao nível {level}!',
     sheetButton: 'Use o botão de subir de nível na ficha do personagem.',
     updateSheet: 'Atualize o nível na ficha do personagem.',
     pf2: 'Suba o nível na ficha e retire 1000 do XP.',
@@ -261,8 +251,7 @@ export default {
     write: {
       zero: '{name}: a ficha não pode ser definida com 0 XP por um Mod. Altere-a na ficha.',
       sandbox: '{name}: esta ficha precisa do Mod sandbox v1.5 para atualizar o XP.',
-      xpless:
-        '{name}: este sistema de jogo não usa XP (ou a própria ficha calcula-o). Use o modo milestone.',
+      xpless: '{name}: este sistema de jogo não usa XP (ou a própria ficha calcula-o).',
       noField:
         '{name}: não se conhece nenhum campo de XP para esta ficha. Defina o Sistema de jogo como custom e indique o campo.',
       error: '{name}: não foi possível atualizar a ficha com {xp} XP. Consulte a consola de Mods.',
@@ -280,8 +269,6 @@ export default {
     badShare: 'Indique a quota como um número de 0 a 10, como 0,5 ou 50%.',
     noCharacters: 'Selecione tokens que representem personagens ou use --ids.',
     noTokens: 'Selecione primeiro os tokens derrotados ou use --ids.',
-    milestoneMode:
-      'O jogo usa progressão por marcos, por isso o XP não é registado. Altere o Modo nas definições.',
   },
   status: {
     version: 'Versão',
@@ -316,7 +303,6 @@ export default {
     undo: 'Anula a última recompensa que ainda não foi paga.',
     end: 'Termina a sessão: paga o XP, anuncia-o e regista-o.',
     resetSession: 'Limpa o XP da sessão sem o pagar.',
-    milestone: 'Sobe o grupo (ou os personagens escolhidos) um nível.',
     show: 'Mostra o XP e o nível de cada membro do grupo, segundo a ficha.',
     roster: 'Mostra o cartão do grupo.',
     party:
@@ -336,7 +322,7 @@ export default {
     selected: 'Tokens selecionados',
     selectedDesc: 'Selecione primeiro os tokens no mapa.',
     party: 'Grupo',
-    partyDesc: 'Quem divide o XP e os níveis por marco.',
+    partyDesc: 'Quem divide o XP.',
     tools: 'Ferramentas',
     toolsDesc: 'Definições, estado e ajuda.',
     footer:
@@ -348,7 +334,7 @@ export default {
     footer: 'Os botões de todos os comandos estão no handout {deck}.',
     overview: {
       heading: 'Visão geral',
-      body: 'O LazyExperience reúne os pontos de experiência ganhos durante uma sessão, divide-os pelo grupo e grava-os nas fichas dos personagens. Lê e grava a ficha de D&D 2024, bem como fichas mais antigas e de outros sistemas, usa o próprio grupo do Roll20, repara nas criaturas derrotadas, trata dos jogadores ausentes e do XP de bónus, anuncia subidas de nível e mantém um registo de cada sessão. Os jogos que progridem por marcos podem usá-lo para anunciar os níveis.',
+      body: 'O LazyExperience reúne os pontos de experiência ganhos durante uma sessão, divide-os pelo grupo e grava-os nas fichas dos personagens. Lê e grava a ficha de D&D 2024, bem como fichas mais antigas e de outros sistemas, usa o próprio grupo do Roll20, repara nas criaturas derrotadas, trata dos jogadores ausentes e do XP de bónus, anuncia subidas de nível e mantém um registo de cada sessão.',
     },
     quickStart: {
       heading: 'Início rápido',
@@ -402,11 +388,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Níveis e marcos',
+      heading: 'Subidas de nível',
       points: [
         'Depois de o XP ser gravado, o LazyExperience consulta a tabela de níveis do sistema e avisa quando um personagem tem XP suficiente para um novo nível.',
         'Na ficha de D&D 2024, o jogador carrega então no botão de subir de nível da ficha.',
-        'O modo de marcos desliga o XP. Marco sobe o grupo (ou os personagens escolhidos) um nível e anuncia-o. As fichas não são alteradas.',
       ],
     },
     systems: {
@@ -429,7 +414,7 @@ export default {
         'As fichas Beacon, como a de D&D 2024, exigem o Mod sandbox v1.5, e um Mod não as pode definir com 0 XP.',
         'Pathfinder 1E e Starfinder usam a caixa de XP para o nível seguinte da ficha para os avisos de nível. Quando está vazia, o Pathfinder usa a progressão média e o Starfinder a sua própria tabela.',
         'WFRP 4E: cada atribuição é adicionada como uma linha na lista Experience da ficha, mas nos testes a ficha não recalculou os totais de XP, por isso verifique-os na ficha.',
-        'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever: use o modo de marcos.',
+        'Savage Worlds, 13th Age, Cosmere e Call of Cthulhu não têm XP para um Mod escrever.',
       ],
     },
     settings: {

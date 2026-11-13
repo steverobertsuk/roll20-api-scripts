@@ -182,7 +182,7 @@ test('Shadowrun: karma and total karma both go up', async () => {
   assert.equal(g.attr(runner.id, 'total karma').get('current'), '25');
 });
 
-test('Savage Worlds and level-only systems refuse XP but work with milestones', async () => {
+test('Savage Worlds and 13th Age refuse XP with a warning', async () => {
   const g = legacyGame('savageworldsofficial');
   const hero = g.legacyChar('Hero', 'savageworldsofficial', {
     xp: '4',
@@ -196,11 +196,11 @@ test('Savage Worlds and level-only systems refuse XP but work with milestones', 
   assert.match(g.chatText(), /No XP was awarded this session/);
 
   const c = legacyGame('official13thage');
-  c.legacyChar('Hero', 'official13thage', { level: '2' });
+  const sage = c.legacyChar('Hero', 'official13thage', { level: '2' });
   await c.ready();
-  await c.command('!lazyxp set mode milestone');
-  await c.command('!lazyxp milestone');
-  assert.match(c.chatText(), /reaches level 3/);
+  await award(c, 5);
+  assert.equal(c.attr(sage.id, 'level').get('current'), '2');
+  assert.match(c.chatText(), /does not use XP/);
 });
 
 test('custom level table drives notices for custom sheets', async () => {

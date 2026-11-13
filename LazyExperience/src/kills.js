@@ -118,7 +118,7 @@ export function defeatSource(token, prev) {
  * @returns {void}
  */
 export function handleTokenChange(token, prev) {
-  if (getConfig().killMode === 'off' || getConfig().mode !== 'xp') return;
+  if (getConfig().killMode === 'off') return;
   if (recentAttrTokens.has(token.id)) return;
   if (defeatSource(token, prev)) {
     void noticeDefeat(token);
@@ -135,7 +135,7 @@ export function handleTokenChange(token, prev) {
  */
 export function handleAttributeChange(attr, prev) {
   const config = getConfig();
-  if (config.killMode === 'off' || config.mode !== 'xp' || !config.killBar) return;
+  if (config.killMode === 'off' || !config.killBar) return;
   const now = parseHp(attr.get('current'));
   const before = parseHp(prevValue(prev, 'current'));
   if (now === null || before === null || !(now <= 0 && before > 0)) return;
@@ -156,7 +156,7 @@ export function handleAttributeChange(attr, prev) {
  */
 export function handleDeathTrackerStatus(event) {
   const config = getConfig();
-  if (config.killMode === 'off' || config.mode !== 'xp' || !config.killDeathTracker) return;
+  if (config.killMode === 'off' || !config.killDeathTracker) return;
   if (event?.status === 'dead' && event.token) {
     void noticeDefeat(event.token);
   }

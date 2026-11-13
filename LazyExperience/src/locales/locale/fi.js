@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sessio',
-    mode: 'Tila',
     pool: 'Session XP',
     payout: 'Maksettu',
     shares: 'Osuudet',
@@ -59,8 +58,6 @@ export default {
     include: 'Ota mukaan',
     partyAdd: 'Lisää valitut seurueeseen',
     partyRemove: 'Poista valitut',
-    levelUp: 'Tasonnousu',
-    milestoneAll: 'Virstanpylväs: Koko seurue',
     addKill: 'Lisää {xp} XP',
     otherXp: 'Muu määrä',
     ignore: 'Ohita',
@@ -70,11 +67,9 @@ export default {
     reason: 'Syy (valinnainen)',
     share: 'Osuus (1 = koko, 0,5 = puolikas)',
     confirmEnd: 'Päätetäänkö sessio ja jaetaanko XP?',
-    confirmMilestone: 'Nostetaanko jokaista seurueen jäsentä yhdellä tasolla?',
   },
   options: {
     yesNo: { yes: 'Kyllä', no: 'Ei' },
-    mode: { xp: 'Kokemuspisteet', milestone: 'Virstanpylväät' },
     payout: { end: 'Session lopussa', instant: 'Heti' },
     roster: {
       auto: 'Automaattinen',
@@ -99,10 +94,6 @@ export default {
   },
   settings: {
     language: { label: 'Kieli', desc: 'Chat-korttien ja handoutien kieli.' },
-    mode: {
-      label: 'Tila',
-      desc: 'Kokemuspisteet (xp) tai tasonnousu virstanpylväillä (milestone). Virstanpylväät ilmoittavat tasot eivätkä jaa XP:tä.',
-    },
     payout: {
       label: 'Maksa XP',
       desc: 'end: XP kertyy session pottiin ja jaetaan session päättyessä. instant: jokainen palkkio jaetaan ja maksetaan heti.',
@@ -197,7 +188,6 @@ export default {
   },
   levels: {
     reached: '{name} on saanut tarpeeksi XP:tä tasolle {level}!',
-    milestone: '{name} saavuttaa tason {level}!',
     sheetButton: 'Käytä hahmolomakkeen tasonnousupainiketta.',
     updateSheet: 'Päivitä taso hahmolomakkeeseen.',
     pf2: 'Nosta taso lomakkeella ja vähennä XP:stä 1 000.',
@@ -251,8 +241,7 @@ export default {
     write: {
       zero: '{name}: lomaketta ei voi asettaa 0 XP:hen modista. Muuta se lomakkeella.',
       sandbox: '{name}: tämä lomake tarvitsee Mod sandbox v1.5:n XP:n päivittämiseen.',
-      xpless:
-        '{name}: tämä pelijärjestelmä ei käytä XP:tä (tai lomake laskee sen itse). Käytä virstanpylväs-tilaa.',
+      xpless: '{name}: tämä pelijärjestelmä ei käytä XP:tä (tai lomake laskee sen itse).',
       noField:
         '{name}: tälle lomakkeelle ei tunneta XP-kenttää. Aseta Pelijärjestelmäksi custom ja nimeä kenttä.',
       error: '{name}: lomaketta ei voitu päivittää {xp} XP:llä. Katso Mod-konsoli.',
@@ -270,8 +259,6 @@ export default {
     badShare: 'Anna osuus lukuna 0–10, esimerkiksi 0,5 tai 50 %.',
     noCharacters: 'Valitse hahmoja esittävät nappulat tai käytä --ids.',
     noTokens: 'Valitse ensin kukistetut nappulat tai käytä --ids.',
-    milestoneMode:
-      'Peli käyttää tasonnousua virstanpylväillä, joten XP:tä ei seurata. Muuta Tilaa asetuksista.',
   },
   status: {
     version: 'Versio',
@@ -305,7 +292,6 @@ export default {
     undo: 'Ota takaisin viimeisin palkkio, jota ei ole maksettu.',
     end: 'Päätä sessio: maksa XP, ilmoita siitä ja kirjaa se lokiin.',
     resetSession: 'Tyhjennä session XP maksamatta sitä.',
-    milestone: 'Nosta seuruetta (tai valittuja hahmoja) yhdellä tasolla.',
     show: 'Näytä kunkin seurueen jäsenen XP ja taso lomakkeelta.',
     roster: 'Näytä seuruekortti.',
     party: 'Merkitse tai poista merkintä Roll20:n Party Member -ruudusta valituille hahmoille.',
@@ -324,7 +310,7 @@ export default {
     selected: 'Valitut nappulat',
     selectedDesc: 'Valitse ensin nappulat kartalta.',
     party: 'Seurue',
-    partyDesc: 'Ketkä jakavat XP:n, ja virstanpylvästasot.',
+    partyDesc: 'Ketkä jakavat XP:n.',
     tools: 'Työkalut',
     toolsDesc: 'Asetukset, tila ja ohje.',
     footer: 'Painikkeet ajavat LazyExperience-komentoja. Katso lisätiedot handoutista {help}.',
@@ -335,7 +321,7 @@ export default {
     footer: 'Painikkeet kaikille komennoille ovat handoutissa {deck}.',
     overview: {
       heading: 'Yleiskatsaus',
-      body: 'LazyExperience kerää session aikana ansaitut kokemuspisteet, jakaa ne seurueen kesken ja kirjoittaa ne hahmolomakkeisiin. Se lukee ja kirjoittaa D&D 2024 -lomaketta sekä vanhempia ja muita lomakkeita, käyttää Roll20:n omaa seuruetta, huomaa kukistetut olennot, hoitaa poissaolevat pelaajat ja bonus-XP:n, ilmoittaa tasonnousut ja pitää lokia jokaisesta sessiosta. Pelit, joissa tasot nousevat virstanpylväillä, voivat käyttää sitä tasojen ilmoittamiseen.',
+      body: 'LazyExperience kerää session aikana ansaitut kokemuspisteet, jakaa ne seurueen kesken ja kirjoittaa ne hahmolomakkeisiin. Se lukee ja kirjoittaa D&D 2024 -lomaketta sekä vanhempia ja muita lomakkeita, käyttää Roll20:n omaa seuruetta, huomaa kukistetut olennot, hoitaa poissaolevat pelaajat ja bonus-XP:n, ilmoittaa tasonnousut ja pitää lokia jokaisesta sessiosta.',
     },
     quickStart: {
       heading: 'Pikaopas',
@@ -389,11 +375,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Tasot ja virstanpylväät',
+      heading: 'Tason nousut',
       points: [
         'XP:n kirjoittamisen jälkeen LazyExperience tarkistaa järjestelmän tasotaulukon ja ilmoittaa, kun hahmolla on tarpeeksi XP:tä uuteen tasoon.',
         'D&D 2024 -lomakkeella pelaaja painaa sitten lomakkeen tasonnousupainiketta.',
-        'Virstanpylväs-tila poistaa XP:n käytöstä. Virstanpylväs nostaa seuruetta (tai valittuja hahmoja) yhdellä tasolla ja ilmoittaa siitä. Lomakkeita ei muuteta.',
       ],
     },
     systems: {
@@ -416,7 +401,7 @@ export default {
         'Beacon-lomakkeet kuten D&D 2024 tarvitsevat Mod sandbox v1.5:n, eikä Modi voi asettaa niitä 0 XP:hen.',
         'Pathfinder 1E ja Starfinder käyttävät tasonnousuilmoituksiin lomakkeen kenttää, jossa on XP seuraavaan tasoon. Kun se on tyhjä, Pathfinder käyttää keskinopeaa etenemistä ja Starfinder omaa taulukkoaan.',
         'WFRP 4E: jokainen palkinto lisätään riviksi lomakkeen Experience-luetteloon, mutta lomake ei laskenut XP-summiaan uudelleen testauksessa, joten tarkista ne lomakkeelta.',
-        'Savage Worlds, 13th Age, Cosmere ja Call of Cthulhu eivät käytä XP:tä, jonka Modi voisi kirjoittaa: käytä virstanpylväs-tilaa.',
+        'Savage Worlds, 13th Age, Cosmere ja Call of Cthulhu eivät käytä XP:tä, jonka Modi voisi kirjoittaa.',
       ],
     },
     settings: {

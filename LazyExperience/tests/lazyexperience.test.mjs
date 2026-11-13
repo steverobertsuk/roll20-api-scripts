@@ -283,15 +283,14 @@ test('level-up notice when XP passes a level threshold, once', async () => {
   assert.equal(g.chat.filter((c) => /enough XP for level 2/.test(c.text)).length, 2);
 });
 
-test('milestone mode announces levels and refuses XP', async () => {
+test('there is no milestone mode: Roll20 and the sheets handle levelling', async () => {
   const g = await game();
   await g.command('!lazyxp set mode milestone');
-  await g.command('!lazyxp add 100');
-  assert.match(g.lastChat(), /milestone/);
+  assert.match(g.lastChat(), /Unknown setting &quot;mode&quot;|Unknown setting "mode"/);
   await g.command('!lazyxp milestone');
-  assert.equal(g.chat.filter((c) => /reaches level 2/.test(c.text)).length, 2);
-  await g.command(`!lazyxp milestone --ids ${g.kildrak.id}`);
-  assert.match(g.lastChat(), /Kildrak.*reaches level 3/);
+  assert.match(g.lastChat(), /Unknown command &quot;milestone&quot;|Unknown command "milestone"/);
+  await g.command('!lazyxp');
+  assert.doesNotMatch(g.lastChat(), /Milestone|Level Up/);
 });
 
 test('2014 sheet: legacy attributes are written with the sheet workers', async () => {
@@ -436,9 +435,6 @@ test('every menu and card renders', async () => {
   await g.command('!lazyxp set system custom');
   await g.command('!lazyxp settings');
   assert.match(g.lastChat(), /Custom XP field/);
-  await g.command('!lazyxp set mode milestone');
-  await g.command('!lazyxp');
-  assert.match(g.lastChat(), /Milestone: Whole Party/);
 });
 
 test('the handouts get the LazyExperience journal icon, also handouts made before', async () => {

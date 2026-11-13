@@ -305,7 +305,7 @@ export async function endSession() {
   let rows = [];
   let results = [];
   let split = null;
-  if (config.mode === 'xp' && config.payout === 'end') {
+  if (config.payout === 'end') {
     const preview = previewPayout();
     split = preview.split;
     rows = preview.rows;
@@ -318,7 +318,6 @@ export async function endSession() {
     number: session.number,
     started: session.started,
     ended: Date.now(),
-    mode: config.mode,
     payout: config.payout,
     pool: session.pool,
     awards: session.awards.filter((a) => !a.undone),
@@ -432,13 +431,6 @@ function announceEnd(summary) {
     lines.push(
       `<div>${escapeForChat(row.name)}: <strong>${formatNumber(row.xp)}</strong> XP</div>`
     );
-  }
-  if (summary.mode === 'milestone' && summary.levelUps.length > 0) {
-    for (const up of summary.levelUps) {
-      lines.push(
-        `<div>${escapeForChat(t('end.levelLine', lang, { name: up.name, level: up.level }))}</div>`
-      );
-    }
   }
   const owners = summary.totals.flatMap((r) => {
     const c = getObj('character', r.id);

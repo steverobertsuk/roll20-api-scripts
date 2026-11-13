@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sessie',
-    mode: 'Modus',
     pool: 'Sessie-XP',
     payout: 'Uitbetaald',
     shares: 'Aandelen',
@@ -59,8 +58,6 @@ export default {
     include: 'Opnemen',
     partyAdd: 'Selectie aan groep toevoegen',
     partyRemove: 'Selectie verwijderen',
-    levelUp: 'Niveau omhoog',
-    milestoneAll: 'Mijlpaal: hele groep',
     addKill: '{xp} XP toevoegen',
     otherXp: 'Ander bedrag',
     ignore: 'Negeren',
@@ -70,11 +67,9 @@ export default {
     reason: 'Reden (optioneel)',
     share: 'Aandeel (1 = volledig, 0,5 = half)',
     confirmEnd: 'De sessie afronden en de XP uitdelen?',
-    confirmMilestone: 'Elk groepslid één niveau omhoog zetten?',
   },
   options: {
     yesNo: { yes: 'Ja', no: 'Nee' },
-    mode: { xp: 'Ervaringspunten', milestone: 'Mijlpalen' },
     payout: { end: 'Aan het einde van de sessie', instant: 'Meteen' },
     roster: {
       auto: 'Automatisch',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: 'Taal', desc: 'Taal voor chatkaarten en handouts.' },
-    mode: {
-      label: 'Modus',
-      desc: 'Ervaringspunten (xp) of niveaus via mijlpalen (milestone). Mijlpalen kondigen niveaus aan en kennen geen XP toe.',
-    },
     payout: {
       label: 'XP uitbetalen',
       desc: 'end: XP verzamelt zich in de sessiepot en wordt uitgedeeld als de sessie eindigt. instant: elke toekenning wordt meteen verdeeld en uitbetaald.',
@@ -195,7 +186,6 @@ export default {
   },
   levels: {
     reached: '{name} heeft genoeg XP voor niveau {level}!',
-    milestone: '{name} bereikt niveau {level}!',
     sheetButton: 'Gebruik de niveau-omhoogknop op de personagesheet.',
     updateSheet: 'Werk het niveau op de personagesheet bij.',
     pf2: 'Verhoog het niveau op de sheet en trek 1.000 af van de XP.',
@@ -249,8 +239,7 @@ export default {
     write: {
       zero: '{name}: de sheet kan vanuit een Mod niet op 0 XP worden gezet. Pas het op de sheet aan.',
       sandbox: '{name}: deze sheet heeft Mod sandbox v1.5 nodig om XP bij te werken.',
-      xpless:
-        '{name}: dit spelsysteem gebruikt geen XP (of de sheet rekent het zelf uit). Gebruik de modus milestone.',
+      xpless: '{name}: dit spelsysteem gebruikt geen XP (of de sheet rekent het zelf uit).',
       noField:
         '{name}: voor deze sheet is geen XP-veld bekend. Zet Spelsysteem op custom en geef het veld op.',
       error: '{name}: de sheet kon niet worden bijgewerkt met {xp} XP. Zie de Mod-console.',
@@ -268,8 +257,6 @@ export default {
     badShare: 'Geef het aandeel op als getal van 0 tot 10, zoals 0,5 of 50%.',
     noCharacters: 'Selecteer tokens die personages voorstellen, of gebruik --ids.',
     noTokens: 'Selecteer eerst de verslagen tokens, of gebruik --ids.',
-    milestoneMode:
-      'Het spel gebruikt niveaus via mijlpalen, dus XP wordt niet bijgehouden. Wijzig de Modus in de instellingen.',
   },
   status: {
     version: 'Versie',
@@ -304,7 +291,6 @@ export default {
     undo: 'Neem de laatste toekenning terug die nog niet is uitbetaald.',
     end: 'Rond de sessie af: betaal de XP uit, kondig het aan en log het.',
     resetSession: 'Wis de sessie-XP zonder die uit te betalen.',
-    milestone: 'Zet de groep (of de gekozen personages) één niveau omhoog.',
     show: 'Toon de XP en het niveau van elk groepslid volgens de sheet.',
     roster: 'Toon de groepskaart.',
     party: 'Vink het vakje Party Member van Roll20 aan of uit voor de geselecteerde personages.',
@@ -323,7 +309,7 @@ export default {
     selected: 'Geselecteerde tokens',
     selectedDesc: 'Selecteer eerst tokens op de kaart.',
     party: 'Groep',
-    partyDesc: 'Wie de XP deelt, en mijlpaalniveaus.',
+    partyDesc: 'Wie de XP deelt.',
     tools: 'Hulpmiddelen',
     toolsDesc: 'Instellingen, status en help.',
     footer: 'Knoppen voeren LazyExperience-commando’s uit. Zie de handout {help} voor details.',
@@ -334,7 +320,7 @@ export default {
     footer: 'Knoppen voor alle commando’s staan in de handout {deck}.',
     overview: {
       heading: 'Overzicht',
-      body: 'LazyExperience verzamelt de ervaringspunten die tijdens een sessie zijn verdiend, verdeelt ze over de groep en schrijft ze naar de personagesheets. Het leest en schrijft de D&D 2024-sheet en ook oudere en andere sheets, gebruikt de eigen groep van Roll20, merkt verslagen wezens op, regelt afwezige spelers en bonus-XP, kondigt niveaus omhoog aan en houdt een logboek bij van elke sessie. Spellen die via mijlpalen levelen, kunnen het gebruiken om niveaus aan te kondigen.',
+      body: 'LazyExperience verzamelt de ervaringspunten die tijdens een sessie zijn verdiend, verdeelt ze over de groep en schrijft ze naar de personagesheets. Het leest en schrijft de D&D 2024-sheet en ook oudere en andere sheets, gebruikt de eigen groep van Roll20, merkt verslagen wezens op, regelt afwezige spelers en bonus-XP, kondigt niveaus omhoog aan en houdt een logboek bij van elke sessie.',
     },
     quickStart: {
       heading: 'Snel aan de slag',
@@ -388,11 +374,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Niveaus en mijlpalen',
+      heading: 'Niveaustijgingen',
       points: [
         'Nadat de XP is geschreven, controleert LazyExperience de niveautabel van het systeem en meldt het wanneer een personage genoeg XP heeft voor een nieuw niveau.',
         'Op de D&D 2024-sheet drukt de speler dan op de niveau-omhoogknop van de sheet.',
-        'De mijlpaalmodus schakelt XP uit. Mijlpaal zet de groep (of de gekozen personages) één niveau omhoog en kondigt het aan. Sheets worden niet gewijzigd.',
       ],
     },
     systems: {
@@ -415,7 +400,7 @@ export default {
         'Beacon-sheets zoals D&D 2024 hebben Mod sandbox v1.5 nodig, en een Mod kan ze niet op 0 XP zetten.',
         'Pathfinder 1E en Starfinder gebruiken het vak voor XP tot het volgende niveau op de sheet voor niveaumeldingen. Als het leeg is, gebruikt Pathfinder het gemiddelde traject en Starfinder een eigen tabel.',
         'WFRP 4E: elke toekenning wordt als rij toegevoegd aan de Experience-lijst van de sheet, maar de sheet herberekende zijn XP-totalen niet tijdens het testen, dus controleer ze op de sheet.',
-        'Savage Worlds, 13th Age, Cosmere en Call of Cthulhu hebben geen XP die een Mod kan schrijven: gebruik de mijlpaalmodus.',
+        'Savage Worlds, 13th Age, Cosmere en Call of Cthulhu hebben geen XP die een Mod kan schrijven.',
       ],
     },
     settings: {

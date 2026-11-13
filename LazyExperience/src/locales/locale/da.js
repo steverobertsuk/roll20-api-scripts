@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Session',
-    mode: 'Tilstand',
     pool: 'Sessionens XP',
     payout: 'Udbetalt',
     shares: 'Andele',
@@ -59,8 +58,6 @@ export default {
     include: 'Tag med',
     partyAdd: 'Tilføj valgte til gruppen',
     partyRemove: 'Fjern valgte',
-    levelUp: 'Niveaustigning',
-    milestoneAll: 'Milepæl: Hele gruppen',
     addKill: 'Tilføj {xp} XP',
     otherXp: 'Andet beløb',
     ignore: 'Ignorer',
@@ -70,11 +67,9 @@ export default {
     reason: 'Årsag (valgfri)',
     share: 'Andel (1 = hel, 0,5 = halv)',
     confirmEnd: 'Afslutte sessionen og dele XP ud?',
-    confirmMilestone: 'Hæve hvert gruppemedlem et niveau?',
   },
   options: {
     yesNo: { yes: 'Ja', no: 'Nej' },
-    mode: { xp: 'Erfaringspoint', milestone: 'Milepæle' },
     payout: { end: 'Ved sessionens slutning', instant: 'Med det samme' },
     roster: {
       auto: 'Automatisk',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: 'Sprog', desc: 'Sprog til chatkort og handouts.' },
-    mode: {
-      label: 'Tilstand',
-      desc: 'Erfaringspoint (xp) eller niveaustigning med milepæle (milestone). Milepæle melder niveauer og uddeler ingen XP.',
-    },
     payout: {
       label: 'Udbetal XP',
       desc: 'end: XP samles i sessionens pulje og deles ud, når sessionen slutter. instant: hver tildeling deles og udbetales med det samme.',
@@ -195,7 +186,6 @@ export default {
   },
   levels: {
     reached: '{name} har nok XP til niveau {level}!',
-    milestone: '{name} når niveau {level}!',
     sheetButton: 'Brug knappen til niveaustigning på karakterarket.',
     updateSheet: 'Opdater niveauet på karakterarket.',
     pf2: 'Hæv niveauet på arket, og træk 1.000 fra XP.',
@@ -250,8 +240,7 @@ export default {
     write: {
       zero: '{name}: arket kan ikke sættes til 0 XP fra et Mod. Ret det på arket.',
       sandbox: '{name}: dette ark kræver Mod sandbox v1.5 for at opdatere XP.',
-      xpless:
-        '{name}: dette spilsystem bruger ikke XP (eller arket regner det selv ud). Brug milepælstilstand.',
+      xpless: '{name}: dette spilsystem bruger ikke XP (eller arket regner det selv ud).',
       noField:
         '{name}: intet XP-felt er kendt for dette ark. Sæt Spilsystem til custom, og angiv feltet.',
       error: '{name}: arket kunne ikke opdateres med {xp} XP. Se Mod-konsollen.',
@@ -269,8 +258,6 @@ export default {
     badShare: 'Angiv andelen som et tal fra 0 til 10, fx 0,5 eller 50 %.',
     noCharacters: 'Vælg tokens, der står for karakterer, eller brug --ids.',
     noTokens: 'Vælg de besejrede tokens først, eller brug --ids.',
-    milestoneMode:
-      'Spillet bruger niveaustigning med milepæle, så XP spores ikke. Ændr Tilstand i indstillingerne.',
   },
   status: {
     version: 'Version',
@@ -305,7 +292,6 @@ export default {
     undo: 'Tag den seneste tildeling tilbage, som ikke er udbetalt.',
     end: 'Afslut sessionen: udbetal XP, meld det og log det.',
     resetSession: 'Ryd sessionens XP uden at udbetale den.',
-    milestone: 'Hæv gruppen (eller de valgte karakterer) et niveau.',
     show: 'Vis hvert gruppemedlems XP og niveau fra arket.',
     roster: 'Vis gruppekortet.',
     party: 'Sæt eller fjern kryds i Roll20s felt Party Member for de valgte karakterer.',
@@ -324,7 +310,7 @@ export default {
     selected: 'Valgte tokens',
     selectedDesc: 'Vælg først tokens på kortet.',
     party: 'Gruppe',
-    partyDesc: 'Hvem der deler XP, og milepælsniveauer.',
+    partyDesc: 'Hvem der deler XP.',
     tools: 'Værktøjer',
     toolsDesc: 'Indstillinger, status og hjælp.',
     footer: 'Knapperne kører LazyExperience-kommandoer. Se handouten {help} for detaljer.',
@@ -335,7 +321,7 @@ export default {
     footer: 'Knapper til alle kommandoer findes i handouten {deck}.',
     overview: {
       heading: 'Overblik',
-      body: 'LazyExperience samler de erfaringspoint, der optjenes i løbet af en session, deler dem mellem gruppen og skriver dem til karakterarkene. Det læser og skriver D&D 2024-arket såvel som ældre og andre ark, bruger Roll20s egen gruppe, bemærker besejrede væsener, håndterer fraværende spillere og bonus-XP, melder niveaustigninger og fører log over hver session. Spil, der stiger i niveau med milepæle, kan bruge det til at melde niveauer i stedet.',
+      body: 'LazyExperience samler de erfaringspoint, der optjenes i løbet af en session, deler dem mellem gruppen og skriver dem til karakterarkene. Det læser og skriver D&D 2024-arket såvel som ældre og andre ark, bruger Roll20s egen gruppe, bemærker besejrede væsener, håndterer fraværende spillere og bonus-XP, melder niveaustigninger og fører log over hver session.',
     },
     quickStart: {
       heading: 'Hurtig start',
@@ -389,11 +375,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Niveauer og milepæle',
+      heading: 'Niveaustigninger',
       points: [
         'Når XP er skrevet, tjekker LazyExperience systemets niveautabel og melder, når en karakter har nok XP til et nyt niveau.',
         'På D&D 2024-arket trykker spilleren derefter på arkets knap til niveaustigning.',
-        'Milepælstilstand slår XP fra. Milepæl hæver gruppen (eller de valgte karakterer) et niveau og melder det. Ark ændres ikke.',
       ],
     },
     systems: {
@@ -416,7 +401,7 @@ export default {
         'Beacon-ark som D&D 2024 kræver Mod sandbox v1.5, og et Mod kan ikke sætte dem til 0 XP.',
         'Pathfinder 1E og Starfinder bruger arkets felt for XP til næste niveau til niveaumeddelelser. Når det er tomt, bruger Pathfinder det mellemste forløb, og Starfinder sin egen tabel.',
         'WFRP 4E: hver tildeling tilføjes som en række i arkets Experience-liste, men arket genberegnede ikke sine XP-totaler under test, så tjek dem på arket.',
-        'Savage Worlds, 13th Age, Cosmere og Call of Cthulhu har ingen XP, som et Mod kan skrive: brug milepælstilstand.',
+        'Savage Worlds, 13th Age, Cosmere og Call of Cthulhu har ingen XP, som et Mod kan skrive.',
       ],
     },
     settings: {

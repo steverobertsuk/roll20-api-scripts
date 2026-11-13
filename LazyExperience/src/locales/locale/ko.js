@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: '세션',
-    mode: '모드',
     pool: '세션 XP',
     payout: '지급',
     shares: '몫',
@@ -59,8 +58,6 @@ export default {
     include: '포함',
     partyAdd: '선택 항목을 파티에 추가',
     partyRemove: '선택 항목 제거',
-    levelUp: '레벨 업',
-    milestoneAll: '마일스톤: 파티 전체',
     addKill: '{xp} XP 추가',
     otherXp: '다른 수치',
     ignore: '무시',
@@ -70,11 +67,9 @@ export default {
     reason: '사유 (선택)',
     share: '몫 (1 = 전체, 0.5 = 절반)',
     confirmEnd: '세션을 종료하고 XP를 나눠 줄까요?',
-    confirmMilestone: '파티원 모두의 레벨을 1 올릴까요?',
   },
   options: {
     yesNo: { yes: '예', no: '아니요' },
-    mode: { xp: '경험치', milestone: '마일스톤' },
     payout: { end: '세션 종료 시', instant: '즉시' },
     roster: {
       auto: '자동',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: '언어', desc: '채팅 카드와 핸드아웃에 쓰는 언어입니다.' },
-    mode: {
-      label: '모드',
-      desc: '경험치(xp) 또는 마일스톤 레벨 업(milestone). 마일스톤은 레벨을 알리기만 하고 XP는 지급하지 않습니다.',
-    },
     payout: {
       label: 'XP 지급',
       desc: 'end: XP가 세션 풀에 모였다가 세션이 끝날 때 지급됩니다. instant: 지급할 때마다 바로 나누어 줍니다.',
@@ -195,7 +186,6 @@ export default {
   },
   levels: {
     reached: '{name}이(가) 레벨 {level}에 필요한 XP를 모았습니다!',
-    milestone: '{name}이(가) 레벨 {level}에 도달했습니다!',
     sheetButton: '캐릭터 시트의 레벨 업 버튼을 사용하세요.',
     updateSheet: '캐릭터 시트의 레벨을 갱신하세요.',
     pf2: '시트의 레벨을 올리고 XP에서 1,000을 빼세요.',
@@ -248,8 +238,7 @@ export default {
     write: {
       zero: '{name}: Mod에서는 시트를 0 XP로 설정할 수 없습니다. 시트에서 직접 바꾸세요.',
       sandbox: '{name}: 이 시트의 XP를 갱신하려면 Mod sandbox v1.5가 필요합니다.',
-      xpless:
-        '{name}: 이 게임 시스템은 XP를 사용하지 않습니다(또는 시트가 직접 계산합니다). 마일스톤 모드를 사용하세요.',
+      xpless: '{name}: 이 게임 시스템은 XP를 사용하지 않습니다(또는 시트가 직접 계산합니다).',
       noField:
         '{name}: 이 시트의 XP 필드를 알 수 없습니다. 게임 시스템을 custom으로 설정하고 필드 이름을 지정하세요.',
       error: '{name}: 시트를 {xp} XP로 갱신하지 못했습니다. Mod 콘솔을 확인하세요.',
@@ -267,8 +256,6 @@ export default {
     badShare: '몫은 0.5나 50%처럼 0에서 10 사이의 숫자로 입력하세요.',
     noCharacters: '캐릭터를 나타내는 토큰을 선택하거나 --ids를 사용하세요.',
     noTokens: '먼저 처치한 토큰을 선택하거나 --ids를 사용하세요.',
-    milestoneMode:
-      '이 게임은 마일스톤 레벨 업을 사용하므로 XP를 추적하지 않습니다. 설정에서 모드를 바꾸세요.',
   },
   status: {
     version: '버전',
@@ -303,7 +290,6 @@ export default {
     undo: '아직 지급되지 않은 마지막 지급을 되돌립니다.',
     end: '세션을 종료합니다: XP를 지급하고, 알리고, 기록합니다.',
     resetSession: '지급하지 않고 세션 XP를 지웁니다.',
-    milestone: '파티(또는 선택한 캐릭터)의 레벨을 1 올립니다.',
     show: '시트에 있는 각 파티원의 XP와 레벨을 표시합니다.',
     roster: '파티 카드를 표시합니다.',
     party: '선택한 캐릭터의 Roll20 파티 구성원 체크를 켜거나 끕니다.',
@@ -322,7 +308,7 @@ export default {
     selected: '선택한 토큰',
     selectedDesc: '먼저 맵에서 토큰을 선택하세요.',
     party: '파티',
-    partyDesc: 'XP를 나눠 가질 구성원과 마일스톤 레벨.',
+    partyDesc: 'XP를 나눠 가질 구성원.',
     tools: '도구',
     toolsDesc: '설정, 상태, 도움말.',
     footer:
@@ -334,7 +320,7 @@ export default {
     footer: '모든 명령어의 버튼은 {deck} 핸드아웃에 있습니다.',
     overview: {
       heading: '개요',
-      body: 'LazyExperience는 세션 중에 얻은 경험치를 모아 파티에 나누고 캐릭터 시트에 기록합니다. D&D 2024 시트는 물론 이전 시트와 다른 시트도 읽고 쓰며, Roll20 자체 파티를 사용하고, 처치된 크리처를 알아채고, 결석자와 보너스 XP를 처리하고, 레벨 업을 알리고, 모든 세션의 기록을 남깁니다. 마일스톤으로 레벨을 올리는 게임에서는 대신 레벨 알림용으로 쓸 수 있습니다.',
+      body: 'LazyExperience는 세션 중에 얻은 경험치를 모아 파티에 나누고 캐릭터 시트에 기록합니다. D&D 2024 시트는 물론 이전 시트와 다른 시트도 읽고 쓰며, Roll20 자체 파티를 사용하고, 처치된 크리처를 알아채고, 결석자와 보너스 XP를 처리하고, 레벨 업을 알리고, 모든 세션의 기록을 남깁니다.',
     },
     quickStart: {
       heading: '빠른 시작',
@@ -388,11 +374,10 @@ export default {
       ],
     },
     levels: {
-      heading: '레벨과 마일스톤',
+      heading: '레벨 업',
       points: [
         'XP를 기록한 뒤 LazyExperience는 시스템의 레벨 표를 확인하고, 새 레벨에 필요한 XP를 모은 캐릭터를 알립니다.',
         'D&D 2024 시트에서는 이후 플레이어가 시트의 레벨 업 버튼을 누릅니다.',
-        '마일스톤 모드는 XP를 끕니다. 마일스톤은 파티(또는 선택한 캐릭터)의 레벨을 1 올리고 알립니다. 시트는 바뀌지 않습니다.',
       ],
     },
     systems: {
@@ -415,7 +400,7 @@ export default {
         'D&D 2024 같은 Beacon 시트에는 Mod sandbox v1.5가 필요하며, Mod에서는 0 XP로 설정할 수 없습니다.',
         'Pathfinder 1E와 Starfinder는 레벨 업 알림에 시트의 다음 레벨까지 필요한 XP 칸을 사용합니다. 비어 있으면 Pathfinder는 중간 진행 속도를, Starfinder는 자체 표를 사용합니다.',
         'WFRP 4E: 지급할 때마다 시트의 Experience 목록에 행이 하나씩 추가되지만, 테스트에서 시트가 XP 합계를 다시 계산하지 않았으므로 시트에서 확인하세요.',
-        'Savage Worlds, 13th Age, Cosmere, Call of Cthulhu에는 Mod가 기록할 XP가 없습니다. 마일스톤 모드를 사용하세요.',
+        'Savage Worlds, 13th Age, Cosmere, Call of Cthulhu에는 Mod가 기록할 XP가 없습니다.',
       ],
     },
     settings: {

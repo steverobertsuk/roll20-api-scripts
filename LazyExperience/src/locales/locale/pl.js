@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sesja',
-    mode: 'Tryb',
     pool: 'XP sesji',
     payout: 'Wypłata',
     shares: 'Udziały',
@@ -59,8 +58,6 @@ export default {
     include: 'Uwzględnij',
     partyAdd: 'Dodaj zaznaczonych do drużyny',
     partyRemove: 'Usuń zaznaczonych',
-    levelUp: 'Awans na poziom',
-    milestoneAll: 'Kamień milowy: cała drużyna',
     addKill: 'Dodaj {xp} XP',
     otherXp: 'Inna wartość',
     ignore: 'Zignoruj',
@@ -70,11 +67,9 @@ export default {
     reason: 'Powód (opcjonalnie)',
     share: 'Udział (1 = pełny, 0,5 = połowa)',
     confirmEnd: 'Zakończyć sesję i rozdać XP?',
-    confirmMilestone: 'Podnieść każdego członka drużyny o jeden poziom?',
   },
   options: {
     yesNo: { yes: 'Tak', no: 'Nie' },
-    mode: { xp: 'Punkty doświadczenia', milestone: 'Kamienie milowe' },
     payout: { end: 'Na koniec sesji', instant: 'Od razu' },
     roster: {
       auto: 'Automatycznie',
@@ -99,10 +94,6 @@ export default {
   },
   settings: {
     language: { label: 'Język', desc: 'Język kart na czacie i handoutów.' },
-    mode: {
-      label: 'Tryb',
-      desc: 'Punkty doświadczenia (xp) lub awans za kamienie milowe (milestone). Kamienie milowe ogłaszają poziomy i nie przyznają XP.',
-    },
     payout: {
       label: 'Wypłata XP',
       desc: 'end: XP gromadzi się w puli sesji i jest rozdawane po jej zakończeniu. instant: każda nagroda jest od razu dzielona i wypłacana.',
@@ -197,7 +188,6 @@ export default {
   },
   levels: {
     reached: '{name} ma dość XP na poziom {level}!',
-    milestone: '{name} osiąga poziom {level}!',
     sheetButton: 'Użyj przycisku Level Up na karcie postaci.',
     updateSheet: 'Zaktualizuj poziom na karcie postaci.',
     pf2: 'Podnieś poziom na karcie i odejmij 1000 od XP.',
@@ -251,8 +241,7 @@ export default {
     write: {
       zero: '{name}: Mod nie może ustawić na karcie 0 XP. Zmień to na karcie.',
       sandbox: '{name}: ta karta wymaga Mod sandbox v1.5, aby zaktualizować XP.',
-      xpless:
-        '{name}: ten system gry nie używa XP (lub karta sama je oblicza). Użyj trybu milestone.',
+      xpless: '{name}: ten system gry nie używa XP (lub karta sama je oblicza).',
       noField:
         '{name}: dla tej karty nie jest znane pole XP. Ustaw System gry na custom i podaj nazwę pola.',
       error: '{name}: nie udało się zaktualizować karty o {xp} XP. Zajrzyj do konsoli Modów.',
@@ -270,8 +259,6 @@ export default {
     badShare: 'Podaj udział jako liczbę od 0 do 10, np. 0.5 lub 50%.',
     noCharacters: 'Zaznacz tokeny reprezentujące postacie lub użyj --ids.',
     noTokens: 'Najpierw zaznacz pokonane tokeny lub użyj --ids.',
-    milestoneMode:
-      'Gra używa awansu za kamienie milowe, więc XP nie jest śledzone. Zmień Tryb w ustawieniach.',
   },
   status: {
     version: 'Wersja',
@@ -306,7 +293,6 @@ export default {
     undo: 'Cofnij ostatnią nagrodę, która nie została jeszcze wypłacona.',
     end: 'Zakończ sesję: wypłać XP, ogłoś je i zapisz w dzienniku.',
     resetSession: 'Wyczyść XP sesji bez wypłacania.',
-    milestone: 'Podnieś drużynę (lub wybrane postacie) o jeden poziom.',
     show: 'Pokaż XP i poziom każdego członka drużyny z karty.',
     roster: 'Pokaż kartę drużyny.',
     party: 'Zaznacz lub odznacz pole Party Member w Roll20 dla zaznaczonych postaci.',
@@ -325,7 +311,7 @@ export default {
     selected: 'Zaznaczone tokeny',
     selectedDesc: 'Najpierw zaznacz tokeny na mapie.',
     party: 'Drużyna',
-    partyDesc: 'Kto dzieli XP oraz poziomy za kamienie milowe.',
+    partyDesc: 'Kto dzieli XP.',
     tools: 'Narzędzia',
     toolsDesc: 'Ustawienia, stan i pomoc.',
     footer: 'Przyciski uruchamiają polecenia LazyExperience. Szczegóły w handoucie {help}.',
@@ -336,7 +322,7 @@ export default {
     footer: 'Przyciski do każdego polecenia znajdziesz w handoucie {deck}.',
     overview: {
       heading: 'Przegląd',
-      body: 'LazyExperience zbiera punkty doświadczenia zdobyte podczas sesji, dzieli je między drużynę i zapisuje na kartach postaci. Czyta i zapisuje kartę D&D 2024 oraz starsze i inne karty, korzysta z drużyny Roll20, zauważa pokonane stworzenia, obsługuje nieobecnych graczy i bonusowe XP, ogłasza awanse i prowadzi dziennik każdej sesji. Gry z awansem za kamienie milowe mogą go używać do ogłaszania poziomów.',
+      body: 'LazyExperience zbiera punkty doświadczenia zdobyte podczas sesji, dzieli je między drużynę i zapisuje na kartach postaci. Czyta i zapisuje kartę D&D 2024 oraz starsze i inne karty, korzysta z drużyny Roll20, zauważa pokonane stworzenia, obsługuje nieobecnych graczy i bonusowe XP, ogłasza awanse i prowadzi dziennik każdej sesji.',
     },
     quickStart: {
       heading: 'Szybki start',
@@ -390,11 +376,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Poziomy i kamienie milowe',
+      heading: 'Awanse na poziom',
       points: [
         'Po zapisaniu XP LazyExperience sprawdza tabelę poziomów systemu i ogłasza, gdy postać ma dość XP na nowy poziom.',
         'Na karcie D&D 2024 gracz naciska wtedy przycisk Level Up na karcie.',
-        'Tryb kamieni milowych wyłącza XP. Kamień milowy podnosi drużynę (lub wybrane postacie) o jeden poziom i to ogłasza. Karty nie są zmieniane.',
       ],
     },
     systems: {
@@ -417,7 +402,7 @@ export default {
         'Karty Beacon, takie jak D&D 2024, wymagają Mod sandbox v1.5, a Mod nie może ustawić na nich 0 XP.',
         'Pathfinder 1E i Starfinder używają do powiadomień o awansie pola karty z XP do następnego poziomu. Gdy jest puste, Pathfinder korzysta ze średniego tempa, a Starfinder z własnej tabeli.',
         'WFRP 4E: każda nagroda jest dodawana jako wiersz na liście Experience na karcie, ale podczas testów karta nie przeliczyła swoich sum XP, więc sprawdź je na karcie.',
-        'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu nie mają XP, które mógłby zapisać Mod: użyj trybu kamieni milowych.',
+        'Savage Worlds, 13th Age, Cosmere i Call of Cthulhu nie mają XP, które mógłby zapisać Mod.',
       ],
     },
     settings: {

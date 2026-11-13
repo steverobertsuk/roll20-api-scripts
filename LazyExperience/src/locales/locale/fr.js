@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Séance',
-    mode: 'Mode',
     pool: 'PX de la séance',
     payout: 'Versé',
     shares: 'Parts',
@@ -60,8 +59,6 @@ export default {
     include: 'Inclure',
     partyAdd: 'Ajouter la sélection au groupe',
     partyRemove: 'Retirer la sélection',
-    levelUp: 'Monter de niveau',
-    milestoneAll: 'Jalon : tout le groupe',
     addKill: 'Ajouter {xp} PX',
     otherXp: 'Autre montant',
     ignore: 'Ignorer',
@@ -71,11 +68,9 @@ export default {
     reason: 'Raison (facultatif)',
     share: 'Part (1 = complète, 0,5 = moitié)',
     confirmEnd: 'Terminer la séance et distribuer les PX ?',
-    confirmMilestone: 'Faire gagner un niveau à chaque membre du groupe ?',
   },
   options: {
     yesNo: { yes: 'Oui', no: 'Non' },
-    mode: { xp: 'Points d’expérience', milestone: 'Jalons' },
     payout: { end: 'À la fin de la séance', instant: 'Immédiatement' },
     roster: {
       auto: 'Automatique',
@@ -100,10 +95,6 @@ export default {
   },
   settings: {
     language: { label: 'Langue', desc: 'Langue des cartes de chat et des handouts.' },
-    mode: {
-      label: 'Mode',
-      desc: 'Points d’expérience (xp) ou progression par jalons (milestone). Les jalons annoncent les niveaux et n’attribuent aucun PX.',
-    },
     payout: {
       label: 'Versement des PX',
       desc: 'end : les PX s’accumulent dans la réserve de la séance et sont distribués à la fin de la séance. instant : chaque attribution est partagée et versée immédiatement.',
@@ -204,7 +195,6 @@ export default {
   },
   levels: {
     reached: '{name} a assez de PX pour le niveau {level} !',
-    milestone: '{name} atteint le niveau {level} !',
     sheetButton: 'Utilisez le bouton Level Up de la fiche de personnage.',
     updateSheet: 'Mettez à jour le niveau sur la fiche de personnage.',
     pf2: 'Augmentez le niveau sur la fiche et retirez 1 000 PX.',
@@ -260,8 +250,7 @@ export default {
     write: {
       zero: '{name} : la fiche ne peut pas être mise à 0 PX depuis un Mod. Modifiez-la sur la fiche.',
       sandbox: '{name} : cette fiche nécessite Mod sandbox v1.5 pour mettre à jour les PX.',
-      xpless:
-        '{name} : ce système de jeu n’utilise pas de PX (ou la fiche les calcule elle-même). Utilisez le mode milestone.',
+      xpless: '{name} : ce système de jeu n’utilise pas de PX (ou la fiche les calcule elle-même).',
       noField:
         '{name} : aucun champ de PX n’est connu pour cette fiche. Réglez le système de jeu sur custom et indiquez le champ.',
       error:
@@ -280,8 +269,6 @@ export default {
     badShare: 'Indiquez la part sous forme de nombre de 0 à 10, par exemple 0.5 ou 50 %.',
     noCharacters: 'Sélectionnez des pions qui représentent des personnages, ou utilisez --ids.',
     noTokens: 'Sélectionnez d’abord les pions vaincus, ou utilisez --ids.',
-    milestoneMode:
-      'La partie utilise la progression par jalons, donc les PX ne sont pas suivis. Changez le mode dans les réglages.',
   },
   status: {
     version: 'Version',
@@ -316,7 +303,6 @@ export default {
     undo: 'Annule la dernière attribution qui n’a pas été versée.',
     end: 'Termine la séance : verse les PX, les annonce et les consigne.',
     resetSession: 'Efface les PX de la séance sans les verser.',
-    milestone: 'Fait gagner un niveau au groupe (ou aux personnages choisis).',
     show: 'Affiche les PX et le niveau de chaque membre du groupe d’après la fiche.',
     roster: 'Affiche la carte du groupe.',
     party: 'Coche ou décoche la case Party Member de Roll20 pour les personnages sélectionnés.',
@@ -335,7 +321,7 @@ export default {
     selected: 'Pions sélectionnés',
     selectedDesc: 'Sélectionnez d’abord des pions sur la carte.',
     party: 'Groupe',
-    partyDesc: 'Qui se partage les PX, et les niveaux par jalons.',
+    partyDesc: 'Qui se partage les PX.',
     tools: 'Outils',
     toolsDesc: 'Réglages, état et aide.',
     footer:
@@ -347,7 +333,7 @@ export default {
     footer: 'Les boutons de toutes les commandes se trouvent dans le handout {deck}.',
     overview: {
       heading: 'Présentation',
-      body: 'LazyExperience collecte les points d’expérience gagnés pendant une séance, les répartit entre le groupe et les écrit sur les fiches de personnage. Il lit et écrit la fiche D&D 2024 ainsi que les fiches plus anciennes ou différentes, utilise le groupe propre à Roll20, repère les créatures vaincues, gère les joueurs absents et les PX bonus, annonce les montées de niveau et tient un journal de chaque séance. Les parties qui progressent par jalons peuvent l’utiliser pour annoncer les niveaux à la place.',
+      body: 'LazyExperience collecte les points d’expérience gagnés pendant une séance, les répartit entre le groupe et les écrit sur les fiches de personnage. Il lit et écrit la fiche D&D 2024 ainsi que les fiches plus anciennes ou différentes, utilise le groupe propre à Roll20, repère les créatures vaincues, gère les joueurs absents et les PX bonus, annonce les montées de niveau et tient un journal de chaque séance.',
     },
     quickStart: {
       heading: 'Démarrage rapide',
@@ -401,11 +387,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Niveaux et jalons',
+      heading: 'Montées de niveau',
       points: [
         'Une fois les PX écrits, LazyExperience consulte la table de niveaux du système et annonce quand un personnage a assez de PX pour un nouveau niveau.',
         'Sur la fiche D&D 2024, le joueur appuie ensuite sur le bouton Level Up de la fiche.',
-        'Le mode jalons désactive les PX. Un jalon fait gagner un niveau au groupe (ou aux personnages choisis) et l’annonce. Les fiches ne sont pas modifiées.',
       ],
     },
     systems: {
@@ -428,7 +413,7 @@ export default {
         'Les fiches Beacon comme D&D 2024 nécessitent Mod sandbox v1.5, et un Mod ne peut pas les mettre à 0 PX.',
         'Pathfinder 1E et Starfinder utilisent la case de PX pour le niveau suivant de la fiche pour les annonces de niveau. Quand elle est vide, Pathfinder utilise la progression moyenne et Starfinder sa propre table.',
         'WFRP 4E : chaque attribution est ajoutée comme une ligne dans la liste Experience de la fiche, mais lors des tests la fiche n’a pas recalculé ses totaux de PX ; vérifiez-les sur la fiche.',
-        'Savage Worlds, 13th Age, Cosmere et Call of Cthulhu n’ont pas de PX qu’un Mod puisse écrire : utilisez le mode jalons.',
+        'Savage Worlds, 13th Age, Cosmere et Call of Cthulhu n’ont pas de PX qu’un Mod puisse écrire.',
       ],
     },
     settings: {

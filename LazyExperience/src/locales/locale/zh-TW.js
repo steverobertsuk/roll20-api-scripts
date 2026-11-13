@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: '場次',
-    mode: '模式',
     pool: '場次 XP',
     payout: '發放',
     shares: '份數',
@@ -59,8 +58,6 @@ export default {
     include: '納入',
     partyAdd: '將已選取者加入隊伍',
     partyRemove: '移除已選取者',
-    levelUp: '升級',
-    milestoneAll: '里程碑:整個隊伍',
     addKill: '新增 {xp} XP',
     otherXp: '其他數值',
     ignore: '忽略',
@@ -70,11 +67,9 @@ export default {
     reason: '原因(選填)',
     share: '份數(1 = 全額,0.5 = 一半)',
     confirmEnd: '要結束場次並發放 XP 嗎?',
-    confirmMilestone: '要讓所有隊伍成員升一級嗎?',
   },
   options: {
     yesNo: { yes: '是', no: '否' },
-    mode: { xp: '經驗值', milestone: '里程碑' },
     payout: { end: '場次結束時', instant: '立即' },
     roster: {
       auto: '自動',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: '語言', desc: '聊天卡片與講義所使用的語言。' },
-    mode: {
-      label: '模式',
-      desc: '經驗值(xp)或里程碑升級(milestone)。里程碑模式只會公告等級,不發放 XP。',
-    },
     payout: {
       label: '發放 XP',
       desc: 'end:XP 累積在場次池中,於場次結束時發放。instant:每次發放都會立即分配並支付。',
@@ -191,7 +182,6 @@ export default {
   },
   levels: {
     reached: '{name} 的 XP 已足夠升到 {level} 級!',
-    milestone: '{name} 達到 {level} 級!',
     sheetButton: '請使用角色卡上的升級按鈕。',
     updateSheet: '請更新角色卡上的等級。',
     pf2: '請提升角色卡上的等級,並從 XP 中扣除 1,000。',
@@ -243,7 +233,7 @@ export default {
     write: {
       zero: '{name}:Mod 無法把角色卡設為 0 XP。請在角色卡上自行修改。',
       sandbox: '{name}:這張角色卡需要 Mod sandbox v1.5 才能更新 XP。',
-      xpless: '{name}:此遊戲系統不使用 XP(或由角色卡自行計算)。請使用里程碑模式。',
+      xpless: '{name}:此遊戲系統不使用 XP(或由角色卡自行計算)。',
       noField: '{name}:不知道這張角色卡的 XP 欄位。請將遊戲系統設為 custom 並指定欄位名稱。',
       error: '{name}:無法將角色卡更新為 {xp} XP。請查看 Mod 主控台。',
     },
@@ -260,7 +250,6 @@ export default {
     badShare: '份數請輸入 0 到 10 之間的數字,例如 0.5 或 50%。',
     noCharacters: '請選取代表角色的權標,或使用 --ids。',
     noTokens: '請先選取已擊敗的權標,或使用 --ids。',
-    milestoneMode: '此遊戲使用里程碑升級,因此不追蹤 XP。請在設定中更改模式。',
   },
   status: {
     version: '版本',
@@ -294,7 +283,6 @@ export default {
     undo: '收回最後一筆尚未發放的獎勵。',
     end: '結束場次:發放 XP、公告並記錄。',
     resetSession: '清除場次 XP,但不發放。',
-    milestone: '讓隊伍(或指定的角色)升一級。',
     show: '顯示角色卡上每位隊伍成員的 XP 與等級。',
     roster: '顯示隊伍卡片。',
     party: '為選取的角色勾選或取消勾選 Roll20 的隊伍成員欄位。',
@@ -313,7 +301,7 @@ export default {
     selected: '已選取的權標',
     selectedDesc: '請先在地圖上選取權標。',
     party: '隊伍',
-    partyDesc: '誰分享 XP,以及里程碑等級。',
+    partyDesc: '誰分享 XP。',
     tools: '工具',
     toolsDesc: '設定、狀態與說明。',
     footer: '按鈕會執行 LazyExperience 指令。詳情請見 {help} 講義。',
@@ -324,7 +312,7 @@ export default {
     footer: '每個指令的按鈕都在 {deck} 講義中。',
     overview: {
       heading: '概要',
-      body: 'LazyExperience 會收集場次中獲得的經驗值,分配給隊伍,並寫入角色卡。它能讀寫 D&D 2024 角色卡,也支援舊版與其他角色卡;使用 Roll20 自己的隊伍、偵測被擊敗的生物、處理缺席玩家與額外 XP、公告升級,並為每個場次保留紀錄。以里程碑升級的遊戲也可以改用它來公告等級。',
+      body: 'LazyExperience 會收集場次中獲得的經驗值,分配給隊伍,並寫入角色卡。它能讀寫 D&D 2024 角色卡,也支援舊版與其他角色卡;使用 Roll20 自己的隊伍、偵測被擊敗的生物、處理缺席玩家與額外 XP、公告升級,並為每個場次保留紀錄。',
     },
     quickStart: {
       heading: '快速開始',
@@ -377,11 +365,10 @@ export default {
       ],
     },
     levels: {
-      heading: '等級與里程碑',
+      heading: '升級',
       points: [
         '寫入 XP 後,LazyExperience 會檢查該系統的等級表,並在角色的 XP 足以升級時公告。',
         '在 D&D 2024 角色卡上,玩家接著按下角色卡的升級按鈕。',
-        '里程碑模式會關閉 XP。里程碑會讓隊伍(或指定的角色)升一級並公告,不會更動角色卡。',
       ],
     },
     systems: {
@@ -404,7 +391,7 @@ export default {
         '像 D&D 2024 這類 Beacon 角色卡需要 Mod sandbox v1.5,且 Mod 無法將它們設為 0 XP。',
         'Pathfinder 1E 與 Starfinder 使用角色卡上的「下一級所需 XP」欄位來發出升級通知。該欄位空白時,Pathfinder 使用中速進度,Starfinder 使用自己的表格。',
         'WFRP 4E:每次獎勵都會在角色卡的 Experience 清單中新增一列,但測試中角色卡並未重新計算 XP 總計,請在角色卡上自行檢查。',
-        'Savage Worlds、13th Age、Cosmere 與 Call of Cthulhu 沒有可供 Mod 寫入的 XP:請使用里程碑模式。',
+        'Savage Worlds、13th Age、Cosmere 與 Call of Cthulhu 沒有可供 Mod 寫入的 XP。',
       ],
     },
     settings: {

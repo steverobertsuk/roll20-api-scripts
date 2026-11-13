@@ -18,7 +18,6 @@ import {
 import { normalizeLocale, t } from './i18n.js';
 import { installHandouts } from './journals.js';
 import { confirmKill, ignoreKill, noticeDefeat } from './kills.js';
-import { grantMilestone } from './levels.js';
 import { showLanguages, showMainMenu, showRoster, showSettings, showStatus } from './menu.js';
 import { controllingPlayers, getRoster } from './roster.js';
 import {
@@ -309,7 +308,6 @@ function showHelp(who) {
     ['absent | present [--ids]', 'absent'],
     ['end', 'end'],
     ['undo', 'undo'],
-    ['milestone [--ids]', 'milestone'],
     ['show', 'show'],
     ['roster', 'roster'],
     ['party add | remove', 'party'],
@@ -426,10 +424,6 @@ async function run(msg, who, words) {
       return;
     }
     case 'add': {
-      if (config.mode !== 'xp') {
-        whisperWarning(who, t('errors.milestoneMode', lang));
-        return;
-      }
       // 0.1.x: "add session <xp>" and "add <characterid> <xp>".
       if (toText(args[0]).toLowerCase() === 'session') args.shift();
       const maybeChar = getObj('character', toText(args[0]));
@@ -462,7 +456,6 @@ async function run(msg, who, words) {
       return;
     }
     case 'bonus': {
-      if (config.mode !== 'xp') return whisperWarning(who, t('errors.milestoneMode', lang));
       const xp = validXp(parseStrictInt(args.shift()), true);
       if (xp === null) return whisperError(who, t('errors.badXp', lang));
       const chars = targetCharacters(msg, flags);
@@ -487,7 +480,6 @@ async function run(msg, who, words) {
       return;
     }
     case 'give': {
-      if (config.mode !== 'xp') return whisperWarning(who, t('errors.milestoneMode', lang));
       const xp = validXp(parseStrictInt(args.shift()), true);
       if (xp === null) return whisperError(who, t('errors.badXp', lang));
       const chars = targetCharacters(msg, flags);
@@ -601,14 +593,6 @@ async function run(msg, who, words) {
       showSettings(who);
       return;
     }
-    case 'milestone': {
-      if (toText(args[0]).toLowerCase() === 'no') return;
-      const chars = typeof flags.ids === 'string' ? targetCharacters(msg, flags) : getRoster();
-      if (chars.length === 0) return whisperError(who, t('errors.noCharacters', lang));
-      await grantMilestone(chars);
-      reshow(who, flags);
-      return;
-    }
     default:
       whisperError(
         who,
@@ -666,7 +650,6 @@ async function handleParty(msg, who, args, flags) {
 async function handleKill(msg, who, args, flags) {
   const config = getConfig();
   const lang = config.language;
-  if (config.mode !== 'xp') return whisperWarning(who, t('errors.milestoneMode', lang));
   const action = toText(args[0]).toLowerCase();
   if (action === 'confirm') {
     const xp = args[2] === undefined ? undefined : parseStrictInt(args[2]);

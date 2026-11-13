@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Oturum',
-    mode: 'Mod',
     pool: 'Oturum XP',
     payout: 'Ödenen',
     shares: 'Paylar',
@@ -59,8 +58,6 @@ export default {
     include: 'Dahil Et',
     partyAdd: 'Seçilileri Gruba Ekle',
     partyRemove: 'Seçilileri Çıkar',
-    levelUp: 'Seviye Atla',
-    milestoneAll: 'Kilometre Taşı: Tüm Grup',
     addKill: '{xp} XP Ekle',
     otherXp: 'Başka Miktar',
     ignore: 'Yoksay',
@@ -70,11 +67,9 @@ export default {
     reason: 'Neden (isteğe bağlı)',
     share: 'Pay (1 = tam, 0,5 = yarım)',
     confirmEnd: 'Oturum bitirilsin ve XP dağıtılsın mı?',
-    confirmMilestone: 'Her grup üyesi bir seviye yükseltilsin mi?',
   },
   options: {
     yesNo: { yes: 'Evet', no: 'Hayır' },
-    mode: { xp: 'Deneyim puanları', milestone: 'Kilometre taşları' },
     payout: { end: 'Oturum sonunda', instant: 'Hemen' },
     roster: {
       auto: 'Otomatik',
@@ -99,10 +94,6 @@ export default {
   },
   settings: {
     language: { label: 'Dil', desc: 'Sohbet kartları ve handout’lar için dil.' },
-    mode: {
-      label: 'Mod',
-      desc: 'Deneyim puanları (xp) veya kilometre taşıyla seviye atlama (milestone). Kilometre taşları seviyeleri duyurur ve XP vermez.',
-    },
     payout: {
       label: 'XP ödemesi',
       desc: 'end: XP oturum havuzunda birikir ve oturum bitince dağıtılır. instant: her ödül hemen bölünür ve ödenir.',
@@ -197,7 +188,6 @@ export default {
   },
   levels: {
     reached: '{name}, {level}. seviye için yeterli XP’ye sahip!',
-    milestone: '{name}, {level}. seviyeye ulaştı!',
     sheetButton: 'Karakter kâğıdındaki Level Up düğmesini kullan.',
     updateSheet: 'Karakter kâğıdındaki seviyeyi güncelle.',
     pf2: 'Kâğıttaki seviyeyi yükselt ve XP’den 1.000 düş.',
@@ -250,8 +240,7 @@ export default {
     write: {
       zero: '{name}: kâğıt bir Mod’dan 0 XP’ye ayarlanamaz. Kâğıt üzerinde değiştir.',
       sandbox: '{name}: bu kâğıdın XP’sini güncellemek için Mod sandbox v1.5 gerekir.',
-      xpless:
-        '{name}: bu oyun sistemi XP kullanmıyor (veya kâğıt kendisi hesaplıyor). milestone modunu kullan.',
+      xpless: '{name}: bu oyun sistemi XP kullanmıyor (veya kâğıt kendisi hesaplıyor).',
       noField:
         '{name}: bu kâğıt için bilinen bir XP alanı yok. Oyun sistemini custom yap ve alanın adını ver.',
       error: '{name}: kâğıt {xp} XP ile güncellenemedi. Mod konsoluna bak.',
@@ -269,8 +258,6 @@ export default {
     badShare: 'Payı 0 ile 10 arasında, 0.5 veya 50% gibi bir sayı olarak ver.',
     noCharacters: 'Karakterleri temsil eden token’ları seç veya --ids kullan.',
     noTokens: 'Önce yenilen token’ları seç veya --ids kullan.',
-    milestoneMode:
-      'Oyun kilometre taşıyla seviye atlama kullanıyor, bu yüzden XP takip edilmiyor. Ayarlardan Modu değiştir.',
   },
   status: {
     version: 'Sürüm',
@@ -305,7 +292,6 @@ export default {
     undo: 'Henüz ödenmemiş son ödülü geri al.',
     end: 'Oturumu bitir: XP’yi öde, duyur ve günlüğe kaydet.',
     resetSession: 'Oturum XP’sini ödemeden temizle.',
-    milestone: 'Grubu (veya seçilen karakterleri) bir seviye yükselt.',
     show: 'Her grup üyesinin kâğıttaki XP ve seviyesini göster.',
     roster: 'Grup kartını göster.',
     party:
@@ -325,7 +311,7 @@ export default {
     selected: 'Seçili token’lar',
     selectedDesc: 'Önce haritadan token’ları seç.',
     party: 'Grup',
-    partyDesc: 'XP’yi kimlerin paylaştığı ve kilometre taşı seviyeleri.',
+    partyDesc: 'XP’yi kimlerin paylaştığı.',
     tools: 'Araçlar',
     toolsDesc: 'Ayarlar, durum ve yardım.',
     footer:
@@ -337,7 +323,7 @@ export default {
     footer: 'Her komutun düğmeleri {deck} handout’unda.',
     overview: {
       heading: 'Genel bakış',
-      body: 'LazyExperience, bir oturum boyunca kazanılan deneyim puanlarını toplar, grup arasında böler ve karakter kâğıtlarına yazar. D&D 2024 kâğıdını, eski ve diğer kâğıtları okur ve yazar, Roll20’nin kendi grubunu kullanır, yenilen yaratıkları fark eder, olmayan oyuncuları ve bonus XP’yi yönetir, seviye atlamaları duyurur ve her oturumun günlüğünü tutar. Kilometre taşıyla seviye atlayan oyunlar bunu seviyeleri duyurmak için kullanabilir.',
+      body: 'LazyExperience, bir oturum boyunca kazanılan deneyim puanlarını toplar, grup arasında böler ve karakter kâğıtlarına yazar. D&D 2024 kâğıdını, eski ve diğer kâğıtları okur ve yazar, Roll20’nin kendi grubunu kullanır, yenilen yaratıkları fark eder, olmayan oyuncuları ve bonus XP’yi yönetir, seviye atlamaları duyurur ve her oturumun günlüğünü tutar.',
     },
     quickStart: {
       heading: 'Hızlı başlangıç',
@@ -391,11 +377,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Seviyeler ve kilometre taşları',
+      heading: 'Seviye atlama',
       points: [
         'XP yazıldıktan sonra LazyExperience sistemin seviye tablosunu kontrol eder ve bir karakter yeni seviye için yeterli XP’ye sahip olduğunda duyurur.',
         'D&D 2024 kâğıdında oyuncu bunun üzerine kâğıttaki Level Up düğmesine basar.',
-        'Kilometre taşı modu XP’yi kapatır. Kilometre taşı grubu (veya seçilen karakterleri) bir seviye yükseltir ve duyurur. Kâğıtlar değiştirilmez.',
       ],
     },
     systems: {
@@ -418,7 +403,7 @@ export default {
         'D&D 2024 gibi Beacon kâğıtları Mod sandbox v1.5 gerektirir ve bir Mod tarafından 0 XP’ye ayarlanamaz.',
         'Pathfinder 1E ve Starfinder, seviye atlama bildirimleri için kâğıdın sonraki seviye XP kutusunu kullanır. Boşsa Pathfinder orta ilerleme hızını, Starfinder ise kendi tablosunu kullanır.',
         'WFRP 4E: her ödül kâğıdın Experience listesine bir satır olarak eklenir, ancak testte kâğıt XP toplamlarını yeniden hesaplamadı; bu yüzden onları kâğıt üzerinden kontrol et.',
-        'Savage Worlds, 13th Age, Cosmere ve Call of Cthulhu’da bir Mod’un yazabileceği XP yoktur: kilometre taşı modunu kullan.',
+        'Savage Worlds, 13th Age, Cosmere ve Call of Cthulhu’da bir Mod’un yazabileceği XP yoktur.',
       ],
     },
     settings: {

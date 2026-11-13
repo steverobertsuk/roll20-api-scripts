@@ -48,75 +48,53 @@ export function showMainMenu(playerId) {
   const config = getConfig();
   const session = getSession();
   const lines = [];
+  lines.push(buildRow(tr('menu.session'), `<strong>${session.number}</strong>`));
+  const { split, rows } = previewPayout();
   lines.push(
-    buildRow(tr('menu.session'), `<strong>${session.number}</strong>`),
-    buildRow(tr('menu.mode'), escapeForChat(tr(`options.mode.${config.mode}`)))
+    buildRow(
+      tr('menu.pool'),
+      `<strong>${formatNumber(session.pool)}</strong>${session.carried ? ` (+${formatNumber(session.carried)})` : ''}`
+    ),
+    buildRow(tr('menu.payout'), escapeForChat(tr(`options.payout.${config.payout}`))),
+    // Half shares are common, so shares keep up to two decimals (3.5, not 4).
+    buildRow(
+      tr('menu.shares'),
+      Number.isInteger(split.shares)
+        ? formatNumber(split.shares)
+        : String(Math.round(split.shares * 100) / 100)
+    ),
+    buildRow(tr('menu.perShare'), formatNumber(split.perShare))
   );
-  if (config.mode === 'xp') {
-    const { split, rows } = previewPayout();
+  lines.push(
+    buildSectionLabel(tr('menu.party', { source: tr(`options.roster.${rosterSource()}`) }))
+  );
+  if (rows.length === 0) {
+    lines.push(buildNote(escapeForChat(tr('menu.noParty'))));
+  }
+  for (const row of rows) {
+    const rec = getCharacterRecord(row.id);
+    const toggle = rec.absent
+      ? buildSecondaryButton(tr('buttons.present'), `${COMMAND} present --ids ${row.id} --menu`)
+      : buildSecondaryButton(tr('buttons.absent'), `${COMMAND} absent --ids ${row.id} --menu`);
+    const detail = [
+      config.payout === 'end' ? formatNumber(row.total) : formatNumber(session.paid[row.id] || 0),
+      rec.absent ? tr('menu.absentTag') : '',
+      row.bonus ? tr('menu.bonusTag', { xp: formatNumber(row.bonus) }) : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
     lines.push(
       buildRow(
-        tr('menu.pool'),
-        `<strong>${formatNumber(session.pool)}</strong>${session.carried ? ` (+${formatNumber(session.carried)})` : ''}`
-      ),
-      buildRow(tr('menu.payout'), escapeForChat(tr(`options.payout.${config.payout}`))),
-      // Half shares are common, so shares keep up to two decimals (3.5, not 4).
-      buildRow(
-        tr('menu.shares'),
-        Number.isInteger(split.shares)
-          ? formatNumber(split.shares)
-          : String(Math.round(split.shares * 100) / 100)
-      ),
-      buildRow(tr('menu.perShare'), formatNumber(split.perShare))
-    );
-    lines.push(
-      buildSectionLabel(tr('menu.party', { source: tr(`options.roster.${rosterSource()}`) }))
-    );
-    if (rows.length === 0) {
-      lines.push(buildNote(escapeForChat(tr('menu.noParty'))));
-    }
-    for (const row of rows) {
-      const rec = getCharacterRecord(row.id);
-      const toggle = rec.absent
-        ? buildSecondaryButton(tr('buttons.present'), `${COMMAND} present --ids ${row.id} --menu`)
-        : buildSecondaryButton(tr('buttons.absent'), `${COMMAND} absent --ids ${row.id} --menu`);
-      const detail = [
-        config.payout === 'end' ? formatNumber(row.total) : formatNumber(session.paid[row.id] || 0),
-        rec.absent ? tr('menu.absentTag') : '',
-        row.bonus ? tr('menu.bonusTag', { xp: formatNumber(row.bonus) }) : '',
-      ]
-        .filter(Boolean)
-        .join(' ');
-      lines.push(
-        buildRow(
-          row.name,
-          `${escapeForChat(detail)} ${buildSecondaryButton('+', `${COMMAND} bonus ?{${tr('prompts.xp')}} --ids ${row.id} --menu`)}${toggle}`
-        )
-      );
-    }
-    lines.push(buildDivider());
-    lines.push(
-      `<div>${buildButton(tr('buttons.addXp'), `${COMMAND} add ?{${tr('prompts.xp')}} ?{${tr('prompts.reason')}| } --menu`)}${buildButton(tr('buttons.killSelected'), `${COMMAND} kill --menu`)}${buildButton(tr('buttons.bonusSelected'), `${COMMAND} bonus ?{${tr('prompts.xp')}} --menu`)}</div>`,
-      `<div>${buildButton(tr('buttons.endSession'), `${COMMAND} end ?{${tr('prompts.confirmEnd')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`)}${buildSecondaryButton(tr('buttons.undo'), `${COMMAND} undo --menu`)}</div>`
-    );
-  } else {
-    lines.push(
-      buildSectionLabel(tr('menu.party', { source: tr(`options.roster.${rosterSource()}`) }))
-    );
-    for (const c of getRoster()) {
-      const rec = getCharacterRecord(c.id);
-      lines.push(
-        buildRow(
-          c.get('name'),
-          `${rec.level ? escapeForChat(tr('menu.levelTag', { level: rec.level })) : ''} ${buildSecondaryButton(tr('buttons.levelUp'), `${COMMAND} milestone --ids ${c.id} --menu`)}`
-        )
-      );
-    }
-    lines.push(buildDivider());
-    lines.push(
-      `<div>${buildButton(tr('buttons.milestoneAll'), `${COMMAND} milestone ?{${tr('prompts.confirmMilestone')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no} --menu`)}${buildButton(tr('buttons.endSession'), `${COMMAND} end yes`)}</div>`
+        row.name,
+        `${escapeForChat(detail)} ${buildSecondaryButton('+', `${COMMAND} bonus ?{${tr('prompts.xp')}} --ids ${row.id} --menu`)}${toggle}`
+      )
     );
   }
+  lines.push(buildDivider());
+  lines.push(
+    `<div>${buildButton(tr('buttons.addXp'), `${COMMAND} add ?{${tr('prompts.xp')}} ?{${tr('prompts.reason')}| } --menu`)}${buildButton(tr('buttons.killSelected'), `${COMMAND} kill --menu`)}${buildButton(tr('buttons.bonusSelected'), `${COMMAND} bonus ?{${tr('prompts.xp')}} --menu`)}</div>`,
+    `<div>${buildButton(tr('buttons.endSession'), `${COMMAND} end ?{${tr('prompts.confirmEnd')}|${tr('options.yesNo.yes')},yes|${tr('options.yesNo.no')},no}`)}${buildSecondaryButton(tr('buttons.undo'), `${COMMAND} undo --menu`)}</div>`
+  );
   lines.push(
     `<div>${buildSecondaryButton(tr('buttons.roster'), `${COMMAND} roster`)}${buildSecondaryButton(tr('buttons.settings'), `${COMMAND} settings`)}${buildSecondaryButton(tr('buttons.status'), `${COMMAND} status`)}${buildSecondaryButton(tr('buttons.help'), `${COMMAND} help`)}</div>`
   );
@@ -247,7 +225,7 @@ export function showSettings(playerId) {
   const { tr } = helpers();
   const config = getConfig();
   const groups = [
-    ['menu.groupXp', ['language', 'mode', 'payout', 'updateSheets', 'announce', 'levelNotice']],
+    ['menu.groupXp', ['language', 'payout', 'updateSheets', 'announce', 'levelNotice']],
     ['menu.groupParty', ['roster', 'absentShare', 'extraShares']],
     [
       'menu.groupKills',

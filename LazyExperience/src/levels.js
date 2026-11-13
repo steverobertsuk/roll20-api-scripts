@@ -1,10 +1,10 @@
-// Level-up notices and milestone levelling.
+// Level-up notices.
 
 import { announce, buildNote } from './chat.js';
 import { SCRIPT_NAME } from './constants.js';
 import { t } from './i18n.js';
 import { controllingPlayers } from './roster.js';
-import { getProfile, readProgress } from './sheets.js';
+import { getProfile } from './sheets.js';
 import { getCharacterRecord, getConfig, getSession } from './state.js';
 import { levelForXp } from './systems.js';
 import { escapeForChat } from './utils.js';
@@ -12,7 +12,7 @@ import { escapeForChat } from './utils.js';
 const levelObservers = [];
 
 /**
- * Registers a function called with {character, level, reason} when a character levels.
+ * Registers a function called with {character, level} when a character levels.
  *
  * @param {Function} fn Observer.
  * @returns {void}
@@ -44,15 +44,14 @@ function notifyObservers(event) {
  *
  * @param {object} character Roll20 character.
  * @param {number} level New level.
- * @param {'xp'|'milestone'} reason Why.
  * @returns {void}
  */
-export function announceLevel(character, level, reason) {
+export function announceLevel(character, level) {
   const lang = getConfig().language;
   const profile = getProfile(character);
   const name = escapeForChat(character.get('name'));
   const lines = [
-    `<div>${t(reason === 'milestone' ? 'levels.milestone' : 'levels.reached', lang, { name: `<strong>${name}</strong>`, level })}</div>`,
+    `<div>${t('levels.reached', lang, { name: `<strong>${name}</strong>`, level })}</div>`,
   ];
   const hint = { sheetButton: 'levels.sheetButton', pf2: 'levels.pf2', spend: 'levels.spend' }[
     profile.levelUpHint
@@ -64,8 +63,8 @@ export function announceLevel(character, level, reason) {
     t('titles.levelUp', lang),
     lines
   );
-  getSession().levelUps.push({ id: character.id, name: character.get('name'), level, reason });
-  notifyObservers({ character, level, reason });
+  getSession().levelUps.push({ id: character.id, name: character.get('name'), level });
+  notifyObservers({ character, level });
 }
 
 /**
@@ -98,33 +97,6 @@ export function checkLevelUp(character, result) {
     return null;
   }
   rec.notified = reached;
-  announceLevel(character, reached, 'xp');
+  announceLevel(character, reached);
   return reached;
-}
-
-/**
- * Raises the tracked level of characters by one (milestone levelling) and announces it.
- * Sheets are not changed: on many sheets the level comes from class levels.
- *
- * @param {object[]} characters Roll20 characters.
- * @returns {Promise<{name: string, level: number}[]>} New levels.
- */
-export async function grantMilestone(characters) {
-  const results = [];
-  for (const character of characters) {
-    const rec = getCharacterRecord(character.id);
-    // The tracked level, or the sheet's if the player has levelled up past it.
-    const progress = await readProgress(character);
-    const current = Math.max(
-      Number.isFinite(rec.level) ? rec.level : 0,
-      Number.isFinite(progress.level) ? progress.level : 0,
-      1
-    );
-    const level = current + 1;
-    rec.level = level;
-    rec.notified = level;
-    announceLevel(character, level, 'milestone');
-    results.push({ name: character.get('name'), level });
-  }
-  return results;
 }

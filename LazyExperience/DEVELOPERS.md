@@ -33,7 +33,7 @@ npm run sync-locales          # translate new or changed en-US strings
 | `session.js`  | Pool, bonuses, awards, `pay`, undo, end of session, announcements.                             |
 | `roster.js`   | Roll20 party / players / manual roster, shares and the split.                                  |
 | `kills.js`    | Defeat detection (bar, linked attribute, marker, DeathTracker), prompts and dedupe.            |
-| `levels.js`   | Level-up notices and milestone levels.                                                         |
+| `levels.js`   | Level-up notices.                                                                              |
 | `sheets.js`   | Reading and writing XP: Beacon (`getSheetItem`/`setSheetItem`) and legacy attributes.          |
 | `systems.js`  | Game-system profiles, detection, XP tables and CR → XP.                                        |
 | `state.js`    | Persistent state, 0.1 migration, One-Click options.                                            |

@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Sitzung',
-    mode: 'Modus',
     pool: 'Sitzungs-EP',
     payout: 'Ausgezahlt',
     shares: 'Anteile',
@@ -59,8 +58,6 @@ export default {
     include: 'Einschließen',
     partyAdd: 'Auswahl zur Gruppe hinzufügen',
     partyRemove: 'Auswahl entfernen',
-    levelUp: 'Stufenaufstieg',
-    milestoneAll: 'Meilenstein: ganze Gruppe',
     addKill: '{xp} EP hinzufügen',
     otherXp: 'Anderer Betrag',
     ignore: 'Ignorieren',
@@ -70,11 +67,9 @@ export default {
     reason: 'Grund (optional)',
     share: 'Anteil (1 = voll, 0,5 = halb)',
     confirmEnd: 'Die Sitzung beenden und die EP verteilen?',
-    confirmMilestone: 'Jedes Gruppenmitglied um eine Stufe aufsteigen lassen?',
   },
   options: {
     yesNo: { yes: 'Ja', no: 'Nein' },
-    mode: { xp: 'Erfahrungspunkte', milestone: 'Meilensteine' },
     payout: { end: 'Am Ende der Sitzung', instant: 'Sofort' },
     roster: {
       auto: 'Automatisch',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: 'Sprache', desc: 'Sprache für Chatkarten und Handouts.' },
-    mode: {
-      label: 'Modus',
-      desc: 'Erfahrungspunkte (xp) oder Stufenaufstieg per Meilenstein (milestone). Meilensteine verkünden Stufen und vergeben keine EP.',
-    },
     payout: {
       label: 'EP auszahlen',
       desc: 'end: Die EP sammeln sich im Sitzungspool und werden am Ende der Sitzung verteilt. instant: Jede Vergabe wird sofort aufgeteilt und ausgezahlt.',
@@ -195,7 +186,6 @@ export default {
   },
   levels: {
     reached: '{name} hat genug EP für Stufe {level}!',
-    milestone: '{name} erreicht Stufe {level}!',
     sheetButton: 'Nutze die Schaltfläche Level Up auf dem Charakterbogen.',
     updateSheet: 'Aktualisiere die Stufe auf dem Charakterbogen.',
     pf2: 'Erhöhe die Stufe auf dem Bogen und ziehe 1.000 EP ab.',
@@ -252,7 +242,7 @@ export default {
       zero: '{name}: Der Bogen kann von einem Mod nicht auf 0 EP gesetzt werden. Ändere es auf dem Bogen.',
       sandbox: '{name}: Dieser Bogen benötigt Mod sandbox v1.5, um die EP zu aktualisieren.',
       xpless:
-        '{name}: Dieses Spielsystem verwendet keine EP (oder der Bogen berechnet sie selbst). Nutze den Modus milestone.',
+        '{name}: Dieses Spielsystem verwendet keine EP (oder der Bogen berechnet sie selbst).',
       noField:
         '{name}: Für diesen Bogen ist kein EP-Feld bekannt. Setze das Spielsystem auf custom und gib das Feld an.',
       error:
@@ -271,8 +261,6 @@ export default {
     badShare: 'Gib den Anteil als Zahl von 0 bis 10 an, zum Beispiel 0.5 oder 50 %.',
     noCharacters: 'Wähle Spielfiguren aus, die für Charaktere stehen, oder verwende --ids.',
     noTokens: 'Wähle zuerst die besiegten Spielfiguren aus oder verwende --ids.',
-    milestoneMode:
-      'Das Spiel nutzt Stufenaufstieg per Meilenstein, daher werden EP nicht verfolgt. Ändere den Modus in den Einstellungen.',
   },
   status: {
     version: 'Version',
@@ -307,7 +295,6 @@ export default {
     undo: 'Nimmt die letzte noch nicht ausgezahlte Vergabe zurück.',
     end: 'Beendet die Sitzung: zahlt die EP aus, verkündet sie und protokolliert sie.',
     resetSession: 'Löscht die Sitzungs-EP, ohne sie auszuzahlen.',
-    milestone: 'Lässt die Gruppe (oder die gewählten Charaktere) um eine Stufe aufsteigen.',
     show: 'Zeigt EP und Stufe jedes Gruppenmitglieds aus dem Bogen.',
     roster: 'Zeigt die Gruppenkarte.',
     party: 'Hakt das Kästchen Party Member von Roll20 für die ausgewählten Charaktere an oder ab.',
@@ -326,7 +313,7 @@ export default {
     selected: 'Ausgewählte Spielfiguren',
     selectedDesc: 'Wähle zuerst Spielfiguren auf der Karte aus.',
     party: 'Gruppe',
-    partyDesc: 'Wer sich die EP teilt, und Meilenstein-Stufen.',
+    partyDesc: 'Wer sich die EP teilt.',
     tools: 'Werkzeuge',
     toolsDesc: 'Einstellungen, Status und Hilfe.',
     footer: 'Die Schaltflächen führen LazyExperience-Befehle aus. Einzelheiten im Handout {help}.',
@@ -337,7 +324,7 @@ export default {
     footer: 'Schaltflächen für alle Befehle findest du im Handout {deck}.',
     overview: {
       heading: 'Überblick',
-      body: 'LazyExperience sammelt die in einer Sitzung verdienten Erfahrungspunkte, teilt sie unter der Gruppe auf und schreibt sie in die Charakterbögen. Es liest und schreibt den D&D-2024-Bogen sowie ältere und andere Bögen, nutzt die Gruppe von Roll20 selbst, bemerkt besiegte Kreaturen, kümmert sich um abwesende Spieler und Bonus-EP, verkündet Stufenaufstiege und führt ein Protokoll jeder Sitzung. Spiele, die per Meilenstein aufsteigen, können es stattdessen nutzen, um Stufen zu verkünden.',
+      body: 'LazyExperience sammelt die in einer Sitzung verdienten Erfahrungspunkte, teilt sie unter der Gruppe auf und schreibt sie in die Charakterbögen. Es liest und schreibt den D&D-2024-Bogen sowie ältere und andere Bögen, nutzt die Gruppe von Roll20 selbst, bemerkt besiegte Kreaturen, kümmert sich um abwesende Spieler und Bonus-EP, verkündet Stufenaufstiege und führt ein Protokoll jeder Sitzung.',
     },
     quickStart: {
       heading: 'Schnellstart',
@@ -391,11 +378,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Stufen und Meilensteine',
+      heading: 'Stufenaufstiege',
       points: [
         'Nachdem EP geschrieben wurden, prüft LazyExperience die Stufentabelle des Systems und verkündet, wenn ein Charakter genug EP für eine neue Stufe hat.',
         'Auf dem D&D-2024-Bogen drückt der Spieler dann die Schaltfläche Level Up des Bogens.',
-        'Der Meilenstein-Modus schaltet EP ab. Ein Meilenstein lässt die Gruppe (oder gewählte Charaktere) um eine Stufe aufsteigen und verkündet es. Bögen werden nicht verändert.',
       ],
     },
     systems: {
@@ -418,7 +404,7 @@ export default {
         'Beacon-Bögen wie D&D 2024 benötigen Mod sandbox v1.5, und ein Mod kann sie nicht auf 0 EP setzen.',
         'Pathfinder 1E und Starfinder nutzen für Stufenaufstiegs-Hinweise das Feld des Bogens für die EP bis zur nächsten Stufe. Ist es leer, verwendet Pathfinder die mittlere Aufstiegsgeschwindigkeit und Starfinder seine eigene Tabelle.',
         'WFRP 4E: Jede Vergabe wird als Zeile in die Experience-Liste des Bogens eingetragen, aber der Bogen hat seine EP-Summen beim Testen nicht neu berechnet; prüfe sie daher auf dem Bogen.',
-        'Savage Worlds, 13th Age, Cosmere und Call of Cthulhu haben keine EP, die ein Mod schreiben könnte: Nutze den Meilenstein-Modus.',
+        'Savage Worlds, 13th Age, Cosmere und Call of Cthulhu haben keine EP, die ein Mod schreiben könnte.',
       ],
     },
     settings: {

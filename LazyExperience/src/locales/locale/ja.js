@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'セッション',
-    mode: 'モード',
     pool: 'セッション XP',
     payout: '支払い',
     shares: '配分',
@@ -59,8 +58,6 @@ export default {
     include: '含める',
     partyAdd: '選択中をパーティに追加',
     partyRemove: '選択中を削除',
-    levelUp: 'レベルアップ',
-    milestoneAll: 'マイルストーン: パーティ全員',
     addKill: '{xp} XP を追加',
     otherXp: 'その他の数値',
     ignore: '無視',
@@ -70,11 +67,9 @@ export default {
     reason: '理由(任意)',
     share: '配分(1 = 全額、0.5 = 半分)',
     confirmEnd: 'セッションを終了して XP を配布しますか?',
-    confirmMilestone: 'パーティ全員のレベルを1つ上げますか?',
   },
   options: {
     yesNo: { yes: 'はい', no: 'いいえ' },
-    mode: { xp: '経験値', milestone: 'マイルストーン' },
     payout: { end: 'セッション終了時', instant: 'すぐに' },
     roster: {
       auto: '自動',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: '言語', desc: 'チャットカードとハンドアウトの言語。' },
-    mode: {
-      label: 'モード',
-      desc: '経験値(xp)またはマイルストーンによるレベルアップ(milestone)。マイルストーンではレベルを通知しますが、XP は付与しません。',
-    },
     payout: {
       label: 'XP の支払い',
       desc: 'end: XP はセッションプールに貯まり、セッション終了時に配布されます。instant: 付与のたびにすぐ分配して支払います。',
@@ -195,7 +186,6 @@ export default {
   },
   levels: {
     reached: '{name} はレベル {level} に必要な XP に達しました!',
-    milestone: '{name} はレベル {level} に到達しました!',
     sheetButton: 'キャラクターシートのレベルアップボタンを使用してください。',
     updateSheet: 'キャラクターシートのレベルを更新してください。',
     pf2: 'シートのレベルを上げ、XP から 1,000 を引いてください。',
@@ -249,8 +239,7 @@ export default {
     write: {
       zero: '{name}: Mod からシートを 0 XP にすることはできません。シートで変更してください。',
       sandbox: '{name}: このシートの XP を更新するには Mod sandbox v1.5 が必要です。',
-      xpless:
-        '{name}: このゲームシステムは XP を使用しません(またはシートが自動計算します)。マイルストーンモードを使ってください。',
+      xpless: '{name}: このゲームシステムは XP を使用しません(またはシートが自動計算します)。',
       noField:
         '{name}: このシートの XP フィールドが不明です。ゲームシステムを custom にして、フィールド名を指定してください。',
       error: '{name}: シートを {xp} XP で更新できませんでした。Mod コンソールを確認してください。',
@@ -268,8 +257,6 @@ export default {
     badShare: '配分は 0 から 10 までの数値で、0.5 や 50% のように指定してください。',
     noCharacters: 'キャラクターを表すトークンを選択するか、--ids を使ってください。',
     noTokens: '先に撃破したトークンを選択するか、--ids を使ってください。',
-    milestoneMode:
-      'このゲームはマイルストーンによるレベルアップのため、XP は記録されません。設定でモードを変更してください。',
   },
   status: {
     version: 'バージョン',
@@ -304,7 +291,6 @@ export default {
     undo: 'まだ支払われていない直近の付与を取り消します。',
     end: 'セッションを終了します: XP の支払い、通知、記録を行います。',
     resetSession: '支払わずにセッション XP をクリアします。',
-    milestone: 'パーティ(または選択したキャラクター)のレベルを1つ上げます。',
     show: 'シートにある各パーティメンバーの XP とレベルを表示します。',
     roster: 'パーティカードを表示します。',
     party: '選択したキャラクターの Roll20「パーティメンバー」欄のオンとオフを切り替えます。',
@@ -323,7 +309,7 @@ export default {
     selected: '選択中のトークン',
     selectedDesc: '先にマップ上のトークンを選択してください。',
     party: 'パーティ',
-    partyDesc: 'XP を分け合うメンバーと、マイルストーンのレベル。',
+    partyDesc: 'XP を分け合うメンバー。',
     tools: 'ツール',
     toolsDesc: '設定、ステータス、ヘルプ。',
     footer:
@@ -335,7 +321,7 @@ export default {
     footer: 'すべてのコマンドのボタンは {deck} ハンドアウトにあります。',
     overview: {
       heading: '概要',
-      body: 'LazyExperience は、セッション中に獲得した経験値を集め、パーティに分配して、キャラクターシートに書き込みます。D&D 2024 シートのほか、旧版やその他のシートも読み書きでき、Roll20 のパーティを利用し、撃破したクリーチャーを検知し、欠席者やボーナス XP を扱い、レベルアップを通知し、すべてのセッションのログを残します。マイルストーンでレベルアップするゲームでは、代わりにレベルの通知用として使えます。',
+      body: 'LazyExperience は、セッション中に獲得した経験値を集め、パーティに分配して、キャラクターシートに書き込みます。D&D 2024 シートのほか、旧版やその他のシートも読み書きでき、Roll20 のパーティを利用し、撃破したクリーチャーを検知し、欠席者やボーナス XP を扱い、レベルアップを通知し、すべてのセッションのログを残します。',
     },
     quickStart: {
       heading: 'クイックスタート',
@@ -389,11 +375,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'レベルとマイルストーン',
+      heading: 'レベルアップ',
       points: [
         'XP の書き込み後、LazyExperience はシステムのレベル表を確認し、新しいレベルに必要な XP に達したキャラクターを通知します。',
         'D&D 2024 シートでは、その後プレイヤーがシートのレベルアップボタンを押します。',
-        'マイルストーンモードでは XP がオフになります。マイルストーンはパーティ(または選択したキャラクター)のレベルを1つ上げて通知します。シートは変更されません。',
       ],
     },
     systems: {
@@ -416,7 +401,7 @@ export default {
         'D&D 2024 のような Beacon シートには Mod sandbox v1.5 が必要で、Mod から 0 XP に設定することはできません。',
         'Pathfinder 1E と Starfinder は、レベルアップ通知にシートの「次のレベルまでの XP」欄を使います。空欄の場合、Pathfinder は中速の成長曲線を、Starfinder は独自の表を使います。',
         'WFRP 4E: 付与のたびにシートの Experience リストに1行追加されますが、テストではシートが XP の合計を再計算しなかったため、シートで確認してください。',
-        'Savage Worlds、13th Age、Cosmere、Call of Cthulhu には Mod が書き込める XP がありません。マイルストーンモードを使ってください。',
+        'Savage Worlds、13th Age、Cosmere、Call of Cthulhu には Mod が書き込める XP がありません。',
       ],
     },
     settings: {

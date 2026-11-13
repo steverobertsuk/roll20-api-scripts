@@ -12,7 +12,7 @@ A rewrite of Robin Kuiper's 0.1.14. Existing games are upgraded automatically.
   - Pathfinder 1E (Roll20 and Community) and Pathfinder 2E
   - Starfinder, Old-School Essentials, Dungeon Crawl Classics and Dungeon World
   - WFRP 4E (XP ledger rows; partly supported, as the sheet does not recalculate its totals), Shadowrun 5E/6E (karma) and Cypher
-  - Savage Worlds, 13th Age, Cosmere (not tested) and Call of Cthulhu, which use milestone mode
+  - Savage Worlds, 13th Age, Cosmere (not tested) and Call of Cthulhu, which have no XP: awards are refused with a warning
   - A custom profile with your own field names and level table
 - Roll20's own party (Jumpgate's Party Member) as the roster, falling back to characters controlled by players. `party add`/`remove` ticks Party Member from chat.
 - Defeated creatures, noticed in the same way as HealthColors:
@@ -22,7 +22,6 @@ A rewrite of Robin Kuiper's 0.1.14. Existing games are upgraded automatically.
 
   The GM is asked first, or the XP is added automatically. Creature XP comes from the sheet's XP value, the challenge rating, or (Pathfinder 2E) the level difference.
 
-- Milestone mode: announces levels and awards no XP.
 - Fair splits: absent characters (with an Absent share), per-character shares, bonus XP and `give`. XP that doesn't divide evenly carries over.
 - Level-up notices from each system's level table or next-level field, sent once per level.
 - The LazyExperience - Session Log handout, newest session first, and per-player whispers of each character's XP at the end of a session.

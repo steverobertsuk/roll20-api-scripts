@@ -13,7 +13,7 @@ npm test
 - the split (absent share, bonus, extra shares, remainder)
 - payout modes, undo and the Roll20 party
 - defeats (bar, linked attribute, marker, TokenMod, DeathTracker, prompt and automatic modes)
-- level-ups and milestones
+- level-ups
 - the D&D 2024 and 2014 sheets, sandbox 1.0, migration from 0.1.14, settings, One-Click options, escaping and every card
 
 `tests/systems.test.mjs` covers each game-system profile.
@@ -34,7 +34,7 @@ The tests were driven with the playwright-tests harness on copied browser profil
 ROLL20_GAME_ID=22183309 npx playwright test tests/lazyexperience
 ```
 
-All 12 pass:
+All 12 passed. The milestone-mode test was removed with the feature, leaving 11:
 
 1. `!lazyxp` opens the menu, and `!xp` is an alias.
 2. Add XP asks for the XP and a reason and splits it between the party.
@@ -45,9 +45,8 @@ All 12 pass:
 7. An absent character gets no share, and bonus XP goes to one character.
 8. Undo takes back the last award.
 9. End Session writes the 2024 sheets, announces the session and whispers Test Player. The XP is then taken off again with a negative `give`.
-10. Milestone mode raises a level and refuses XP.
-11. A settings button makes defeats add their XP straight away.
-12. The Party card's Share button sets a half share.
+10. A settings button makes defeats add their XP straight away.
+11. The Party card's Share button sets a half share.
 
 The game is slow for about half a minute after it opens, while old chat loads, so the spec waits until the page answers quickly before each test.
 
@@ -70,7 +69,7 @@ The spec found that the menu rounded shares, showing a half share in a party of 
 | 11  | Absent (Atala unchanged), bonus 30 for Kildrak, Seraphina added with `party add` and paid; 1 XP remainder carried over | Pass   |
 | 12  | Session Log handout made and updated, newest session first                                                             | Pass   |
 | 13  | Test Player sees the public summary and a whisper with Seraphina's XP and total                                        | Pass   |
-| 14  | Milestone mode: `milestone --ids` announces level 2, `add` is refused, the menu shows levels                           | Pass   |
+| 14  | Milestone mode (removed before release: levelling is left to the sheets and Roll20's Charactermancer)                  | —      |
 | 15  | Help and Command Deck handouts and the menu, Party, settings and status cards render in the chat panel                 | Pass   |
 | 16  | German chat cards and menu; Hebrew Help handout reads right to left                                                    | Pass   |
 

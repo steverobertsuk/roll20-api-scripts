@@ -19,7 +19,6 @@ export default {
   },
   menu: {
     session: 'Spelmöte',
-    mode: 'Läge',
     pool: 'Spelmötets XP',
     payout: 'Utbetalt',
     shares: 'Andelar',
@@ -59,8 +58,6 @@ export default {
     include: 'Ta med',
     partyAdd: 'Lägg valda i gruppen',
     partyRemove: 'Ta bort valda',
-    levelUp: 'Nivåhöjning',
-    milestoneAll: 'Milstolpe: Hela gruppen',
     addKill: 'Lägg till {xp} XP',
     otherXp: 'Annat belopp',
     ignore: 'Ignorera',
@@ -70,11 +67,9 @@ export default {
     reason: 'Orsak (valfritt)',
     share: 'Andel (1 = hel, 0,5 = halv)',
     confirmEnd: 'Avsluta spelmötet och dela ut XP?',
-    confirmMilestone: 'Höja varje gruppmedlem en nivå?',
   },
   options: {
     yesNo: { yes: 'Ja', no: 'Nej' },
-    mode: { xp: 'Erfarenhetspoäng', milestone: 'Milstolpar' },
     payout: { end: 'Vid spelmötets slut', instant: 'Direkt' },
     roster: {
       auto: 'Automatiskt',
@@ -94,10 +89,6 @@ export default {
   },
   settings: {
     language: { label: 'Språk', desc: 'Språk för chattkort och handouts.' },
-    mode: {
-      label: 'Läge',
-      desc: 'Erfarenhetspoäng (xp) eller nivåhöjning med milstolpar (milestone). Milstolpar tillkännager nivåer och delar inte ut någon XP.',
-    },
     payout: {
       label: 'Utbetala XP',
       desc: 'end: XP samlas i spelmötets pott och delas ut när spelmötet avslutas. instant: varje tilldelning delas upp och betalas ut direkt.',
@@ -192,7 +183,6 @@ export default {
   },
   levels: {
     reached: '{name} har tillräckligt med XP för nivå {level}!',
-    milestone: '{name} når nivå {level}!',
     sheetButton: 'Använd knappen för nivåhöjning på karaktärsbladet.',
     updateSheet: 'Uppdatera nivån på karaktärsbladet.',
     pf2: 'Höj nivån på bladet och dra bort 1 000 från XP.',
@@ -248,7 +238,7 @@ export default {
       zero: '{name}: bladet kan inte sättas till 0 XP från en Mod. Ändra det på bladet.',
       sandbox: '{name}: det här bladet kräver Mod sandbox v1.5 för att uppdatera XP.',
       xpless:
-        '{name}: det här spelsystemet använder inte XP (eller så räknar bladet ut det själv). Använd milstolpeläge.',
+        '{name}: det här spelsystemet använder inte XP (eller så räknar bladet ut det själv).',
       noField:
         '{name}: inget XP-fält är känt för det här bladet. Sätt Spelsystem till custom och ange fältet.',
       error: '{name}: bladet kunde inte uppdateras med {xp} XP. Se Mod-konsolen.',
@@ -266,8 +256,6 @@ export default {
     badShare: 'Ange andelen som ett tal från 0 till 10, till exempel 0,5 eller 50 %.',
     noCharacters: 'Markera pjäser som representerar karaktärer, eller använd --ids.',
     noTokens: 'Markera de besegrade pjäserna först, eller använd --ids.',
-    milestoneMode:
-      'Spelet använder nivåhöjning med milstolpar, så XP spåras inte. Ändra Läge i inställningarna.',
   },
   status: {
     version: 'Version',
@@ -302,7 +290,6 @@ export default {
     undo: 'Ta tillbaka den senaste tilldelningen som inte har betalats ut.',
     end: 'Avsluta spelmötet: betala ut XP, tillkännage det och logga det.',
     resetSession: 'Rensa spelmötets XP utan att betala ut den.',
-    milestone: 'Höj gruppen (eller de valda karaktärerna) en nivå.',
     show: 'Visa varje gruppmedlems XP och nivå från bladet.',
     roster: 'Visa gruppkortet.',
     party: 'Kryssa i eller ur Roll20:s ruta Party Member för de valda karaktärerna.',
@@ -321,7 +308,7 @@ export default {
     selected: 'Valda pjäser',
     selectedDesc: 'Markera pjäser på kartan först.',
     party: 'Grupp',
-    partyDesc: 'Vem som delar på XP, och milstolpenivåer.',
+    partyDesc: 'Vem som delar på XP.',
     tools: 'Verktyg',
     toolsDesc: 'Inställningar, status och hjälp.',
     footer: 'Knapparna kör LazyExperience-kommandon. Se handouten {help} för detaljer.',
@@ -332,7 +319,7 @@ export default {
     footer: 'Knappar för alla kommandon finns i handouten {deck}.',
     overview: {
       heading: 'Översikt',
-      body: 'LazyExperience samlar ihop de erfarenhetspoäng som tjänas under ett spelmöte, delar dem mellan gruppen och skriver dem till karaktärsbladen. Det läser och skriver D&D 2024-bladet såväl som äldre och andra blad, använder Roll20:s egen grupp, märker när varelser besegras, hanterar frånvarande spelare och bonus-XP, tillkännager nivåhöjningar och för logg över varje spelmöte. Spel som höjer nivå med milstolpar kan använda det för att tillkännage nivåer i stället.',
+      body: 'LazyExperience samlar ihop de erfarenhetspoäng som tjänas under ett spelmöte, delar dem mellan gruppen och skriver dem till karaktärsbladen. Det läser och skriver D&D 2024-bladet såväl som äldre och andra blad, använder Roll20:s egen grupp, märker när varelser besegras, hanterar frånvarande spelare och bonus-XP, tillkännager nivåhöjningar och för logg över varje spelmöte.',
     },
     quickStart: {
       heading: 'Snabbstart',
@@ -386,11 +373,10 @@ export default {
       ],
     },
     levels: {
-      heading: 'Nivåer och milstolpar',
+      heading: 'Nivåhöjningar',
       points: [
         'När XP har skrivits kontrollerar LazyExperience systemets nivåtabell och tillkännager när en karaktär har tillräckligt med XP för en ny nivå.',
         'På D&D 2024-bladet trycker spelaren sedan på bladets knapp för nivåhöjning.',
-        'Milstolpeläge stänger av XP. Milstolpe höjer gruppen (eller de valda karaktärerna) en nivå och tillkännager det. Blad ändras inte.',
       ],
     },
     systems: {
@@ -413,7 +399,7 @@ export default {
         'Beacon-blad som D&D 2024 kräver Mod sandbox v1.5, och en Mod kan inte sätta dem till 0 XP.',
         'Pathfinder 1E och Starfinder använder bladets ruta för XP till nästa nivå för nivåmeddelanden. När den är tom använder Pathfinder den medelsnabba banan och Starfinder sin egen tabell.',
         'WFRP 4E: varje tilldelning läggs till som en rad i bladets Experience-lista, men bladet räknade inte om sina XP-summor under testningen, så kontrollera dem på bladet.',
-        'Savage Worlds, 13th Age, Cosmere och Call of Cthulhu har ingen XP som en Mod kan skriva: använd milstolpeläge.',
+        'Savage Worlds, 13th Age, Cosmere och Call of Cthulhu har ingen XP som en Mod kan skriva.',
       ],
     },
     settings: {

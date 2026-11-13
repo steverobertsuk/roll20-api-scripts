@@ -46,7 +46,6 @@ export const AUTHOR_LINKS = {
 };
 
 // Option lists for settings.
-export const MODE_OPTIONS = ['xp', 'milestone'];
 export const PAYOUT_OPTIONS = ['end', 'instant'];
 export const ROSTER_OPTIONS = ['auto', 'party', 'players', 'manual'];
 export const KILL_MODE_OPTIONS = ['prompt', 'auto', 'off'];
@@ -56,7 +55,6 @@ export const BAR_OPTIONS = [1, 2, 3];
 // Default configuration for new installs. Migrated 0.1.x games keep their own values.
 export const DEFAULT_CONFIG = {
   language: DEFAULT_LOCALE,
-  mode: 'xp',
   payout: 'end',
   updateSheets: true,
   system: 'auto',
@@ -81,7 +79,6 @@ export const DEFAULT_CONFIG = {
 // Settings shown on the settings card, in order, and how each one is edited.
 export const SETTING_TYPES = {
   language: 'locale',
-  mode: MODE_OPTIONS,
   payout: PAYOUT_OPTIONS,
   updateSheets: 'boolean',
   system: 'system',
