@@ -4,16 +4,16 @@
  * ------------------------------------------------
  * Name: TokenController
  * Script: TokenController.js
- * Version: 5.0.1
- * Built: 2026-11-10T00:57:54.682Z
+ * Version: 5.0.2
+ * Built: 2026-11-17T04:23:51.877Z
  */
 const TokenControllerMod = (() => {
   'use strict';
 
   // Build-time placeholders replaced by rollup.config.js inject-build-metadata plugin.
   const SCRIPT_NAME = 'TokenController';
-  const SCRIPT_VERSION = '5.0.1';
-  const SCRIPT_LAST_UPDATED = '2026-11-10T00:57:54.682Z';
+  const SCRIPT_VERSION = '5.0.2';
+  const SCRIPT_LAST_UPDATED = '2026-11-17T04:23:51.877Z';
 
   const DEFAULT_LOCALE$1 = 'en-US';
 
@@ -138,6 +138,11 @@ const TokenControllerMod = (() => {
   // Followers in trail mode step into the leader's previous positions; this is
   // how many positions each leader remembers.
   const TRAIL_LENGTH = 50;
+
+  // A single-file follower may stand a little nearer than its full gap: hex rows
+  // are about 4% closer than a cell, and one-square tokens should still get a
+  // single step each there.
+  const SINGLE_FILE_SLACK = 0.9;
 
   // Points closer than this (in pixels) are treated as the same place.
   const POSITION_EPSILON = 0.5;
@@ -1651,6 +1656,7 @@ const TokenControllerMod = (() => {
           "Slot hou 'n teken in plek. Geslote tekens patrolleer of volg nie totdat dit oopgesluit is nie.",
           'Volg: kies die leier en klik Leier, kies dan die volgers en klik Volg. Jy kan ook die leier se naam tik: !tokencontroller volg Goblin Boss. Volgers volg tekens wat patrolleer, tekens wat jy sleep en tekens wat deur TokenMod geskuif word.',
           "Volgers kan ander volgelinge volg, 'n ketting of 'n kolom maak.",
+          "In 'n enkele ry bly elke volgeling ver genoeg agter om die token voor hom vry te laat, gemeet aan die langer kant van elkeen, sodat waens en karre groter as een blokkie nie oorvleuel nie.",
           "Deur 'n patrollieteken te sleep, dra die patrollie voort van waar jy dit laat val, tensy Sleep 'n patrollie gestel is om te stop.",
           "Mure: met die Mure aan, loop patrollies en volgelinge nie deur dinamiese beligtingsmure of toe deure en vensters nie; oop deure en vensters laat hulle deur. Gee 'n roete sy eie mure opsie (byvoorbeeld ignoreer vir 'n spook).",
           "Stopmerkers: 'n teken wat een van hierdie statusmerkers kry (byvoorbeeld dood) verlaat sy roete en hou op om te volg, en die volgelinge van 'n leier wat een stop kry ook. Stel hulle met !tokenbeheerder stel stopMerkers dood;rooi. Dit werk ook wanneer 'n ander Mod die merker byvoeg.",
@@ -2220,6 +2226,7 @@ const TokenControllerMod = (() => {
           'El pany manté un testimoni al seu lloc. Les fitxes bloquejades no patrullen ni segueixen fins que es desbloquegen.',
           'Seguiu: seleccioneu el líder i feu clic a Líder, després seleccioneu els seguidors i feu clic a Segueix. També pots escriure el nom del líder: !tokencontroller segueix Goblin Boss. Els seguidors segueixen fitxes que patrullen, fitxes que arrossegueu i fitxes mogudes per TokenMod.',
           'Els seguidors poden seguir a altres seguidors, fent una cadena o una columna.',
+          "En fila índia, cada seguidor es queda prou enrere per no tocar el testimoni del davant, segons el costat més llarg de cadascun, de manera que els carros i els cotxes més grans d'una casella no se superposen.",
           "Si arrossegueu una fitxa de patrulla, la patrulla continua des d'on la deixeu anar, tret que Arrossegar una patrulla estigui configurada per aturar-se.",
           "Murs: amb la configuració de Murs activada, les patrulles i els seguidors no passen per parets d'il·luminació dinàmica o portes i finestres tancades; portes i finestres obertes els deixen passar. Doneu una opció de parets a una ruta (per exemple, ignorar per a un fantasma).",
           "Marcadors d'aturada: una fitxa que obté un d'aquests marcadors d'estat (per exemple, mort) deixa la seva ruta i deixa de seguir, i els seguidors d'un líder que aconsegueixen també una parada. Estableix-los amb !tokencontroller set stopMarkers dead;red. Això també funciona quan un altre mod afegeix el marcador.",
@@ -2772,6 +2779,7 @@ const TokenControllerMod = (() => {
           '鎖將令牌固定到位。鎖定的令牌在解鎖之前不會巡邏或跟隨。',
           '关注：选择领导者并单击领导者，然后选择关注者并单击关注。您也可以輸入領導者的名字：!tokencontroller follow Goblin Boss。追隨者跟隨巡邏的令牌、您拖曳的令牌以及 TokenMod 移動的令牌。',
           '追隨者可以追隨其他追隨者，形成一條鍊或一列。',
+          '排成一列時，每個跟隨者會退後到不碰到前方代幣的距離，依各自較長的一邊計算，因此大於一格的馬車和汽車不會重疊。',
           '拖曳巡邏標記會從放置它的位置開始巡邏，除非拖曳巡邏設定為停止。',
           '牆壁：啟用牆壁後，巡邏人員和追隨者不會穿過動態照明牆或關閉的門窗；打開門窗讓他們通過。為路線提供自己的牆壁選項（例如忽略幽靈）。',
           '停止標記：獲得這些狀態標記之一（例如死亡）的令牌離開其路線並停止跟隨，領導者的追隨者也獲得一站。使用 !tokencontroller set stopMarkers dead;red 設定它們。當另一個 Mod 添加標記時，這也適用。',
@@ -3337,6 +3345,7 @@ const TokenControllerMod = (() => {
           'Zámek drží žeton na místě. Zamčené žetony nehlídají ani nesledují, dokud nejsou odemčeny.',
           'Následovat: vyberte vůdce a klikněte na vůdce, poté vyberte následovníky a klikněte na Následovat. Můžete také napsat jméno vůdce: !tokencontroller follow Goblin Boss. Následovníci sledují žetony, které hlídkují, žetony, které přetáhnete, a žetony přesunuté TokenModem.',
           'Následovníci mohou následovat ostatní příznivce a vytvořit tak řetěz nebo sloupec.',
+          'V zástupu zůstává každý následovník dost daleko vzadu, aby se nedotýkal žetonu před sebou, podle delší strany každého z nich, takže se vozy a auta větší než jedno pole nepřekrývají.',
           'Přetažení žetonu hlídky přenese hlídku z místa, kde ji upustíte, pokud není přetažení hlídky nastaveno na zastavení.',
           'Zdi: při zapnutém Zdi hlídky a následovníci neprocházejí dynamickými osvětlovacími stěnami nebo zavřenými dveřmi a okny; otevřené dveře a okna je propustí. Dejte trase možnost vlastní zdi (například ignorovat pro ducha).',
           'Stop Markers: Token, který získá jeden z těchto ukazatelů stavu (například mrtvý), opustí svou trasu a přestane ho následovat a následovníci vůdce, který dostane jednu zastávku také. Nastavte je pomocí !tokencontroller set stopMarkers dead;red. To také funguje, když jiný Mod přidá značku.',
@@ -3901,6 +3910,7 @@ const TokenControllerMod = (() => {
           'Lås holder et token på plads. Låste tokens patruljerer eller følger ikke efter, før de er låst op.',
           'Følg: vælg lederen, og klik på Leder, vælg derefter følgerne, og klik på Følg. Du kan også skrive lederens navn: !tokencontroller follow Goblin Boss. Følgere følger tokens, der patruljerer, tokens, du trækker, og tokens, der flyttes af TokenMod.',
           'Følgere kan følge andre følgere, lave en kæde eller en kolonne.',
+          'I gåsegang holder hver følger sig langt nok tilbage til at gå fri af tokenet foran, målt efter den længste side på hver, så vogne og biler større end ét felt ikke overlapper hinanden.',
           'At trække et patruljerende token fører patruljen videre fra det sted, hvor du taber det, medmindre at trække en patrulje er indstillet til at stoppe.',
           'Vægge: med vægge aktiveret, går patruljer og følgere ikke gennem dynamiske lysvægge eller lukkede døre og vinduer; åbne døre og vinduer slipper dem igennem. Giv en rute sin egen væg mulighed (for eksempel ignorer for et spøgelse).',
           'Stopmarkører: et token, der får en af disse statusmarkører (for eksempel død) forlader sin rute og stopper med at følge, og følgerne af en leder, der får et stop også. Indstil dem med !tokencontroller sæt stopMarkers dead;red. Dette virker også, når en anden Mod tilføjer markøren.',
@@ -4472,6 +4482,7 @@ const TokenControllerMod = (() => {
           'Het slot houdt een token op zijn plaats. Vergrendelde tokens patrouilleren of volgen niet totdat ze ontgrendeld zijn.',
           'Volgen: selecteer de leider en klik op Leider, selecteer vervolgens de volgers en klik op Volgen. Je kunt ook de naam van de leider typen: !tokencontroller volg Goblin Boss. Volgers volgen tokens die patrouilleren, tokens die je sleept en tokens die door TokenMod worden verplaatst.',
           'Volgers kunnen andere volgers volgen, waardoor een ketting of een kolom ontstaat.',
+          "In ganzenpas blijft elke volger ver genoeg achter om vrij te blijven van het token ervoor, gemeten naar de langste zijde van elk, zodat wagens en auto's groter dan één vak elkaar niet overlappen.",
           'Door een patrouillefiche te slepen, gaat de patrouille verder vanaf het punt waar je hem neerzet, tenzij het slepen van een patrouille stopt.',
           'Muren: als de Muren zijn ingeschakeld, lopen patrouilles en volgers niet door dynamische verlichtingsmuren of gesloten deuren en ramen; open deuren en ramen laten ze door. Geef een route een eigen muuroptie (bijvoorbeeld negeren vanwege een geest).',
           'Stopmarkeringen: een fiche die één van deze statusmarkeringen krijgt (bijvoorbeeld dood), verlaat zijn route en stopt met volgen, en de volgers van een leider die één stop krijgen ook. Stel ze in met !tokencontroller set stopMarkers dead;red. Dit werkt ook als een andere Mod de markering toevoegt.',
@@ -5035,6 +5046,7 @@ const TokenControllerMod = (() => {
           'Lock holds a token in place. Locked tokens do not patrol or follow until unlocked.',
           "Follow: select the leader and click Leader, then select the followers and click Follow. You can also type the leader's name: !tokencontroller follow Goblin Boss. Followers follow tokens that patrol, tokens you drag and tokens moved by TokenMod.",
           'Followers can follow other followers, making a chain or a column.',
+          "In single file, each follower stays far enough back to clear the token in front, judged by the longer side of each, so wagons and cars bigger than a square don't overlap.",
           'Dragging a patrolling token carries the patrol on from where you drop it, unless Dragging a Patrol is set to stop.',
           'Walls: with the Walls setting on, patrols and followers do not walk through dynamic lighting walls or closed doors and windows; open doors and windows let them through. Give a route its own walls option (for example ignore for a ghost).',
           'Stop Markers: a token that gets one of these status markers (for example dead) leaves its route and stops following, and the followers of a leader that gets one stop too. Set them with !tokencontroller set stopMarkers dead;red. This also works when another Mod adds the marker.',
@@ -5601,6 +5613,7 @@ const TokenControllerMod = (() => {
           'Lukko pitää merkkiä paikallaan. Lukitut rahakkeet eivät partio tai seuraa, ennen kuin ne on avattu.',
           'Seuraa: valitse johtaja ja napsauta Johtaja, valitse sitten seuraajat ja napsauta Seuraa. Voit myös kirjoittaa johtajan nimen: !tokencontroller follow Goblin Boss. Seuraajat seuraavat partioivia tunnuksia, vetämiäsi tokeneja ja TokenModin siirtämiä tokeneita.',
           'Seuraajat voivat seurata muita seuraajia muodostaen ketjun tai sarakkeen.',
+          'Jonossa jokainen seuraaja pysyy niin kaukana takana, ettei se osu edellä olevaan merkkiin, kummankin pidemmän sivun mukaan, joten yhtä ruutua suuremmat vaunut ja autot eivät mene päällekkäin.',
           'Partiomerkin vetäminen kuljettaa partioa siitä kohdasta, josta sen pudotat, ellei Partion vetäminen ole asetettu pysähtymään.',
           'Seinät: Seinät-asetuksen ollessa päällä partiot ja seuraajat eivät kulje dynaamisten valaistusseinien tai suljettujen ovien ja ikkunoiden läpi; avoimet ovet ja ikkunat päästävät ne läpi. Anna reitille omat seinänsä vaihtoehto (esimerkiksi ohita haamu).',
           'Pysäytysmerkit: merkki, joka saa yhden näistä tilamerkeistä (esimerkiksi kuollut), poistuu reitiltä ja lakkaa seuraamasta, sekä johtajan seuraajat, joka saa yhden pysähdyksen. Aseta ne komennolla !tokencontroller set stopMarkers dead;red. Tämä toimii myös, kun toinen modi lisää merkin.',
@@ -6180,6 +6193,7 @@ const TokenControllerMod = (() => {
           "Lock maintient un jeton en place. Les jetons verrouillés ne patrouillent ni ne suivent jusqu'à ce qu'ils soient déverrouillés.",
           'Suivre : sélectionnez le leader et cliquez sur Leader, puis sélectionnez les suiveurs et cliquez sur Suivre. Vous pouvez également saisir le nom du leader : !tokencontroller follow Goblin Boss. Les abonnés suivent les jetons qui patrouillent, les jetons que vous faites glisser et les jetons déplacés par TokenMod.',
           'Les abonnés peuvent suivre d’autres abonnés en créant une chaîne ou une colonne.',
+          "En file indienne, chaque suiveur reste assez loin derrière pour ne pas toucher le jeton de devant, d'après le plus grand côté de chacun, si bien que les chariots et voitures plus grands qu'une case ne se chevauchent pas.",
           "Faire glisser un jeton de patrouille permet à la patrouille de continuer là où vous l'avez déposé, à moins que le déplacement d'une patrouille ne soit réglé pour s'arrêter.",
           "Murs : lorsque l'option Murs est activée, les patrouilles et les suiveurs ne traversent pas les murs à éclairage dynamique ou les portes et fenêtres fermées ; portes et fenêtres ouvertes les laissent passer. Donnez à un itinéraire ses propres options de murs (par exemple ignorer un fantôme).",
           "Marqueurs d'arrêt : un jeton qui obtient l'un de ces marqueurs de statut (par exemple mort) quitte son itinéraire et arrête de le suivre, ainsi que les partisans d'un leader qui obtiennent un arrêt également. Définissez-les avec !tokencontroller set stopMarkers dead;red. Cela fonctionne également lorsqu'un autre Mod ajoute le marqueur.",
@@ -6768,6 +6782,7 @@ const TokenControllerMod = (() => {
           'Das Schloss hält einen Token an Ort und Stelle. Gesperrte Token patrouillieren oder folgen nicht, bis sie entsperrt werden.',
           'Folgen: Wählen Sie den Anführer aus und klicken Sie auf „Anführer“. Wählen Sie dann die Follower aus und klicken Sie auf „Folgen“. Sie können auch den Namen des Anführers eingeben: !tokencontroller follow Goblin Boss. Follower folgen Token, die patrouillieren, Token, die Sie ziehen, und Token, die von TokenMod verschoben werden.',
           'Follower können anderen Followern folgen und so eine Kette oder Spalte bilden.',
+          'Im Gänsemarsch bleibt jeder Folgende so weit zurück, dass er den Token vor ihm nicht berührt, gemessen an der längeren Seite beider, sodass Wagen und Autos, die größer als ein Feld sind, sich nicht überlappen.',
           'Durch Ziehen eines Patrouillenmarkers wird die Patrouille an der Stelle fortgesetzt, an der Sie sie abgelegt haben, es sei denn, das Ziehen einer Patrouille ist auf Stopp eingestellt.',
           'Wände: Wenn die Einstellung „Wände“ aktiviert ist, gehen Patrouillen und Begleiter nicht durch dynamische Beleuchtungswände oder geschlossene Türen und Fenster; Offene Türen und Fenster lassen sie durch. Geben Sie einer Route die Option „eigene Wände“ (z. B. „Ignorieren“ für einen Geist).',
           'Stoppmarkierungen: Ein Spielstein, der eine dieser Statusmarkierungen erhält (z. B. tot), verlässt seine Route und hört auf, ihm zu folgen, und die Anhänger eines Anführers, der einen Stopp erhält, ebenfalls. Setzen Sie sie mit !tokencontroller set stopMarkers dead;red. Dies funktioniert auch, wenn ein anderer Mod die Markierung hinzufügt.',
@@ -7351,6 +7366,7 @@ const TokenControllerMod = (() => {
           'Η κλειδαριά κρατά ένα κουπόνι στη θέση του. Τα κλειδωμένα διακριτικά δεν περιπολούν ούτε ακολουθούν μέχρι να ξεκλειδωθούν.',
           'Ακολουθήστε: επιλέξτε τον ηγέτη και κάντε κλικ στο Leader, επιλέξτε τους ακόλουθους και κάντε κλικ στο Follow. Μπορείτε επίσης να πληκτρολογήσετε το όνομα του αρχηγού: !tokencontroller follow Goblin Boss. Οι ακόλουθοι ακολουθούν μάρκες που περιπολούν, μάρκες που σύρετε και μάρκες που μετακινούνται από το TokenMod.',
           'Οι ακόλουθοι μπορούν να ακολουθήσουν άλλους ακόλουθους, φτιάχνοντας μια αλυσίδα ή μια στήλη.',
+          'Σε μονή σειρά, κάθε ακόλουθος μένει αρκετά πίσω ώστε να μην αγγίζει το token μπροστά του, με βάση τη μεγαλύτερη πλευρά του καθενός, έτσι ώστε άμαξες και αυτοκίνητα μεγαλύτερα από ένα τετράγωνο να μην επικαλύπτονται.',
           'Σύροντας ένα διακριτικό περιπολίας μεταφέρεται η περίπολος από το σημείο που το ρίχνετε, εκτός εάν το Σύρετε ένα Patrol έχει ρυθμιστεί να σταματήσει.',
           'Τείχη: με τα Τείχη αναμμένα, οι περίπολοι και οι ακόλουθοι δεν περνούν μέσα από τοίχους δυναμικού φωτισμού ή κλειστές πόρτες και παράθυρα. ανοιχτές πόρτες και παράθυρα αφήστε τους να περάσουν. Δώστε σε μια διαδρομή τη δική της επιλογή τοίχους (για παράδειγμα αγνοήστε για ένα φάντασμα).',
           'Σημάδια διακοπής: ένα διακριτικό που λαμβάνει έναν από αυτούς τους δείκτες κατάστασης (για παράδειγμα νεκρός) φεύγει από τη διαδρομή του και σταματά να ακολουθεί, και οι ακόλουθοι ενός ηγέτη που λαμβάνει επίσης μία στάση. Ρυθμίστε τα με το !tokencontroller set stopMarkers dead;red. Αυτό λειτουργεί επίσης όταν ένα άλλο Mod προσθέτει τον δείκτη.',
@@ -7907,6 +7923,7 @@ const TokenControllerMod = (() => {
           'מנעול מחזיק אסימון במקום. אסימונים נעולים אינם מפטרלים או עוקבים עד שהם פותחים אותם.',
           'עקוב: בחר את המנהיג ולחץ על מנהיג, ולאחר מכן בחר את העוקבים ולחץ על עקוב. אתה יכול גם להקליד את שם המנהיג: !tokencontroller follow Goblin Boss. עוקבים עוקבים אחר אסימונים שמפטרלים, אסימונים שאתה גורר ואסימונים המוזזים על ידי TokenMod.',
           'עוקבים יכולים לעקוב אחר עוקבים אחרים, ליצור שרשרת או עמודה.',
+          'בטור עורפי, כל עוקב נשאר רחוק מספיק מאחור כדי לא לגעת באסימון שלפניו, לפי הצלע הארוכה של כל אחד, כך שעגלות ומכוניות גדולות ממשבצת אחת אינן חופפות.',
           'גרירת אסימון סיור מובילה את הסיור מהמקום שבו אתה מפיל אותו, אלא אם כן גרירת סיור מוגדרת לעצור.',
           'קירות: עם הגדרת חומות, סיורים וחסידים אינם עוברים דרך קירות תאורה דינמיים או דלתות וחלונות סגורים; דלתות וחלונות פתוחים מכניסים אותם. תן למסלול אפשרות קירות משלו (לדוגמה התעלם עבור רוח רפאים).',
           'סמני עצור: אסימון שמקבל אחד מסמני הסטטוס הללו (לדוגמה מת) עוזב את המסלול שלו ומפסיק לעקוב, וגם העוקבים של מנהיג שמקבל עצירה אחת. הגדר אותם עם !tokencontroller set stopMarkers dead;red. זה עובד גם כאשר Mod אחר מוסיף את הסמן.',
@@ -8487,6 +8504,7 @@ const TokenControllerMod = (() => {
           'A zár egy tokent a helyén tartja. A zárolt tokenek nem járőröznek és nem követik, amíg fel nem oldják.',
           'Követés: válassza ki a vezetőt, majd kattintson a Vezető gombra, majd válassza ki a követőket, és kattintson a Követés gombra. Beírhatod a vezető nevét is: !tokencontroller follow Goblin Boss. A követők követik a járőröző tokeneket, a húzott tokeneket és a TokenMod által mozgatott tokeneket.',
           'A követők követhetnek más követőket, láncot vagy oszlopot alkotva.',
+          'Libasorban minden követő elég messze marad hátul ahhoz, hogy ne érjen hozzá az előtte lévő tokenhez, mindkettő hosszabbik oldala alapján, így az egy mezőnél nagyobb szekerek és autók nem fedik egymást.',
           'Az őrjárati token elhúzása onnan továbbítja az őrjáratot, ahol ledobta, kivéve, ha a Járőrhúzás leállításra van állítva.',
           'Falak: bekapcsolt falak mellett a járőrök és a követők nem mennek át dinamikus világító falakon vagy zárt ajtókon és ablakokon; nyitott ajtók és ablakok engedik át őket. Adja meg az útvonalnak saját falait (például szellem esetén figyelmen kívül hagyja).',
           'Stop Markers: egy jelző, amely megkapja az egyik ilyen állapotjelzőt (például halott), elhagyja az útvonalat és abbahagyja a követést, valamint a vezető követői, akik egy megállót kapnak. Állítsa be őket: !tokencontroller set stopMarkers dead;red. Ez akkor is működik, ha egy másik Mod hozzáadja a jelölőt.',
@@ -9062,6 +9080,7 @@ const TokenControllerMod = (() => {
           'La serratura mantiene un gettone in posizione. I gettoni bloccati non pattugliano né seguono finché non vengono sbloccati.',
           'Segui: seleziona il leader e fai clic su Leader, quindi seleziona i follower e fai clic su Segui. Puoi anche digitare il nome del leader: !tokencontroller segui Goblin Boss. I follower seguono i token che pattugliano, i token che trascini e i token spostati da TokenMod.',
           'I follower possono seguire altri follower, creando una catena o una colonna.',
+          'In fila indiana, ogni seguace resta abbastanza indietro da non toccare il segnalino davanti, in base al lato più lungo di ciascuno, così carri e auto più grandi di una casella non si sovrappongono.',
           "Trascinare un gettone di pattuglia riporta la pattuglia dal punto in cui l'hai rilasciata, a meno che il trascinamento di una pattuglia non sia impostato per interrompersi.",
           "Muri: con l'impostazione Muri attiva, pattuglie e seguaci non attraversano muri con illuminazione dinamica o porte e finestre chiuse; porte e finestre aperte li lasciano passare. Assegna a un percorso l'opzione delle proprie mura (ad esempio ignora per un fantasma).",
           'Segnalini di Stop: un gettone che ottiene uno di questi segnalini di stato (ad esempio morto) lascia il suo percorso e smette di seguirlo, e anche i seguaci di un leader che ottiene uno si fermano. Impostali con !tokencontroller set stopMarkers dead;red. Funziona anche quando un altro Mod aggiunge il marcatore.',
@@ -9632,6 +9651,7 @@ const TokenControllerMod = (() => {
           'ロックはトークンを所定の位置に保持します。ロックされたトークンは、ロックが解除されるまでパトロールしたり追跡したりしません。',
           'フォロー: リーダーを選択して「リーダー」をクリックし、フォロワーを選択して「フォロー」をクリックします。リーダーの名前を入力することもできます: !tokencontroller follow ゴブリン ボス。フォロワーは、巡回するトークン、ドラッグしたトークン、TokenMod によって移動されたトークンを追跡します。',
           'フォロワーは他のフォロワーをフォローしてチェーンや列を作ることができます。',
+          '一列縦隊では、各フォロワーは前のトークンに重ならないだけ後ろに下がります。距離はそれぞれの長い辺で決まるので、1マスより大きい荷馬車や車も重なりません。',
           'パトロール トークンをドラッグすると、パトロールのドラッグが停止するように設定されていない限り、ドロップした場所からパトロールが続行されます。',
           '壁: 壁をオンにすると、パトロールとフォロワーは動的照明の壁や閉じたドアや窓を通り抜けません。開いたドアや窓はそれらを通過させます。ルートに独自の壁オプションを与えます (たとえば、ゴーストを無視する)。',
           '停止マーカー: これらのステータス マーカーの 1 つ (たとえば死亡) を取得したトークンはルートを離れてフォローを停止し、リーダーのフォロワーも 1 つの停止を取得します。 !tokencontroller set stopMarkers Dead;red で設定します。これは、別の Mod がマーカーを追加した場合にも機能します。',
@@ -10196,6 +10216,7 @@ const TokenControllerMod = (() => {
           '잠금은 토큰을 제자리에 유지합니다. 잠긴 토큰은 잠금이 해제될 때까지 순찰하거나 따라가지 않습니다.',
           '팔로우: 리더를 선택하고 리더를 클릭한 다음 팔로워를 선택하고 팔로우를 클릭합니다. 리더의 이름을 입력할 수도 있습니다: !tokencontroller Follow Goblin Boss. 팔로어는 순찰하는 토큰, 드래그한 토큰, TokenMod가 이동한 토큰을 따릅니다.',
           '팔로워는 다른 팔로워를 따라가며 체인이나 기둥을 만들 수 있습니다.',
+          '일렬 종대에서는 각 추종자가 앞의 토큰과 겹치지 않을 만큼 뒤에 머뭅니다. 거리는 각 토큰의 긴 변으로 정해지므로 한 칸보다 큰 마차나 자동차도 겹치지 않습니다.',
           '순찰 토큰 끌기가 중지로 설정되어 있지 않은 한 순찰 토큰을 드래그하면 놓은 위치부터 순찰이 계속됩니다.',
           '벽: 벽 설정이 켜져 있으면 순찰대와 추종자는 역동적인 조명 벽이나 닫힌 문 및 창문을 통과하여 걷지 않습니다. 문과 창문을 열어서 통과시키세요. 경로에 자체 벽 옵션을 제공합니다(예: 유령 무시).',
           '정지 마커: 이러한 상태 마커 중 하나(예: 사망)를 얻은 토큰은 경로를 떠나 팔로우를 중지하고 리더의 추종자도 한 정지를 얻습니다. !tokencontroller set stopMarkers dead;red로 설정하세요. 이는 다른 Mod가 마커를 추가할 때도 작동합니다.',
@@ -10768,6 +10789,7 @@ const TokenControllerMod = (() => {
           'Zamek utrzymuje żeton na miejscu. Zablokowane tokeny nie patrolują ani nie podążają, dopóki nie zostaną odblokowane.',
           'Obserwuj: wybierz lidera i kliknij Lidera, następnie wybierz obserwujących i kliknij Obserwuj. Możesz także wpisać imię lidera: !tokencontroller podążaj za Goblinem Bossem. Obserwujący podążają za tokenami, które patrolują, tokenami, które przeciągasz i tokenami przenoszonymi przez TokenMod.',
           'Obserwujący mogą podążać za innymi obserwującymi, tworząc łańcuch lub kolumnę.',
+          'W rzędzie każdy podążający zostaje na tyle daleko z tyłu, by nie nachodzić na żeton przed sobą, według dłuższego boku każdego z nich, więc wozy i samochody większe niż jedno pole nie nakładają się na siebie.',
           'Przeciągnięcie żetonu patrolowania powoduje kontynuację patrolu od miejsca, w którym go upuściłeś, chyba że przeciąganie patrolu zostanie zatrzymane.',
           'Ściany: przy włączonej opcji Ściany patrole i towarzysze nie przechodzą przez dynamicznie oświetlane ściany lub zamknięte drzwi i okna; otwarte drzwi i okna ich przepuszczają. Nadaj trasie opcję własnych ścian (na przykład ignorowanie ducha).',
           'Znaczniki zatrzymania: żeton, który otrzyma jeden z tych znaczników statusu (na przykład martwy), opuszcza swoją trasę i przestaje podążać, a także zwolennicy lidera, którzy również otrzymują jeden przystanek. Ustaw je za pomocą !tokencontroller set stopMarkers dead;red. Działa to również, gdy inny Mod dodaje znacznik.',
@@ -11336,6 +11358,7 @@ const TokenControllerMod = (() => {
           'Lock mantém um token no lugar. Os tokens bloqueados não patrulham nem seguem até serem desbloqueados.',
           'Seguir: selecione o líder e clique em Líder, depois selecione os seguidores e clique em Seguir. Pode também digitar o nome do líder: !tokencontroller follow Goblin Boss. Os seguidores seguem os tokens que patrulham, os tokens que arrasta e os tokens movidos pelo TokenMod.',
           'Os seguidores podem seguir outros seguidores, formando uma corrente ou coluna.',
+          'Em fila indiana, cada seguidor fica suficientemente atrás para não tocar no token da frente, pelo lado maior de cada um, pelo que carroças e carros maiores do que um quadrado não se sobrepõem.',
           'Arrastar uma ficha de patrulha continua a patrulha a partir do local onde a libertou, a menos que Arrastar uma Patrulha esteja definido para parar.',
           'Paredes: com a definição Paredes ativada, as patrulhas e os seguidores não transitam por paredes com iluminação dinâmica ou portas e janelas fechadas; portas e janelas abertas deixam-nos passar. Dê a uma rota a sua própria opção de paredes (por exemplo, ignorar um fantasma).',
           'Marcadores de paragem: um token que recebe um destes marcadores de estado (por exemplo, morto) sai da sua rota e deixa de seguir, e os seguidores de um líder que recebe uma paragem também. Defina-os com !tokencontroller set stopMarkers dead;red. Isto também funciona quando outro Mod adiciona o marcador.',
@@ -11901,6 +11924,7 @@ const TokenControllerMod = (() => {
           'Lock mantém um token no lugar. Os tokens bloqueados não patrulham nem seguem até serem desbloqueados.',
           'Seguir: selecione o líder e clique em Líder, depois selecione os seguidores e clique em Seguir. Você também pode digitar o nome do líder: !tokencontroller follow Goblin Boss. Os seguidores seguem os tokens que patrulham, os tokens que você arrasta e os tokens movidos pelo TokenMod.',
           'Os seguidores podem seguir outros seguidores, formando uma corrente ou coluna.',
+          'Em fila indiana, cada seguidor fica atrás o bastante para não encostar no token da frente, pelo lado maior de cada um, então carroças e carros maiores que um quadrado não se sobrepõem.',
           'Arrastar uma ficha de patrulha continua a patrulha de onde você a soltou, a menos que Arrastar uma Patrulha esteja definido para parar.',
           'Paredes: com a configuração Paredes ativada, patrulhas e seguidores não transitam por paredes com iluminação dinâmica ou portas e janelas fechadas; portas e janelas abertas os deixam passar. Dê a uma rota sua própria opção de paredes (por exemplo, ignorar um fantasma).',
           'Marcadores de parada: um token que recebe um desses marcadores de status (por exemplo, morto) sai de sua rota e para de seguir, e os seguidores de um líder que recebe uma parada também. Defina-os com !tokencontroller set stopMarkers dead;red. Isso também funciona quando outro Mod adiciona o marcador.',
@@ -12474,6 +12498,7 @@ const TokenControllerMod = (() => {
           'Замок удерживает токен на месте. Заблокированные жетоны не патрулируют и не следуют, пока не разблокируются.',
           'Следовать: выберите лидера и нажмите «Лидер», затем выберите последователей и нажмите «Следовать». Вы также можете ввести имя лидера: !tokencontroller Follow Goblin Boss. Последователи следуют за токенами, которые патрулируют, жетонами, которые вы перетаскиваете, и жетонами, перемещаемыми TokenMod.',
           'Подписчики могут подписываться на других подписчиков, образуя цепочку или столбец.',
+          'В колонне по одному каждый следующий держится достаточно далеко позади, чтобы не задевать жетон впереди, по длинной стороне каждого, поэтому повозки и машины больше одной клетки не перекрываются.',
           'При перетаскивании жетона патрулирования патруль продолжается с того места, где вы его бросили, если только перетаскивание патруля не установлено на остановку.',
           'Стены: при включенной настройке «Стены» патрули и сопровождающие не проходят через стены с динамическим освещением или закрытые двери и окна; открытые двери и окна пропускали их. Предоставьте маршруту возможность иметь собственные стены (например, игнорировать призрака).',
           'Маркеры остановки: жетон, получивший один из этих маркеров статуса (например, мертвый), покидает свой маршрут и перестает следовать, а последователи лидера, получившего одну остановку, тоже останавливаются. Установите их с помощью !tokencontroller set stopMarkers Dead;red. Это также работает, когда другой мод добавляет маркер.',
@@ -13046,6 +13071,7 @@ const TokenControllerMod = (() => {
           'El candado mantiene una ficha en su lugar. Las fichas bloqueadas no patrullan ni siguen hasta que se desbloquean.',
           'Seguir: seleccione el líder y haga clic en Líder, luego seleccione los seguidores y haga clic en Seguir. También puedes escribir el nombre del líder: !tokencontroller sigue a Goblin Boss. Los seguidores siguen los tokens que patrullan, los tokens que arrastras y los tokens movidos por TokenMod.',
           'Los seguidores pueden seguir a otros seguidores, formando una cadena o una columna.',
+          'En fila india, cada seguidor se queda lo bastante atrás para no tocar la ficha de delante, según el lado más largo de cada una, de modo que los carros y coches de más de una casilla no se solapan.',
           'Al arrastrar una ficha de patrulla, la patrulla continúa desde donde la dejaste, a menos que Arrastrar una patrulla esté configurado para detenerse.',
           'Muros: con los Muros activados, las patrullas y seguidores no caminan a través de muros con iluminación dinámica o puertas y ventanas cerradas; puertas abiertas y ventanas les dejan pasar. Dale a una ruta su propia opción de paredes (por ejemplo, ignorarla si aparece un fantasma).',
           'Marcadores de parada: una ficha que obtiene uno de estos marcadores de estado (por ejemplo, muerto) abandona su ruta y deja de seguir, y los seguidores de un líder que obtiene uno también se detienen. Configúrelos con !tokencontroller set stopMarkers dead;red. Esto también funciona cuando otro Mod agrega el marcador.',
@@ -13614,6 +13640,7 @@ const TokenControllerMod = (() => {
           'Låset håller en token på plats. Låsta polletter patrullerar eller följer inte med förrän de är upplåsta.',
           'Följ: välj ledaren och klicka på Ledare, välj sedan följare och klicka på Följ. Du kan också skriva in ledarens namn: !tokencontroller follow Goblin Boss. Följare följer tokens som patrullerar, tokens du drar och tokens som flyttas av TokenMod.',
           'Följare kan följa andra följare, skapa en kedja eller en kolumn.',
+          'I gåsmarsch håller sig varje följare så långt bakom att den går fri från token framför, mätt efter den längre sidan på var och en, så att vagnar och bilar större än en ruta inte överlappar varandra.',
           'Att dra en patrulleringstoken för patrullen vidare där du tappar den, om inte Drag a Patrol är inställd på att stoppa.',
           'Väggar: med inställningen Väggar på går patruller och följare inte genom dynamiska belysningsväggar eller stängda dörrar och fönster; öppna dörrar och fönster släpper igenom dem. Ge en rutt dess egna väggalternativ (till exempel ignorera för ett spöke).',
           'Stoppmarkörer: en token som får en av dessa statusmarkörer (till exempel död) lämnar sin rutt och slutar följa, och anhängarna till en ledare som får ett stopp också. Ställ in dem med !tokencontroller set stopMarkers dead;red. Detta fungerar också när en annan mod lägger till markören.',
@@ -14184,6 +14211,7 @@ const TokenControllerMod = (() => {
           'Kilit, jetonu yerinde tutar. Kilitli jetonlar, kilidi açılana kadar devriye gezmez veya takip etmez.',
           "Takip et: lideri seçin ve Lider'e tıklayın, ardından takipçileri seçin ve Takip Et'e tıklayın. Ayrıca liderin adını da yazabilirsiniz: !tokencontroller Goblin Boss'u takip edin. Takipçiler devriye gezen jetonları, sürüklediğiniz jetonları ve TokenMod tarafından taşınan jetonları takip eder.",
           'Takipçiler diğer takipçileri takip ederek bir zincir veya sütun oluşturabilirler.',
+          'Tek sırada her takipçi, öndeki jetona değmeyecek kadar geride kalır; mesafe her birinin uzun kenarına göre belirlenir, böylece bir kareden büyük arabalar ve otomobiller üst üste binmez.',
           'Bir Devriyeyi Sürüklemek durmaya ayarlı olmadığı sürece, bir devriye jetonunu sürüklemek, devriyeyi bıraktığınız yerden devam ettirir.',
           'Duvarlar: Duvarlar ayarı açıkken devriyeler ve takipçiler dinamik aydınlatmalı duvarlardan veya kapalı kapı ve pencerelerden geçmez; açık kapılar ve pencereler onların geçmesine izin veriyor. Bir rotaya kendi duvarları seçeneğini verin (örneğin bir hayaleti görmezden gelin).',
           'Durdurma İşaretçileri: Bu durum işaretleyicilerinden (örneğin ölü) birini alan bir token, rotasını terk eder ve takip etmeyi bırakır ve bir liderin takipçileri de bir durak alır. Bunları !tokencontroller set stopMarkers dead;red ile ayarlayın. Bu aynı zamanda başka bir Mod işaretçiyi eklediğinde de çalışır.',
@@ -14756,6 +14784,7 @@ const TokenControllerMod = (() => {
           'Замок утримує жетон на місці. Заблоковані жетони не патрулюють і не слідують, доки не розблокують.',
           'Стежити: виберіть лідера та натисніть Лідер, потім виберіть послідовників і натисніть Слідувати. Ви також можете ввести ім’я лідера: !tokencontroller follow Goblin Boss. Підписники стежать за жетонами, які патрулюють, за жетонами, які ви перетягуєте, і за жетонами, які переміщує TokenMod.',
           'Підписники можуть слідувати за іншими підписниками, створюючи ланцюжок або колону.',
+          'У колоні по одному кожен наступний тримається достатньо далеко позаду, щоб не зачіпати жетон попереду, за довшою стороною кожного, тож вози й машини, більші за одну клітинку, не перекриваються.',
           'Перетягування жетона патрулювання продовжує патрулювання з того місця, де ви його впустили, якщо перетягування патруля не зупинено.',
           'Стіни: з увімкненим параметром «Стіни» патрулі та слідчі не проходять через стіни з динамічним освітленням або закриті двері та вікна; відкриті двері та вікна пропускають їх. Надайте маршруту власні стіни (наприклад, ігноруйте для привида).',
           'Маркери зупинки: маркер, який отримує один із цих маркерів статусу (наприклад, мертвий), залишає свій маршрут і припиняє слідувати, а також послідовники лідера, який отримує одну зупинку. Встановіть їх за допомогою !tokencontroller set stopMarkers dead;red. Це також працює, коли інший мод додає маркер.',
@@ -18262,6 +18291,60 @@ const TokenControllerMod = (() => {
   }
 
   /**
+   * Returns a token's length for spacing a single file: its longer side, so a
+   * wagon gets room for its length whichever way it is turned.
+   *
+   * @param {object} token Roll20 graphic.
+   * @returns {number} Length in pixels.
+   */
+  function bodyLength(token) {
+    return (
+      Math.max(Number(token.get('width')) || 0, Number(token.get('height')) || 0) || PAGE_UNIT_PX
+    );
+  }
+
+  /**
+   * Chooses where each follower in a single file stands: far enough back along
+   * the leader's trail to clear the token in front, by half the length of each.
+   * One-square tokens get one step each, as before; a wagon two squares long
+   * stands two steps behind another. Each follower stands further back than the
+   * one before, so they never share a place. Followers with no trail left that
+   * far back get no target, and wait.
+   *
+   * @param {object} leader Roll20 graphic.
+   * @param {number[][]} trail The leader's earlier positions, newest first.
+   * @param {(object|undefined)[]} followers Roll20 graphics, in file order
+   *        (undefined for a missing token, which keeps its place in the file).
+   * @returns {(number[]|undefined)[]} A target for each follower.
+   */
+  function singleFileTargets(leader, trail, followers) {
+    const targets = [];
+    let from = positionOf(leader);
+    let index = 0;
+    let walked = 0;
+    let needed = 0;
+    let ahead = bodyLength(leader);
+    for (const follower of followers) {
+      const length = follower ? bodyLength(follower) : ahead;
+      needed += (ahead + length) / 2;
+      let target;
+      while (index < trail.length) {
+        const next = trail[index];
+        walked += Math.hypot(next[0] - from[0], next[1] - from[1]);
+        from = next;
+        index += 1;
+        if (walked >= needed * SINGLE_FILE_SLACK) {
+          target = next;
+          break;
+        }
+      }
+      targets.push(target);
+      ahead = length;
+    }
+    return targets;
+  }
+
+  /**
    * Makes tokens follow a leader.
    *
    * @param {object[]} followers Roll20 graphics.
@@ -18341,8 +18424,14 @@ const TokenControllerMod = (() => {
       return;
     }
     const trailMode = getConfig().followMode === 'trail';
-    const trail = trails.get(leader.id) || [];
     const [lx, ly] = positionOf(leader);
+    const fileTargets = trailMode
+      ? singleFileTargets(
+          leader,
+          trails.get(leader.id) || [],
+          followers.map(([followerId]) => getObj('graphic', followerId) || undefined)
+        )
+      : [];
     followers.forEach(([followerId, follow], i) => {
       if (visited.has(followerId) || s.locks[followerId] || s.patrols[followerId]) {
         return;
@@ -18358,7 +18447,7 @@ const TokenControllerMod = (() => {
       let target;
       if (trailMode) {
         // Followers further back wait until the leader has gone far enough.
-        target = trail[i];
+        target = fileTargets[i];
       } else if (follow.offset) {
         // Snap so a follower that started between cells still lands in one.
         const grid = getPageContext(leader.get('_pageid'))?.grid;
