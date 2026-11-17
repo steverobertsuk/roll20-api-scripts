@@ -484,6 +484,7 @@ const TRANSLATION = {
         'La serratura mantiene un gettone in posizione. I gettoni bloccati non pattugliano né seguono finché non vengono sbloccati.',
         'Segui: seleziona il leader e fai clic su Leader, quindi seleziona i follower e fai clic su Segui. Puoi anche digitare il nome del leader: !tokencontroller segui Goblin Boss. I follower seguono i token che pattugliano, i token che trascini e i token spostati da TokenMod.',
         'I follower possono seguire altri follower, creando una catena o una colonna.',
+        'In fila indiana, ogni seguace resta abbastanza indietro da non toccare il segnalino davanti, in base al lato più lungo di ciascuno, così carri e auto più grandi di una casella non si sovrappongono.',
         "Trascinare un gettone di pattuglia riporta la pattuglia dal punto in cui l'hai rilasciata, a meno che il trascinamento di una pattuglia non sia impostato per interrompersi.",
         "Muri: con l'impostazione Muri attiva, pattuglie e seguaci non attraversano muri con illuminazione dinamica o porte e finestre chiuse; porte e finestre aperte li lasciano passare. Assegna a un percorso l'opzione delle proprie mura (ad esempio ignora per un fantasma).",
         'Segnalini di Stop: un gettone che ottiene uno di questi segnalini di stato (ad esempio morto) lascia il suo percorso e smette di seguirlo, e anche i seguaci di un leader che ottiene uno si fermano. Impostali con !tokencontroller set stopMarkers dead;red. Funziona anche quando un altro Mod aggiunge il marcatore.',

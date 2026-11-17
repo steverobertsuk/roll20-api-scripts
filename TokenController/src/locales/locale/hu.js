@@ -489,6 +489,7 @@ const TRANSLATION = {
         'A zár egy tokent a helyén tartja. A zárolt tokenek nem járőröznek és nem követik, amíg fel nem oldják.',
         'Követés: válassza ki a vezetőt, majd kattintson a Vezető gombra, majd válassza ki a követőket, és kattintson a Követés gombra. Beírhatod a vezető nevét is: !tokencontroller follow Goblin Boss. A követők követik a járőröző tokeneket, a húzott tokeneket és a TokenMod által mozgatott tokeneket.',
         'A követők követhetnek más követőket, láncot vagy oszlopot alkotva.',
+        'Libasorban minden követő elég messze marad hátul ahhoz, hogy ne érjen hozzá az előtte lévő tokenhez, mindkettő hosszabbik oldala alapján, így az egy mezőnél nagyobb szekerek és autók nem fedik egymást.',
         'Az őrjárati token elhúzása onnan továbbítja az őrjáratot, ahol ledobta, kivéve, ha a Járőrhúzás leállításra van állítva.',
         'Falak: bekapcsolt falak mellett a járőrök és a követők nem mennek át dinamikus világító falakon vagy zárt ajtókon és ablakokon; nyitott ajtók és ablakok engedik át őket. Adja meg az útvonalnak saját falait (például szellem esetén figyelmen kívül hagyja).',
         'Stop Markers: egy jelző, amely megkapja az egyik ilyen állapotjelzőt (például halott), elhagyja az útvonalat és abbahagyja a követést, valamint a vezető követői, akik egy megállót kapnak. Állítsa be őket: !tokencontroller set stopMarkers dead;red. Ez akkor is működik, ha egy másik Mod hozzáadja a jelölőt.',

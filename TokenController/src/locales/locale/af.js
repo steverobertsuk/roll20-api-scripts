@@ -481,6 +481,7 @@ const TRANSLATION = {
         "Slot hou 'n teken in plek. Geslote tekens patrolleer of volg nie totdat dit oopgesluit is nie.",
         'Volg: kies die leier en klik Leier, kies dan die volgers en klik Volg. Jy kan ook die leier se naam tik: !tokencontroller volg Goblin Boss. Volgers volg tekens wat patrolleer, tekens wat jy sleep en tekens wat deur TokenMod geskuif word.',
         "Volgers kan ander volgelinge volg, 'n ketting of 'n kolom maak.",
+        "In 'n enkele ry bly elke volgeling ver genoeg agter om die token voor hom vry te laat, gemeet aan die langer kant van elkeen, sodat waens en karre groter as een blokkie nie oorvleuel nie.",
         "Deur 'n patrollieteken te sleep, dra die patrollie voort van waar jy dit laat val, tensy Sleep 'n patrollie gestel is om te stop.",
         "Mure: met die Mure aan, loop patrollies en volgelinge nie deur dinamiese beligtingsmure of toe deure en vensters nie; oop deure en vensters laat hulle deur. Gee 'n roete sy eie mure opsie (byvoorbeeld ignoreer vir 'n spook).",
         "Stopmerkers: 'n teken wat een van hierdie statusmerkers kry (byvoorbeeld dood) verlaat sy roete en hou op om te volg, en die volgelinge van 'n leier wat een stop kry ook. Stel hulle met !tokenbeheerder stel stopMerkers dood;rooi. Dit werk ook wanneer 'n ander Mod die merker byvoeg.",

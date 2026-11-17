@@ -475,6 +475,7 @@ const TRANSLATION = {
         'Lock mantém um token no lugar. Os tokens bloqueados não patrulham nem seguem até serem desbloqueados.',
         'Seguir: selecione o líder e clique em Líder, depois selecione os seguidores e clique em Seguir. Você também pode digitar o nome do líder: !tokencontroller follow Goblin Boss. Os seguidores seguem os tokens que patrulham, os tokens que você arrasta e os tokens movidos pelo TokenMod.',
         'Os seguidores podem seguir outros seguidores, formando uma corrente ou coluna.',
+        'Em fila indiana, cada seguidor fica atrás o bastante para não encostar no token da frente, pelo lado maior de cada um, então carroças e carros maiores que um quadrado não se sobrepõem.',
         'Arrastar uma ficha de patrulha continua a patrulha de onde você a soltou, a menos que Arrastar uma Patrulha esteja definido para parar.',
         'Paredes: com a configuração Paredes ativada, patrulhas e seguidores não transitam por paredes com iluminação dinâmica ou portas e janelas fechadas; portas e janelas abertas os deixam passar. Dê a uma rota sua própria opção de paredes (por exemplo, ignorar um fantasma).',
         'Marcadores de parada: um token que recebe um desses marcadores de status (por exemplo, morto) sai de sua rota e para de seguir, e os seguidores de um líder que recebe uma parada também. Defina-os com !tokencontroller set stopMarkers dead;red. Isso também funciona quando outro Mod adiciona o marcador.',

@@ -480,6 +480,7 @@ const TRANSLATION = {
         'El pany manté un testimoni al seu lloc. Les fitxes bloquejades no patrullen ni segueixen fins que es desbloquegen.',
         'Seguiu: seleccioneu el líder i feu clic a Líder, després seleccioneu els seguidors i feu clic a Segueix. També pots escriure el nom del líder: !tokencontroller segueix Goblin Boss. Els seguidors segueixen fitxes que patrullen, fitxes que arrossegueu i fitxes mogudes per TokenMod.',
         'Els seguidors poden seguir a altres seguidors, fent una cadena o una columna.',
+        "En fila índia, cada seguidor es queda prou enrere per no tocar el testimoni del davant, segons el costat més llarg de cadascun, de manera que els carros i els cotxes més grans d'una casella no se superposen.",
         "Si arrossegueu una fitxa de patrulla, la patrulla continua des d'on la deixeu anar, tret que Arrossegar una patrulla estigui configurada per aturar-se.",
         "Murs: amb la configuració de Murs activada, les patrulles i els seguidors no passen per parets d'il·luminació dinàmica o portes i finestres tancades; portes i finestres obertes els deixen passar. Doneu una opció de parets a una ruta (per exemple, ignorar per a un fantasma).",
         "Marcadors d'aturada: una fitxa que obté un d'aquests marcadors d'estat (per exemple, mort) deixa la seva ruta i deixa de seguir, i els seguidors d'un líder que aconsegueixen també una parada. Estableix-los amb !tokencontroller set stopMarkers dead;red. Això també funciona quan un altre mod afegeix el marcador.",

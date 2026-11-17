@@ -479,6 +479,7 @@ const TRANSLATION = {
         'Låset håller en token på plats. Låsta polletter patrullerar eller följer inte med förrän de är upplåsta.',
         'Följ: välj ledaren och klicka på Ledare, välj sedan följare och klicka på Följ. Du kan också skriva in ledarens namn: !tokencontroller follow Goblin Boss. Följare följer tokens som patrullerar, tokens du drar och tokens som flyttas av TokenMod.',
         'Följare kan följa andra följare, skapa en kedja eller en kolumn.',
+        'I gåsmarsch håller sig varje följare så långt bakom att den går fri från token framför, mätt efter den längre sidan på var och en, så att vagnar och bilar större än en ruta inte överlappar varandra.',
         'Att dra en patrulleringstoken för patrullen vidare där du tappar den, om inte Drag a Patrol är inställd på att stoppa.',
         'Väggar: med inställningen Väggar på går patruller och följare inte genom dynamiska belysningsväggar eller stängda dörrar och fönster; öppna dörrar och fönster släpper igenom dem. Ge en rutt dess egna väggalternativ (till exempel ignorera för ett spöke).',
         'Stoppmarkörer: en token som får en av dessa statusmarkörer (till exempel död) lämnar sin rutt och slutar följa, och anhängarna till en ledare som får ett stopp också. Ställ in dem med !tokencontroller set stopMarkers dead;red. Detta fungerar också när en annan mod lägger till markören.',

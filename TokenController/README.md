@@ -71,7 +71,7 @@ New routes that end where they start loop; others go back and forth. Click **⋯
 - **Reset** returns tokens to where they were before they started, on their original layer.
 - **Pause All** / **Resume** stop and restart every patrol at once.
 - **Lock** holds a token in place. Locked tokens do not patrol or follow until unlocked. **Lock Mode** chooses how: Roll20's own position lock (the default), undoing any move, or simply holding still.
-- **Follow**: select the leader and click **Leader**, then select the followers and click **Follow**. Or type the leader's name: `!tokencontroller follow Goblin Boss`. **Follow Mode** chooses between single file (followers walk in the leader's footsteps) and formation (followers keep their place around the leader; drag a follower to change its place). Followers can follow other followers.
+- **Follow**: select the leader and click **Leader**, then select the followers and click **Follow**. Or type the leader's name: `!tokencontroller follow Goblin Boss`. **Follow Mode** chooses between single file (followers walk in the leader's footsteps, each far enough back to clear the token in front, so wagons and cars bigger than a square don't overlap) and formation (followers keep their place around the leader; drag a follower to change its place). Followers can follow other followers.
 - Dragging a patrolling token carries its patrol on from where you drop it, unless **Dragging a Patrol** is set to `stop`.
 - **Stop Markers**: list status markers such as `dead;red` with `!tokencontroller set stopMarkers dead;red`. A patrolling token that gets one leaves its route (**Stop Marker Action** chooses whether it stays where it is or goes back to where it started), marked tokens stop following, and the followers of a marked leader stop too. The markers are checked every quarter of a second, even while patrols are paused for combat, so markers added by other Mods count. Number badges are ignored and custom markers match by name.
 - **Walls**: Roll20 does not stop tokens that Mods move at walls, so TokenController checks every move itself. With **Walls** set to `hold`, patrols wait at dynamic lighting walls and closed doors and windows (and carry on when a door opens); with `turn` they turn back. Followers wait rather than cross a wall. Open doors and windows let tokens through. **Wall Check** chooses whether only a token's centre or its whole width must stay clear, and **One-Way Walls** and **See-Through Walls** whether those kinds block. Give a route its own `walls` option to override the setting, for example `ignore` for a ghost.
@@ -192,7 +192,7 @@ TokenController.start(tokenId, 'Guard Walk'); // true when started
 TokenController.stop(tokenId);
 TokenController.reset(tokenId);
 TokenController.routeOf(tokenId); // "Guard Walk" or null
-TokenController.version; // "5.0.1"
+TokenController.version; // "5.0.2"
 ```
 
 ## Upgrading from Version 4

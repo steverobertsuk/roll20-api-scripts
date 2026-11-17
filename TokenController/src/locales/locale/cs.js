@@ -477,6 +477,7 @@ const TRANSLATION = {
         'Zámek drží žeton na místě. Zamčené žetony nehlídají ani nesledují, dokud nejsou odemčeny.',
         'Následovat: vyberte vůdce a klikněte na vůdce, poté vyberte následovníky a klikněte na Následovat. Můžete také napsat jméno vůdce: !tokencontroller follow Goblin Boss. Následovníci sledují žetony, které hlídkují, žetony, které přetáhnete, a žetony přesunuté TokenModem.',
         'Následovníci mohou následovat ostatní příznivce a vytvořit tak řetěz nebo sloupec.',
+        'V zástupu zůstává každý následovník dost daleko vzadu, aby se nedotýkal žetonu před sebou, podle delší strany každého z nich, takže se vozy a auta větší než jedno pole nepřekrývají.',
         'Přetažení žetonu hlídky přenese hlídku z místa, kde ji upustíte, pokud není přetažení hlídky nastaveno na zastavení.',
         'Zdi: při zapnutém Zdi hlídky a následovníci neprocházejí dynamickými osvětlovacími stěnami nebo zavřenými dveřmi a okny; otevřené dveře a okna je propustí. Dejte trase možnost vlastní zdi (například ignorovat pro ducha).',
         'Stop Markers: Token, který získá jeden z těchto ukazatelů stavu (například mrtvý), opustí svou trasu a přestane ho následovat a následovníci vůdce, který dostane jednu zastávku také. Nastavte je pomocí !tokencontroller set stopMarkers dead;red. To také funguje, když jiný Mod přidá značku.',

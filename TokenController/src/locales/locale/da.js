@@ -474,6 +474,7 @@ const TRANSLATION = {
         'Lås holder et token på plads. Låste tokens patruljerer eller følger ikke efter, før de er låst op.',
         'Følg: vælg lederen, og klik på Leder, vælg derefter følgerne, og klik på Følg. Du kan også skrive lederens navn: !tokencontroller follow Goblin Boss. Følgere følger tokens, der patruljerer, tokens, du trækker, og tokens, der flyttes af TokenMod.',
         'Følgere kan følge andre følgere, lave en kæde eller en kolonne.',
+        'I gåsegang holder hver følger sig langt nok tilbage til at gå fri af tokenet foran, målt efter den længste side på hver, så vogne og biler større end ét felt ikke overlapper hinanden.',
         'At trække et patruljerende token fører patruljen videre fra det sted, hvor du taber det, medmindre at trække en patrulje er indstillet til at stoppe.',
         'Vægge: med vægge aktiveret, går patruljer og følgere ikke gennem dynamiske lysvægge eller lukkede døre og vinduer; åbne døre og vinduer slipper dem igennem. Giv en rute sin egen væg mulighed (for eksempel ignorer for et spøgelse).',
         'Stopmarkører: et token, der får en af disse statusmarkører (for eksempel død) forlader sin rute og stopper med at følge, og følgerne af en leder, der får et stop også. Indstil dem med !tokencontroller sæt stopMarkers dead;red. Dette virker også, når en anden Mod tilføjer markøren.',

@@ -473,6 +473,7 @@ const TRANSLATION = {
         'Lock holds a token in place. Locked tokens do not patrol or follow until unlocked.',
         "Follow: select the leader and click Leader, then select the followers and click Follow. You can also type the leader's name: !tokencontroller follow Goblin Boss. Followers follow tokens that patrol, tokens you drag and tokens moved by TokenMod.",
         'Followers can follow other followers, making a chain or a column.',
+        "In single file, each follower stays far enough back to clear the token in front, judged by the longer side of each, so wagons and cars bigger than a square don't overlap.",
         'Dragging a patrolling token carries the patrol on from where you drop it, unless Dragging a Patrol is set to stop.',
         'Walls: with the Walls setting on, patrols and followers do not walk through dynamic lighting walls or closed doors and windows; open doors and windows let them through. Give a route its own walls option (for example ignore for a ghost).',
         'Stop Markers: a token that gets one of these status markers (for example dead) leaves its route and stops following, and the followers of a leader that gets one stop too. Set them with !tokencontroller set stopMarkers dead;red. This also works when another Mod adds the marker.',

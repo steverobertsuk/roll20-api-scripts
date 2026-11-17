@@ -483,6 +483,7 @@ const TRANSLATION = {
         'Het slot houdt een token op zijn plaats. Vergrendelde tokens patrouilleren of volgen niet totdat ze ontgrendeld zijn.',
         'Volgen: selecteer de leider en klik op Leider, selecteer vervolgens de volgers en klik op Volgen. Je kunt ook de naam van de leider typen: !tokencontroller volg Goblin Boss. Volgers volgen tokens die patrouilleren, tokens die je sleept en tokens die door TokenMod worden verplaatst.',
         'Volgers kunnen andere volgers volgen, waardoor een ketting of een kolom ontstaat.',
+        "In ganzenpas blijft elke volger ver genoeg achter om vrij te blijven van het token ervoor, gemeten naar de langste zijde van elk, zodat wagens en auto's groter dan één vak elkaar niet overlappen.",
         'Door een patrouillefiche te slepen, gaat de patrouille verder vanaf het punt waar je hem neerzet, tenzij het slepen van een patrouille stopt.',
         'Muren: als de Muren zijn ingeschakeld, lopen patrouilles en volgers niet door dynamische verlichtingsmuren of gesloten deuren en ramen; open deuren en ramen laten ze door. Geef een route een eigen muuroptie (bijvoorbeeld negeren vanwege een geest).',
         'Stopmarkeringen: een fiche die één van deze statusmarkeringen krijgt (bijvoorbeeld dood), verlaat zijn route en stopt met volgen, en de volgers van een leider die één stop krijgen ook. Stel ze in met !tokencontroller set stopMarkers dead;red. Dit werkt ook als een andere Mod de markering toevoegt.',

@@ -480,6 +480,7 @@ const TRANSLATION = {
         'Zamek utrzymuje żeton na miejscu. Zablokowane tokeny nie patrolują ani nie podążają, dopóki nie zostaną odblokowane.',
         'Obserwuj: wybierz lidera i kliknij Lidera, następnie wybierz obserwujących i kliknij Obserwuj. Możesz także wpisać imię lidera: !tokencontroller podążaj za Goblinem Bossem. Obserwujący podążają za tokenami, które patrolują, tokenami, które przeciągasz i tokenami przenoszonymi przez TokenMod.',
         'Obserwujący mogą podążać za innymi obserwującymi, tworząc łańcuch lub kolumnę.',
+        'W rzędzie każdy podążający zostaje na tyle daleko z tyłu, by nie nachodzić na żeton przed sobą, według dłuższego boku każdego z nich, więc wozy i samochody większe niż jedno pole nie nakładają się na siebie.',
         'Przeciągnięcie żetonu patrolowania powoduje kontynuację patrolu od miejsca, w którym go upuściłeś, chyba że przeciąganie patrolu zostanie zatrzymane.',
         'Ściany: przy włączonej opcji Ściany patrole i towarzysze nie przechodzą przez dynamicznie oświetlane ściany lub zamknięte drzwi i okna; otwarte drzwi i okna ich przepuszczają. Nadaj trasie opcję własnych ścian (na przykład ignorowanie ducha).',
         'Znaczniki zatrzymania: żeton, który otrzyma jeden z tych znaczników statusu (na przykład martwy), opuszcza swoją trasę i przestaje podążać, a także zwolennicy lidera, którzy również otrzymują jeden przystanek. Ustaw je za pomocą !tokencontroller set stopMarkers dead;red. Działa to również, gdy inny Mod dodaje znacznik.',

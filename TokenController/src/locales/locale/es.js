@@ -479,6 +479,7 @@ const TRANSLATION = {
         'El candado mantiene una ficha en su lugar. Las fichas bloqueadas no patrullan ni siguen hasta que se desbloquean.',
         'Seguir: seleccione el líder y haga clic en Líder, luego seleccione los seguidores y haga clic en Seguir. También puedes escribir el nombre del líder: !tokencontroller sigue a Goblin Boss. Los seguidores siguen los tokens que patrullan, los tokens que arrastras y los tokens movidos por TokenMod.',
         'Los seguidores pueden seguir a otros seguidores, formando una cadena o una columna.',
+        'En fila india, cada seguidor se queda lo bastante atrás para no tocar la ficha de delante, según el lado más largo de cada una, de modo que los carros y coches de más de una casilla no se solapan.',
         'Al arrastrar una ficha de patrulla, la patrulla continúa desde donde la dejaste, a menos que Arrastrar una patrulla esté configurado para detenerse.',
         'Muros: con los Muros activados, las patrullas y seguidores no caminan a través de muros con iluminación dinámica o puertas y ventanas cerradas; puertas abiertas y ventanas les dejan pasar. Dale a una ruta su propia opción de paredes (por ejemplo, ignorarla si aparece un fantasma).',
         'Marcadores de parada: una ficha que obtiene uno de estos marcadores de estado (por ejemplo, muerto) abandona su ruta y deja de seguir, y los seguidores de un líder que obtiene uno también se detienen. Configúrelos con !tokencontroller set stopMarkers dead;red. Esto también funciona cuando otro Mod agrega el marcador.',

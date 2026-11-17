@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.2 (2026-11-17)
+
+### Fixed
+
+- Single file left followers bigger than a square overlapping the token in front: each follower stood one step behind, whatever its size, so a column of 2 × 1 wagons or cars drove into each other. Each follower now stays far enough back along the leader's path to clear the token in front, by half the longer side of each, so a wagon two squares long stays two squares behind another. One-square tokens still follow one step behind, as before.
+
 ## 5.0.1 (2026-11-01)
 
 Features and a fix from user feedback. There are no breaking changes: new settings are off until you turn them on.

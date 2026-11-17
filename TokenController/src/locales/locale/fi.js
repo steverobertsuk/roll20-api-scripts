@@ -476,6 +476,7 @@ const TRANSLATION = {
         'Lukko pitää merkkiä paikallaan. Lukitut rahakkeet eivät partio tai seuraa, ennen kuin ne on avattu.',
         'Seuraa: valitse johtaja ja napsauta Johtaja, valitse sitten seuraajat ja napsauta Seuraa. Voit myös kirjoittaa johtajan nimen: !tokencontroller follow Goblin Boss. Seuraajat seuraavat partioivia tunnuksia, vetämiäsi tokeneja ja TokenModin siirtämiä tokeneita.',
         'Seuraajat voivat seurata muita seuraajia muodostaen ketjun tai sarakkeen.',
+        'Jonossa jokainen seuraaja pysyy niin kaukana takana, ettei se osu edellä olevaan merkkiin, kummankin pidemmän sivun mukaan, joten yhtä ruutua suuremmat vaunut ja autot eivät mene päällekkäin.',
         'Partiomerkin vetäminen kuljettaa partioa siitä kohdasta, josta sen pudotat, ellei Partion vetäminen ole asetettu pysähtymään.',
         'Seinät: Seinät-asetuksen ollessa päällä partiot ja seuraajat eivät kulje dynaamisten valaistusseinien tai suljettujen ovien ja ikkunoiden läpi; avoimet ovet ja ikkunat päästävät ne läpi. Anna reitille omat seinänsä vaihtoehto (esimerkiksi ohita haamu).',
         'Pysäytysmerkit: merkki, joka saa yhden näistä tilamerkeistä (esimerkiksi kuollut), poistuu reitiltä ja lakkaa seuraamasta, sekä johtajan seuraajat, joka saa yhden pysähdyksen. Aseta ne komennolla !tokencontroller set stopMarkers dead;red. Tämä toimii myös, kun toinen modi lisää merkin.',

@@ -480,6 +480,7 @@ const TRANSLATION = {
         'Kilit, jetonu yerinde tutar. Kilitli jetonlar, kilidi açılana kadar devriye gezmez veya takip etmez.',
         "Takip et: lideri seçin ve Lider'e tıklayın, ardından takipçileri seçin ve Takip Et'e tıklayın. Ayrıca liderin adını da yazabilirsiniz: !tokencontroller Goblin Boss'u takip edin. Takipçiler devriye gezen jetonları, sürüklediğiniz jetonları ve TokenMod tarafından taşınan jetonları takip eder.",
         'Takipçiler diğer takipçileri takip ederek bir zincir veya sütun oluşturabilirler.',
+        'Tek sırada her takipçi, öndeki jetona değmeyecek kadar geride kalır; mesafe her birinin uzun kenarına göre belirlenir, böylece bir kareden büyük arabalar ve otomobiller üst üste binmez.',
         'Bir Devriyeyi Sürüklemek durmaya ayarlı olmadığı sürece, bir devriye jetonunu sürüklemek, devriyeyi bıraktığınız yerden devam ettirir.',
         'Duvarlar: Duvarlar ayarı açıkken devriyeler ve takipçiler dinamik aydınlatmalı duvarlardan veya kapalı kapı ve pencerelerden geçmez; açık kapılar ve pencereler onların geçmesine izin veriyor. Bir rotaya kendi duvarları seçeneğini verin (örneğin bir hayaleti görmezden gelin).',
         'Durdurma İşaretçileri: Bu durum işaretleyicilerinden (örneğin ölü) birini alan bir token, rotasını terk eder ve takip etmeyi bırakır ve bir liderin takipçileri de bir durak alır. Bunları !tokencontroller set stopMarkers dead;red ile ayarlayın. Bu aynı zamanda başka bir Mod işaretçiyi eklediğinde de çalışır.',
