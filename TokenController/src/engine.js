@@ -11,10 +11,12 @@ import {
   ANCHOR_PAGE,
   LAYER_GM,
   LAYER_TOKEN,
+  PAGE_UNIT_PX,
   POSITION_EPSILON,
   ROUTE_KIND_AREA,
   SCHEDULER_TICK_MS,
   SCRIPT_NAME,
+  SINGLE_FILE_SLACK,
   TRAIL_LENGTH,
 } from './constants.js';
 import { getPageContext } from './context.js';
@@ -895,6 +897,60 @@ function rememberTrail(leaderId, positions) {
 }
 
 /**
+ * Returns a token's length for spacing a single file: its longer side, so a
+ * wagon gets room for its length whichever way it is turned.
+ *
+ * @param {object} token Roll20 graphic.
+ * @returns {number} Length in pixels.
+ */
+function bodyLength(token) {
+  return (
+    Math.max(Number(token.get('width')) || 0, Number(token.get('height')) || 0) || PAGE_UNIT_PX
+  );
+}
+
+/**
+ * Chooses where each follower in a single file stands: far enough back along
+ * the leader's trail to clear the token in front, by half the length of each.
+ * One-square tokens get one step each, as before; a wagon two squares long
+ * stands two steps behind another. Each follower stands further back than the
+ * one before, so they never share a place. Followers with no trail left that
+ * far back get no target, and wait.
+ *
+ * @param {object} leader Roll20 graphic.
+ * @param {number[][]} trail The leader's earlier positions, newest first.
+ * @param {(object|undefined)[]} followers Roll20 graphics, in file order
+ *        (undefined for a missing token, which keeps its place in the file).
+ * @returns {(number[]|undefined)[]} A target for each follower.
+ */
+function singleFileTargets(leader, trail, followers) {
+  const targets = [];
+  let from = positionOf(leader);
+  let index = 0;
+  let walked = 0;
+  let needed = 0;
+  let ahead = bodyLength(leader);
+  for (const follower of followers) {
+    const length = follower ? bodyLength(follower) : ahead;
+    needed += (ahead + length) / 2;
+    let target;
+    while (index < trail.length) {
+      const next = trail[index];
+      walked += Math.hypot(next[0] - from[0], next[1] - from[1]);
+      from = next;
+      index += 1;
+      if (walked >= needed * SINGLE_FILE_SLACK) {
+        target = next;
+        break;
+      }
+    }
+    targets.push(target);
+    ahead = length;
+  }
+  return targets;
+}
+
+/**
  * Makes tokens follow a leader.
  *
  * @param {object[]} followers Roll20 graphics.
@@ -974,8 +1030,14 @@ function moveFollowers(leader, visited) {
     return;
   }
   const trailMode = getConfig().followMode === 'trail';
-  const trail = trails.get(leader.id) || [];
   const [lx, ly] = positionOf(leader);
+  const fileTargets = trailMode
+    ? singleFileTargets(
+        leader,
+        trails.get(leader.id) || [],
+        followers.map(([followerId]) => getObj('graphic', followerId) || undefined)
+      )
+    : [];
   followers.forEach(([followerId, follow], i) => {
     if (visited.has(followerId) || s.locks[followerId] || s.patrols[followerId]) {
       return;
@@ -991,7 +1053,7 @@ function moveFollowers(leader, visited) {
     let target;
     if (trailMode) {
       // Followers further back wait until the leader has gone far enough.
-      target = trail[i];
+      target = fileTargets[i];
     } else if (follow.offset) {
       // Snap so a follower that started between cells still lands in one.
       const grid = getPageContext(leader.get('_pageid'))?.grid;

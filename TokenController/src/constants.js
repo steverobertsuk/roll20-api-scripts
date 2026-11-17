@@ -127,6 +127,11 @@ export const SCHEDULER_TICK_MS = 250;
 // how many positions each leader remembers.
 export const TRAIL_LENGTH = 50;
 
+// A single-file follower may stand a little nearer than its full gap: hex rows
+// are about 4% closer than a cell, and one-square tokens should still get a
+// single step each there.
+export const SINGLE_FILE_SLACK = 0.9;
+
 // Points closer than this (in pixels) are treated as the same place.
 export const POSITION_EPSILON = 0.5;
 

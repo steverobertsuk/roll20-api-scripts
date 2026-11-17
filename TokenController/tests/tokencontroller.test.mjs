@@ -425,6 +425,77 @@ test('followers walk single file behind a patrolling leader', () => {
   assertNoErrors(api);
 });
 
+test('wagons in single file keep room for their length', () => {
+  const api = game();
+  const size = { width: 140, height: 70 };
+  const leader = api.token({ name: 'Lead Wagon', left: 385, ...size });
+  const second = api.token({ name: 'Second Wagon', left: 245, ...size });
+  const third = api.token({ name: 'Third Wagon', left: 105, ...size });
+  api.command('!tokencontroller leader', [leader]);
+  api.command('!tokencontroller follow', [second, third]);
+  api.command('!tokencontroller add East R10');
+  api.command('!tokencontroller start East', [leader]);
+  // One square on: too close for a two-square wagon, so the others wait
+  api.advance(2000);
+  assert.deepEqual(
+    [at(leader), at(second), at(third)],
+    [
+      [455, 105],
+      [245, 105],
+      [105, 105],
+    ]
+  );
+  api.advance(2000);
+  assert.deepEqual(
+    [at(leader), at(second), at(third)],
+    [
+      [525, 105],
+      [385, 105],
+      [105, 105],
+    ]
+  );
+  api.advance(4000);
+  assert.deepEqual(
+    [at(leader), at(second), at(third)],
+    [
+      [665, 105],
+      [525, 105],
+      [385, 105],
+    ]
+  );
+  assertNoErrors(api);
+});
+
+test('a wagon behind a one-square leader stays one and a half lengths back', () => {
+  const api = game();
+  const leader = api.token({ name: 'Driver', left: 245 });
+  const cart = api.token({ name: 'Cart', left: 105, width: 140 });
+  api.command('!tokencontroller leader', [leader]);
+  api.command('!tokencontroller follow', [cart]);
+  for (const left of [315, 385, 455]) {
+    api.drag(leader, left, 105);
+  }
+  assert.deepEqual(at(cart), [315, 105]);
+  assertNoErrors(api);
+});
+
+test('one-square followers on a hex page stay one step behind', () => {
+  const api = game({ page: { grid_type: 'hex' } });
+  const guard = api.token({ left: 210, top: 323.3 });
+  const dog = api.token({ name: 'Dog', left: 70, top: 323.3 });
+  api.command('!tokencontroller leader', [guard]);
+  api.command('!tokencontroller follow', [dog]);
+  api.command('!tokencontroller add Climb U3');
+  api.command('!tokencontroller start Climb', [guard]);
+  const seen = [];
+  for (let step = 0; step < 3; step += 1) {
+    api.advance(2000);
+    seen.push(at(guard));
+  }
+  assert.deepEqual(at(dog), seen[1]);
+  assertNoErrors(api);
+});
+
 test('formation followers keep their place and follow dragged leaders by name', () => {
   const api = game();
   const leader = api.token({ name: 'Wagon Master' });
